@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Observer",
+    "min_xp": 0,
+    "desc": "You notice patterns and ask basic questions."
+  },
+  {
+    "name": "Curious Mind",
+    "min_xp": 120,
+    "desc": "You question assumptions and explore perspectives."
+  },
+  {
+    "name": "Thoughtful Explorer",
+    "min_xp": 300,
+    "desc": "You test ideas and look for tradeoffs."
+  },
+  {
+    "name": "Clear Reasoner",
+    "min_xp": 600,
+    "desc": "You spot weak reasoning and improve arguments."
+  },
+  {
+    "name": "Independent Thinker",
+    "min_xp": 1000,
+    "desc": "You think for yourself under uncertainty."
+  },
+  {
+    "name": "Master of Thought",
+    "min_xp": 1600,
+    "desc": "You consistently reason with clarity and humility."
+  }
+]
