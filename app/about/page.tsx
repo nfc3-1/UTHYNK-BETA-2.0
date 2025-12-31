@@ -1,0 +1,1 @@
+export default function About(){ return <div className='card p-20'><h1 className='heroTitle'>About Us</h1><p className='heroSub'>UThynk helps teens and young adults practice thinking skills—reasoning, perspective, and judgment—without telling them what to believe.</p></div> }

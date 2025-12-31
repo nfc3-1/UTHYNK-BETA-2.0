@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Epistemology",
+    "slug": "epistemology",
+    "synopsis": "How we know what we know: evidence, belief, and certainty.",
+    "foundation": true,
+    "color": "pink"
+  },
+  {
+    "name": "Philosophy of History",
+    "slug": "philosophy-of-history",
+    "synopsis": "How we interpret the past and what drives change.",
+    "foundation": false,
+    "color": "gold"
+  },
+  {
+    "name": "Logic & Critical Thinking",
+    "slug": "logic-and-critical-thinking",
+    "synopsis": "Spot fallacies, build arguments, and reason clearly.",
+    "foundation": true,
+    "color": "teal"
+  },
+  {
+    "name": "Street Lessons",
+    "slug": "street-lessons",
+    "synopsis": "Practical wisdom: trust, respect, risk, and real life.",
+    "foundation": false,
+    "color": "gold"
+  },
+  {
+    "name": "Applied Ethics",
+    "slug": "applied-ethics",
+    "synopsis": "Make tough choices with principles you can defend.",
+    "foundation": true,
+    "color": "navy"
+  },
+  {
+    "name": "Pop Culture & Media Literacy",
+    "slug": "pop-culture-and-media-literacy",
+    "synopsis": "Decode persuasion, narratives, and attention traps.",
+    "foundation": false,
+    "color": "purple"
+  },
+  {
+    "name": "Metaethics",
+    "slug": "metaethics",
+    "synopsis": "What makes something right or wrong\u2014really?",
+    "foundation": false,
+    "color": "pink"
+  },
+  {
+    "name": "Bioethics",
+    "slug": "bioethics",
+    "synopsis": "Ethics in medicine, bodies, and life-altering choices.",
+    "foundation": false,
+    "color": "gold"
+  },
+  {
+    "name": "Philosophy of Mind",
+    "slug": "philosophy-of-mind",
+    "synopsis": "Consciousness, identity, and the self.",
+    "foundation": false,
+    "color": "blue"
+  },
+  {
+    "name": "Political Philosophy",
+    "slug": "political-philosophy",
+    "synopsis": "Power, rights, justice, and what society owes you.",
+    "foundation": false,
+    "color": "blue"
+  },
+  {
+    "name": "Personal Identity",
+    "slug": "personal-identity",
+    "synopsis": "Who are you over time\u2014and what stays the same?",
+    "foundation": false,
+    "color": "purple"
+  },
+  {
+    "name": "Philosophy of Science",
+    "slug": "philosophy-of-science",
+    "synopsis": "How science works: models, proof, and uncertainty.",
+    "foundation": false,
+    "color": "blue"
+  }
+]
