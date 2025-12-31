@@ -1,1 +1,0 @@
-export default function Store(){ return <div className='card p-20'><h1 className='heroTitle'>Store</h1><p className='heroSub'>Coming after beta. For now, this stays minimal.</p></div> }

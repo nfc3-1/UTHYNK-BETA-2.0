@@ -1,1 +1,0 @@
-export default function Login(){ return <div className='card p-20'><h1 className='heroTitle'>Login</h1><p className='heroSub'>Auth will be wired in Pass 3. For now, this is a placeholder page.</p></div> }
