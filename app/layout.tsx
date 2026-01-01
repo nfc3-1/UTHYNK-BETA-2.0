@@ -1,17 +1,17 @@
-import './styles/globals.css';
-import AppShell from '@/components/AppShell';
+// app/layout.tsx
+import "./globals.css";
 
-export const metadata = {
-  title: 'UThynk — Learn how to think',
-  description: 'Learn how to think — not what to think.'
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body>
-        <AppShell>{children}</AppShell>
+      <body className="min-h-screen w-screen bg-uthynk text-white overflow-x-hidden">
+        {children}
       </body>
     </html>
   );
 }
+
