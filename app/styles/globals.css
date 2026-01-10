@@ -453,6 +453,24 @@ body{
   background: rgba(255,255,255,0.10);
   border: 1px solid rgba(255,255,255,0.16);
 }
+:root{
+  --uthynk-gold: #f6c64f;
+  --uthynk-ink: #1b1350;
+  --uthynk-bg-top: #1d4ed8;
+  --uthynk-bg-bottom: #6d28d9;
+}
+
+.bg-uthynk {
+  background:
+    radial-gradient(1200px 800px at 30% 10%, rgba(246,198,79,0.12), transparent 55%),
+    linear-gradient(180deg, var(--uthynk-bg-top) 0%, var(--uthynk-bg-bottom) 100%);
+}
+
+.uthynk-card {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(10px);
+}
 
 @media (max-width: 1100px){
   .ppRight{ display:none; }
