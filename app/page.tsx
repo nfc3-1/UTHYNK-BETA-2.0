@@ -1,18 +1,54 @@
 import Image from "next/image";
 
 const CATEGORIES = [
-  "Philosophy of History",
-  "Logic & Critical Thinking",
-  "Literature & Wisdom",
-  "Modern Questions",
-  "Street Lessons",
-  "Pop Culture & Media Literacy",
-  "Mind & Self",
-  "Worldview & Cultures",
-  "Creative Thinking",
-  "Work & Hustle",
-  "Epistemology",
-  "Applied Ethics",
+  {
+    title: "Epistemology",
+    desc: "How we know what we know; evidence, belief, certainty, and doubt.",
+  },
+  {
+    title: "Logic & Critical Thinking",
+    desc: "Reasoning clearly, spotting fallacies, assumptions, and weak arguments.",
+  },
+  {
+    title: "Mind & Self",
+    desc: "Biases, emotions, habits, identity, and how the mind shapes decisions.",
+  },
+  {
+    title: "Literature & Wisdom",
+    desc: "Timeless stories and ideas that reveal human patterns and insight.",
+  },
+  {
+    title: "Philosophy of History",
+    desc: "How narratives shape our understanding of the past and progress.",
+  },
+  {
+    title: "Worldview & Cultures",
+    desc: "Different cultural lenses and why intelligent people disagree.",
+  },
+  {
+    title: "Applied Ethics",
+    desc: "Moral reasoning through tradeoffs, consequences, and principles.",
+  },
+  {
+    title: "Modern Questions",
+    desc: "Contemporary issues explored without telling users what to believe.",
+  },
+  {
+    title: "Pop Culture & Media Literacy",
+    desc: "Persuasion, media narratives, algorithms, and attention economics.",
+  },
+  {
+    title: "Street Lessons",
+    desc: "Practical wisdom about power, incentives, risk, and human behavior.",
+  },
+  {
+    title: "Creative Thinking",
+    desc: "Reframing problems, generating ideas, and breaking mental ruts.",
+  },
+  {
+    title: "Work & Hustle",
+    desc: "Thinking clearly about success, effort, tradeoffs, and long-term value.",
+  },
 ];
 
 export default function Home() {
@@ -49,8 +85,11 @@ export default function Home() {
         <div className="mt-[clamp(14px,2vw,22px)] grid gap-[clamp(12px,1.6vw,22px)] grid-cols-1 lg:grid-cols-[280px_minmax(560px,1fr)_360px] items-start">
           {/* LEFT SIDEBAR */}
           <aside className="uthynk-card rounded-3xl p-4">
-            {["Home","Dashboard","Store","Profile","Log Out"].map((t) => (
-              <button key={t} className="w-full text-left px-4 py-3 rounded-2xl hover:bg-white/10 transition">
+            {["Home", "Dashboard", "Store", "Profile", "Log Out"].map((t) => (
+              <button
+                key={t}
+                className="w-full text-left px-4 py-3 rounded-2xl hover:bg-white/10 transition"
+              >
                 {t}
               </button>
             ))}
@@ -74,14 +113,30 @@ export default function Home() {
 
             <p className="mt-2 text-white/80">Pick a category to start a quick challenge.</p>
 
-            {/* 12 categories */}
+            {/* 12 categories (title shown, description on hover) */}
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              {CATEGORIES.map((c) => (
+              {CATEGORIES.map((cat) => (
                 <button
-                  key={c}
-                  className="rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 px-4 py-4 text-left transition"
+                  key={cat.title}
+                  title={cat.desc} // native tooltip on hover
+                  className="
+                    group rounded-2xl bg-white/10 hover:bg-white/15
+                    border border-white/10 px-4 py-4 text-left transition
+                    relative overflow-hidden
+                  "
                 >
-                  <div className="font-semibold">{c}</div>
+                  <div className="font-extrabold text-white">{cat.title}</div>
+
+                  {/* Hover description */}
+                  <div
+                    className="
+                      mt-2 text-sm text-white/75
+                      opacity-0 translate-y-1 transition
+                      group-hover:opacity-100 group-hover:translate-y-0
+                    "
+                  >
+                    {cat.desc}
+                  </div>
                 </button>
               ))}
             </div>
@@ -117,5 +172,3 @@ export default function Home() {
     </main>
   );
 }
-
-      
