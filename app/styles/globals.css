@@ -479,5 +479,56 @@ body{
   .ppBody{ flex-direction:column; }
   .ppSide{ flex-basis:auto; }
   .ppCats{ grid-template-columns: 1fr; }
-  .ppCatsSmall{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .ppCatsSmall{ grid-template-columns: repeat(2, minmax(0,1fr)); 
+  /* ==============================
+   FINAL THEME OVERRIDE (UThynk)
+   Keep this block LAST in file
+   ============================== */
+
+:root{
+  --uthynk-gold: #f6c64f;
+  --uthynk-ink: #1b1350;
+
+  /* Logo-inspired gradient */
+  --uthynk-bg-top: #1d4ed8;
+  --uthynk-bg-bottom: #6d28d9;
+
+  /* Glass panels */
+  --panel: rgba(255,255,255,0.10);
+  --stroke: rgba(255,255,255,0.18);
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.72);
 }
+
+html, body { height: 100%; }
+
+body{
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 800px at 30% 10%, rgba(246,198,79,0.12), transparent 55%),
+    radial-gradient(900px 700px at 80% 20%, rgba(255,255,255,0.10), transparent 60%),
+    linear-gradient(180deg, var(--uthynk-bg-top) 0%, var(--uthynk-bg-bottom) 100%);
+}
+
+/* Make the shell truly “full screen” while still feeling designed */
+.ppShell{
+  width: min(1600px, 98vw);
+  margin: 18px auto;
+}
+
+/* Glass cards match */
+.card{
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(12px);
+}
+
+/* Primary button = brand gold */
+.btnPrimary{
+  background: linear-gradient(180deg, rgba(246,198,79,0.95), rgba(246,198,79,0.55));
+  border: 1px solid rgba(246,198,79,0.60);
+  color: var(--uthynk-ink);
+}
+.smallMuted{ color: var(--muted); }
+             
