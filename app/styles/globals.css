@@ -472,15 +472,22 @@ body{
   backdrop-filter: blur(10px);
 }
 
+/* ==============================
+   RESPONSIVE (Pixel-perfect)
+   ============================== */
+
 @media (max-width: 1100px){
   .ppRight{ display:none; }
 }
+
 @media (max-width: 860px){
   .ppBody{ flex-direction:column; }
   .ppSide{ flex-basis:auto; }
   .ppCats{ grid-template-columns: 1fr; }
-  .ppCatsSmall{ grid-template-columns: repeat(2, minmax(0,1fr)); 
-  /* ==============================
+  .ppCatsSmall{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ==============================
    FINAL THEME OVERRIDE (UThynk)
    Keep this block LAST in file
    ============================== */
@@ -511,13 +518,13 @@ body{
     linear-gradient(180deg, var(--uthynk-bg-top) 0%, var(--uthynk-bg-bottom) 100%);
 }
 
-/* Make the shell truly “full screen” while still feeling designed */
+/* Pixel-perfect shell sizing */
 .ppShell{
   width: min(1600px, 98vw);
   margin: 18px auto;
 }
 
-/* Glass cards match */
+/* Glass cards */
 .card{
   background: var(--panel);
   border: 1px solid var(--stroke);
@@ -530,5 +537,6 @@ body{
   border: 1px solid rgba(246,198,79,0.60);
   color: var(--uthynk-ink);
 }
+
 .smallMuted{ color: var(--muted); }
              
