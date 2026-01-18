@@ -476,6 +476,10 @@ body{
    RESPONSIVE (Pixel-perfect)
    ============================== */
 
+/* ==============================
+   RESPONSIVE (Pixel-perfect)
+   ============================== */
+
 @media (max-width: 1100px){
   .ppRight{ display:none; }
 }
@@ -491,6 +495,7 @@ body{
    FINAL THEME OVERRIDE (UThynk)
    Keep this block LAST in file
    ============================== */
+
 
 :root{
   --uthynk-gold: #f6c64f;
