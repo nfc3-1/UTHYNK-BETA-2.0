@@ -1,86 +1,74 @@
 [
   {
-    "name": "Epistemology",
     "slug": "epistemology",
-    "synopsis": "How we know what we know: evidence, belief, and certainty.",
-    "foundation": true,
-    "color": "pink"
+    "name": "Epistemology",
+    "subtitle": "Foundation Category",
+    "description": "How we know what we know: evidence, belief, certainty, and doubt."
   },
   {
-    "name": "Philosophy of History",
-    "slug": "philosophy-of-history",
-    "synopsis": "How we interpret the past and what drives change.",
-    "foundation": false,
-    "color": "gold"
-  },
-  {
+    "slug": "logic-critical-thinking",
     "name": "Logic & Critical Thinking",
-    "slug": "logic-and-critical-thinking",
-    "synopsis": "Spot fallacies, build arguments, and reason clearly.",
-    "foundation": true,
-    "color": "teal"
+    "subtitle": "Core Skill",
+    "description": "Reasoning clearly, spotting fallacies, assumptions, and weak arguments."
   },
   {
-    "name": "Street Lessons",
-    "slug": "street-lessons",
-    "synopsis": "Practical wisdom: trust, respect, risk, and real life.",
-    "foundation": false,
-    "color": "gold"
+    "slug": "mind-self",
+    "name": "Mind & Self",
+    "subtitle": "Inner Systems",
+    "description": "Biases, emotions, habits, identity, and how the mind shapes decisions."
   },
   {
-    "name": "Applied Ethics",
+    "slug": "literature-wisdom",
+    "name": "Literature & Wisdom",
+    "subtitle": "Patterns & Insight",
+    "description": "Timeless stories and ideas that reveal human patterns and insight."
+  },
+  {
+    "slug": "philosophy-of-history",
+    "name": "Philosophy of History",
+    "subtitle": "Big Narratives",
+    "description": "How narratives shape our understanding of the past and progress."
+  },
+  {
+    "slug": "worldview-cultures",
+    "name": "Worldview & Cultures",
+    "subtitle": "Perspective",
+    "description": "Different cultural lenses and why intelligent people disagree."
+  },
+  {
     "slug": "applied-ethics",
-    "synopsis": "Make tough choices with principles you can defend.",
-    "foundation": true,
-    "color": "navy"
+    "name": "Applied Ethics",
+    "subtitle": "Tradeoffs",
+    "description": "Moral reasoning through consequences, principles, and real-world dilemmas."
   },
   {
+    "slug": "modern-questions",
+    "name": "Modern Questions",
+    "subtitle": "Now",
+    "description": "Contemporary issues explored without telling users what to believe."
+  },
+  {
+    "slug": "pop-culture-media-literacy",
     "name": "Pop Culture & Media Literacy",
-    "slug": "pop-culture-and-media-literacy",
-    "synopsis": "Decode persuasion, narratives, and attention traps.",
-    "foundation": false,
-    "color": "purple"
+    "subtitle": "Signals",
+    "description": "Persuasion, media narratives, algorithms, and attention economics."
   },
   {
-    "name": "Metaethics",
-    "slug": "metaethics",
-    "synopsis": "What makes something right or wrong\u2014really?",
-    "foundation": false,
-    "color": "pink"
+    "slug": "street-lessons",
+    "name": "Street Lessons",
+    "subtitle": "Practical Wisdom",
+    "description": "Power, incentives, risk, and human behavior in the real world."
   },
   {
-    "name": "Bioethics",
-    "slug": "bioethics",
-    "synopsis": "Ethics in medicine, bodies, and life-altering choices.",
-    "foundation": false,
-    "color": "gold"
+    "slug": "creative-thinking",
+    "name": "Creative Thinking",
+    "subtitle": "Reframing",
+    "description": "Generating ideas, breaking mental ruts, and seeing new options."
   },
   {
-    "name": "Philosophy of Mind",
-    "slug": "philosophy-of-mind",
-    "synopsis": "Consciousness, identity, and the self.",
-    "foundation": false,
-    "color": "blue"
-  },
-  {
-    "name": "Political Philosophy",
-    "slug": "political-philosophy",
-    "synopsis": "Power, rights, justice, and what society owes you.",
-    "foundation": false,
-    "color": "blue"
-  },
-  {
-    "name": "Personal Identity",
-    "slug": "personal-identity",
-    "synopsis": "Who are you over time\u2014and what stays the same?",
-    "foundation": false,
-    "color": "purple"
-  },
-  {
-    "name": "Philosophy of Science",
-    "slug": "philosophy-of-science",
-    "synopsis": "How science works: models, proof, and uncertainty.",
-    "foundation": false,
-    "color": "blue"
+    "slug": "work-hustle",
+    "name": "Work & Hustle",
+    "subtitle": "Long Game",
+    "description": "Thinking clearly about success, effort, tradeoffs, and long-term value."
   }
 ]
