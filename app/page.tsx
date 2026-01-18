@@ -1,77 +1,94 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const CATEGORIES = [
   {
     title: "Epistemology",
+    slug: "epistemology",
     desc: "How we know what we know; evidence, belief, certainty, and doubt.",
   },
   {
     title: "Logic & Critical Thinking",
+    slug: "logic-critical-thinking",
     desc: "Reasoning clearly, spotting fallacies, assumptions, and weak arguments.",
   },
   {
     title: "Mind & Self",
+    slug: "mind-self",
     desc: "Biases, emotions, habits, identity, and how the mind shapes decisions.",
   },
   {
     title: "Literature & Wisdom",
+    slug: "literature-wisdom",
     desc: "Timeless stories and ideas that reveal human patterns and insight.",
   },
   {
     title: "Philosophy of History",
+    slug: "philosophy-of-history",
     desc: "How narratives shape our understanding of the past and progress.",
   },
   {
     title: "Worldview & Cultures",
+    slug: "worldview-cultures",
     desc: "Different cultural lenses and why intelligent people disagree.",
   },
   {
     title: "Applied Ethics",
+    slug: "applied-ethics",
     desc: "Moral reasoning through tradeoffs, consequences, and principles.",
   },
   {
     title: "Modern Questions",
+    slug: "modern-questions",
     desc: "Contemporary issues explored without telling users what to believe.",
   },
   {
     title: "Pop Culture & Media Literacy",
+    slug: "pop-culture-media-literacy",
     desc: "Persuasion, media narratives, algorithms, and attention economics.",
   },
   {
     title: "Street Lessons",
+    slug: "street-lessons",
     desc: "Practical wisdom about power, incentives, risk, and human behavior.",
   },
   {
     title: "Creative Thinking",
+    slug: "creative-thinking",
     desc: "Reframing problems, generating ideas, and breaking mental ruts.",
   },
   {
     title: "Work & Hustle",
+    slug: "work-hustle",
     desc: "Thinking clearly about success, effort, tradeoffs, and long-term value.",
   },
 ];
 
 export default function Home() {
+  const firstSlug = CATEGORIES[0]?.slug ?? "epistemology";
+
   return (
     <main className="ppShell">
       {/* Top Bar */}
       <header className="ppTop card">
         <div className="ppTopLeft">
           <div className="ppLogo">
-            <Image
-              src="/brand/uthynk-logo.png"
-              alt="UThynk"
-              width={160}
-              height={44}
-              priority
-            />
+            <Link href="/" aria-label="UThynk Home">
+              <Image
+                src="/brand/uthynk-logo.png"
+                alt="UThynk"
+                width={160}
+                height={44}
+                priority
+              />
+            </Link>
           </div>
 
           <nav className="ppNav">
-            <a href="#">Home</a>
-            <a href="#">Dashboard</a>
-            <a href="#">Store</a>
-            <a href="#">Profile</a>
+            <Link href="/">Home</Link>
+            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/store">Store</Link>
+            <Link href="/profile">Profile</Link>
           </nav>
         </div>
 
@@ -87,17 +104,27 @@ export default function Home() {
       <div className="ppBody">
         {/* Left sidebar */}
         <aside className="ppSide card">
-          {["Home", "Dashboard", "Store", "Profile", "Log Out"].map((t) => (
-            <a key={t} href="#">
-              {t}
-            </a>
-          ))}
+          <Link href="/">Home</Link>
+          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/store">Store</Link>
+          <Link href="/profile">Profile</Link>
+
+          {/* Placeholder until auth exists */}
+          <Link href="/" style={{ opacity: 0.8, marginTop: 8 }}>
+            Log Out
+          </Link>
         </aside>
 
         {/* Main center */}
         <section className="ppMain card">
           <div className="ppHero">
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginBottom: 10,
+              }}
+            >
               {/* small logo near Start Thinking (pixel clean) */}
               <Image
                 src="/brand/uthynk-logo.png"
@@ -116,16 +143,20 @@ export default function Home() {
           {/* Categories grid */}
           <div className="ppCats">
             {CATEGORIES.map((cat) => (
-              <div key={cat.title} className="tile" title={cat.desc}>
+              <Link
+                key={cat.slug}
+                href={`/category/${encodeURIComponent(cat.slug)}`}
+                className="tile"
+                title={cat.desc}
+                aria-label={`Open category: ${cat.title}`}
+              >
                 <div className="tileTop">
                   <div className="tileName">{cat.title}</div>
                   <div className="tileTag">Category</div>
                 </div>
 
-                {/* Hint line (subtle) */}
                 <div className="tileHint">{cat.desc}</div>
 
-                {/* Overlay (strong hover) */}
                 <div className="tileOverlay">
                   <div className="overlayText">{cat.desc}</div>
                   <div className="overlayCta">
@@ -133,12 +164,14 @@ export default function Home() {
                     <span>→</span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
           <div className="ppBegin">
-            <button className="btn btnPrimary">Begin!</button>
+            <Link className="btn btnPrimary" href={`/category/${firstSlug}`}>
+              Begin!
+            </Link>
           </div>
         </section>
 
@@ -163,11 +196,11 @@ export default function Home() {
 
           <div className="ppInfoTitle">Daily Trivia</div>
           <div className="ppInfoCard">
-            Socrates could have escaped his sentence but chose to accept the law and drink hemlock.
+            Socrates could have escaped his sentence but chose to accept the law
+            and drink hemlock.
           </div>
         </aside>
       </div>
     </main>
   );
 }
-      
