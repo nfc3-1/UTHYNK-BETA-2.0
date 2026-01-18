@@ -3,22 +3,22 @@
     "slug": "epistemology",
     "name": "Epistemology",
     "subtitle": "Foundation Category",
-    "description": "How we know what we know: evidence, belief, certainty, and doubt."
+    "description": "How we know what we know; evidence, belief, certainty, and doubt."
   },
   {
-    "slug": "logic-critical-thinking",
+    "slug": "logic-and-critical-thinking",
     "name": "Logic & Critical Thinking",
     "subtitle": "Core Skill",
     "description": "Reasoning clearly, spotting fallacies, assumptions, and weak arguments."
   },
   {
-    "slug": "mind-self",
+    "slug": "mind-and-self",
     "name": "Mind & Self",
     "subtitle": "Inner Systems",
     "description": "Biases, emotions, habits, identity, and how the mind shapes decisions."
   },
   {
-    "slug": "literature-wisdom",
+    "slug": "literature-and-wisdom",
     "name": "Literature & Wisdom",
     "subtitle": "Patterns & Insight",
     "description": "Timeless stories and ideas that reveal human patterns and insight."
@@ -30,7 +30,7 @@
     "description": "How narratives shape our understanding of the past and progress."
   },
   {
-    "slug": "worldview-cultures",
+    "slug": "worldview-and-cultures",
     "name": "Worldview & Cultures",
     "subtitle": "Perspective",
     "description": "Different cultural lenses and why intelligent people disagree."
@@ -39,7 +39,7 @@
     "slug": "applied-ethics",
     "name": "Applied Ethics",
     "subtitle": "Tradeoffs",
-    "description": "Moral reasoning through consequences, principles, and real-world dilemmas."
+    "description": "Moral reasoning through tradeoffs, consequences, and principles."
   },
   {
     "slug": "modern-questions",
@@ -48,7 +48,7 @@
     "description": "Contemporary issues explored without telling users what to believe."
   },
   {
-    "slug": "pop-culture-media-literacy",
+    "slug": "pop-culture-and-media-literacy",
     "name": "Pop Culture & Media Literacy",
     "subtitle": "Signals",
     "description": "Persuasion, media narratives, algorithms, and attention economics."
@@ -57,16 +57,16 @@
     "slug": "street-lessons",
     "name": "Street Lessons",
     "subtitle": "Practical Wisdom",
-    "description": "Power, incentives, risk, and human behavior in the real world."
+    "description": "Practical wisdom about power, incentives, risk, and human behavior."
   },
   {
     "slug": "creative-thinking",
     "name": "Creative Thinking",
     "subtitle": "Reframing",
-    "description": "Generating ideas, breaking mental ruts, and seeing new options."
+    "description": "Reframing problems, generating ideas, and breaking mental ruts."
   },
   {
-    "slug": "work-hustle",
+    "slug": "work-and-hustle",
     "name": "Work & Hustle",
     "subtitle": "Long Game",
     "description": "Thinking clearly about success, effort, tradeoffs, and long-term value."
