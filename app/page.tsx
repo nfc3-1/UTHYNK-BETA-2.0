@@ -9,17 +9,17 @@ const CATEGORIES = [
   },
   {
     title: "Logic & Critical Thinking",
-    slug: "logic-critical-thinking",
+    slug: "logic-and-critical-thinking",
     desc: "Reasoning clearly, spotting fallacies, assumptions, and weak arguments.",
   },
   {
     title: "Mind & Self",
-    slug: "mind-self",
+    slug: "mind-and-self",
     desc: "Biases, emotions, habits, identity, and how the mind shapes decisions.",
   },
   {
     title: "Literature & Wisdom",
-    slug: "literature-wisdom",
+    slug: "literature-and-wisdom",
     desc: "Timeless stories and ideas that reveal human patterns and insight.",
   },
   {
@@ -29,7 +29,7 @@ const CATEGORIES = [
   },
   {
     title: "Worldview & Cultures",
-    slug: "worldview-cultures",
+    slug: "worldview-and-cultures",
     desc: "Different cultural lenses and why intelligent people disagree.",
   },
   {
@@ -44,7 +44,7 @@ const CATEGORIES = [
   },
   {
     title: "Pop Culture & Media Literacy",
-    slug: "pop-culture-media-literacy",
+    slug: "pop-culture-and-media-literacy",
     desc: "Persuasion, media narratives, algorithms, and attention economics.",
   },
   {
@@ -59,7 +59,7 @@ const CATEGORIES = [
   },
   {
     title: "Work & Hustle",
-    slug: "work-hustle",
+    slug: "work-and-hustle",
     desc: "Thinking clearly about success, effort, tradeoffs, and long-term value.",
   },
 ];
@@ -169,7 +169,10 @@ export default function Home() {
           </div>
 
           <div className="ppBegin">
-            <Link className="btn btnPrimary" href={`/category/${firstSlug}`}>
+            <Link
+              className="btn btnPrimary"
+              href={`/category/${encodeURIComponent(firstSlug)}`}
+            >
               Begin!
             </Link>
           </div>
