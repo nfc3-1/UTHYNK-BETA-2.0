@@ -489,6 +489,7 @@ body{
   .ppSide{ flex-basis:auto; }
   .ppCats{ grid-template-columns: 1fr; }
   .ppCatsSmall{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
 }
 
 /* ==============================
