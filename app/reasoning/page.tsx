@@ -1,13 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
-
-const challenge = {
-  category: "Workplace Strategy",
-  prompt:
-    "A coworker takes credit for your work in front of leadership. What do you do next?",
-};
+import { useSearchParams } from "next/navigation";
+import { getChallengeById } from "@/lib/challenges";
 
 const initialFeedback = {
   score: 72,
@@ -16,18 +12,27 @@ const initialFeedback = {
   analysis:
     "A strong answer should protect your reputation without reacting emotionally or escalating too early.",
   contrarian:
-    "What if confronting them immediately makes you look insecure, while a calm evidence-based follow-up strengthens your position?",
+    "What if your first instinct creates a second problem while a calmer response builds leverage?",
   followUp:
-    "How would you make leadership aware of your contribution while preserving trust and leverage?",
-  strengths: ["strategic restraint", "long-term reputation awareness"],
-  weaknesses: ["needs incentive analysis", "avoid assuming intent too quickly"],
+    "What specific next step protects your position without overreacting?",
+  strengths: ["strategic restraint", "long-term awareness"],
+  weaknesses: ["needs incentive analysis", "clarify the next step"],
 };
 
 export default function ReasoningPage() {
+  const searchParams = useSearchParams();
+  const challenge = useMemo(
+    () => getChallengeById(searchParams.get("id")),
+    [searchParams]
+  );
+
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [feedback, setFeedback] = useState(initialFeedback);
+  const [feedback, setFeedback] = useState({
+    ...initialFeedback,
+    trait: challenge.trait,
+  });
 
   async function analyzeReasoning() {
     try {
@@ -52,7 +57,7 @@ export default function ReasoningPage() {
         return;
       }
 
-      setFeedback(data);
+      setFeedback({ ...data, trait: data.trait || challenge.trait });
     } catch {
       setError("Unable to analyze reasoning right now.");
     } finally {
@@ -77,7 +82,7 @@ export default function ReasoningPage() {
       <section className="reasoningGrid">
         <article className="card reasoningMain">
           <div className="panelLabel">
-            Daily Challenge · {challenge.category}
+            Daily Challenge · {challenge.category} · {challenge.difficulty}
           </div>
 
           <h1>{challenge.prompt}</h1>
@@ -96,7 +101,7 @@ export default function ReasoningPage() {
             className="textarea responseBox"
             value={response}
             onChange={(e) => setResponse(e.target.value)}
-            placeholder="Example: I would stay calm, document my contribution, and follow up privately with leadership after the meeting..."
+            placeholder="Write your first answer. Include your reasoning, tradeoffs, and next step."
           />
 
           {error ? <p className="panelNote">{error}</p> : null}
