@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
+import {
+  calculateNextStreak,
+  calculateReasoningScore,
+  getRankFromXp,
+} from "@/lib/progression";
 
 type ReasoningRequest = {
   challenge?: string;
@@ -31,6 +36,55 @@ const fallbackAnalysis = (response: string) => {
   };
 };
 
+async function updateUserProgress(userId: string, feedback: any) {
+  if (!hasSupabaseAdminEnv() || !supabaseAdmin) {
+    return null;
+  }
+
+  const { data: existing } = await supabaseAdmin
+    .from("user_profiles")
+    .select("xp, reasoning_score, streak, primary_trait, updated_at")
+    .eq("id", userId)
+    .single();
+
+  if (!existing) {
+    return null;
+  }
+
+  const nextXp = (existing.xp || 0) + (feedback.xp || 0);
+
+  const nextScore = calculateReasoningScore(
+    existing.reasoning_score || 70,
+    feedback.score || 70
+  );
+
+  const nextStreak = calculateNextStreak(
+    existing.updated_at || null,
+    existing.streak || 0
+  );
+
+  const nextRank = getRankFromXp(nextXp);
+
+  await supabaseAdmin
+    .from("user_profiles")
+    .update({
+      xp: nextXp,
+      reasoning_score: nextScore,
+      streak: nextStreak,
+      rank: nextRank,
+      primary_trait: feedback.trait || existing.primary_trait,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", userId);
+
+  return {
+    xp: nextXp,
+    reasoningScore: nextScore,
+    streak: nextStreak,
+    rank: nextRank,
+  };
+}
+
 async function persistSession({
   userId,
   challengeId,
@@ -47,7 +101,7 @@ async function persistSession({
   feedback: any;
 }) {
   if (!hasSupabaseAdminEnv() || !supabaseAdmin || !userId) {
-    return;
+    return null;
   }
 
   await supabaseAdmin.from("reasoning_sessions").insert({
@@ -63,6 +117,8 @@ async function persistSession({
     xp_awarded: feedback.xp,
     trait_detected: feedback.trait,
   });
+
+  return updateUserProgress(userId, feedback);
 }
 
 export async function POST(request: Request) {
@@ -84,7 +140,7 @@ export async function POST(request: Request) {
     if (!apiKey) {
       const fallback = fallbackAnalysis(response);
 
-      await persistSession({
+      const progression = await persistSession({
         userId: body.userId,
         challengeId: body.challengeId,
         category: body.category,
@@ -93,7 +149,11 @@ export async function POST(request: Request) {
         feedback: fallback,
       });
 
-      return NextResponse.json({ source: "fallback", ...fallback });
+      return NextResponse.json({
+        source: "fallback",
+        progression,
+        ...fallback,
+      });
     }
 
     const aiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -126,7 +186,7 @@ export async function POST(request: Request) {
     if (!aiResponse.ok) {
       const fallback = fallbackAnalysis(response);
 
-      await persistSession({
+      const progression = await persistSession({
         userId: body.userId,
         challengeId: body.challengeId,
         category: body.category,
@@ -135,7 +195,11 @@ export async function POST(request: Request) {
         feedback: fallback,
       });
 
-      return NextResponse.json({ source: "fallback", ...fallback });
+      return NextResponse.json({
+        source: "fallback",
+        progression,
+        ...fallback,
+      });
     }
 
     const data = await aiResponse.json();
@@ -144,7 +208,7 @@ export async function POST(request: Request) {
     if (!content) {
       const fallback = fallbackAnalysis(response);
 
-      await persistSession({
+      const progression = await persistSession({
         userId: body.userId,
         challengeId: body.challengeId,
         category: body.category,
@@ -153,12 +217,16 @@ export async function POST(request: Request) {
         feedback: fallback,
       });
 
-      return NextResponse.json({ source: "fallback", ...fallback });
+      return NextResponse.json({
+        source: "fallback",
+        progression,
+        ...fallback,
+      });
     }
 
     const parsed = JSON.parse(content);
 
-    await persistSession({
+    const progression = await persistSession({
       userId: body.userId,
       challengeId: body.challengeId,
       category: body.category,
@@ -167,7 +235,11 @@ export async function POST(request: Request) {
       feedback: parsed,
     });
 
-    return NextResponse.json({ source: "openai", ...parsed });
+    return NextResponse.json({
+      source: "openai",
+      progression,
+      ...parsed,
+    });
   } catch {
     return NextResponse.json(
       {
