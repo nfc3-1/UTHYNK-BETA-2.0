@@ -29,6 +29,7 @@ function ReasoningExperience() {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const [feedback, setFeedback] = useState({
     ...initialFeedback,
     trait: challenge.trait,
@@ -60,6 +61,7 @@ function ReasoningExperience() {
       }
 
       setFeedback({ ...data, trait: data.trait || challenge.trait });
+      setHasSubmitted(true);
     } catch {
       setError("Unable to analyze reasoning right now.");
     } finally {
@@ -77,8 +79,8 @@ function ReasoningExperience() {
         <h1>{challenge.prompt}</h1>
 
         <p className="panelNote">
-          The AI coach analyzes logic, assumptions, emotional reasoning, and
-          strategic thinking.
+          Think first. Then UThynk challenges your assumptions, identifies blind
+          spots, and gives you one sharper follow-up.
         </p>
 
         <label className="responseLabel" htmlFor="response">
@@ -99,10 +101,10 @@ function ReasoningExperience() {
           <button
             className="btn btnPrimary"
             type="button"
-            disabled={loading}
+            disabled={loading || !response.trim()}
             onClick={analyzeReasoning}
           >
-            {loading ? "Analyzing..." : "Analyze My Reasoning"}
+            {loading ? "Coach is Thinking..." : "Send to AI Coach"}
           </button>
 
           <Link className="btn" href="/">
@@ -112,22 +114,43 @@ function ReasoningExperience() {
       </article>
 
       <aside className="card coachPanel">
-        <div className="panelLabel">AI Reasoning Feedback</div>
+        <div className="panelLabel">AI Coach Chat</div>
 
         <div className="coachBlock">
-          <span>Analysis</span>
-          <p>{feedback.analysis}</p>
+          <span>UThynk Coach</span>
+          <p>
+            {hasSubmitted
+              ? "I reviewed your answer. Here is the most important feedback."
+              : "Answer the challenge and I will respond like a reasoning coach, not a generic chatbot."}
+          </p>
         </div>
 
-        <div className="coachBlock highlightBlock">
-          <span>Contrarian Challenge</span>
-          <p>{feedback.contrarian}</p>
-        </div>
+        {hasSubmitted ? (
+          <>
+            <div className="coachBlock">
+              <span>Your Reasoning Check</span>
+              <p>{feedback.analysis}</p>
+            </div>
 
-        <div className="coachBlock">
-          <span>Follow-Up</span>
-          <p>{feedback.followUp}</p>
-        </div>
+            <div className="coachBlock highlightBlock">
+              <span>Pushback</span>
+              <p>{feedback.contrarian}</p>
+            </div>
+
+            <div className="coachBlock">
+              <span>Next Question</span>
+              <p>{feedback.followUp}</p>
+            </div>
+          </>
+        ) : (
+          <div className="coachBlock highlightBlock">
+            <span>Coach Rule</span>
+            <p>
+              UThynk will not just agree with you. It will steelman the other
+              side, test assumptions, and make your thinking sharper.
+            </p>
+          </div>
+        )}
 
         <div className="feedbackGrid">
           <div>
@@ -146,9 +169,9 @@ function ReasoningExperience() {
         </div>
 
         <div className="rewardCard">
-          <strong>+{feedback.xp} XP</strong>
-          <span>Reasoning Score: {feedback.score}</span>
-          <span>Trait Increased: {feedback.trait}</span>
+          <strong>+{hasSubmitted ? feedback.xp : 0} XP</strong>
+          <span>Reasoning Score: {hasSubmitted ? feedback.score : "--"}</span>
+          <span>Trait Focus: {feedback.trait}</span>
         </div>
       </aside>
     </section>
