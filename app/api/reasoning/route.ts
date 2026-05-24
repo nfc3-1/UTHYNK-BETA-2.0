@@ -16,6 +16,36 @@ type ReasoningRequest = {
   userId?: string;
 };
 
+function buildAdaptiveSystemPrompt(profile?: any) {
+  const ageBand = profile?.age_band || '18_plus';
+  const style = profile?.onboarding_style || 'balanced';
+
+  let coachingTone =
+    'Use balanced Socratic reasoning with concise strategic feedback.';
+
+  if (ageBand === 'under_13') {
+    coachingTone =
+      'Use gentle guidance. Avoid aggressive contrarian pressure. Focus on curiosity and reasoning fundamentals.';
+  }
+
+  if (ageBand === '13_17') {
+    coachingTone =
+      'Use light Socratic challenge and constructive pushback without hostility.';
+  }
+
+  if (style === 'contrarian') {
+    coachingTone +=
+      ' Increase intellectual pushback and steelman opposing viewpoints strongly.';
+  }
+
+  if (style === 'supportive') {
+    coachingTone +=
+      ' Prioritize encouragement and confidence-building while still challenging assumptions carefully.';
+  }
+
+  return `You are UThynk, an adaptive AI reasoning coach. ${coachingTone} Be concise, rigorous, practical, and non-partisan. Use prior reasoning patterns when available. Identify recurring strengths and weaknesses. Do not give legal, medical, or financial advice. Return only valid JSON with keys: score number 0-100, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[].`;
+}
+
 const fallbackAnalysis = (response: string) => {
   const trimmed = response.trim();
   const wordCount = trimmed ? trimmed.split(/\s+/).length : 0;
@@ -37,6 +67,20 @@ const fallbackAnalysis = (response: string) => {
     weaknesses: ["limited incentive analysis", "needs a clearer next step"],
   };
 };
+
+async function loadProfile(userId?: string) {
+  if (!userId || !hasSupabaseAdminEnv() || !supabaseAdmin) {
+    return null;
+  }
+
+  const { data } = await supabaseAdmin
+    .from('user_profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  return data;
+}
 
 async function updateTrait(userId: string, traitName: string, reasoningScore: number) {
   if (!hasSupabaseAdminEnv() || !supabaseAdmin || !traitName) {
@@ -173,6 +217,7 @@ export async function POST(request: Request) {
     }
 
     const memory = await getReasoningMemory(body.userId);
+    const profile = await loadProfile(body.userId);
 
     const apiKey = process.env.OPENAI_API_KEY;
 
@@ -208,8 +253,7 @@ export async function POST(request: Request) {
         messages: [
           {
             role: "system",
-            content:
-              "You are UThynk, an adaptive AI reasoning coach. Be concise, rigorous, practical, and non-partisan. Use prior reasoning patterns when available. Identify recurring strengths and weaknesses. Do not give legal, medical, or financial advice. Return only valid JSON with keys: score number 0-100, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[].",
+            content: buildAdaptiveSystemPrompt(profile),
           },
           {
             role: "user",
@@ -217,6 +261,7 @@ export async function POST(request: Request) {
               challenge,
               userResponse: response,
               historicalMemory: memory,
+              onboardingProfile: profile,
             }),
           },
         ],
@@ -282,6 +327,7 @@ export async function POST(request: Request) {
       source: "openai",
       memory,
       progression,
+      onboardingProfile: profile,
       ...parsed,
     });
   } catch {
