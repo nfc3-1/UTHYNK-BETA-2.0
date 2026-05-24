@@ -1,0 +1,24 @@
+:root {
+  --uthynk-bg: #0a1020;
+  --uthynk-surface: #121b2f;
+  --uthynk-border: rgba(255,255,255,0.08);
+  --uthynk-text: #f5f7fb;
+  --uthynk-text-muted: #aab4d0;
+  --uthynk-primary: #5eead4;
+  --uthynk-secondary: #7c3aed;
+  --uthynk-warning: #fbbf24;
+
+  --uthynk-radius: 20px;
+  --uthynk-shadow: 0 20px 60px rgba(0,0,0,0.35);
+
+  --uthynk-spacing-xs: 4px;
+  --uthynk-spacing-sm: 8px;
+  --uthynk-spacing-md: 16px;
+  --uthynk-spacing-lg: 24px;
+  --uthynk-spacing-xl: 40px;
+
+  --uthynk-font-xl: 48px;
+  --uthynk-font-lg: 32px;
+  --uthynk-font-md: 18px;
+  --uthynk-font-sm: 14px;
+}
