@@ -4,6 +4,10 @@ create table if not exists public.user_profiles (
   id uuid primary key default uuid_generate_v4(),
   email text unique,
   username text,
+  age_band text default '18_plus',
+  onboarding_goal text,
+  onboarding_experience text,
+  onboarding_style text default 'balanced',
   reasoning_score integer default 70,
   xp integer default 0,
   streak integer default 0,
@@ -12,6 +16,18 @@ create table if not exists public.user_profiles (
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
+
+alter table public.user_profiles
+add column if not exists age_band text default '18_plus';
+
+alter table public.user_profiles
+add column if not exists onboarding_goal text;
+
+alter table public.user_profiles
+add column if not exists onboarding_experience text;
+
+alter table public.user_profiles
+add column if not exists onboarding_style text default 'balanced';
 
 create table if not exists public.reasoning_sessions (
   id uuid primary key default uuid_generate_v4(),
