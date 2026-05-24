@@ -9,7 +9,8 @@ create table if not exists public.user_profiles (
   streak integer default 0,
   rank text default 'Observer',
   primary_trait text default 'Analytical',
-  created_at timestamptz default now()
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
 );
 
 create table if not exists public.reasoning_sessions (
