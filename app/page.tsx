@@ -1,209 +1,130 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const CATEGORIES = [
+const DAILY_CHALLENGE =
+  "A coworker takes credit for your work in front of leadership. What do you do next?";
+
+const PROFILE_STATS = [
+  { label: "Rank", value: "Analyst" },
+  { label: "Streak", value: "1 day" },
+  { label: "Reasoning Score", value: "72" },
+  { label: "Primary Trait", value: "Tactical" },
+];
+
+const FOCUS_AREAS = [
   {
-    title: "Epistemology",
-    slug: "epistemology",
-    desc: "How we know what we know; evidence, belief, certainty, and doubt.",
+    title: "Workplace Strategy",
+    desc: "Practice power dynamics, reputation, timing, and calm execution.",
   },
   {
-    title: "Logic & Critical Thinking",
-    slug: "logic-and-critical-thinking",
-    desc: "Reasoning clearly, spotting fallacies, assumptions, and weak arguments.",
+    title: "Financial Judgment",
+    desc: "Evaluate risk, opportunity cost, incentives, and long-term value.",
   },
   {
-    title: "Mind & Self",
-    slug: "mind-and-self",
-    desc: "Biases, emotions, habits, identity, and how the mind shapes decisions.",
+    title: "Media Manipulation",
+    desc: "Spot framing, emotional triggers, weak evidence, and persuasion tactics.",
   },
   {
-    title: "Literature & Wisdom",
-    slug: "literature-and-wisdom",
-    desc: "Timeless stories and ideas that reveal human patterns and insight.",
-  },
-  {
-    title: "Philosophy of History",
-    slug: "philosophy-of-history",
-    desc: "How narratives shape our understanding of the past and progress.",
-  },
-  {
-    title: "Worldview & Cultures",
-    slug: "worldview-and-cultures",
-    desc: "Different cultural lenses and why intelligent people disagree.",
-  },
-  {
-    title: "Applied Ethics",
-    slug: "applied-ethics",
-    desc: "Moral reasoning through tradeoffs, consequences, and principles.",
-  },
-  {
-    title: "Modern Questions",
-    slug: "modern-questions",
-    desc: "Contemporary issues explored without telling users what to believe.",
-  },
-  {
-    title: "Pop Culture & Media Literacy",
-    slug: "pop-culture-and-media-literacy",
-    desc: "Persuasion, media narratives, algorithms, and attention economics.",
-  },
-  {
-    title: "Street Lessons",
-    slug: "street-lessons",
-    desc: "Practical wisdom about power, incentives, risk, and human behavior.",
-  },
-  {
-    title: "Creative Thinking",
-    slug: "creative-thinking",
-    desc: "Reframing problems, generating ideas, and breaking mental ruts.",
-  },
-  {
-    title: "Work & Hustle",
-    slug: "work-and-hustle",
-    desc: "Thinking clearly about success, effort, tradeoffs, and long-term value.",
+    title: "Logic Under Pressure",
+    desc: "Challenge assumptions, avoid bias, and reason clearly when it matters.",
   },
 ];
 
 export default function Home() {
-  const firstSlug = CATEGORIES[0]?.slug ?? "epistemology";
-
   return (
-    <main className="ppShell">
-      {/* Top Bar */}
-      <header className="ppTop card">
-        <div className="ppTopLeft">
-          <div className="ppLogo">
-            <Link href="/" aria-label="UThynk Home">
-              <Image
-                src="/brand/uthynk-logo.png"
-                alt="UThynk"
-                width={160}
-                height={44}
-                priority
-              />
-            </Link>
-          </div>
+    <main className="appShell">
+      <header className="appTop card">
+        <Link href="/" className="appBrand" aria-label="UThynk Home">
+          <Image
+            src="/brand/uthynk-logo.png"
+            alt="UThynk"
+            width={150}
+            height={44}
+            priority
+          />
+          <span>AI Reasoning Coach</span>
+        </Link>
 
-          <nav className="ppNav">
-            <Link href="/">Home</Link>
-            <Link href="/dashboard">Dashboard</Link>
-            <Link href="/store">Store</Link>
-            <Link href="/profile">Profile</Link>
-          </nav>
-        </div>
-
-        <div className="ppTopRight">
-          <div className="ppCoins">
-            <span>Coins</span>
-            <span style={{ color: "var(--uthynk-gold)" }}>350</span>
-          </div>
-        </div>
+        <nav className="appNav" aria-label="Main navigation">
+          <Link href="/reasoning">Daily Challenge</Link>
+          <Link href="/profile">Profile</Link>
+          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/store">Premium</Link>
+        </nav>
       </header>
 
-      {/* Body */}
-      <div className="ppBody">
-        {/* Left sidebar */}
-        <aside className="ppSide card">
-          <Link href="/">Home</Link>
-          <Link href="/dashboard">Dashboard</Link>
-          <Link href="/store">Store</Link>
-          <Link href="/profile">Profile</Link>
-
-          {/* Placeholder until auth exists */}
-          <Link href="/" style={{ opacity: 0.8, marginTop: 8 }}>
-            Log Out
-          </Link>
-        </aside>
-
-        {/* Main center */}
-        <section className="ppMain card">
-          <div className="ppHero">
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginBottom: 10,
-              }}
-            >
-              {/* small logo near Start Thinking (pixel clean) */}
-              <Image
-                src="/brand/uthynk-logo.png"
-                alt="UThynk"
-                width={140}
-                height={40}
-              />
-            </div>
-
-            <div className="ppHeroTitle">Start Thinking</div>
-            <div className="ppHeroSub">
-              Pick a category to start a quick challenge.
-            </div>
-          </div>
-
-          {/* Categories grid */}
-          <div className="ppCats">
-            {CATEGORIES.map((cat) => (
-              <Link
-                key={cat.slug}
-                href={`/category/${encodeURIComponent(cat.slug)}`}
-                className="tile"
-                title={cat.desc}
-                aria-label={`Open category: ${cat.title}`}
-              >
-                <div className="tileTop">
-                  <div className="tileName">{cat.title}</div>
-                  <div className="tileTag">Category</div>
-                </div>
-
-                <div className="tileHint">{cat.desc}</div>
-
-                <div className="tileOverlay">
-                  <div className="overlayText">{cat.desc}</div>
-                  <div className="overlayCta">
-                    <span>Open</span>
-                    <span>→</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <div className="ppBegin">
-            <Link
-              className="btn btnPrimary"
-              href={`/category/${encodeURIComponent(firstSlug)}`}
-            >
-              Begin!
+      <section className="appHero card">
+        <div className="heroCopy">
+          <div className="eyebrow">Train judgment. Challenge assumptions. Build discipline.</div>
+          <h1>Think sharper. Decide better.</h1>
+          <p>
+            UThynk is an AI-powered reasoning coach built to sharpen judgment,
+            expose blind spots, and train better decision-making through daily
+            real-world challenges.
+          </p>
+          <div className="heroActions">
+            <Link className="btn btnPrimary" href="/reasoning">
+              Start Thinking
+            </Link>
+            <Link className="btn" href="/reasoning">
+              Take Today’s Challenge
             </Link>
           </div>
-        </section>
+        </div>
 
-        {/* Right panel */}
-        <aside className="ppRight card">
-          <div className="ppInfoTitle">Did You Know?</div>
+        <div className="challengePreview">
+          <div className="panelLabel">Today’s Challenge</div>
+          <h2>{DAILY_CHALLENGE}</h2>
+          <p>
+            Answer once. Get challenged. Refine your thinking. Earn progress.
+          </p>
+          <Link className="btn btnPrimary" href="/reasoning">
+            Begin AI Reasoning Loop
+          </Link>
+        </div>
+      </section>
 
-          <div className="ppBullets">
-            {[
-              "The Halo Effect makes us overrate people we already like.",
-              "Ancient Greece had versions of jury duty—citizens voted with colored markers.",
-              'Mandela Effect: many remember “Berenstain Bears” as “Berenstein.”',
-            ].map((text) => (
-              <div key={text} className="ppBullet">
-                <div className="ppBulletDot">•</div>
-                <div>{text}</div>
+      <section className="appGrid">
+        <aside className="card statPanel">
+          <div className="panelLabel">Cognitive Profile</div>
+          <div className="statList">
+            {PROFILE_STATS.map((stat) => (
+              <div className="statItem" key={stat.label}>
+                <span>{stat.label}</span>
+                <strong>{stat.value}</strong>
               </div>
             ))}
           </div>
-
-          <div className="divider" />
-
-          <div className="ppInfoTitle">Daily Trivia</div>
-          <div className="ppInfoCard">
-            Socrates could have escaped his sentence but chose to accept the law
-            and drink hemlock.
+          <div className="progressBar" aria-label="Rank progress">
+            <div className="progressFill" />
           </div>
+          <p className="panelNote">
+            Progress now tracks reasoning growth, not passive lesson completion.
+          </p>
         </aside>
-      </div>
+
+        <section className="card methodPanel">
+          <div className="panelLabel">How UThynk Works</div>
+          <div className="methodSteps">
+            <div><strong>1</strong><span>Respond to a real-world scenario.</span></div>
+            <div><strong>2</strong><span>AI evaluates logic, assumptions, and blind spots.</span></div>
+            <div><strong>3</strong><span>You get a contrarian challenge and follow-up.</span></div>
+            <div><strong>4</strong><span>Your XP, rank, and cognitive profile update.</span></div>
+          </div>
+        </section>
+
+        <section className="card focusPanel">
+          <div className="panelLabel">Training Areas</div>
+          <div className="focusGrid">
+            {FOCUS_AREAS.map((area) => (
+              <Link href="/reasoning" className="focusCard" key={area.title}>
+                <strong>{area.title}</strong>
+                <span>{area.desc}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </section>
     </main>
   );
 }
