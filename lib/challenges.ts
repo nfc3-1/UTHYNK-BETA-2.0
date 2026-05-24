@@ -36,6 +36,15 @@ export const challenges: Challenge[] = [
     trait: "Bias Detection",
   },
   {
+    id: "logic-pressure",
+    category: "Logic Under Pressure",
+    title: "Fast Decision Trap",
+    prompt:
+      "You are pressured to make a fast decision with incomplete information. How do you slow down your thinking without missing the opportunity?",
+    difficulty: "starter",
+    trait: "Decision Discipline",
+  },
+  {
     id: "friend-conflict",
     category: "Social Intelligence",
     title: "Conflict Control",
