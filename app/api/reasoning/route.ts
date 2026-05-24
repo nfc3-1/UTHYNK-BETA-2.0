@@ -5,6 +5,7 @@ import {
   calculateReasoningScore,
   getRankFromXp,
 } from "@/lib/progression";
+import { evolveTraitScore } from "@/lib/traits";
 
 type ReasoningRequest = {
   challenge?: string;
@@ -36,6 +37,39 @@ const fallbackAnalysis = (response: string) => {
   };
 };
 
+async function updateTrait(userId: string, traitName: string, reasoningScore: number) {
+  if (!hasSupabaseAdminEnv() || !supabaseAdmin || !traitName) {
+    return null;
+  }
+
+  const { data: existing } = await supabaseAdmin
+    .from("cognitive_traits")
+    .select("id, trait_score")
+    .eq("user_id", userId)
+    .eq("trait_name", traitName)
+    .single();
+
+  const nextScore = evolveTraitScore(existing?.trait_score || 50, reasoningScore);
+
+  if (existing?.id) {
+    await supabaseAdmin
+      .from("cognitive_traits")
+      .update({
+        trait_score: nextScore,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", existing.id);
+  } else {
+    await supabaseAdmin.from("cognitive_traits").insert({
+      user_id: userId,
+      trait_name: traitName,
+      trait_score: nextScore,
+    });
+  }
+
+  return { traitName, traitScore: nextScore };
+}
+
 async function updateUserProgress(userId: string, feedback: any) {
   if (!hasSupabaseAdminEnv() || !supabaseAdmin) {
     return null;
@@ -64,6 +98,7 @@ async function updateUserProgress(userId: string, feedback: any) {
   );
 
   const nextRank = getRankFromXp(nextXp);
+  const evolvedTrait = await updateTrait(userId, feedback.trait, feedback.score || 70);
 
   await supabaseAdmin
     .from("user_profiles")
@@ -82,6 +117,7 @@ async function updateUserProgress(userId: string, feedback: any) {
     reasoningScore: nextScore,
     streak: nextStreak,
     rank: nextRank,
+    evolvedTrait,
   };
 }
 
