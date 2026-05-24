@@ -16,18 +16,22 @@ const FOCUS_AREAS = [
   {
     title: "Workplace Strategy",
     desc: "Practice power dynamics, reputation, timing, and calm execution.",
+    challengeId: "work-credit",
   },
   {
     title: "Financial Judgment",
     desc: "Evaluate risk, opportunity cost, incentives, and long-term value.",
+    challengeId: "luxury-car",
   },
   {
     title: "Media Manipulation",
     desc: "Spot framing, emotional triggers, weak evidence, and persuasion tactics.",
+    challengeId: "viral-headline",
   },
   {
     title: "Logic Under Pressure",
     desc: "Challenge assumptions, avoid bias, and reason clearly when it matters.",
+    challengeId: "logic-pressure",
   },
 ];
 
@@ -165,7 +169,7 @@ export default function Home() {
             <div className="focusGrid">
               {FOCUS_AREAS.map((area) => (
                 <Link
-                  href={`/reasoning?id=${challenge.id}`}
+                  href={`/reasoning?id=${area.challengeId}`}
                   className="focusCard"
                   key={area.title}
                 >
