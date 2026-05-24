@@ -1,69 +1,149 @@
 'use client';
+
+import Link from 'next/link';
 import { useState } from 'react';
 
-export default function Profile(){
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('16-18');
+const traits = [
+  { label: 'Strategic Thinking', value: 78 },
+  { label: 'Emotional Control', value: 72 },
+  { label: 'Bias Detection', value: 69 },
+  { label: 'Decision Discipline', value: 74 },
+];
+
+const recentChallenges = [
+  'Workplace reputation conflict',
+  'Luxury spending decision',
+  'Media manipulation analysis',
+];
+
+export default function Profile() {
   const [style, setStyle] = useState('balanced');
 
   return (
-    <div className="col">
-      <div className="card p-20">
-        <h1 className="heroTitle">Your Profile</h1>
-        <p className="heroSub">Adjust how UThynk challenges your thinking. You’re always in control.</p>
-      </div>
+    <main className="appShell">
+      <header className="appTop card">
+        <Link href="/" className="appBrandText">
+          UThynk
+        </Link>
 
-      <div className="card p-20">
-        <div style={{fontWeight:900}}>Basic info</div>
-        <div className="mt-16" style={{display:'grid', gap:10}}>
-          <label className="smallMuted">Display name (optional)</label>
-          <input className="input" value={name} onChange={(e)=>setName(e.target.value)} placeholder="e.g., Nick" />
+        <nav className="appNav">
+          <Link href="/">Home</Link>
+          <Link href="/reasoning">Challenge</Link>
+          <Link href="/dashboard">Dashboard</Link>
+        </nav>
+      </header>
 
-          <label className="smallMuted mt-12">Age range (used only to adjust tone)</label>
-          <select className="input" value={age} onChange={(e)=>setAge(e.target.value)}>
-            <option value="under-13">Under 13 (restricted)</option>
-            <option value="13-15">13–15</option>
-            <option value="16-18">16–18</option>
-            <option value="18+">18+</option>
-          </select>
+      <section className="appHero card" style={{ marginTop: 18 }}>
+        <div className="heroCopy">
+          <div className="eyebrow">Cognitive Profile</div>
+          <h1>Track how you think.</h1>
+          <p>
+            UThynk measures reasoning growth, challenge consistency, and
+            decision-making patterns over time.
+          </p>
         </div>
-      </div>
 
-      <div className="card p-20">
-        <div style={{fontWeight:900}}>Thinking style</div>
-        <div className="smallMuted mt-12">How should UThynk challenge your thinking?</div>
+        <div className="challengePreview">
+          <div className="panelLabel">Current Identity</div>
+          <h2>Analyst</h2>
+          <p>
+            Your strongest emerging trait is Strategic Thinking.
+          </p>
+          <div className="rewardCard">
+            <strong>1,240 XP</strong>
+            <span>Current streak: 4 days</span>
+          </div>
+        </div>
+      </section>
 
-        <div className="mt-16" style={{display:'grid', gap:10}}>
-          <label className="card p-16" style={{cursor:'pointer', borderColor: style==='gentle' ? 'rgba(240,199,94,0.45)' : 'rgba(255,255,255,0.15)'}}>
-            <input type="radio" name="style" checked={style==='gentle'} onChange={()=>setStyle('gentle')} />
-            <b style={{marginLeft:8}}>Gentle Reflection</b>
-            <div className="smallMuted mt-12">Explore ideas with guidance and clarity.</div>
+      <section className="appGrid">
+        <aside className="card statPanel">
+          <div className="panelLabel">Reasoning Metrics</div>
+
+          <div className="statList">
+            <div className="statItem">
+              <span>Reasoning Score</span>
+              <strong>74</strong>
+            </div>
+
+            <div className="statItem">
+              <span>Challenges Completed</span>
+              <strong>31</strong>
+            </div>
+
+            <div className="statItem">
+              <span>Strongest Category</span>
+              <strong>Strategy</strong>
+            </div>
+
+            <div className="statItem">
+              <span>Growth Trend</span>
+              <strong>+12%</strong>
+            </div>
+          </div>
+        </aside>
+
+        <section className="card methodPanel">
+          <div className="panelLabel">Reasoning Traits</div>
+
+          <div className="methodSteps">
+            {traits.map((trait) => (
+              <div key={trait.label}>
+                <strong>{trait.value}</strong>
+                <span>{trait.label}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="card focusPanel">
+          <div className="panelLabel">Challenge History</div>
+
+          <div className="focusGrid" style={{ gridTemplateColumns: '1fr' }}>
+            {recentChallenges.map((challenge) => (
+              <div className="focusCard" key={challenge}>
+                <strong>{challenge}</strong>
+                <span>
+                  AI reasoning analysis stored for future progression tracking.
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+      </section>
+
+      <section className="card methodPanel" style={{ marginTop: 18 }}>
+        <div className="panelLabel">Challenge Intensity</div>
+
+        <div className="methodSteps">
+          <label>
+            <input
+              type="radio"
+              checked={style === 'gentle'}
+              onChange={() => setStyle('gentle')}
+            />{' '}
+            Gentle Reflection
           </label>
 
-          <label className="card p-16" style={{cursor:'pointer', borderColor: style==='balanced' ? 'rgba(240,199,94,0.45)' : 'rgba(255,255,255,0.15)'}}>
-            <input type="radio" name="style" checked={style==='balanced'} onChange={()=>setStyle('balanced')} />
-            <b style={{marginLeft:8}}>Balanced Challenge (default)</b>
-            <div className="smallMuted mt-12">Test ideas while staying constructive.</div>
+          <label>
+            <input
+              type="radio"
+              checked={style === 'balanced'}
+              onChange={() => setStyle('balanced')}
+            />{' '}
+            Balanced Challenge
           </label>
 
-          <label className="card p-16" style={{cursor:'pointer', borderColor: style==='strong' ? 'rgba(240,199,94,0.45)' : 'rgba(255,255,255,0.15)'}}>
-            <input type="radio" name="style" checked={style==='strong'} onChange={()=>setStyle('strong')} />
-            <b style={{marginLeft:8}}>Strong Challenge</b>
-            <div className="smallMuted mt-12">Stress-test ideas from multiple angles.</div>
+          <label>
+            <input
+              type="radio"
+              checked={style === 'strong'}
+              onChange={() => setStyle('strong')}
+            />{' '}
+            Strong Challenge
           </label>
         </div>
-
-        <div className="mt-16 smallMuted">
-          On sensitive topics (mental health, self-harm, trauma, medical or legal issues), UThynk always prioritizes safety and support.
-        </div>
-      </div>
-
-      <div className="card p-20">
-        <div style={{fontWeight:900}}>Privacy</div>
-        <div className="smallMuted mt-12">
-          Your thinking sessions are private. UThynk does not rank, score, or label your beliefs.
-        </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
