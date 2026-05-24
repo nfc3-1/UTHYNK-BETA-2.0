@@ -1,7 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+  getAdaptiveChallenges,
+  getCoachingIntensity,
+} from "@/lib/adaptive";
 
 const STORAGE_KEY = "uthynk-profile";
 
@@ -31,6 +35,16 @@ export default function DashboardPage() {
 
   const profile = data?.profile;
   const sessions = data?.sessions || [];
+
+  const recommendations = useMemo(
+    () => getAdaptiveChallenges(profile),
+    [profile]
+  );
+
+  const coachingIntensity = getCoachingIntensity(
+    profile?.streak,
+    profile?.reasoning_score
+  );
 
   return (
     <main className="appShell">
@@ -68,6 +82,7 @@ export default function DashboardPage() {
             <strong>{profile?.xp || 0} XP</strong>
             <span>Streak: {profile?.streak || 0} days</span>
             <span>Reasoning Score: {profile?.reasoning_score || 70}</span>
+            <span>Coaching Mode: {coachingIntensity}</span>
           </div>
         </div>
       </section>
@@ -124,29 +139,21 @@ export default function DashboardPage() {
         </section>
 
         <section className="card focusPanel">
-          <div className="panelLabel">Behavioral Direction</div>
+          <div className="panelLabel">Adaptive Recommendations</div>
 
           <div className="focusGrid" style={{ gridTemplateColumns: "1fr" }}>
-            <div className="focusCard">
-              <strong>Strategic Growth</strong>
-              <span>
-                Your reasoning trend is improving through repetition and contrarian challenge exposure.
-              </span>
-            </div>
-
-            <div className="focusCard">
-              <strong>Blind Spot Reduction</strong>
-              <span>
-                UThynk tracks recurring weaknesses to improve long-term judgment quality.
-              </span>
-            </div>
-
-            <div className="focusCard">
-              <strong>Cognitive Identity</strong>
-              <span>
-                Your progression is building a persistent reasoning profile over time.
-              </span>
-            </div>
+            {recommendations.map((challenge) => (
+              <Link
+                key={challenge.id}
+                href={`/reasoning?id=${challenge.id}`}
+                className="focusCard"
+              >
+                <strong>{challenge.title}</strong>
+                <span>
+                  {challenge.category} · {challenge.difficulty}
+                </span>
+              </Link>
+            ))}
           </div>
         </section>
       </section>
