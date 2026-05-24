@@ -3,6 +3,13 @@
 import { useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'uthynk-profile';
+const COOKIE_KEY = 'uthynk-profile';
+
+function setProfileCookie(profile: unknown) {
+  document.cookie = `${COOKIE_KEY}=${encodeURIComponent(
+    JSON.stringify(profile)
+  )}; path=/; max-age=2592000; SameSite=Lax`;
+}
 
 export default function AuthGate() {
   const [email, setEmail] = useState('');
@@ -12,7 +19,9 @@ export default function AuthGate() {
 
   useEffect(() => {
     const existing = localStorage.getItem(STORAGE_KEY);
+
     if (existing) {
+      setProfileCookie(JSON.parse(existing));
       setComplete(true);
     }
   }, []);
@@ -33,6 +42,7 @@ export default function AuthGate() {
 
       if (data.profile) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data.profile));
+        setProfileCookie(data.profile);
         setComplete(true);
       }
     } finally {
