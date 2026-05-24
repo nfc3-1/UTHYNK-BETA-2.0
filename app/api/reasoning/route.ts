@@ -6,6 +6,7 @@ import {
   getRankFromXp,
 } from "@/lib/progression";
 import { evolveTraitScore } from "@/lib/traits";
+import { getReasoningMemory } from "@/lib/memory";
 
 type ReasoningRequest = {
   challenge?: string;
@@ -171,6 +172,8 @@ export async function POST(request: Request) {
       );
     }
 
+    const memory = await getReasoningMemory(body.userId);
+
     const apiKey = process.env.OPENAI_API_KEY;
 
     if (!apiKey) {
@@ -187,6 +190,7 @@ export async function POST(request: Request) {
 
       return NextResponse.json({
         source: "fallback",
+        memory,
         progression,
         ...fallback,
       });
@@ -205,13 +209,14 @@ export async function POST(request: Request) {
           {
             role: "system",
             content:
-              "You are UThynk, an AI reasoning coach. Be concise, rigorous, practical, and non-partisan. Do not give legal, medical, or financial advice. Analyze reasoning quality, challenge assumptions, and ask one sharper follow-up. Return only valid JSON with keys: score number 0-100, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[].",
+              "You are UThynk, an adaptive AI reasoning coach. Be concise, rigorous, practical, and non-partisan. Use prior reasoning patterns when available. Identify recurring strengths and weaknesses. Do not give legal, medical, or financial advice. Return only valid JSON with keys: score number 0-100, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[].",
           },
           {
             role: "user",
             content: JSON.stringify({
               challenge,
               userResponse: response,
+              historicalMemory: memory,
             }),
           },
         ],
@@ -233,6 +238,7 @@ export async function POST(request: Request) {
 
       return NextResponse.json({
         source: "fallback",
+        memory,
         progression,
         ...fallback,
       });
@@ -255,6 +261,7 @@ export async function POST(request: Request) {
 
       return NextResponse.json({
         source: "fallback",
+        memory,
         progression,
         ...fallback,
       });
@@ -273,6 +280,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       source: "openai",
+      memory,
       progression,
       ...parsed,
     });
