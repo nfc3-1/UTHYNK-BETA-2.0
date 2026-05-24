@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
+import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
 
 type ReasoningRequest = {
   challenge?: string;
+  challengeId?: string;
+  category?: string;
   response?: string;
+  userId?: string;
 };
 
 const fallbackAnalysis = (response: string) => {
@@ -27,9 +31,44 @@ const fallbackAnalysis = (response: string) => {
   };
 };
 
+async function persistSession({
+  userId,
+  challengeId,
+  category,
+  challenge,
+  response,
+  feedback,
+}: {
+  userId?: string;
+  challengeId?: string;
+  category?: string;
+  challenge: string;
+  response: string;
+  feedback: any;
+}) {
+  if (!hasSupabaseAdminEnv() || !supabaseAdmin || !userId) {
+    return;
+  }
+
+  await supabaseAdmin.from("reasoning_sessions").insert({
+    user_id: userId,
+    challenge_id: challengeId || "daily",
+    challenge_category: category || "General",
+    prompt: challenge,
+    response,
+    ai_analysis: feedback.analysis,
+    contrarian_response: feedback.contrarian,
+    follow_up: feedback.followUp,
+    reasoning_score: feedback.score,
+    xp_awarded: feedback.xp,
+    trait_detected: feedback.trait,
+  });
+}
+
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ReasoningRequest;
+
     const challenge = body.challenge?.trim() || "Daily reasoning challenge";
     const response = body.response?.trim() || "";
 
@@ -43,7 +82,18 @@ export async function POST(request: Request) {
     const apiKey = process.env.OPENAI_API_KEY;
 
     if (!apiKey) {
-      return NextResponse.json({ source: "fallback", ...fallbackAnalysis(response) });
+      const fallback = fallbackAnalysis(response);
+
+      await persistSession({
+        userId: body.userId,
+        challengeId: body.challengeId,
+        category: body.category,
+        challenge,
+        response,
+        feedback: fallback,
+      });
+
+      return NextResponse.json({ source: "fallback", ...fallback });
     }
 
     const aiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -63,7 +113,10 @@ export async function POST(request: Request) {
           },
           {
             role: "user",
-            content: JSON.stringify({ challenge, userResponse: response }),
+            content: JSON.stringify({
+              challenge,
+              userResponse: response,
+            }),
           },
         ],
         response_format: { type: "json_object" },
@@ -71,20 +124,55 @@ export async function POST(request: Request) {
     });
 
     if (!aiResponse.ok) {
-      return NextResponse.json({ source: "fallback", ...fallbackAnalysis(response) });
+      const fallback = fallbackAnalysis(response);
+
+      await persistSession({
+        userId: body.userId,
+        challengeId: body.challengeId,
+        category: body.category,
+        challenge,
+        response,
+        feedback: fallback,
+      });
+
+      return NextResponse.json({ source: "fallback", ...fallback });
     }
 
     const data = await aiResponse.json();
     const content = data?.choices?.[0]?.message?.content;
 
     if (!content) {
-      return NextResponse.json({ source: "fallback", ...fallbackAnalysis(response) });
+      const fallback = fallbackAnalysis(response);
+
+      await persistSession({
+        userId: body.userId,
+        challengeId: body.challengeId,
+        category: body.category,
+        challenge,
+        response,
+        feedback: fallback,
+      });
+
+      return NextResponse.json({ source: "fallback", ...fallback });
     }
 
-    return NextResponse.json({ source: "openai", ...JSON.parse(content) });
+    const parsed = JSON.parse(content);
+
+    await persistSession({
+      userId: body.userId,
+      challengeId: body.challengeId,
+      category: body.category,
+      challenge,
+      response,
+      feedback: parsed,
+    });
+
+    return NextResponse.json({ source: "openai", ...parsed });
   } catch {
     return NextResponse.json(
-      { error: "Reasoning analysis failed. Try again with a clearer response." },
+      {
+        error: "Reasoning analysis failed. Try again with a clearer response.",
+      },
       { status: 500 }
     );
   }
