@@ -7,31 +7,71 @@ const challenge = getDailyChallenge();
 
 const PROFILE_STATS = [
   { label: "Rank", value: "Analyst" },
-  { label: "Streak", value: "1 day" },
-  { label: "Reasoning Score", value: "72" },
+  { label: "Streak", value: "4 day streak" },
+  { label: "Reasoning Score", value: "74" },
   { label: "Primary Trait", value: challenge.trait },
 ];
 
 const FOCUS_AREAS = [
   {
     title: "Workplace Strategy",
-    desc: "Practice power dynamics, reputation, timing, and calm execution.",
+    desc: "Power dynamics, timing, negotiation, and reputation control.",
     challengeId: "work-credit",
   },
   {
     title: "Financial Judgment",
-    desc: "Evaluate risk, opportunity cost, incentives, and long-term value.",
+    desc: "Risk, opportunity cost, incentives, and long-term thinking.",
     challengeId: "luxury-car",
   },
   {
     title: "Media Manipulation",
-    desc: "Spot framing, emotional triggers, weak evidence, and persuasion tactics.",
+    desc: "Framing, emotional triggers, weak evidence, and persuasion tactics.",
     challengeId: "viral-headline",
   },
   {
     title: "Logic Under Pressure",
-    desc: "Challenge assumptions, avoid bias, and reason clearly when it matters.",
+    desc: "Reason clearly when speed, stress, or uncertainty distort judgment.",
     challengeId: "logic-pressure",
+  },
+  {
+    title: "Social Intelligence",
+    desc: "Status, emotional control, persuasion, and interpersonal dynamics.",
+    challengeId: "friend-conflict",
+  },
+  {
+    title: "Strategic Thinking",
+    desc: "Tradeoffs, second-order effects, leverage, and positioning.",
+    challengeId: "business-risk",
+  },
+  {
+    title: "Philosophy of History",
+    desc: "Competing narratives, historical interpretation, and bias detection.",
+    challengeId: "history-narrative",
+  },
+  {
+    title: "Worldview & Cultures",
+    desc: "Understand intelligent disagreement across cultures and beliefs.",
+    challengeId: "worldview-disagreement",
+  },
+  {
+    title: "Applied Ethics",
+    desc: "Reason through difficult moral tradeoffs without emotional shortcuts.",
+    challengeId: "applied-ethics-tradeoff",
+  },
+  {
+    title: "Creative Thinking",
+    desc: "Break mental ruts, reframe problems, and generate new angles.",
+    challengeId: "creative-reframe",
+  },
+  {
+    title: "Street Lessons",
+    desc: "Read incentives, manipulation, risk, and real-world human behavior.",
+    challengeId: "street-incentives",
+  },
+  {
+    title: "Literature & Wisdom",
+    desc: "Analyze timeless human patterns through stories and character choices.",
+    challengeId: "literature-character",
   },
 ];
 
@@ -50,15 +90,15 @@ export default function Home() {
               height={44}
               priority
             />
-            <span>AI Reasoning Coach</span>
+            <span>Adaptive AI Reasoning Coach</span>
           </Link>
 
           <nav className="appNav" aria-label="Main navigation">
             <Link href={`/reasoning?id=${challenge.id}`}>
-              Daily Challenge
+              Continue Session
             </Link>
-            <Link href="/profile">Profile</Link>
-            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/profile">Identity</Link>
+            <Link href="/dashboard">Progress</Link>
             <Link href="/store">Premium</Link>
           </nav>
         </header>
@@ -66,15 +106,14 @@ export default function Home() {
         <section className="appHero card">
           <div className="heroCopy">
             <div className="eyebrow">
-              Train judgment. Challenge assumptions. Build discipline.
+              Adaptive cognition • Recursive reasoning • Live coaching
             </div>
 
-            <h1>Think sharper. Decide better.</h1>
+            <h1>Train your thinking like a skill.</h1>
 
             <p>
-              UThynk is an AI-powered reasoning coach built to sharpen judgment,
-              expose blind spots, and train better decision-making through daily
-              real-world challenges.
+              UThynk is an adaptive reasoning coach that remembers your thinking patterns,
+              escalates challenge difficulty, tracks cognitive growth, and pushes back on weak assumptions.
             </p>
 
             <div className="heroActions">
@@ -82,36 +121,44 @@ export default function Home() {
                 className="btn btnPrimary"
                 href={`/reasoning?id=${challenge.id}`}
               >
-                Start Thinking
+                Continue Cognitive Session
               </Link>
 
               <Link className="btn" href={`/reasoning?id=${challenge.id}`}>
-                Take Today’s Challenge
+                Resume AI Conversation
               </Link>
             </div>
           </div>
 
           <div className="challengePreview">
-            <div className="panelLabel">Today’s Challenge</div>
+            <div className="panelLabel">Adaptive Coach Session</div>
 
             <h2>{challenge.prompt}</h2>
 
             <p>
-              Answer once. Get challenged. Refine your thinking. Earn progress.
+              The AI coach remembers previous reasoning patterns and adjusts challenge intensity over time.
+            </p>
+
+            <div className="progressBar" aria-label="Cognitive progression">
+              <div className="progressFill" style={{ width: '74%' }} />
+            </div>
+
+            <p className="panelNote">
+              Current cognitive pressure: Moderate · Trait evolution active
             </p>
 
             <Link
               className="btn btnPrimary"
               href={`/reasoning?id=${challenge.id}`}
             >
-              Begin AI Reasoning Loop
+              Begin Adaptive Loop
             </Link>
           </div>
         </section>
 
         <section className="appGrid">
           <aside className="card statPanel">
-            <div className="panelLabel">Cognitive Profile</div>
+            <div className="panelLabel">Evolving Identity</div>
 
             <div className="statList">
               {PROFILE_STATS.map((stat) => (
@@ -123,48 +170,43 @@ export default function Home() {
             </div>
 
             <div className="progressBar" aria-label="Rank progress">
-              <div className="progressFill" />
+              <div className="progressFill" style={{ width: '74%' }} />
             </div>
 
             <p className="panelNote">
-              Progress now tracks reasoning growth, not passive lesson completion.
+              Your reasoning identity evolves continuously based on decision quality,
+              emotional control, and strategic depth.
             </p>
           </aside>
 
           <section className="card methodPanel">
-            <div className="panelLabel">How UThynk Works</div>
+            <div className="panelLabel">Adaptive Coach System</div>
 
             <div className="methodSteps">
               <div>
                 <strong>1</strong>
-                <span>Respond to a real-world scenario.</span>
+                <span>Respond by text or voice.</span>
               </div>
 
               <div>
                 <strong>2</strong>
-                <span>
-                  AI evaluates logic, assumptions, and blind spots.
-                </span>
+                <span>The AI coach critiques assumptions and reasoning patterns.</span>
               </div>
 
               <div>
                 <strong>3</strong>
-                <span>
-                  You get a contrarian challenge and follow-up.
-                </span>
+                <span>Difficulty escalates dynamically based on your performance.</span>
               </div>
 
               <div>
                 <strong>4</strong>
-                <span>
-                  Your XP, rank, and cognitive profile update.
-                </span>
+                <span>Your cognitive profile evolves over time.</span>
               </div>
             </div>
           </section>
 
           <section className="card focusPanel">
-            <div className="panelLabel">Training Areas</div>
+            <div className="panelLabel">Cognitive Training Areas</div>
 
             <div className="focusGrid">
               {FOCUS_AREAS.map((area) => (
