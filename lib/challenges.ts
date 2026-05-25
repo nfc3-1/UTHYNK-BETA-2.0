@@ -62,6 +62,60 @@ export const challenges: Challenge[] = [
     difficulty: "intermediate",
     trait: "Strategic Judgment",
   },
+  {
+    id: "history-narrative",
+    category: "Philosophy of History",
+    title: "Competing Narratives",
+    prompt:
+      "Two people explain the same historical event in completely different ways. How do you evaluate which narrative is stronger?",
+    difficulty: "intermediate",
+    trait: "Historical Reasoning",
+  },
+  {
+    id: "worldview-disagreement",
+    category: "Worldview & Cultures",
+    title: "Intelligent Disagreement",
+    prompt:
+      "Someone from a different culture reaches a conclusion you strongly disagree with. How do you test whether your own assumptions are limiting your judgment?",
+    difficulty: "intermediate",
+    trait: "Perspective Taking",
+  },
+  {
+    id: "applied-ethics-tradeoff",
+    category: "Applied Ethics",
+    title: "Hard Tradeoff",
+    prompt:
+      "A decision helps one group but hurts another. How do you reason through the tradeoff without relying only on emotion?",
+    difficulty: "intermediate",
+    trait: "Moral Reasoning",
+  },
+  {
+    id: "creative-reframe",
+    category: "Creative Thinking",
+    title: "Problem Reframe",
+    prompt:
+      "You are stuck on a problem and every obvious solution has failed. How do you reframe the problem to find a better path?",
+    difficulty: "starter",
+    trait: "Reframing",
+  },
+  {
+    id: "street-incentives",
+    category: "Street Lessons",
+    title: "Hidden Incentives",
+    prompt:
+      "Someone gives you advice that sounds helpful but may benefit them more than you. How do you evaluate their incentives?",
+    difficulty: "starter",
+    trait: "Incentive Awareness",
+  },
+  {
+    id: "literature-character",
+    category: "Literature & Wisdom",
+    title: "Character Judgment",
+    prompt:
+      "A character makes a destructive choice while believing they are right. How do you analyze the flaw in their reasoning?",
+    difficulty: "starter",
+    trait: "Wisdom Pattern Recognition",
+  },
 ];
 
 export function getDailyChallenge(date = new Date()): Challenge {
