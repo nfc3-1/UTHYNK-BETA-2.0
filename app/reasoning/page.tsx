@@ -46,9 +46,18 @@ function ReasoningExperience() {
   ]);
 
   const recognitionRef = useRef<any>(null);
+  const conversationIdRef = useRef<string>("");
+  const sessionIdRef = useRef<string>("");
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
+    conversationIdRef.current =
+      conversationIdRef.current ||
+      localStorage.getItem("uthynk-conversation-id") ||
+      crypto.randomUUID();
+    sessionIdRef.current = crypto.randomUUID();
+    localStorage.setItem("uthynk-conversation-id", conversationIdRef.current);
 
     const SpeechRecognition =
       (window as any).SpeechRecognition ||
@@ -111,6 +120,8 @@ function ReasoningExperience() {
           category: challenge.category,
           challenge: challenge.prompt,
           response,
+          conversationId: conversationIdRef.current,
+          sessionId: sessionIdRef.current,
           userId: profile?.id,
           stream: true,
         }),
@@ -157,12 +168,16 @@ function ReasoningExperience() {
 
           const payload = JSON.parse(eventData);
 
-          if (eventType === "delta") {
-            setStreamingText((prev) => prev + payload.delta);
+          if (eventType === "token") {
+            setStreamingText((prev) => prev + payload.token);
           }
 
           if (eventType === "final") {
             data = payload;
+          }
+
+          if (eventType === "error") {
+            setError(payload.error || "Reasoning stream failed.");
           }
         }
       }
@@ -207,7 +222,7 @@ function ReasoningExperience() {
     <section className="reasoningGrid">
       <article className="card reasoningMain">
         <div className="panelLabel">
-          Adaptive Cognitive Session Â· {challenge.category}
+          Adaptive Cognitive Session - {challenge.category}
         </div>
 
         <h1>{challenge.prompt}</h1>
