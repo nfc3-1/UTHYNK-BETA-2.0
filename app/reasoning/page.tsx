@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { getChallengeById } from "@/lib/challenges";
+import { challenges, getChallengeById, type Challenge } from "@/lib/challenges";
 
 const initialFeedback = {
   score: 72,
@@ -21,10 +21,25 @@ const initialFeedback = {
 
 function ReasoningExperience() {
   const searchParams = useSearchParams();
-  const challenge = useMemo(
-    () => getChallengeById(searchParams.get("id")),
-    [searchParams]
-  );
+  const initialChallenge = useMemo(() => {
+    const requestedId = searchParams.get("id");
+
+    if (requestedId) {
+      return getChallengeById(requestedId);
+    }
+
+    if (typeof window === "undefined") {
+      return getChallengeById();
+    }
+
+    const seenIds = JSON.parse(
+      localStorage.getItem("uthynk-seen-challenge-ids") || "[]"
+    ) as string[];
+    const nextUnseen = challenges.find((item) => !seenIds.includes(item.id));
+
+    return nextUnseen || challenges[seenIds.length % challenges.length];
+  }, [searchParams]);
+  const [challenge, setChallenge] = useState<Challenge>(initialChallenge);
 
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
@@ -58,6 +73,17 @@ function ReasoningExperience() {
       crypto.randomUUID();
     sessionIdRef.current = crypto.randomUUID();
     localStorage.setItem("uthynk-conversation-id", conversationIdRef.current);
+    localStorage.setItem(
+      "uthynk-seen-challenge-ids",
+      JSON.stringify(
+        Array.from(
+          new Set([
+            ...JSON.parse(localStorage.getItem("uthynk-seen-challenge-ids") || "[]"),
+            challenge.id,
+          ])
+        )
+      )
+    );
 
     const SpeechRecognition =
       (window as any).SpeechRecognition ||
@@ -79,7 +105,42 @@ function ReasoningExperience() {
     };
 
     recognitionRef.current = recognition;
-  }, []);
+  }, [challenge.id]);
+
+  function selectNextChallenge(currentChallenge: Challenge, score: number) {
+    const preferredDifficulty =
+      score >= 85 ? "advanced" : score >= 70 ? "intermediate" : "starter";
+    const seenIds =
+      typeof window === "undefined"
+        ? []
+        : (JSON.parse(localStorage.getItem("uthynk-seen-challenge-ids") || "[]") as string[]);
+    const categoryPool = challenges.filter(
+      (item) =>
+        item.id !== currentChallenge.id &&
+        item.category === currentChallenge.category &&
+        !seenIds.includes(item.id)
+    );
+    const difficultyPool = challenges.filter(
+      (item) =>
+        item.id !== currentChallenge.id &&
+        item.difficulty === preferredDifficulty &&
+        !seenIds.includes(item.id)
+    );
+    const freshPool = challenges.filter(
+      (item) => item.id !== currentChallenge.id && !seenIds.includes(item.id)
+    );
+    const fallbackPool = challenges.filter((item) => item.id !== currentChallenge.id);
+    const pool = categoryPool.length
+      ? categoryPool
+      : difficultyPool.length
+        ? difficultyPool
+        : freshPool.length
+          ? freshPool
+          : fallbackPool;
+    const seed = Date.now() + score + currentChallenge.id.length;
+
+    return pool[seed % pool.length] || currentChallenge;
+  }
 
   function startVoiceInput() {
     recognitionRef.current?.start();
@@ -189,6 +250,38 @@ function ReasoningExperience() {
 
       setFeedback({ ...data, trait: data.trait || challenge.trait });
 
+      if (typeof window !== "undefined") {
+        const stored = localStorage.getItem("uthynk-profile");
+        const profile = stored ? JSON.parse(stored) : {};
+        const today = new Date().toISOString().slice(0, 10);
+        const lastCompleted = localStorage.getItem("uthynk-last-completed-date");
+        const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+        const localStreak =
+          lastCompleted === today
+            ? profile.streak || 0
+            : lastCompleted === yesterday
+              ? (profile.streak || 0) + 1
+              : 1;
+        const nextProfile = {
+          ...profile,
+          xp: data.progression?.xp ?? (profile.xp || 0) + (data.xp || 0),
+          streak: data.progression?.streak ?? localStreak,
+          rank: data.progression?.rank ?? profile.rank,
+          reasoning_score:
+            data.progression?.reasoningScore ?? data.score ?? profile.reasoning_score,
+          primary_trait:
+            data.progression?.evolvedTrait?.traitName ||
+            data.trait ||
+            profile.primary_trait,
+        };
+
+        localStorage.setItem("uthynk-profile", JSON.stringify(nextProfile));
+        localStorage.setItem("uthynk-last-completed-date", today);
+        document.cookie = `uthynk-profile=${encodeURIComponent(
+          JSON.stringify(nextProfile)
+        )}; path=/; max-age=2592000; SameSite=Lax`;
+      }
+
       const coachMessage = `${data.analysis}\n\nPushback: ${data.contrarian}\n\nNext Challenge: ${data.followUp}`;
 
       setConversation((prev) => [
@@ -210,7 +303,20 @@ function ReasoningExperience() {
         setPressure('Low');
       }
 
+      const nextChallenge = selectNextChallenge(challenge, data.score);
+      setChallenge(nextChallenge);
+      setDifficulty(nextChallenge.difficulty);
       setResponse(data.followUp || '');
+
+      if (typeof window !== "undefined") {
+        const seenIds = JSON.parse(
+          localStorage.getItem("uthynk-seen-challenge-ids") || "[]"
+        ) as string[];
+        localStorage.setItem(
+          "uthynk-seen-challenge-ids",
+          JSON.stringify(Array.from(new Set([...seenIds, nextChallenge.id])))
+        );
+      }
     } catch {
       setError("Unable to analyze reasoning right now.");
     } finally {
