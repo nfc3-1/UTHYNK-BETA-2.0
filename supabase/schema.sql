@@ -32,6 +32,8 @@ add column if not exists onboarding_style text default 'balanced';
 create table if not exists public.reasoning_sessions (
   id uuid primary key default uuid_generate_v4(),
   user_id uuid references public.user_profiles(id) on delete cascade,
+  session_id text,
+  conversation_id text,
   challenge_id text not null,
   challenge_category text,
   prompt text,
@@ -50,6 +52,12 @@ create table if not exists public.reasoning_sessions (
   memory_snapshot jsonb,
   created_at timestamptz default now()
 );
+
+alter table public.reasoning_sessions
+add column if not exists session_id text;
+
+alter table public.reasoning_sessions
+add column if not exists conversation_id text;
 
 alter table public.reasoning_sessions
 add column if not exists strengths jsonb default '[]'::jsonb;
@@ -77,9 +85,23 @@ create table if not exists public.cognitive_traits (
   updated_at timestamptz default now()
 );
 
+create table if not exists public.reasoning_profiles (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references public.user_profiles(id) on delete cascade,
+  evidence_score integer default 50,
+  adaptability_score integer default 50,
+  emotional_control_score integer default 50,
+  incentives_score integer default 50,
+  dominant_trait text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
 create table if not exists public.reasoning_followups (
   id uuid primary key default uuid_generate_v4(),
   user_id uuid references public.user_profiles(id) on delete cascade,
+  session_id text,
+  conversation_id text,
   challenge_id text not null,
   challenge_category text,
   follow_up text not null,
@@ -87,9 +109,17 @@ create table if not exists public.reasoning_followups (
   created_at timestamptz default now()
 );
 
+alter table public.reasoning_followups
+add column if not exists session_id text;
+
+alter table public.reasoning_followups
+add column if not exists conversation_id text;
+
 create table if not exists public.reasoning_verifier_scores (
   id uuid primary key default uuid_generate_v4(),
   user_id uuid references public.user_profiles(id) on delete cascade,
+  session_id text,
+  conversation_id text,
   challenge_id text not null,
   challenge_category text,
   ai_score integer,
@@ -99,6 +129,12 @@ create table if not exists public.reasoning_verifier_scores (
   signals jsonb default '{}'::jsonb,
   created_at timestamptz default now()
 );
+
+alter table public.reasoning_verifier_scores
+add column if not exists session_id text;
+
+alter table public.reasoning_verifier_scores
+add column if not exists conversation_id text;
 
 create table if not exists public.daily_progress (
   id uuid primary key default uuid_generate_v4(),
@@ -114,6 +150,12 @@ on public.reasoning_sessions(user_id);
 
 create index if not exists reasoning_sessions_user_created_idx
 on public.reasoning_sessions(user_id, created_at desc);
+
+create index if not exists reasoning_sessions_conversation_idx
+on public.reasoning_sessions(user_id, conversation_id, created_at desc);
+
+create unique index if not exists reasoning_profiles_user_idx
+on public.reasoning_profiles(user_id);
 
 create index if not exists reasoning_followups_user_created_idx
 on public.reasoning_followups(user_id, created_at desc);
