@@ -1,19 +1,35 @@
 import { NextResponse } from "next/server";
 import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
 
+function readCookieProfile(request: Request) {
+  try {
+    const cookieProfile = request.headers
+      .get("cookie")
+      ?.split(";")
+      .map((value) => value.trim())
+      .find((value) => value.startsWith("uthynk-profile="))
+      ?.replace("uthynk-profile=", "");
+
+    return cookieProfile ? JSON.parse(decodeURIComponent(cookieProfile)) : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const userId = searchParams.get("userId");
+  const profileFromCookie = readCookieProfile(request);
+  const userId = searchParams.get("userId") || profileFromCookie?.id;
 
   if (!userId) {
     return NextResponse.json({
       source: "demo",
-      profile: {
-        rank: "Analyst",
-        xp: 1240,
-        streak: 4,
-        reasoning_score: 74,
-        primary_trait: "Strategic Thinking",
+      profile: profileFromCookie || {
+        rank: "Observer",
+        xp: 0,
+        streak: 0,
+        reasoning_score: 70,
+        primary_trait: "Analytical",
       },
       sessions: [
         {
