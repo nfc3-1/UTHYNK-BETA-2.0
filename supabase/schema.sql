@@ -42,8 +42,32 @@ create table if not exists public.reasoning_sessions (
   reasoning_score integer,
   xp_awarded integer default 0,
   trait_detected text,
+  strengths jsonb default '[]'::jsonb,
+  weaknesses jsonb default '[]'::jsonb,
+  verifier_score integer,
+  orchestration_category text,
+  cadence_key text,
+  memory_snapshot jsonb,
   created_at timestamptz default now()
 );
+
+alter table public.reasoning_sessions
+add column if not exists strengths jsonb default '[]'::jsonb;
+
+alter table public.reasoning_sessions
+add column if not exists weaknesses jsonb default '[]'::jsonb;
+
+alter table public.reasoning_sessions
+add column if not exists verifier_score integer;
+
+alter table public.reasoning_sessions
+add column if not exists orchestration_category text;
+
+alter table public.reasoning_sessions
+add column if not exists cadence_key text;
+
+alter table public.reasoning_sessions
+add column if not exists memory_snapshot jsonb;
 
 create table if not exists public.cognitive_traits (
   id uuid primary key default uuid_generate_v4(),
@@ -51,6 +75,29 @@ create table if not exists public.cognitive_traits (
   trait_name text not null,
   trait_score integer default 50,
   updated_at timestamptz default now()
+);
+
+create table if not exists public.reasoning_followups (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references public.user_profiles(id) on delete cascade,
+  challenge_id text not null,
+  challenge_category text,
+  follow_up text not null,
+  cadence_key text,
+  created_at timestamptz default now()
+);
+
+create table if not exists public.reasoning_verifier_scores (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references public.user_profiles(id) on delete cascade,
+  challenge_id text not null,
+  challenge_category text,
+  ai_score integer,
+  verifier_score integer,
+  blended_score integer,
+  rubric text,
+  signals jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
 );
 
 create table if not exists public.daily_progress (
@@ -64,6 +111,18 @@ create table if not exists public.daily_progress (
 
 create index if not exists reasoning_sessions_user_idx
 on public.reasoning_sessions(user_id);
+
+create index if not exists reasoning_sessions_user_created_idx
+on public.reasoning_sessions(user_id, created_at desc);
+
+create index if not exists reasoning_followups_user_created_idx
+on public.reasoning_followups(user_id, created_at desc);
+
+create index if not exists reasoning_verifier_scores_user_created_idx
+on public.reasoning_verifier_scores(user_id, created_at desc);
+
+create unique index if not exists cognitive_traits_user_trait_idx
+on public.cognitive_traits(user_id, trait_name);
 
 create index if not exists daily_progress_user_idx
 on public.daily_progress(user_id);
