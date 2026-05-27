@@ -1,23 +1,64 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-const traits = [
-  { label: 'Strategic Thinking', value: 78 },
-  { label: 'Emotional Control', value: 72 },
-  { label: 'Bias Detection', value: 69 },
-  { label: 'Decision Discipline', value: 74 },
-];
-
-const recentChallenges = [
-  'Workplace reputation conflict',
-  'Luxury spending decision',
-  'Media manipulation analysis',
-];
+const STORAGE_KEY = 'uthynk-profile';
 
 export default function Profile() {
   const [style, setStyle] = useState('balanced');
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    async function loadProfile() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      const profile = stored ? JSON.parse(stored) : null;
+      const url = profile?.id ? `/api/dashboard?userId=${profile.id}` : '/api/dashboard';
+      const res = await fetch(url);
+      const json = await res.json();
+
+      setData({
+        ...json,
+        profile: {
+          ...(json.profile || {}),
+          ...(profile || {}),
+          xp: json.profile?.xp ?? profile?.xp,
+          streak: json.profile?.streak ?? profile?.streak,
+          rank: json.profile?.rank ?? profile?.rank,
+          reasoning_score: json.profile?.reasoning_score ?? profile?.reasoning_score,
+          primary_trait: json.profile?.primary_trait ?? profile?.primary_trait,
+        },
+      });
+    }
+
+    loadProfile();
+  }, []);
+
+  const profile = data?.profile || {};
+  const sessions = data?.sessions || [];
+  const traits = useMemo(() => {
+    const counts = new Map<string, number>();
+
+    sessions.forEach((session: any) => {
+      if (!session.trait_detected) return;
+      counts.set(session.trait_detected, (counts.get(session.trait_detected) || 0) + 1);
+    });
+
+    const dynamicTraits = Array.from(counts.entries()).map(([label, count]) => ({
+      label,
+      value: Math.min(100, 62 + count * 6),
+    }));
+
+    return dynamicTraits.length
+      ? dynamicTraits
+      : [{ label: profile.primary_trait || 'Analytical', value: profile.reasoning_score || 70 }];
+  }, [profile.primary_trait, profile.reasoning_score, sessions]);
+  const averageReasoning = sessions.length
+    ? Math.round(
+        sessions.reduce((sum: number, session: any) => sum + (session.reasoning_score || 0), 0) /
+          sessions.length
+      )
+    : profile.reasoning_score || 70;
 
   return (
     <main className="appShell">
@@ -45,13 +86,13 @@ export default function Profile() {
 
         <div className="challengePreview">
           <div className="panelLabel">Current Identity</div>
-          <h2>Analyst</h2>
+          <h2>{profile.rank || 'Observer'}</h2>
           <p>
-            Your strongest emerging trait is Strategic Thinking.
+            Your strongest emerging trait is {profile.primary_trait || 'Analytical'}.
           </p>
           <div className="rewardCard">
-            <strong>1,240 XP</strong>
-            <span>Current streak: 4 days</span>
+            <strong>{profile.xp || 0} XP</strong>
+            <span>Current streak: {profile.streak || 0} days</span>
           </div>
         </div>
       </section>
@@ -63,22 +104,22 @@ export default function Profile() {
           <div className="statList">
             <div className="statItem">
               <span>Reasoning Score</span>
-              <strong>74</strong>
+              <strong>{profile.reasoning_score || 70}</strong>
             </div>
 
             <div className="statItem">
               <span>Challenges Completed</span>
-              <strong>31</strong>
+              <strong>{sessions.length}</strong>
             </div>
 
             <div className="statItem">
-              <span>Strongest Category</span>
-              <strong>Strategy</strong>
+              <span>Average Reasoning</span>
+              <strong>{averageReasoning}</strong>
             </div>
 
             <div className="statItem">
               <span>Growth Trend</span>
-              <strong>+12%</strong>
+              <strong>{sessions.length > 1 ? 'Active' : 'Starting'}</strong>
             </div>
           </div>
         </aside>
@@ -100,14 +141,20 @@ export default function Profile() {
           <div className="panelLabel">Challenge History</div>
 
           <div className="focusGrid" style={{ gridTemplateColumns: '1fr' }}>
-            {recentChallenges.map((challenge) => (
-              <div className="focusCard" key={challenge}>
-                <strong>{challenge}</strong>
+            {sessions.slice(0, 5).map((session: any) => (
+              <div className="focusCard" key={session.id}>
+                <strong>{session.challenge_category || 'Reasoning Session'}</strong>
                 <span>
-                  AI reasoning analysis stored for future progression tracking.
+                  {session.reasoning_score || 0} reasoning score - {session.trait_detected || 'Trait evolving'}
                 </span>
               </div>
             ))}
+            {!sessions.length ? (
+              <div className="focusCard">
+                <strong>No completed sessions yet</strong>
+                <span>Complete a reasoning challenge to start building history.</span>
+              </div>
+            ) : null}
           </div>
         </section>
       </section>
