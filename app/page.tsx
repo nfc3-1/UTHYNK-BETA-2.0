@@ -1,16 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import AuthGate from "@/components/AuthGate";
-import { getDailyChallenge } from "@/lib/challenges";
-
-const challenge = getDailyChallenge();
-
-const PROFILE_STATS = [
-  { label: "Rank", value: "Analyst" },
-  { label: "Streak", value: "4 day streak" },
-  { label: "Reasoning Score", value: "74" },
-  { label: "Primary Trait", value: challenge.trait },
-];
+import { challenges, getDailyChallenge, type Challenge } from "@/lib/challenges";
 
 const FOCUS_AREAS = [
   {
@@ -76,6 +70,32 @@ const FOCUS_AREAS = [
 ];
 
 export default function Home() {
+  const [challenge, setChallenge] = useState<Challenge>(getDailyChallenge());
+  const [profile, setProfile] = useState<any>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("uthynk-profile");
+    const parsedProfile = stored ? JSON.parse(stored) : null;
+    const seenIds = JSON.parse(
+      localStorage.getItem("uthynk-seen-challenge-ids") || "[]"
+    ) as string[];
+    const nextUnseen = challenges.find((item) => !seenIds.includes(item.id));
+
+    setProfile(parsedProfile);
+    setChallenge(nextUnseen || challenges[seenIds.length % challenges.length] || getDailyChallenge());
+  }, []);
+
+  const profileStats = useMemo(
+    () => [
+      { label: "Rank", value: profile?.rank || "Observer" },
+      { label: "Streak", value: `${profile?.streak || 0} day streak` },
+      { label: "Reasoning Score", value: String(profile?.reasoning_score || 70) },
+      { label: "Primary Trait", value: profile?.primary_trait || challenge.trait },
+    ],
+    [challenge.trait, profile]
+  );
+  const progressWidth = `${Math.min(100, Math.max(8, profile?.reasoning_score || 70))}%`;
+
   return (
     <>
       <AuthGate />
@@ -106,7 +126,7 @@ export default function Home() {
         <section className="appHero card">
           <div className="heroCopy">
             <div className="eyebrow">
-              Adaptive cognition • Recursive reasoning • Live coaching
+              Adaptive cognition - Recursive reasoning - Live coaching
             </div>
 
             <h1>Train your thinking like a skill.</h1>
@@ -140,11 +160,11 @@ export default function Home() {
             </p>
 
             <div className="progressBar" aria-label="Cognitive progression">
-              <div className="progressFill" style={{ width: '74%' }} />
+              <div className="progressFill" style={{ width: progressWidth }} />
             </div>
 
             <p className="panelNote">
-              Current cognitive pressure: Moderate · Trait evolution active
+              Current cognitive pressure: Moderate - Trait evolution active
             </p>
 
             <Link
@@ -161,7 +181,7 @@ export default function Home() {
             <div className="panelLabel">Evolving Identity</div>
 
             <div className="statList">
-              {PROFILE_STATS.map((stat) => (
+              {profileStats.map((stat) => (
                 <div className="statItem" key={stat.label}>
                   <span>{stat.label}</span>
                   <strong>{stat.value}</strong>
@@ -170,7 +190,7 @@ export default function Home() {
             </div>
 
             <div className="progressBar" aria-label="Rank progress">
-              <div className="progressFill" style={{ width: '74%' }} />
+              <div className="progressFill" style={{ width: progressWidth }} />
             </div>
 
             <p className="panelNote">
