@@ -27,7 +27,18 @@ export default function DashboardPage() {
 
       const res = await fetch(`/api/dashboard?userId=${profile.id}`);
       const json = await res.json();
-      setData(json);
+      setData({
+        ...json,
+        profile: {
+          ...(profile || {}),
+          ...(json.profile || {}),
+          xp: json.profile?.xp ?? profile.xp,
+          streak: json.profile?.streak ?? profile.streak,
+          rank: json.profile?.rank ?? profile.rank,
+          reasoning_score: json.profile?.reasoning_score ?? profile.reasoning_score,
+          primary_trait: json.profile?.primary_trait ?? profile.primary_trait,
+        },
+      });
     }
 
     loadDashboard();
