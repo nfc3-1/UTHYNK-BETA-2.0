@@ -85,6 +85,12 @@ function ReasoningExperience() {
       setLoading(true);
       setError("");
       setStreamingText("");
+      let profile: any = null;
+
+      if (typeof window !== "undefined") {
+        const stored = localStorage.getItem("uthynk-profile");
+        profile = stored ? JSON.parse(stored) : null;
+      }
 
       setConversation((prev) => [
         ...prev,
@@ -98,34 +104,77 @@ function ReasoningExperience() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "text/event-stream",
         },
         body: JSON.stringify({
           challengeId: challenge.id,
           category: challenge.category,
           challenge: challenge.prompt,
           response,
+          userId: profile?.id,
+          stream: true,
         }),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
+        const data = await res.json();
         setError(data.error || "Reasoning analysis failed.");
+        return;
+      }
+
+      if (!res.body) {
+        setError("Reasoning stream did not start.");
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let data: any = null;
+
+      while (true) {
+        const { done, value } = await reader.read();
+
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split("\n\n");
+        buffer = events.pop() || "";
+
+        for (const event of events) {
+          const eventType = event
+            .split("\n")
+            .find((line) => line.startsWith("event:"))
+            ?.replace("event:", "")
+            .trim();
+          const eventData = event
+            .split("\n")
+            .find((line) => line.startsWith("data:"))
+            ?.replace("data:", "")
+            .trim();
+
+          if (!eventData) continue;
+
+          const payload = JSON.parse(eventData);
+
+          if (eventType === "delta") {
+            setStreamingText((prev) => prev + payload.delta);
+          }
+
+          if (eventType === "final") {
+            data = payload;
+          }
+        }
+      }
+
+      if (!data) {
+        setError("Reasoning analysis ended without final feedback.");
         return;
       }
 
       setFeedback({ ...data, trait: data.trait || challenge.trait });
 
       const coachMessage = `${data.analysis}\n\nPushback: ${data.contrarian}\n\nNext Challenge: ${data.followUp}`;
-
-      let progressive = '';
-
-      for (const char of coachMessage) {
-        progressive += char;
-        setStreamingText(progressive);
-
-        await new Promise((resolve) => setTimeout(resolve, 5));
-      }
 
       setConversation((prev) => [
         ...prev,
@@ -158,7 +207,7 @@ function ReasoningExperience() {
     <section className="reasoningGrid">
       <article className="card reasoningMain">
         <div className="panelLabel">
-          Adaptive Cognitive Session · {challenge.category}
+          Adaptive Cognitive Session Â· {challenge.category}
         </div>
 
         <h1>{challenge.prompt}</h1>
