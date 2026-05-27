@@ -9,14 +9,6 @@ import {
 import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
 import { evolveTraitScore } from "@/lib/traits";
 
-type ReasoningCategory =
-  | "debate"
-  | "decisions"
-  | "ethics"
-  | "creative"
-  | "relationships"
-  | "general";
-
 type ReasoningRequest = {
   challenge?: string;
   challengeId?: string;
@@ -28,67 +20,108 @@ type ReasoningRequest = {
   userId?: string;
 };
 
-const categoryPromptMap: Record<
-  ReasoningCategory,
-  {
-    evaluatorRole: string;
-    followUpDirective: string;
-    lens: string[];
-    temperature: number;
-    traits: string[];
-  }
-> = {
+type ReasoningCategory =
+  | "debate"
+  | "decisions"
+  | "ethics"
+  | "creative"
+  | "relationships"
+  | "general";
+
+type BehavioralScores = {
+  evidence: number;
+  adaptability: number;
+  emotionalControl: number;
+  incentives: number;
+};
+
+type VerifierResult = {
+  score: number;
+  behavioral: BehavioralScores;
+  signals: Record<string, boolean>;
+  missingMoves: string[];
+};
+
+type ReasoningFeedback = {
+  analysis: string;
+  behavioral: BehavioralScores;
+  contrarian: string;
+  followUp: string;
+  score: number;
+  strengths: string[];
+  trait: string;
+  weaknesses: string[];
+  xp: number;
+  verifier: VerifierResult;
+};
+
+type CategoryPrompt = {
+  category: ReasoningCategory;
+  evaluatorRole: string;
+  reasoningLens: string[];
+  followUpDirective: string;
+  traitOptions: string[];
+  temperature: number;
+};
+
+const categoryPromptMap: Record<ReasoningCategory, CategoryPrompt> = {
   debate: {
+    category: "debate",
     evaluatorRole: "argument quality verifier",
+    reasoningLens: ["claim precision", "evidence", "warrant strength", "counterargument handling"],
     followUpDirective:
       "Generate a new follow-up that attacks the weakest warrant, missing evidence, or strongest opposing view.",
-    lens: ["claim precision", "evidence", "warrant strength", "counterargument handling"],
+    traitOptions: ["Evidence Discipline", "Intellectual Flexibility", "Argument Mapping"],
     temperature: 0.58,
-    traits: ["Evidence Discipline", "Intellectual Flexibility", "Argument Mapping"],
   },
   decisions: {
+    category: "decisions",
     evaluatorRole: "decision strategy verifier",
+    reasoningLens: ["tradeoffs", "incentives", "reversibility", "second-order effects"],
     followUpDirective:
       "Generate a new follow-up that forces a choice under uncertainty, with a concrete trigger for changing course.",
-    lens: ["tradeoffs", "incentives", "reversibility", "second-order effects"],
+    traitOptions: ["Strategic Restraint", "Risk Calibration", "Incentive Awareness"],
     temperature: 0.46,
-    traits: ["Strategic Restraint", "Risk Calibration", "Incentive Awareness"],
   },
   ethics: {
+    category: "ethics",
     evaluatorRole: "principled reasoning verifier",
+    reasoningLens: ["stakeholders", "principles", "harm analysis", "role reversal"],
     followUpDirective:
       "Generate a new follow-up that tests whether the user's principle survives a hard edge case.",
-    lens: ["stakeholders", "principles", "harm analysis", "role reversal"],
+    traitOptions: ["Principled Reasoning", "Perspective Taking", "Moral Consistency"],
     temperature: 0.52,
-    traits: ["Principled Reasoning", "Perspective Taking", "Moral Consistency"],
   },
   creative: {
+    category: "creative",
     evaluatorRole: "creative reasoning verifier",
+    reasoningLens: ["specificity", "constraint use", "originality", "useful reframing"],
     followUpDirective:
       "Generate a new follow-up that changes the constraint, angle, or frame instead of asking a generic next question.",
-    lens: ["specificity", "constraint use", "originality", "useful reframing"],
+    traitOptions: ["Creative Reframing", "Adaptive Thinking", "Constraint Fluency"],
     temperature: 0.72,
-    traits: ["Creative Reframing", "Adaptive Thinking", "Constraint Fluency"],
   },
   relationships: {
+    category: "relationships",
     evaluatorRole: "social reasoning verifier",
+    reasoningLens: ["emotional control", "incentives", "timing", "perspective taking"],
     followUpDirective:
       "Generate a new follow-up that tests tone, timing, and the other person's likely interpretation.",
-    lens: ["emotional control", "incentives", "timing", "perspective taking"],
+    traitOptions: ["Emotional Control", "Social Calibration", "Perspective Taking"],
     temperature: 0.54,
-    traits: ["Emotional Control", "Social Calibration", "Perspective Taking"],
   },
   general: {
+    category: "general",
     evaluatorRole: "adaptive reasoning verifier",
+    reasoningLens: ["clarity", "evidence", "alternatives", "next test"],
     followUpDirective:
       "Generate a new follow-up that targets the single most important missing reasoning move.",
-    lens: ["clarity", "evidence", "alternatives", "next test"],
+    traitOptions: ["Analytical Discipline", "Adaptive Thinking", "Tactical Thinking"],
     temperature: 0.5,
-    traits: ["Analytical Discipline", "Adaptive Thinking", "Tactical Thinking"],
   },
 };
 
-const responseModes = [
+const randomizedResponseModes = [
   "diagnostic",
   "counterfactual",
   "decision checkpoint",
@@ -120,11 +153,32 @@ function hashText(value: string) {
   return Math.abs(hash);
 }
 
+function stableModeSeed(input: {
+  category: ReasoningCategory;
+  challenge: string;
+  conversationId: string;
+  response: string;
+  sessionId: string;
+  memory: any;
+}) {
+  return hashText(
+    [
+      input.category,
+      input.sessionId,
+      input.conversationId,
+      input.challenge,
+      input.response,
+      input.memory?.recentPatterns?.length || 0,
+      input.memory?.recentFollowUps?.join("|") || "",
+    ].join(":")
+  );
+}
+
 function clamp(value: number, min = 0, max = 100) {
   return Math.min(max, Math.max(min, Math.round(value)));
 }
 
-function verifierEngine(response: string, category: ReasoningCategory) {
+function verifierEngine(response: string, category: ReasoningCategory): VerifierResult {
   const lower = response.toLowerCase();
   const words = response.trim() ? response.trim().split(/\s+/).length : 0;
   const signals = {
@@ -136,13 +190,14 @@ function verifierEngine(response: string, category: ReasoningCategory) {
     emotionalControl: /\b(calm|pause|listen|avoid|de-escalate|wait|tone|restraint)\b/.test(lower),
     incentives: /\b(incentive|motivation|leverage|reward|pressure|reputation|cost)\b/.test(lower),
   };
+
   const behavioral = {
     evidence: clamp((signals.evidence ? 72 : 42) + Math.min(18, words)),
     adaptability: clamp((signals.alternatives ? 68 : 40) + (signals.tradeoff ? 12 : 0) + Math.min(12, words / 2)),
     emotionalControl: clamp((signals.emotionalControl ? 74 : 44) + (signals.perspective ? 10 : 0)),
     incentives: clamp((signals.incentives ? 74 : 42) + (signals.tradeoff ? 10 : 0)),
   };
-  const weights: Record<ReasoningCategory, (keyof typeof behavioral)[]> = {
+  const categoryWeights: Record<ReasoningCategory, (keyof BehavioralScores)[]> = {
     debate: ["evidence", "adaptability"],
     decisions: ["incentives", "adaptability"],
     ethics: ["emotionalControl", "adaptability"],
@@ -150,17 +205,20 @@ function verifierEngine(response: string, category: ReasoningCategory) {
     relationships: ["emotionalControl", "incentives"],
     general: ["evidence", "adaptability", "incentives"],
   };
-  const weighted = weights[category].reduce((sum, key) => sum + behavioral[key], 0) / weights[category].length;
+  const weightedKeys = categoryWeights[category];
+  const weighted = weightedKeys.reduce((sum, key) => sum + behavioral[key], 0) / weightedKeys.length;
+  const base = Math.min(28, words * 1.1);
+  const score = clamp(35 + base + weighted * 0.45);
   const missingMoves = Object.entries(signals)
     .filter(([, present]) => !present)
     .map(([name]) => name)
     .slice(0, 4);
 
   return {
+    score,
     behavioral,
-    missingMoves,
-    score: clamp(35 + Math.min(28, words * 1.1) + weighted * 0.45),
     signals,
+    missingMoves,
   };
 }
 
@@ -171,44 +229,114 @@ function ensureString(value: unknown, fallback: string) {
 }
 
 function ensureList(value: unknown, fallback: string[]) {
-  if (!Array.isArray(value)) return fallback;
+  if (!Array.isArray(value)) {
+    return fallback;
+  }
 
-  return Array.from(new Set(value.map((item) => String(item || "").trim()).filter(Boolean))).slice(0, 4);
+  const items = value.map((item) => String(item || "").trim()).filter(Boolean);
+
+  return Array.from(new Set(items)).slice(0, 4);
 }
 
-function sanitizeFeedback(parsed: any, verifier: ReturnType<typeof verifierEngine>, prompt: typeof categoryPromptMap[ReasoningCategory]) {
+function sanitizeFeedback(
+  parsed: any,
+  verifier: VerifierResult,
+  categoryPrompt: CategoryPrompt
+): ReasoningFeedback {
   const aiScore = Number(parsed?.score);
-  const score = clamp(Number.isFinite(aiScore) ? aiScore * 0.72 + verifier.score * 0.28 : verifier.score);
+  const score = clamp(
+    Number.isFinite(aiScore) ? aiScore * 0.72 + verifier.score * 0.28 : verifier.score
+  );
+  const trait = ensureString(parsed?.trait, categoryPrompt.traitOptions[0]);
 
   return {
-    analysis: ensureString(parsed?.analysis, "The model returned incomplete analysis. Try again with a more specific response."),
+    analysis: ensureString(
+      parsed?.analysis,
+      "The model returned incomplete analysis. Try again with a more specific response."
+    ),
     behavioral: {
       evidence: clamp(Number(parsed?.behavioral?.evidence) || verifier.behavioral.evidence),
-      adaptability: clamp(Number(parsed?.behavioral?.adaptability) || verifier.behavioral.adaptability),
-      emotionalControl: clamp(Number(parsed?.behavioral?.emotionalControl) || verifier.behavioral.emotionalControl),
+      adaptability: clamp(
+        Number(parsed?.behavioral?.adaptability) || verifier.behavioral.adaptability
+      ),
+      emotionalControl: clamp(
+        Number(parsed?.behavioral?.emotionalControl) || verifier.behavioral.emotionalControl
+      ),
       incentives: clamp(Number(parsed?.behavioral?.incentives) || verifier.behavioral.incentives),
     },
-    contrarian: ensureString(parsed?.contrarian, "What would make your current interpretation fail under pressure?"),
-    followUp: ensureString(parsed?.followUp, "What is the next test that would most quickly expose whether your reasoning is sound?"),
+    contrarian: ensureString(
+      parsed?.contrarian,
+      "What would make your current interpretation fail under pressure?"
+    ),
+    followUp: ensureString(
+      parsed?.followUp,
+      "What is the next test that would most quickly expose whether your reasoning is sound?"
+    ),
     score,
-    strengths: ensureList(parsed?.strengths, prompt.lens.slice(0, 2)),
-    trait: ensureString(parsed?.trait, prompt.traits[0]),
+    strengths: ensureList(parsed?.strengths, categoryPrompt.reasoningLens.slice(0, 2)),
+    trait,
     weaknesses: ensureList(parsed?.weaknesses, verifier.missingMoves),
     xp: clamp(Number(parsed?.xp) || (score >= 85 ? 70 : score >= 70 ? 52 : 35), 20, 95),
     verifier,
   };
 }
 
-async function loadProfile(userId?: string) {
-  if (!userId || !hasSupabaseAdminEnv() || !supabaseAdmin) return null;
+function buildAdaptiveSystemPrompt({
+  categoryPrompt,
+  conversationId,
+  memory,
+  mode,
+  profile,
+  sessionId,
+  verifier,
+}: {
+  categoryPrompt: CategoryPrompt;
+  conversationId: string;
+  memory?: any;
+  mode: string;
+  profile?: any;
+  sessionId: string;
+  verifier: VerifierResult;
+}) {
+  const ageBand = profile?.age_band || "18_plus";
+  const style = profile?.onboarding_style || "balanced";
+  const recentFollowUps = memory?.recentFollowUps?.filter(Boolean).slice(0, 8) || [];
 
-  const { data } = await supabaseAdmin.from("user_profiles").select("*").eq("id", userId).single();
+  return [
+    "You are UThynk, an adaptive reasoning coach. You must produce specific, non-repetitive feedback.",
+    `Session identity: sessionId=${sessionId}, conversationId=${conversationId}.`,
+    `Category: ${categoryPrompt.category}. Role: ${categoryPrompt.evaluatorRole}.`,
+    `Response mode: ${mode}. Do not reuse the same opening, cadence, or follow-up shape from prior turns.`,
+    `Reasoning lens: ${categoryPrompt.reasoningLens.join(", ")}.`,
+    `Follow-up directive: ${categoryPrompt.followUpDirective}`,
+    `Available trait labels: ${categoryPrompt.traitOptions.join(", ")}.`,
+    `User age band: ${ageBand}. Coaching style: ${style}.`,
+    `Persistent memory: ${JSON.stringify(memory || null)}.`,
+    `Verifier engine result: ${JSON.stringify(verifier)}.`,
+    `Do not repeat these follow-ups: ${JSON.stringify(recentFollowUps)}.`,
+    "Score by blending your judgment with the verifier result. Penalize generic, unsupported, or evasive reasoning.",
+    "Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.",
+  ].join(" ");
+}
+
+async function loadProfile(userId?: string) {
+  if (!userId || !hasSupabaseAdminEnv() || !supabaseAdmin) {
+    return null;
+  }
+
+  const { data } = await supabaseAdmin
+    .from("user_profiles")
+    .select("*")
+    .eq("id", userId)
+    .single();
 
   return data;
 }
 
-async function updateTrait(userId: string, traitName: string, score: number) {
-  if (!hasSupabaseAdminEnv() || !supabaseAdmin || !traitName) return null;
+async function updateTrait(userId: string, traitName: string, reasoningScore: number) {
+  if (!hasSupabaseAdminEnv() || !supabaseAdmin || !traitName) {
+    return null;
+  }
 
   const { data: existing } = await supabaseAdmin
     .from("cognitive_traits")
@@ -216,43 +344,79 @@ async function updateTrait(userId: string, traitName: string, score: number) {
     .eq("user_id", userId)
     .eq("trait_name", traitName)
     .single();
-  const nextScore = evolveTraitScore(existing?.trait_score || 50, score);
+
+  const nextScore = evolveTraitScore(existing?.trait_score || 50, reasoningScore);
 
   if (existing?.id) {
-    await supabaseAdmin.from("cognitive_traits").update({ trait_score: nextScore, updated_at: new Date().toISOString() }).eq("id", existing.id);
+    await supabaseAdmin
+      .from("cognitive_traits")
+      .update({
+        trait_score: nextScore,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", existing.id);
   } else {
-    await supabaseAdmin.from("cognitive_traits").insert({ user_id: userId, trait_name: traitName, trait_score: nextScore });
+    await supabaseAdmin.from("cognitive_traits").insert({
+      user_id: userId,
+      trait_name: traitName,
+      trait_score: nextScore,
+    });
   }
 
   return { traitName, traitScore: nextScore };
 }
 
-async function updateReasoningProfile(userId: string, feedback: ReturnType<typeof sanitizeFeedback>) {
-  if (!hasSupabaseAdminEnv() || !supabaseAdmin) return null;
+async function updateReasoningProfile(userId: string, feedback: ReasoningFeedback) {
+  if (!hasSupabaseAdminEnv() || !supabaseAdmin) {
+    return null;
+  }
 
-  const { data: existing } = await supabaseAdmin.from("reasoning_profiles").select("*").eq("user_id", userId).single();
-  const blend = (current: number | null | undefined, next: number) => clamp((Number(current) || 50) * 0.75 + next * 0.25);
+  const { data: existing } = await supabaseAdmin
+    .from("reasoning_profiles")
+    .select("*")
+    .eq("user_id", userId)
+    .single();
+
+  const blend = (current: number | null | undefined, next: number) =>
+    clamp((Number(current) || 50) * 0.75 + next * 0.25);
+
   const nextProfile = {
     user_id: userId,
     evidence_score: blend(existing?.evidence_score, feedback.behavioral.evidence),
     adaptability_score: blend(existing?.adaptability_score, feedback.behavioral.adaptability),
-    emotional_control_score: blend(existing?.emotional_control_score, feedback.behavioral.emotionalControl),
+    emotional_control_score: blend(
+      existing?.emotional_control_score,
+      feedback.behavioral.emotionalControl
+    ),
     incentives_score: blend(existing?.incentives_score, feedback.behavioral.incentives),
     dominant_trait: feedback.trait,
     updated_at: new Date().toISOString(),
   };
 
   if (existing?.id) {
-    const { data } = await supabaseAdmin.from("reasoning_profiles").update(nextProfile).eq("id", existing.id).select("*").single();
+    const { data } = await supabaseAdmin
+      .from("reasoning_profiles")
+      .update(nextProfile)
+      .eq("id", existing.id)
+      .select("*")
+      .single();
+
     return data;
   }
 
-  const { data } = await supabaseAdmin.from("reasoning_profiles").insert(nextProfile).select("*").single();
+  const { data } = await supabaseAdmin
+    .from("reasoning_profiles")
+    .insert(nextProfile)
+    .select("*")
+    .single();
+
   return data;
 }
 
-async function updateUserProgress(userId: string, feedback: ReturnType<typeof sanitizeFeedback>) {
-  if (!hasSupabaseAdminEnv() || !supabaseAdmin) return null;
+async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
+  if (!hasSupabaseAdminEnv() || !supabaseAdmin) {
+    return null;
+  }
 
   const { data: existing } = await supabaseAdmin
     .from("user_profiles")
@@ -260,7 +424,9 @@ async function updateUserProgress(userId: string, feedback: ReturnType<typeof sa
     .eq("id", userId)
     .single();
 
-  if (!existing) return null;
+  if (!existing) {
+    return null;
+  }
 
   const nextXp = (existing.xp || 0) + feedback.xp;
   const nextScore = calculateReasoningScore(existing.reasoning_score || 70, feedback.score);
@@ -281,160 +447,210 @@ async function updateUserProgress(userId: string, feedback: ReturnType<typeof sa
     })
     .eq("id", userId);
 
-  return { evolvedTrait, rank: nextRank, reasoningProfile, reasoningScore: nextScore, streak: nextStreak, xp: nextXp };
+  return {
+    evolvedTrait,
+    reasoningProfile,
+    rank: nextRank,
+    reasoningScore: nextScore,
+    streak: nextStreak,
+    xp: nextXp,
+  };
 }
 
-async function persistSession(input: {
+async function persistSession({
+  categoryPrompt,
+  challenge,
+  challengeId,
+  conversationId,
+  feedback,
+  memory,
+  mode,
+  response,
+  sessionId,
+  userId,
+}: {
+  categoryPrompt: CategoryPrompt;
   challenge: string;
   challengeId?: string;
   conversationId: string;
-  feedback: ReturnType<typeof sanitizeFeedback>;
+  feedback: ReasoningFeedback;
   memory?: any;
   mode: string;
-  prompt: typeof categoryPromptMap[ReasoningCategory];
   response: string;
   sessionId: string;
   userId?: string;
 }) {
-  if (!hasSupabaseAdminEnv() || !supabaseAdmin || !input.userId) return null;
+  if (!hasSupabaseAdminEnv() || !supabaseAdmin || !userId) {
+    return null;
+  }
 
   await supabaseAdmin.from("reasoning_sessions").insert({
-    user_id: input.userId,
-    session_id: input.sessionId,
-    conversation_id: input.conversationId,
-    challenge_id: input.challengeId || "daily",
-    challenge_category: input.prompt === categoryPromptMap.debate ? "debate" : undefined,
-    prompt: input.challenge,
-    response: input.response,
-    ai_analysis: input.feedback.analysis,
-    contrarian_response: input.feedback.contrarian,
-    follow_up: input.feedback.followUp,
-    reasoning_score: input.feedback.score,
-    xp_awarded: input.feedback.xp,
-    trait_detected: input.feedback.trait,
-    strengths: input.feedback.strengths,
-    weaknesses: input.feedback.weaknesses,
-    verifier_score: input.feedback.verifier.score,
-    orchestration_category: input.prompt.evaluatorRole,
-    cadence_key: input.mode,
-    memory_snapshot: input.memory || null,
+    user_id: userId,
+    session_id: sessionId,
+    conversation_id: conversationId,
+    challenge_id: challengeId || "daily",
+    challenge_category: categoryPrompt.category,
+    prompt: challenge,
+    response,
+    ai_analysis: feedback.analysis,
+    contrarian_response: feedback.contrarian,
+    follow_up: feedback.followUp,
+    reasoning_score: feedback.score,
+    xp_awarded: feedback.xp,
+    trait_detected: feedback.trait,
+    strengths: feedback.strengths,
+    weaknesses: feedback.weaknesses,
+    verifier_score: feedback.verifier.score,
+    orchestration_category: categoryPrompt.category,
+    cadence_key: mode,
+    memory_snapshot: memory || null,
   });
 
   await supabaseAdmin.from("reasoning_followups").insert({
-    user_id: input.userId,
-    session_id: input.sessionId,
-    conversation_id: input.conversationId,
-    challenge_id: input.challengeId || "daily",
-    challenge_category: input.prompt.evaluatorRole,
-    follow_up: input.feedback.followUp,
-    cadence_key: input.mode,
+    user_id: userId,
+    session_id: sessionId,
+    conversation_id: conversationId,
+    challenge_id: challengeId || "daily",
+    challenge_category: categoryPrompt.category,
+    follow_up: feedback.followUp,
+    cadence_key: mode,
   });
 
   await supabaseAdmin.from("reasoning_verifier_scores").insert({
-    user_id: input.userId,
-    session_id: input.sessionId,
-    conversation_id: input.conversationId,
-    challenge_id: input.challengeId || "daily",
-    challenge_category: input.prompt.evaluatorRole,
-    ai_score: input.feedback.score,
-    verifier_score: input.feedback.verifier.score,
-    blended_score: input.feedback.score,
-    rubric: input.prompt.lens.join(", "),
-    signals: input.feedback.verifier,
+    user_id: userId,
+    session_id: sessionId,
+    conversation_id: conversationId,
+    challenge_id: challengeId || "daily",
+    challenge_category: categoryPrompt.category,
+    ai_score: feedback.score,
+    verifier_score: feedback.verifier.score,
+    blended_score: feedback.score,
+    rubric: categoryPrompt.reasoningLens.join(", "),
+    signals: feedback.verifier,
   });
 
-  return updateUserProgress(input.userId, input.feedback);
+  return updateUserProgress(userId, feedback);
 }
 
 function jsonStreamEvent(type: string, payload: unknown) {
   return `event: ${type}\ndata: ${JSON.stringify(payload)}\n\n`;
 }
 
-function buildSystemPrompt(input: {
-  category: ReasoningCategory;
-  conversationId: string;
-  memory: any;
-  mode: string;
-  profile: any;
-  sessionId: string;
-  verifier: ReturnType<typeof verifierEngine>;
-}) {
-  const prompt = categoryPromptMap[input.category];
-
-  return [
-    "You are UThynk, an adaptive reasoning coach. Produce specific, non-repetitive feedback.",
-    `Session identity: sessionId=${input.sessionId}, conversationId=${input.conversationId}.`,
-    `Category: ${input.category}. Role: ${prompt.evaluatorRole}.`,
-    `Response mode: ${input.mode}. Do not reuse the same opening, cadence, or follow-up shape from prior turns.`,
-    `Reasoning lens: ${prompt.lens.join(", ")}.`,
-    `Follow-up directive: ${prompt.followUpDirective}`,
-    `Available trait labels: ${prompt.traits.join(", ")}.`,
-    `User profile: ${JSON.stringify(input.profile || null)}.`,
-    `Persistent memory: ${JSON.stringify(input.memory || null)}.`,
-    `Verifier engine result: ${JSON.stringify(input.verifier)}.`,
-    `Do not repeat these follow-ups: ${JSON.stringify(input.memory?.recentFollowUps || [])}.`,
-    "Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.",
-  ].join(" ");
-}
-
-async function callOpenAi(input: {
+async function callOpenAi({
+  apiKey,
+  categoryPrompt,
+  challenge,
+  conversationId,
+  memory,
+  mode,
+  profile,
+  response,
+  sessionId,
+  stream,
+  verifier,
+}: {
   apiKey: string;
-  category: ReasoningCategory;
+  categoryPrompt: CategoryPrompt;
   challenge: string;
   conversationId: string;
-  memory: any;
+  memory?: any;
   mode: string;
-  profile: any;
+  profile?: any;
   response: string;
   sessionId: string;
   stream: boolean;
-  verifier: ReturnType<typeof verifierEngine>;
+  verifier: VerifierResult;
 }) {
   return fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${input.apiKey}` },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
     body: JSON.stringify({
       model: process.env.OPENAI_MODEL || "gpt-4o-mini",
-      temperature: categoryPromptMap[input.category].temperature,
-      stream: input.stream,
+      temperature: categoryPrompt.temperature,
+      stream,
       response_format: { type: "json_object" },
       messages: [
-        { role: "system", content: buildSystemPrompt(input) },
+        {
+          role: "system",
+          content: buildAdaptiveSystemPrompt({
+            categoryPrompt,
+            conversationId,
+            memory,
+            mode,
+            profile,
+            sessionId,
+            verifier,
+          }),
+        },
         {
           role: "user",
-          content: JSON.stringify({ challenge: input.challenge, priorSessions: input.memory?.recentPatterns || [], response: input.response }),
+          content: JSON.stringify({
+            challenge,
+            priorSessions: memory?.recentPatterns || [],
+            response,
+          }),
         },
       ],
     }),
   });
 }
 
-async function nonStreamingFeedback(input: Parameters<typeof callOpenAi>[0]) {
-  const aiResponse = await callOpenAi({ ...input, stream: false });
-  if (!aiResponse.ok) throw new Error("OpenAI reasoning request failed.");
+async function nonStreamingFeedback(args: Parameters<typeof callOpenAi>[0]) {
+  const aiResponse = await callOpenAi({ ...args, stream: false });
+
+  if (!aiResponse.ok) {
+    throw new Error("OpenAI reasoning request failed.");
+  }
 
   const data = await aiResponse.json();
   const content = data?.choices?.[0]?.message?.content;
-  if (!content) throw new Error("OpenAI returned an empty reasoning response.");
+
+  if (!content) {
+    throw new Error("OpenAI returned an empty reasoning response.");
+  }
 
   return JSON.parse(content);
 }
 
-function streamingFeedback(input: Parameters<typeof callOpenAi>[0] & { challengeId?: string; userId?: string }) {
+function streamingFeedback(args: {
+  apiKey: string;
+  categoryPrompt: CategoryPrompt;
+  challenge: string;
+  challengeId?: string;
+  conversationId: string;
+  memory?: any;
+  mode: string;
+  profile?: any;
+  response: string;
+  sessionId: string;
+  userId?: string;
+  verifier: VerifierResult;
+}) {
   const encoder = new TextEncoder();
+
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        controller.enqueue(encoder.encode(jsonStreamEvent("orchestration", {
-          category: input.category,
-          conversationId: input.conversationId,
-          mode: input.mode,
-          sessionId: input.sessionId,
-          verifier: input.verifier,
-        })));
+        controller.enqueue(
+          encoder.encode(
+            jsonStreamEvent("orchestration", {
+              category: args.categoryPrompt.category,
+              conversationId: args.conversationId,
+              mode: args.mode,
+              sessionId: args.sessionId,
+              verifier: args.verifier,
+            })
+          )
+        );
 
-        const aiResponse = await callOpenAi({ ...input, stream: true });
-        if (!aiResponse.ok || !aiResponse.body) throw new Error("OpenAI streaming request failed.");
+        const aiResponse = await callOpenAi({ ...args, stream: true });
+
+        if (!aiResponse.ok || !aiResponse.body) {
+          throw new Error("OpenAI streaming request failed.");
+        }
 
         const reader = aiResponse.body.getReader();
         const decoder = new TextDecoder();
@@ -443,6 +659,7 @@ function streamingFeedback(input: Parameters<typeof callOpenAi>[0] & { challenge
 
         while (true) {
           const { done, value } = await reader.read();
+
           if (done) break;
 
           buffer += decoder.decode(value, { stream: true });
@@ -451,36 +668,51 @@ function streamingFeedback(input: Parameters<typeof callOpenAi>[0] & { challenge
 
           for (const line of lines) {
             const trimmed = line.trim();
+
             if (!trimmed.startsWith("data:")) continue;
+
             const data = trimmed.slice(5).trim();
+
             if (data === "[DONE]") continue;
+
             const parsed = JSON.parse(data);
-            const token = parsed?.choices?.[0]?.delta?.content || "";
-            if (token) {
-              content += token;
-              controller.enqueue(encoder.encode(jsonStreamEvent("token", { token })));
+            const delta = parsed?.choices?.[0]?.delta?.content || "";
+
+            if (delta) {
+              content += delta;
+              controller.enqueue(encoder.encode(jsonStreamEvent("token", { token: delta })));
             }
           }
         }
 
-        const feedback = sanitizeFeedback(JSON.parse(content), input.verifier, categoryPromptMap[input.category]);
-        const progression = await persistSession({
-          challenge: input.challenge,
-          challengeId: input.challengeId,
-          conversationId: input.conversationId,
-          feedback,
-          memory: input.memory,
-          mode: input.mode,
-          prompt: categoryPromptMap[input.category],
-          response: input.response,
-          sessionId: input.sessionId,
-          userId: input.userId,
-        });
+        const parsed = JSON.parse(content);
+        const feedback = sanitizeFeedback(parsed, args.verifier, args.categoryPrompt);
+        const progression = await persistSession({ ...args, feedback });
 
-        controller.enqueue(encoder.encode(jsonStreamEvent("final", { source: "openai", memory: input.memory, mode: input.mode, progression, ...feedback })));
+        controller.enqueue(
+          encoder.encode(
+            jsonStreamEvent("final", {
+              source: "openai",
+              memory: args.memory,
+              mode: args.mode,
+              onboardingProfile: args.profile,
+              progression,
+              ...feedback,
+            })
+          )
+        );
         controller.close();
       } catch (error) {
-        controller.enqueue(encoder.encode(jsonStreamEvent("error", { error: error instanceof Error ? error.message : "Reasoning stream failed." })));
+        controller.enqueue(
+          encoder.encode(
+            jsonStreamEvent("error", {
+              error:
+                error instanceof Error
+                  ? error.message
+                  : "Reasoning stream failed before completion.",
+            })
+          )
+        );
         controller.close();
       }
     },
@@ -506,45 +738,91 @@ export async function POST(request: Request) {
     const response = body.response?.trim() || "";
 
     if (!response) {
-      return NextResponse.json({ error: "A response is required before reasoning can be analyzed." }, { status: 400 });
+      return NextResponse.json(
+        { error: "A response is required before reasoning can be analyzed." },
+        { status: 400 }
+      );
     }
 
     const apiKey = process.env.OPENAI_API_KEY;
+
     if (!apiKey) {
-      return NextResponse.json({ error: "OPENAI_API_KEY is required for adaptive reasoning. Static fallback is disabled." }, { status: 503 });
+      return NextResponse.json(
+        { error: "OPENAI_API_KEY is required for adaptive reasoning. Static fallback is disabled." },
+        { status: 503 }
+      );
     }
 
     const category = normalizeCategory(body.category, challenge);
+    const categoryPrompt = categoryPromptMap[category];
     const memory = await getReasoningMemory(userId);
     const profile = await loadProfile(userId);
     const verifier = verifierEngine(response, category);
-    const modeSeed = hashText(`${category}:${sessionId}:${conversationId}:${challenge}:${response}:${memory?.recentFollowUps?.join("|") || ""}`);
-    const mode = responseModes[modeSeed % responseModes.length];
-    const wantsStream = body.stream === true || request.headers.get("accept")?.includes("text/event-stream");
-    const openAiArgs = { apiKey, category, challenge, conversationId, memory, mode, profile, response, sessionId, stream: false, verifier };
+    const modeSeed = stableModeSeed({
+      category,
+      challenge,
+      conversationId,
+      memory,
+      response,
+      sessionId,
+    });
+    const mode = randomizedResponseModes[modeSeed % randomizedResponseModes.length];
+    const wantsStream =
+      body.stream === true || request.headers.get("accept")?.includes("text/event-stream");
+
+    const openAiArgs = {
+      apiKey,
+      categoryPrompt,
+      challenge,
+      conversationId,
+      memory,
+      mode,
+      profile,
+      response,
+      sessionId,
+      stream: false,
+      verifier,
+    };
 
     if (wantsStream) {
-      return streamingFeedback({ ...openAiArgs, challengeId: body.challengeId, userId });
+      return streamingFeedback({
+        ...openAiArgs,
+        challengeId: body.challengeId,
+        userId,
+      });
     }
 
-    const feedback = sanitizeFeedback(await nonStreamingFeedback(openAiArgs), verifier, categoryPromptMap[category]);
+    const parsed = await nonStreamingFeedback(openAiArgs);
+    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt);
     const progression = await persistSession({
+      categoryPrompt,
       challenge,
       challengeId: body.challengeId,
       conversationId,
       feedback,
       memory,
       mode,
-      prompt: categoryPromptMap[category],
       response,
       sessionId,
       userId,
     });
 
-    return NextResponse.json({ source: "openai", memory, mode, progression, ...feedback });
+    return NextResponse.json({
+      source: "openai",
+      memory,
+      mode,
+      onboardingProfile: profile,
+      progression,
+      ...feedback,
+    });
   } catch (error) {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Reasoning analysis failed." },
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Reasoning analysis failed. Try again with a clearer response.",
+      },
       { status: 500 }
     );
   }
