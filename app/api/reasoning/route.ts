@@ -9,96 +9,102 @@ import {
 import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
 import { evolveTraitScore } from "@/lib/traits";
 
+type ReasoningCategory =
+  | "debate"
+  | "decisions"
+  | "ethics"
+  | "creative"
+  | "relationships"
+  | "general";
+
 type ReasoningRequest = {
   challenge?: string;
   challengeId?: string;
   category?: string;
+  conversationId?: string;
   response?: string;
+  sessionId?: string;
   stream?: boolean;
   userId?: string;
 };
 
-type CategoryOrchestration = {
-  category: string;
-  cadenceKey: string;
-  coachingMode: string;
-  followUpMode: string;
-  scoringFocus: string[];
-  traitHints: string[];
-  verifierRubric: string;
-  responseShape: string;
-  temperature: number;
-};
-
-type ReasoningFeedback = {
-  score: number;
-  xp: number;
-  trait: string;
-  analysis: string;
-  contrarian: string;
-  followUp: string;
-  strengths: string[];
-  weaknesses: string[];
-  verifier?: Record<string, unknown>;
-};
-
-const CATEGORY_PLAYBOOKS: Record<string, Omit<CategoryOrchestration, "category" | "cadenceKey" | "responseShape">> = {
+const categoryPromptMap: Record<
+  ReasoningCategory,
+  {
+    evaluatorRole: string;
+    followUpDirective: string;
+    lens: string[];
+    temperature: number;
+    traits: string[];
+  }
+> = {
   debate: {
-    coachingMode: "argument-map coach",
-    followUpMode: "force the strongest counterargument or missing warrant",
-    scoringFocus: ["claim clarity", "evidence quality", "counterargument handling"],
-    traitHints: ["Intellectual Flexibility", "Evidence Discipline"],
-    verifierRubric: "Reward explicit claims, evidence, concessions, and clean rebuttals.",
-    temperature: 0.55,
+    evaluatorRole: "argument quality verifier",
+    followUpDirective:
+      "Generate a new follow-up that attacks the weakest warrant, missing evidence, or strongest opposing view.",
+    lens: ["claim precision", "evidence", "warrant strength", "counterargument handling"],
+    temperature: 0.58,
+    traits: ["Evidence Discipline", "Intellectual Flexibility", "Argument Mapping"],
   },
   decisions: {
-    coachingMode: "decision-quality strategist",
-    followUpMode: "surface tradeoffs, reversibility, timing, and second-order consequences",
-    scoringFocus: ["tradeoffs", "incentives", "risk", "next action"],
-    traitHints: ["Strategic Restraint", "Risk Calibration"],
-    verifierRubric: "Reward alternatives, risk sizing, sequencing, and clear action.",
-    temperature: 0.42,
+    evaluatorRole: "decision strategy verifier",
+    followUpDirective:
+      "Generate a new follow-up that forces a choice under uncertainty, with a concrete trigger for changing course.",
+    lens: ["tradeoffs", "incentives", "reversibility", "second-order effects"],
+    temperature: 0.46,
+    traits: ["Strategic Restraint", "Risk Calibration", "Incentive Awareness"],
   },
   ethics: {
-    coachingMode: "principled ethics examiner",
-    followUpMode: "test the principle against a hard edge case",
-    scoringFocus: ["principles", "stakeholders", "edge cases", "harm analysis"],
-    traitHints: ["Principled Reasoning", "Perspective Taking"],
-    verifierRubric: "Reward named stakeholders, consistent principles, and edge-case handling.",
-    temperature: 0.5,
+    evaluatorRole: "principled reasoning verifier",
+    followUpDirective:
+      "Generate a new follow-up that tests whether the user's principle survives a hard edge case.",
+    lens: ["stakeholders", "principles", "harm analysis", "role reversal"],
+    temperature: 0.52,
+    traits: ["Principled Reasoning", "Perspective Taking", "Moral Consistency"],
   },
   creative: {
-    coachingMode: "creative reframing coach",
-    followUpMode: "ask for a sharper metaphor, constraint, or alternative frame",
-    scoringFocus: ["originality", "constraint use", "specificity", "useful reframing"],
-    traitHints: ["Creative Reframing", "Adaptive Thinking"],
-    verifierRubric: "Reward non-obvious framing, useful constraints, and concrete examples.",
-    temperature: 0.68,
+    evaluatorRole: "creative reasoning verifier",
+    followUpDirective:
+      "Generate a new follow-up that changes the constraint, angle, or frame instead of asking a generic next question.",
+    lens: ["specificity", "constraint use", "originality", "useful reframing"],
+    temperature: 0.72,
+    traits: ["Creative Reframing", "Adaptive Thinking", "Constraint Fluency"],
+  },
+  relationships: {
+    evaluatorRole: "social reasoning verifier",
+    followUpDirective:
+      "Generate a new follow-up that tests tone, timing, and the other person's likely interpretation.",
+    lens: ["emotional control", "incentives", "timing", "perspective taking"],
+    temperature: 0.54,
+    traits: ["Emotional Control", "Social Calibration", "Perspective Taking"],
   },
   general: {
-    coachingMode: "adaptive reasoning coach",
-    followUpMode: "target the weakest missing reasoning move",
-    scoringFocus: ["clarity", "evidence", "incentives", "consequences"],
-    traitHints: ["Tactical Thinking", "Analytical Discipline"],
-    verifierRubric: "Reward clear logic, evidence, tradeoffs, and actionable next steps.",
-    temperature: 0.48,
+    evaluatorRole: "adaptive reasoning verifier",
+    followUpDirective:
+      "Generate a new follow-up that targets the single most important missing reasoning move.",
+    lens: ["clarity", "evidence", "alternatives", "next test"],
+    temperature: 0.5,
+    traits: ["Analytical Discipline", "Adaptive Thinking", "Tactical Thinking"],
   },
 };
 
-const RESPONSE_SHAPES = [
-  "Start with the main reasoning pattern, then name one precise upgrade.",
-  "Open with the hidden assumption, then give a practical pressure test.",
-  "Lead with the strongest move, then contrast it with the biggest blind spot.",
-  "Frame the feedback as a decision checkpoint with one concrete next move.",
+const responseModes = [
+  "diagnostic",
+  "counterfactual",
+  "decision checkpoint",
+  "assumption audit",
+  "pressure test",
+  "steelman reversal",
 ];
 
-function normalizeCategory(category?: string, challenge?: string) {
+function normalizeCategory(category?: string, challenge?: string): ReasoningCategory {
   const source = `${category || ""} ${challenge || ""}`.toLowerCase();
 
-  if (/debate|argument|persuad|claim|rebuttal/.test(source)) return "debate";
-  if (/ethic|moral|fair|harm|justice|stakeholder/.test(source)) return "ethics";
-  if (/creative|invent|story|imagine|reframe|design/.test(source)) return "creative";
-  if (/decision|choose|risk|tradeoff|career|money|plan|strategy/.test(source)) return "decisions";
+  if (/debate|argument|persuad|claim|rebuttal|steelman/.test(source)) return "debate";
+  if (/ethic|moral|fair|harm|justice|stakeholder|principle/.test(source)) return "ethics";
+  if (/creative|invent|story|imagine|reframe|design|idea/.test(source)) return "creative";
+  if (/relationship|friend|family|trust|conflict|social|reputation/.test(source)) return "relationships";
+  if (/decision|choose|risk|tradeoff|career|money|plan|strategy|option/.test(source)) return "decisions";
 
   return "general";
 }
@@ -114,235 +120,95 @@ function hashText(value: string) {
   return Math.abs(hash);
 }
 
-function buildOrchestration(
-  category?: string,
-  challenge?: string,
-  response?: string,
-  memory?: any
-): CategoryOrchestration {
-  const normalized = normalizeCategory(category, challenge);
-  const playbook = CATEGORY_PLAYBOOKS[normalized] || CATEGORY_PLAYBOOKS.general;
-  const seed = hashText(
-    `${normalized}:${challenge || ""}:${response || ""}:${memory?.recentPatterns?.length || 0}`
-  );
-
-  return {
-    ...playbook,
-    category: normalized,
-    cadenceKey: `${normalized}-${seed % 997}`,
-    responseShape: RESPONSE_SHAPES[seed % RESPONSE_SHAPES.length],
-  };
+function clamp(value: number, min = 0, max = 100) {
+  return Math.min(max, Math.max(min, Math.round(value)));
 }
 
-function buildAdaptiveSystemPrompt({
-  profile,
-  memory,
-  orchestration,
-}: {
-  profile?: any;
-  memory?: any;
-  orchestration: CategoryOrchestration;
-}) {
-  const ageBand = profile?.age_band || "18_plus";
-  const style = profile?.onboarding_style || "balanced";
-  const goal = profile?.onboarding_goal || "sharpen_reasoning";
-  const recentFollowUps = memory?.recentFollowUps?.filter(Boolean).slice(0, 5) || [];
-
-  let coachingTone = "Use balanced Socratic reasoning with concise strategic feedback.";
-
-  if (ageBand === "under_13") {
-    coachingTone =
-      "Use gentle guidance. Avoid aggressive contrarian pressure. Focus on curiosity and reasoning fundamentals.";
-  } else if (ageBand === "13_17") {
-    coachingTone = "Use light Socratic challenge and constructive pushback without hostility.";
-  }
-
-  if (style === "contrarian") {
-    coachingTone += " Increase intellectual pushback and steelman opposing viewpoints strongly.";
-  }
-
-  if (style === "supportive") {
-    coachingTone += " Prioritize encouragement and confidence-building while still challenging assumptions carefully.";
-  }
-
-  return [
-    `You are UThynk, a category-conditioned adaptive AI reasoning coach.`,
-    coachingTone,
-    `Current orchestration: ${orchestration.coachingMode}.`,
-    `User goal: ${goal}.`,
-    `Score primarily on: ${orchestration.scoringFocus.join(", ")}.`,
-    `Verifier rubric: ${orchestration.verifierRubric}`,
-    `Cadence rule: ${orchestration.responseShape}`,
-    `Follow-up rule: ${orchestration.followUpMode}.`,
-    `Avoid repeating these recent follow-ups: ${JSON.stringify(recentFollowUps)}.`,
-    `Use persistent traits and memory only as context, not as destiny: ${JSON.stringify(memory || null)}.`,
-    "Do not use generic template phrasing. Make the analysis specific to the challenge, category, and response.",
-    "Do not give legal, medical, or financial advice.",
-    "Return only valid JSON with keys: score number 0-100, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[].",
-  ].join(" ");
-}
-
-function clampScore(score: unknown) {
-  const numeric = Number(score);
-
-  if (!Number.isFinite(numeric)) {
-    return 70;
-  }
-
-  return Math.min(100, Math.max(0, Math.round(numeric)));
-}
-
-function uniqList(value: unknown, fallback: string[]) {
-  if (!Array.isArray(value)) {
-    return fallback;
-  }
-
-  const items = value
-    .map((item) => String(item || "").trim())
-    .filter(Boolean);
-
-  return Array.from(new Set(items)).slice(0, 4);
-}
-
-function localVerifier(response: string, orchestration: CategoryOrchestration) {
+function verifierEngine(response: string, category: ReasoningCategory) {
   const lower = response.toLowerCase();
   const words = response.trim() ? response.trim().split(/\s+/).length : 0;
   const signals = {
-    evidence: /\b(because|evidence|data|example|for instance|shows)\b/.test(lower),
-    tradeoff: /\b(tradeoff|risk|cost|benefit|however|although|but)\b/.test(lower),
-    action: /\b(next|then|first|step|would|will|should)\b/.test(lower),
-    perspective: /\b(they|their|someone|stakeholder|opponent|other side)\b/.test(lower),
+    evidence: /\b(because|evidence|data|example|for instance|shows|proof|observed)\b/.test(lower),
+    alternatives: /\b(alternative|option|instead|another|otherwise|could)\b/.test(lower),
+    tradeoff: /\b(tradeoff|risk|cost|benefit|downside|upside|however|although|but)\b/.test(lower),
+    action: /\b(next|then|first|step|would|will|should|test|measure)\b/.test(lower),
+    perspective: /\b(they|their|someone|stakeholder|opponent|other side|audience)\b/.test(lower),
+    emotionalControl: /\b(calm|pause|listen|avoid|de-escalate|wait|tone|restraint)\b/.test(lower),
+    incentives: /\b(incentive|motivation|leverage|reward|pressure|reputation|cost)\b/.test(lower),
   };
-
-  const signalScore = Object.values(signals).filter(Boolean).length * 8;
-  const lengthScore = Math.min(34, Math.floor(words * 1.2));
-  const categoryBonus =
-    orchestration.category === "debate" && signals.evidence && signals.perspective
-      ? 8
-      : orchestration.category === "decisions" && signals.tradeoff && signals.action
-        ? 8
-        : orchestration.category === "ethics" && signals.perspective && signals.tradeoff
-          ? 8
-          : 0;
+  const behavioral = {
+    evidence: clamp((signals.evidence ? 72 : 42) + Math.min(18, words)),
+    adaptability: clamp((signals.alternatives ? 68 : 40) + (signals.tradeoff ? 12 : 0) + Math.min(12, words / 2)),
+    emotionalControl: clamp((signals.emotionalControl ? 74 : 44) + (signals.perspective ? 10 : 0)),
+    incentives: clamp((signals.incentives ? 74 : 42) + (signals.tradeoff ? 10 : 0)),
+  };
+  const weights: Record<ReasoningCategory, (keyof typeof behavioral)[]> = {
+    debate: ["evidence", "adaptability"],
+    decisions: ["incentives", "adaptability"],
+    ethics: ["emotionalControl", "adaptability"],
+    creative: ["adaptability", "evidence"],
+    relationships: ["emotionalControl", "incentives"],
+    general: ["evidence", "adaptability", "incentives"],
+  };
+  const weighted = weights[category].reduce((sum, key) => sum + behavioral[key], 0) / weights[category].length;
+  const missingMoves = Object.entries(signals)
+    .filter(([, present]) => !present)
+    .map(([name]) => name)
+    .slice(0, 4);
 
   return {
-    score: Math.min(92, Math.max(45, 44 + lengthScore + signalScore + categoryBonus)),
+    behavioral,
+    missingMoves,
+    score: clamp(35 + Math.min(28, words * 1.1) + weighted * 0.45),
     signals,
-    rubric: orchestration.verifierRubric,
   };
 }
 
-function buildFallbackFollowUp(orchestration: CategoryOrchestration, response: string) {
-  const prompts: Record<string, string[]> = {
-    debate: [
-      "What is the strongest objection to your claim, and what evidence would actually answer it?",
-      "Which assumption would an intelligent opponent attack first?",
-    ],
-    decisions: [
-      "What option preserves the most upside while limiting the worst downside?",
-      "What would change your mind before you commit to the next step?",
-    ],
-    ethics: [
-      "Which stakeholder pays the largest hidden cost, and what principle explains your answer?",
-      "Does your reasoning still hold if the roles are reversed?",
-    ],
-    creative: [
-      "What constraint would make this idea sharper instead of broader?",
-      "What is a more surprising frame that still solves the same problem?",
-    ],
-    general: [
-      "What evidence would most improve or weaken your current reasoning?",
-      "What is the next concrete step that tests your assumption fastest?",
-    ],
-  };
-  const options = prompts[orchestration.category] || prompts.general;
+function ensureString(value: unknown, fallback: string) {
+  const text = String(value || "").trim();
 
-  return options[hashText(`${response}:${orchestration.cadenceKey}`) % options.length];
+  return text || fallback;
 }
 
-function normalizeFeedback(
-  parsed: Partial<ReasoningFeedback>,
-  response: string,
-  orchestration: CategoryOrchestration,
-  memory?: any
-): ReasoningFeedback {
-  const verifier = localVerifier(response, orchestration);
-  const aiScore = clampScore(parsed.score);
-  const score = Math.round(aiScore * 0.72 + verifier.score * 0.28);
-  const recentFollowUps: string[] = memory?.recentFollowUps || [];
-  let followUp = String(parsed.followUp || "").trim();
+function ensureList(value: unknown, fallback: string[]) {
+  if (!Array.isArray(value)) return fallback;
 
-  if (!followUp || recentFollowUps.some((recent) => recent.toLowerCase() === followUp.toLowerCase())) {
-    followUp = buildFallbackFollowUp(orchestration, response);
-  }
+  return Array.from(new Set(value.map((item) => String(item || "").trim()).filter(Boolean))).slice(0, 4);
+}
+
+function sanitizeFeedback(parsed: any, verifier: ReturnType<typeof verifierEngine>, prompt: typeof categoryPromptMap[ReasoningCategory]) {
+  const aiScore = Number(parsed?.score);
+  const score = clamp(Number.isFinite(aiScore) ? aiScore * 0.72 + verifier.score * 0.28 : verifier.score);
 
   return {
-    score,
-    xp: Math.max(25, Math.min(90, Number(parsed.xp) || (score >= 82 ? 65 : score >= 70 ? 50 : 35))),
-    trait: String(parsed.trait || orchestration.traitHints[0]).trim(),
-    analysis:
-      String(parsed.analysis || "").trim() ||
-      "Your response has the start of a useful reasoning pattern, but it needs clearer evidence, tradeoffs, and a sharper next step.",
-    contrarian:
-      String(parsed.contrarian || "").trim() ||
-      "What if the part that feels most obvious is the part most worth testing?",
-    followUp,
-    strengths: uniqList(parsed.strengths, [orchestration.scoringFocus[0], orchestration.traitHints[0]]),
-    weaknesses: uniqList(parsed.weaknesses, ["needs clearer evidence", "sharpen the next action"]),
-    verifier: {
-      ...verifier,
-      aiScore,
-      blendedScore: score,
-      cadenceKey: orchestration.cadenceKey,
+    analysis: ensureString(parsed?.analysis, "The model returned incomplete analysis. Try again with a more specific response."),
+    behavioral: {
+      evidence: clamp(Number(parsed?.behavioral?.evidence) || verifier.behavioral.evidence),
+      adaptability: clamp(Number(parsed?.behavioral?.adaptability) || verifier.behavioral.adaptability),
+      emotionalControl: clamp(Number(parsed?.behavioral?.emotionalControl) || verifier.behavioral.emotionalControl),
+      incentives: clamp(Number(parsed?.behavioral?.incentives) || verifier.behavioral.incentives),
     },
+    contrarian: ensureString(parsed?.contrarian, "What would make your current interpretation fail under pressure?"),
+    followUp: ensureString(parsed?.followUp, "What is the next test that would most quickly expose whether your reasoning is sound?"),
+    score,
+    strengths: ensureList(parsed?.strengths, prompt.lens.slice(0, 2)),
+    trait: ensureString(parsed?.trait, prompt.traits[0]),
+    weaknesses: ensureList(parsed?.weaknesses, verifier.missingMoves),
+    xp: clamp(Number(parsed?.xp) || (score >= 85 ? 70 : score >= 70 ? 52 : 35), 20, 95),
+    verifier,
   };
 }
-
-const fallbackAnalysis = (
-  response: string,
-  orchestration: CategoryOrchestration,
-  memory?: any
-) => {
-  const verifier = localVerifier(response, orchestration);
-
-  return normalizeFeedback(
-    {
-      score: verifier.score,
-      xp: verifier.score >= 75 ? 55 : 40,
-      trait: orchestration.traitHints[0],
-      analysis:
-        response.trim().split(/\s+/).length < 25
-          ? `Your ${orchestration.category} response is too brief to show full reasoning. Add ${orchestration.scoringFocus.slice(0, 3).join(", ")}.`
-          : `Your response shows initial judgment. The strongest upgrade is to make ${orchestration.scoringFocus[0]} and ${orchestration.scoringFocus[1]} explicit.`,
-      contrarian: "What if your first interpretation is directionally right but missing the incentive that changes the outcome?",
-      followUp: buildFallbackFollowUp(orchestration, response),
-      strengths: [orchestration.scoringFocus[0], orchestration.traitHints[0]],
-      weaknesses: [`needs stronger ${orchestration.scoringFocus[1]}`, "make the next step testable"],
-    },
-    response,
-    orchestration,
-    memory
-  );
-};
 
 async function loadProfile(userId?: string) {
-  if (!userId || !hasSupabaseAdminEnv() || !supabaseAdmin) {
-    return null;
-  }
+  if (!userId || !hasSupabaseAdminEnv() || !supabaseAdmin) return null;
 
-  const { data } = await supabaseAdmin
-    .from("user_profiles")
-    .select("*")
-    .eq("id", userId)
-    .single();
+  const { data } = await supabaseAdmin.from("user_profiles").select("*").eq("id", userId).single();
 
   return data;
 }
 
-async function updateTrait(userId: string, traitName: string, reasoningScore: number) {
-  if (!hasSupabaseAdminEnv() || !supabaseAdmin || !traitName) {
-    return null;
-  }
+async function updateTrait(userId: string, traitName: string, score: number) {
+  if (!hasSupabaseAdminEnv() || !supabaseAdmin || !traitName) return null;
 
   const { data: existing } = await supabaseAdmin
     .from("cognitive_traits")
@@ -350,32 +216,43 @@ async function updateTrait(userId: string, traitName: string, reasoningScore: nu
     .eq("user_id", userId)
     .eq("trait_name", traitName)
     .single();
-
-  const nextScore = evolveTraitScore(existing?.trait_score || 50, reasoningScore);
+  const nextScore = evolveTraitScore(existing?.trait_score || 50, score);
 
   if (existing?.id) {
-    await supabaseAdmin
-      .from("cognitive_traits")
-      .update({
-        trait_score: nextScore,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", existing.id);
+    await supabaseAdmin.from("cognitive_traits").update({ trait_score: nextScore, updated_at: new Date().toISOString() }).eq("id", existing.id);
   } else {
-    await supabaseAdmin.from("cognitive_traits").insert({
-      user_id: userId,
-      trait_name: traitName,
-      trait_score: nextScore,
-    });
+    await supabaseAdmin.from("cognitive_traits").insert({ user_id: userId, trait_name: traitName, trait_score: nextScore });
   }
 
   return { traitName, traitScore: nextScore };
 }
 
-async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
-  if (!hasSupabaseAdminEnv() || !supabaseAdmin) {
-    return null;
+async function updateReasoningProfile(userId: string, feedback: ReturnType<typeof sanitizeFeedback>) {
+  if (!hasSupabaseAdminEnv() || !supabaseAdmin) return null;
+
+  const { data: existing } = await supabaseAdmin.from("reasoning_profiles").select("*").eq("user_id", userId).single();
+  const blend = (current: number | null | undefined, next: number) => clamp((Number(current) || 50) * 0.75 + next * 0.25);
+  const nextProfile = {
+    user_id: userId,
+    evidence_score: blend(existing?.evidence_score, feedback.behavioral.evidence),
+    adaptability_score: blend(existing?.adaptability_score, feedback.behavioral.adaptability),
+    emotional_control_score: blend(existing?.emotional_control_score, feedback.behavioral.emotionalControl),
+    incentives_score: blend(existing?.incentives_score, feedback.behavioral.incentives),
+    dominant_trait: feedback.trait,
+    updated_at: new Date().toISOString(),
+  };
+
+  if (existing?.id) {
+    const { data } = await supabaseAdmin.from("reasoning_profiles").update(nextProfile).eq("id", existing.id).select("*").single();
+    return data;
   }
+
+  const { data } = await supabaseAdmin.from("reasoning_profiles").insert(nextProfile).select("*").single();
+  return data;
+}
+
+async function updateUserProgress(userId: string, feedback: ReturnType<typeof sanitizeFeedback>) {
+  if (!hasSupabaseAdminEnv() || !supabaseAdmin) return null;
 
   const { data: existing } = await supabaseAdmin
     .from("user_profiles")
@@ -383,15 +260,14 @@ async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
     .eq("id", userId)
     .single();
 
-  if (!existing) {
-    return null;
-  }
+  if (!existing) return null;
 
-  const nextXp = (existing.xp || 0) + (feedback.xp || 0);
-  const nextScore = calculateReasoningScore(existing.reasoning_score || 70, feedback.score || 70);
+  const nextXp = (existing.xp || 0) + feedback.xp;
+  const nextScore = calculateReasoningScore(existing.reasoning_score || 70, feedback.score);
   const nextStreak = calculateNextStreak(existing.updated_at || null, existing.streak || 0);
   const nextRank = getRankFromXp(nextXp);
-  const evolvedTrait = await updateTrait(userId, feedback.trait, feedback.score || 70);
+  const evolvedTrait = await updateTrait(userId, feedback.trait, feedback.score);
+  const reasoningProfile = await updateReasoningProfile(userId, feedback);
 
   await supabaseAdmin
     .from("user_profiles")
@@ -405,206 +281,160 @@ async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
     })
     .eq("id", userId);
 
-  return {
-    xp: nextXp,
-    reasoningScore: nextScore,
-    streak: nextStreak,
-    rank: nextRank,
-    evolvedTrait,
-  };
+  return { evolvedTrait, rank: nextRank, reasoningProfile, reasoningScore: nextScore, streak: nextStreak, xp: nextXp };
 }
 
-async function persistSession({
-  userId,
-  challengeId,
-  category,
-  challenge,
-  response,
-  feedback,
-  memory,
-  orchestration,
-}: {
-  userId?: string;
-  challengeId?: string;
-  category?: string;
+async function persistSession(input: {
   challenge: string;
-  response: string;
-  feedback: ReasoningFeedback;
+  challengeId?: string;
+  conversationId: string;
+  feedback: ReturnType<typeof sanitizeFeedback>;
   memory?: any;
-  orchestration: CategoryOrchestration;
+  mode: string;
+  prompt: typeof categoryPromptMap[ReasoningCategory];
+  response: string;
+  sessionId: string;
+  userId?: string;
 }) {
-  if (!hasSupabaseAdminEnv() || !supabaseAdmin || !userId) {
-    return null;
-  }
+  if (!hasSupabaseAdminEnv() || !supabaseAdmin || !input.userId) return null;
 
   await supabaseAdmin.from("reasoning_sessions").insert({
-    user_id: userId,
-    challenge_id: challengeId || "daily",
-    challenge_category: category || orchestration.category,
-    prompt: challenge,
-    response,
-    ai_analysis: feedback.analysis,
-    contrarian_response: feedback.contrarian,
-    follow_up: feedback.followUp,
-    reasoning_score: feedback.score,
-    xp_awarded: feedback.xp,
-    trait_detected: feedback.trait,
-    strengths: feedback.strengths,
-    weaknesses: feedback.weaknesses,
-    verifier_score: feedback.verifier?.blendedScore || feedback.score,
-    orchestration_category: orchestration.category,
-    cadence_key: orchestration.cadenceKey,
-    memory_snapshot: memory || null,
+    user_id: input.userId,
+    session_id: input.sessionId,
+    conversation_id: input.conversationId,
+    challenge_id: input.challengeId || "daily",
+    challenge_category: input.prompt === categoryPromptMap.debate ? "debate" : undefined,
+    prompt: input.challenge,
+    response: input.response,
+    ai_analysis: input.feedback.analysis,
+    contrarian_response: input.feedback.contrarian,
+    follow_up: input.feedback.followUp,
+    reasoning_score: input.feedback.score,
+    xp_awarded: input.feedback.xp,
+    trait_detected: input.feedback.trait,
+    strengths: input.feedback.strengths,
+    weaknesses: input.feedback.weaknesses,
+    verifier_score: input.feedback.verifier.score,
+    orchestration_category: input.prompt.evaluatorRole,
+    cadence_key: input.mode,
+    memory_snapshot: input.memory || null,
   });
 
   await supabaseAdmin.from("reasoning_followups").insert({
-    user_id: userId,
-    challenge_id: challengeId || "daily",
-    challenge_category: category || orchestration.category,
-    follow_up: feedback.followUp,
-    cadence_key: orchestration.cadenceKey,
+    user_id: input.userId,
+    session_id: input.sessionId,
+    conversation_id: input.conversationId,
+    challenge_id: input.challengeId || "daily",
+    challenge_category: input.prompt.evaluatorRole,
+    follow_up: input.feedback.followUp,
+    cadence_key: input.mode,
   });
 
   await supabaseAdmin.from("reasoning_verifier_scores").insert({
-    user_id: userId,
-    challenge_id: challengeId || "daily",
-    challenge_category: category || orchestration.category,
-    ai_score: feedback.verifier?.aiScore || feedback.score,
-    verifier_score: feedback.verifier?.score || feedback.score,
-    blended_score: feedback.score,
-    rubric: orchestration.verifierRubric,
-    signals: feedback.verifier || {},
+    user_id: input.userId,
+    session_id: input.sessionId,
+    conversation_id: input.conversationId,
+    challenge_id: input.challengeId || "daily",
+    challenge_category: input.prompt.evaluatorRole,
+    ai_score: input.feedback.score,
+    verifier_score: input.feedback.verifier.score,
+    blended_score: input.feedback.score,
+    rubric: input.prompt.lens.join(", "),
+    signals: input.feedback.verifier,
   });
 
-  return updateUserProgress(userId, feedback);
+  return updateUserProgress(input.userId, input.feedback);
 }
 
 function jsonStreamEvent(type: string, payload: unknown) {
   return `event: ${type}\ndata: ${JSON.stringify(payload)}\n\n`;
 }
 
-async function callOpenAi({
-  apiKey,
-  profile,
-  memory,
-  orchestration,
-  challenge,
-  response,
-  stream,
-}: {
+function buildSystemPrompt(input: {
+  category: ReasoningCategory;
+  conversationId: string;
+  memory: any;
+  mode: string;
+  profile: any;
+  sessionId: string;
+  verifier: ReturnType<typeof verifierEngine>;
+}) {
+  const prompt = categoryPromptMap[input.category];
+
+  return [
+    "You are UThynk, an adaptive reasoning coach. Produce specific, non-repetitive feedback.",
+    `Session identity: sessionId=${input.sessionId}, conversationId=${input.conversationId}.`,
+    `Category: ${input.category}. Role: ${prompt.evaluatorRole}.`,
+    `Response mode: ${input.mode}. Do not reuse the same opening, cadence, or follow-up shape from prior turns.`,
+    `Reasoning lens: ${prompt.lens.join(", ")}.`,
+    `Follow-up directive: ${prompt.followUpDirective}`,
+    `Available trait labels: ${prompt.traits.join(", ")}.`,
+    `User profile: ${JSON.stringify(input.profile || null)}.`,
+    `Persistent memory: ${JSON.stringify(input.memory || null)}.`,
+    `Verifier engine result: ${JSON.stringify(input.verifier)}.`,
+    `Do not repeat these follow-ups: ${JSON.stringify(input.memory?.recentFollowUps || [])}.`,
+    "Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.",
+  ].join(" ");
+}
+
+async function callOpenAi(input: {
   apiKey: string;
-  profile?: any;
-  memory?: any;
-  orchestration: CategoryOrchestration;
+  category: ReasoningCategory;
   challenge: string;
+  conversationId: string;
+  memory: any;
+  mode: string;
+  profile: any;
   response: string;
+  sessionId: string;
   stream: boolean;
+  verifier: ReturnType<typeof verifierEngine>;
 }) {
   return fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${input.apiKey}` },
     body: JSON.stringify({
       model: process.env.OPENAI_MODEL || "gpt-4o-mini",
-      temperature: orchestration.temperature,
-      stream,
+      temperature: categoryPromptMap[input.category].temperature,
+      stream: input.stream,
+      response_format: { type: "json_object" },
       messages: [
-        {
-          role: "system",
-          content: buildAdaptiveSystemPrompt({ profile, memory, orchestration }),
-        },
+        { role: "system", content: buildSystemPrompt(input) },
         {
           role: "user",
-          content: JSON.stringify({
-            challenge,
-            userResponse: response,
-            category: orchestration.category,
-            historicalMemory: memory,
-            onboardingProfile: profile,
-            orchestration,
-          }),
+          content: JSON.stringify({ challenge: input.challenge, priorSessions: input.memory?.recentPatterns || [], response: input.response }),
         },
       ],
-      response_format: { type: "json_object" },
     }),
   });
 }
 
-async function nonStreamingFeedback(args: {
-  apiKey: string;
-  profile?: any;
-  memory?: any;
-  orchestration: CategoryOrchestration;
-  challenge: string;
-  response: string;
-}) {
-  const aiResponse = await callOpenAi({ ...args, stream: false });
-
-  if (!aiResponse.ok) {
-    return null;
-  }
+async function nonStreamingFeedback(input: Parameters<typeof callOpenAi>[0]) {
+  const aiResponse = await callOpenAi({ ...input, stream: false });
+  if (!aiResponse.ok) throw new Error("OpenAI reasoning request failed.");
 
   const data = await aiResponse.json();
   const content = data?.choices?.[0]?.message?.content;
+  if (!content) throw new Error("OpenAI returned an empty reasoning response.");
 
-  if (!content) {
-    return null;
-  }
-
-  try {
-    return JSON.parse(content);
-  } catch {
-    return null;
-  }
+  return JSON.parse(content);
 }
 
-function streamingFeedback(args: {
-  apiKey: string;
-  profile?: any;
-  memory?: any;
-  orchestration: CategoryOrchestration;
-  challenge: string;
-  response: string;
-  userId?: string;
-  challengeId?: string;
-  category?: string;
-}) {
+function streamingFeedback(input: Parameters<typeof callOpenAi>[0] & { challengeId?: string; userId?: string }) {
   const encoder = new TextEncoder();
-
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        controller.enqueue(
-          encoder.encode(jsonStreamEvent("orchestration", args.orchestration))
-        );
+        controller.enqueue(encoder.encode(jsonStreamEvent("orchestration", {
+          category: input.category,
+          conversationId: input.conversationId,
+          mode: input.mode,
+          sessionId: input.sessionId,
+          verifier: input.verifier,
+        })));
 
-        const aiResponse = await callOpenAi({ ...args, stream: true });
-
-        if (!aiResponse.ok || !aiResponse.body) {
-          const fallback = fallbackAnalysis(args.response, args.orchestration, args.memory);
-          const progression = await persistSession({ ...args, feedback: fallback });
-          const coachMessage = `${fallback.analysis}\n\nPushback: ${fallback.contrarian}\n\nNext Challenge: ${fallback.followUp}`;
-
-          for (let index = 0; index < coachMessage.length; index += 24) {
-            controller.enqueue(
-              encoder.encode(jsonStreamEvent("delta", { delta: coachMessage.slice(index, index + 24) }))
-            );
-          }
-
-          controller.enqueue(
-            encoder.encode(jsonStreamEvent("final", {
-              source: "fallback",
-              memory: args.memory,
-              orchestration: args.orchestration,
-              progression,
-              ...fallback,
-            }))
-          );
-          controller.close();
-          return;
-        }
+        const aiResponse = await callOpenAi({ ...input, stream: true });
+        if (!aiResponse.ok || !aiResponse.body) throw new Error("OpenAI streaming request failed.");
 
         const reader = aiResponse.body.getReader();
         const decoder = new TextDecoder();
@@ -613,7 +443,6 @@ function streamingFeedback(args: {
 
         while (true) {
           const { done, value } = await reader.read();
-
           if (done) break;
 
           buffer += decoder.decode(value, { stream: true });
@@ -622,64 +451,36 @@ function streamingFeedback(args: {
 
           for (const line of lines) {
             const trimmed = line.trim();
-
             if (!trimmed.startsWith("data:")) continue;
-
             const data = trimmed.slice(5).trim();
-
             if (data === "[DONE]") continue;
-
             const parsed = JSON.parse(data);
-            const delta = parsed?.choices?.[0]?.delta?.content || "";
-
-            if (delta) {
-              content += delta;
+            const token = parsed?.choices?.[0]?.delta?.content || "";
+            if (token) {
+              content += token;
+              controller.enqueue(encoder.encode(jsonStreamEvent("token", { token })));
             }
           }
         }
 
-        const parsed = JSON.parse(content);
-        const feedback = normalizeFeedback(parsed, args.response, args.orchestration, args.memory);
-        const progression = await persistSession({ ...args, feedback });
-        const coachMessage = `${feedback.analysis}\n\nPushback: ${feedback.contrarian}\n\nNext Challenge: ${feedback.followUp}`;
+        const feedback = sanitizeFeedback(JSON.parse(content), input.verifier, categoryPromptMap[input.category]);
+        const progression = await persistSession({
+          challenge: input.challenge,
+          challengeId: input.challengeId,
+          conversationId: input.conversationId,
+          feedback,
+          memory: input.memory,
+          mode: input.mode,
+          prompt: categoryPromptMap[input.category],
+          response: input.response,
+          sessionId: input.sessionId,
+          userId: input.userId,
+        });
 
-        for (let index = 0; index < coachMessage.length; index += 24) {
-          controller.enqueue(
-            encoder.encode(jsonStreamEvent("delta", { delta: coachMessage.slice(index, index + 24) }))
-          );
-        }
-
-        controller.enqueue(
-          encoder.encode(jsonStreamEvent("final", {
-            source: "openai",
-            memory: args.memory,
-            orchestration: args.orchestration,
-            onboardingProfile: args.profile,
-            progression,
-            ...feedback,
-          }))
-        );
+        controller.enqueue(encoder.encode(jsonStreamEvent("final", { source: "openai", memory: input.memory, mode: input.mode, progression, ...feedback })));
         controller.close();
-      } catch {
-        const fallback = fallbackAnalysis(args.response, args.orchestration, args.memory);
-        const progression = await persistSession({ ...args, feedback: fallback });
-        const coachMessage = `${fallback.analysis}\n\nPushback: ${fallback.contrarian}\n\nNext Challenge: ${fallback.followUp}`;
-
-        for (let index = 0; index < coachMessage.length; index += 24) {
-          controller.enqueue(
-            encoder.encode(jsonStreamEvent("delta", { delta: coachMessage.slice(index, index + 24) }))
-          );
-        }
-
-        controller.enqueue(
-          encoder.encode(jsonStreamEvent("final", {
-            source: "fallback",
-            memory: args.memory,
-            orchestration: args.orchestration,
-            progression,
-            ...fallback,
-          }))
-        );
+      } catch (error) {
+        controller.enqueue(encoder.encode(jsonStreamEvent("error", { error: error instanceof Error ? error.message : "Reasoning stream failed." })));
         controller.close();
       }
     },
@@ -699,94 +500,51 @@ export async function POST(request: Request) {
     const body = (await request.json()) as ReasoningRequest;
     const sessionUser = await getServerSessionUser();
     const userId = body.userId || sessionUser?.id;
+    const sessionId = body.sessionId || crypto.randomUUID();
+    const conversationId = body.conversationId || body.challengeId || sessionId;
     const challenge = body.challenge?.trim() || "Daily reasoning challenge";
     const response = body.response?.trim() || "";
 
     if (!response) {
-      return NextResponse.json(
-        { error: "A response is required before reasoning can be analyzed." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "A response is required before reasoning can be analyzed." }, { status: 400 });
     }
 
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json({ error: "OPENAI_API_KEY is required for adaptive reasoning. Static fallback is disabled." }, { status: 503 });
+    }
+
+    const category = normalizeCategory(body.category, challenge);
     const memory = await getReasoningMemory(userId);
     const profile = await loadProfile(userId);
-    const orchestration = buildOrchestration(body.category, challenge, response, memory);
-    const apiKey = process.env.OPENAI_API_KEY;
-    const wantsStream =
-      body.stream === true || request.headers.get("accept")?.includes("text/event-stream");
-
-    if (!apiKey) {
-      const fallback = fallbackAnalysis(response, orchestration, memory);
-      const progression = await persistSession({
-        userId,
-        challengeId: body.challengeId,
-        category: body.category,
-        challenge,
-        response,
-        feedback: fallback,
-        memory,
-        orchestration,
-      });
-
-      return NextResponse.json({
-        source: "fallback",
-        memory,
-        orchestration,
-        progression,
-        ...fallback,
-      });
-    }
+    const verifier = verifierEngine(response, category);
+    const modeSeed = hashText(`${category}:${sessionId}:${conversationId}:${challenge}:${response}:${memory?.recentFollowUps?.join("|") || ""}`);
+    const mode = responseModes[modeSeed % responseModes.length];
+    const wantsStream = body.stream === true || request.headers.get("accept")?.includes("text/event-stream");
+    const openAiArgs = { apiKey, category, challenge, conversationId, memory, mode, profile, response, sessionId, stream: false, verifier };
 
     if (wantsStream) {
-      return streamingFeedback({
-        apiKey,
-        profile,
-        memory,
-        orchestration,
-        challenge,
-        response,
-        userId,
-        challengeId: body.challengeId,
-        category: body.category,
-      });
+      return streamingFeedback({ ...openAiArgs, challengeId: body.challengeId, userId });
     }
 
-    const parsed = await nonStreamingFeedback({
-      apiKey,
-      profile,
-      memory,
-      orchestration,
-      challenge,
-      response,
-    });
-    const feedback = parsed
-      ? normalizeFeedback(parsed, response, orchestration, memory)
-      : fallbackAnalysis(response, orchestration, memory);
+    const feedback = sanitizeFeedback(await nonStreamingFeedback(openAiArgs), verifier, categoryPromptMap[category]);
     const progression = await persistSession({
-      userId,
-      challengeId: body.challengeId,
-      category: body.category,
       challenge,
-      response,
+      challengeId: body.challengeId,
+      conversationId,
       feedback,
       memory,
-      orchestration,
+      mode,
+      prompt: categoryPromptMap[category],
+      response,
+      sessionId,
+      userId,
     });
 
-    return NextResponse.json({
-      source: parsed ? "openai" : "fallback",
-      memory,
-      orchestration,
-      onboardingProfile: profile,
-      progression,
-      ...feedback,
-    });
-  } catch {
+    return NextResponse.json({ source: "openai", memory, mode, progression, ...feedback });
+  } catch (error) {
     return NextResponse.json(
-      {
-        error: "Reasoning analysis failed. Try again with a clearer response.",
-      },
+      { error: error instanceof Error ? error.message : "Reasoning analysis failed." },
       { status: 500 }
     );
   }
