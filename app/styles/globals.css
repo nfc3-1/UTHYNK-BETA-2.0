@@ -21,13 +21,6 @@ body{
   margin:0;
   color: var(--text);
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  background:
-    radial-gradient(1200px 800px at 30% 10%, rgba(246,198,79,0.12), transparent 55%),
-    radial-gradient(900px 700px at 80% 20%, rgba(255,255,255,0.10), transparent 60%),
-    linear-gradient(180deg, var(--uthynk-bg-top) 0%, var(--uthynk-bg-bottom) 100%);
-}
-
-body:has(.reasoningShell){
   background:#090d1b;
 }
 
