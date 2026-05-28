@@ -142,7 +142,7 @@ export default function DashboardPage() {
               <div key={session.id}>
                 <strong>{session.reasoning_score}</strong>
                 <span>
-                  {session.challenge_category} · {session.trait_detected}
+                  {session.challenge_category} - {session.trait_detected}
                 </span>
               </div>
             ))}
@@ -150,7 +150,7 @@ export default function DashboardPage() {
         </section>
 
         <section className="card focusPanel">
-          <div className="panelLabel">Adaptive Recommendations</div>
+          <div className="panelLabel">UThynk Recommendations</div>
 
           <div className="focusGrid" style={{ gridTemplateColumns: "1fr" }}>
             {recommendations.map((challenge) => (
@@ -161,7 +161,7 @@ export default function DashboardPage() {
               >
                 <strong>{challenge.title}</strong>
                 <span>
-                  {challenge.category} · {challenge.difficulty}
+                  {challenge.category} - {challenge.difficulty}
                 </span>
               </Link>
             ))}
