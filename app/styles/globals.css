@@ -27,6 +27,10 @@ body{
     linear-gradient(180deg, var(--uthynk-bg-top) 0%, var(--uthynk-bg-bottom) 100%);
 }
 
+body:has(.reasoningShell){
+  background:#090d1b;
+}
+
 a{
   color:inherit;
   text-decoration:none;
@@ -376,6 +380,7 @@ a{
 
 .reasoningShell{
   width:min(1540px,96vw);
+  min-height:100vh;
 }
 
 .reasoningShell .appTop{
