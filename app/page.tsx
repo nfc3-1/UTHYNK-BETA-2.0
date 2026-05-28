@@ -126,7 +126,7 @@ export default function Home() {
         <section className="appHero card">
           <div className="heroCopy">
             <div className="eyebrow">
-              Adaptive cognition - Recursive reasoning - Live UThynk
+              Recursive cognition - Live reasoning - UThynk
             </div>
 
             <h1>Train your thinking like a skill.</h1>
@@ -171,7 +171,7 @@ export default function Home() {
               className="btn btnPrimary"
               href={`/reasoning?id=${challenge.id}`}
             >
-              Begin Adaptive Loop
+              Begin UThynk Loop
             </Link>
           </div>
         </section>
