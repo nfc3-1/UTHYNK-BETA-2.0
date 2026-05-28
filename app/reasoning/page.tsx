@@ -588,7 +588,7 @@ export default function ReasoningPage() {
       <Suspense
         fallback={
           <section className="card reasoningMain" style={{ marginTop: 18 }}>
-            <div className="panelLabel">Loading Adaptive Session</div>
+            <div className="panelLabel">Loading UThynk Session</div>
             <p className="panelNote">Restoring your cognitive history...</p>
           </section>
         }
