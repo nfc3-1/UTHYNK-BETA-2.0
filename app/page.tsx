@@ -110,7 +110,7 @@ export default function Home() {
               height={44}
               priority
             />
-            <span>Adaptive AI Reasoning Coach</span>
+            <span>UThynk</span>
           </Link>
 
           <nav className="appNav" aria-label="Main navigation">
@@ -126,13 +126,13 @@ export default function Home() {
         <section className="appHero card">
           <div className="heroCopy">
             <div className="eyebrow">
-              Adaptive cognition - Recursive reasoning - Live coaching
+              Adaptive cognition - Recursive reasoning - Live UThynk
             </div>
 
             <h1>Train your thinking like a skill.</h1>
 
             <p>
-              UThynk is an adaptive reasoning coach that remembers your thinking patterns,
+              UThynk remembers your thinking patterns,
               escalates challenge difficulty, tracks cognitive growth, and pushes back on weak assumptions.
             </p>
 
@@ -151,12 +151,12 @@ export default function Home() {
           </div>
 
           <div className="challengePreview">
-            <div className="panelLabel">Adaptive Coach Session</div>
+            <div className="panelLabel">UThynk Session</div>
 
             <h2>{challenge.prompt}</h2>
 
             <p>
-              The AI coach remembers previous reasoning patterns and adjusts challenge intensity over time.
+              UThynk remembers previous reasoning patterns and adjusts challenge intensity over time.
             </p>
 
             <div className="progressBar" aria-label="Cognitive progression">
@@ -200,7 +200,7 @@ export default function Home() {
           </aside>
 
           <section className="card methodPanel">
-            <div className="panelLabel">Adaptive Coach System</div>
+            <div className="panelLabel">UThynk System</div>
 
             <div className="methodSteps">
               <div>
@@ -210,7 +210,7 @@ export default function Home() {
 
               <div>
                 <strong>2</strong>
-                <span>The AI coach critiques assumptions and reasoning patterns.</span>
+                <span>UThynk critiques assumptions and reasoning patterns.</span>
               </div>
 
               <div>
