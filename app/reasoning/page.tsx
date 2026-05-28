@@ -54,14 +54,9 @@ const cognitionFeed = [
   },
 ];
 
-const categoryLinks = [
-  "Workplace Strategy",
-  "Financial Judgment",
-  "Media Manipulation",
-  "Logic Under Pressure",
-  "Social Intelligence",
-  "Applied Ethics",
-];
+const categoryLinks = Array.from(
+  new Set(challenges.map((challenge) => challenge.category))
+);
 
 function ReasoningExperience() {
   const searchParams = useSearchParams();
