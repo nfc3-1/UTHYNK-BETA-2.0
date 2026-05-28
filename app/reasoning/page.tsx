@@ -16,8 +16,52 @@ const initialFeedback = {
   followUp:
     "What specific next step protects your position without overreacting?",
   strengths: ["strategic restraint", "long-term awareness"],
+  verifier: {
+    behavioral: {
+      adaptability: 70,
+      emotionalControl: 72,
+      evidence: 68,
+      incentives: 66,
+    },
+    score: 72,
+    signals: {
+      incentives: false,
+    },
+  },
   weaknesses: ["needs incentive analysis", "clarify the next step"],
 };
+
+const cognitionFeed = [
+  {
+    title: "Manipulation pattern",
+    text: "Urgency narrows attention. When a prompt demands speed, ask who benefits from you skipping verification.",
+  },
+  {
+    title: "Strategic insight",
+    text: "A strong move preserves options. If an answer commits early, test the reversible path first.",
+  },
+  {
+    title: "Historical contradiction",
+    text: "Many confident public narratives survive by hiding inconvenient timelines. Sequence the facts before judging motive.",
+  },
+  {
+    title: "Bias example",
+    text: "Availability bias makes the vivid example feel typical. Ask for the base rate before trusting the story.",
+  },
+  {
+    title: "Probability prompt",
+    text: "Replace certainty with odds: what would make this 30%, 60%, or 90% likely?",
+  },
+];
+
+const categoryLinks = [
+  "Workplace Strategy",
+  "Financial Judgment",
+  "Media Manipulation",
+  "Logic Under Pressure",
+  "Social Intelligence",
+  "Applied Ethics",
+];
 
 function ReasoningExperience() {
   const searchParams = useSearchParams();
@@ -47,6 +91,7 @@ function ReasoningExperience() {
   const [error, setError] = useState("");
   const [difficulty, setDifficulty] = useState(challenge.difficulty);
   const [pressure, setPressure] = useState("Moderate");
+  const [profile, setProfile] = useState<any>(null);
   const [feedback, setFeedback] = useState({
     ...initialFeedback,
     trait: challenge.trait,
@@ -54,7 +99,7 @@ function ReasoningExperience() {
 
   const [conversation, setConversation] = useState<any[]>([
     {
-      role: "coach",
+      role: "uthynk",
       content:
         "Welcome back. I remember your previous reasoning patterns. Let's continue sharpening your thinking.",
     },
@@ -66,6 +111,9 @@ function ReasoningExperience() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
+    const storedProfile = localStorage.getItem("uthynk-profile");
+    setProfile(storedProfile ? JSON.parse(storedProfile) : null);
 
     conversationIdRef.current =
       conversationIdRef.current ||
@@ -155,11 +203,11 @@ function ReasoningExperience() {
       setLoading(true);
       setError("");
       setStreamingText("");
-      let profile: any = null;
+      let activeProfile: any = null;
 
       if (typeof window !== "undefined") {
         const stored = localStorage.getItem("uthynk-profile");
-        profile = stored ? JSON.parse(stored) : null;
+        activeProfile = stored ? JSON.parse(stored) : null;
       }
 
       setConversation((prev) => [
@@ -183,7 +231,7 @@ function ReasoningExperience() {
           response,
           conversationId: conversationIdRef.current,
           sessionId: sessionIdRef.current,
-          userId: profile?.id,
+          userId: activeProfile?.id,
           stream: true,
         }),
       });
@@ -276,19 +324,20 @@ function ReasoningExperience() {
         };
 
         localStorage.setItem("uthynk-profile", JSON.stringify(nextProfile));
+        setProfile(nextProfile);
         localStorage.setItem("uthynk-last-completed-date", today);
         document.cookie = `uthynk-profile=${encodeURIComponent(
           JSON.stringify(nextProfile)
         )}; path=/; max-age=2592000; SameSite=Lax`;
       }
 
-      const coachMessage = `${data.analysis}\n\nPushback: ${data.contrarian}\n\nNext Challenge: ${data.followUp}`;
+      const uthynkMessage = `${data.analysis}\n\nPushback: ${data.contrarian}\n\nNext Challenge: ${data.followUp}`;
 
       setConversation((prev) => [
         ...prev,
         {
-          role: "coach",
-          content: coachMessage,
+          role: "uthynk",
+          content: uthynkMessage,
         },
       ]);
 
@@ -324,89 +373,120 @@ function ReasoningExperience() {
     }
   }
 
+  const strongestOpposingCase =
+    feedback.contrarian || "What would a careful opponent say is missing from your reasoning?";
+  const timeline = [
+    {
+      title: "Session continuity",
+      text: `${conversation.length} reasoning turns in this thread. Current pressure: ${pressure}.`,
+    },
+    {
+      title: "Prior contradiction",
+      text: feedback.contrarian,
+    },
+    {
+      title: "Evolving insight",
+      text: feedback.analysis,
+    },
+    {
+      title: "Recursive follow-up",
+      text: feedback.followUp,
+    },
+  ];
+
   return (
-    <section className="reasoningGrid">
-      <article className="card reasoningMain">
-        <div className="panelLabel">
-          Adaptive Cognitive Session - {challenge.category}
-        </div>
-
-        <h1>{challenge.prompt}</h1>
-
-        <p className="panelNote">
-          The coach remembers previous reasoning patterns, escalates difficulty dynamically,
-          and continuously adapts pressure levels.
-        </p>
-
-        <div
-          style={{
-            display: 'flex',
-            gap: 12,
-            marginBottom: 18,
-            flexWrap: 'wrap',
-          }}
-        >
-          <div className="rewardCard">
-            <strong>{difficulty.toUpperCase()}</strong>
-            <span>Adaptive Difficulty</span>
+    <section className="uthynkReasoningLayout">
+      <aside className="uthynkSidePanel uthynkLeftPanel">
+        <div className="panelLabel">Identity</div>
+        <div className="identityStack">
+          <div>
+            <span>Rank</span>
+            <strong>{profile?.rank || "Observer"}</strong>
           </div>
-
-          <div className="rewardCard">
-            <strong>{pressure}</strong>
-            <span>Cognitive Pressure</span>
+          <div>
+            <span>Streak</span>
+            <strong>{profile?.streak || 0} days</strong>
           </div>
-
-          <div className="rewardCard">
-            <strong>{feedback.trait}</strong>
-            <span>Evolving Trait</span>
+          <div>
+            <span>Trait</span>
+            <strong>{profile?.primary_trait || feedback.trait}</strong>
+          </div>
+          <div>
+            <span>Progression</span>
+            <strong>{profile?.reasoning_score || feedback.score}</strong>
           </div>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gap: 12,
-            marginBottom: 20,
-            maxHeight: 340,
-            overflowY: 'auto',
-          }}
-        >
+        <div className="progressBar" aria-label="Identity progression">
+          <div
+            className="progressFill uthynkProgressFill"
+            style={{ width: `${Math.min(100, profile?.reasoning_score || feedback.score)}%` }}
+          />
+        </div>
+
+        <div className="traitList">
+          {feedback.strengths.map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+          {feedback.weaknesses.map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
+      </aside>
+
+      <main className="uthynkConversationPanel">
+        <div className="conversationHeader">
+          <div>
+            <div className="panelLabel">Live UThynk Conversation</div>
+            <h1>{challenge.prompt}</h1>
+          </div>
+          <div className="threadMeta">
+            <span>{challenge.category}</span>
+            <span>{difficulty}</span>
+            <span>{pressure}</span>
+          </div>
+        </div>
+
+        <div className="conversationThread" aria-live="polite">
           {conversation.map((item, index) => (
             <div
-              key={index}
-              className="coachBlock"
-              style={{
-                border:
-                  item.role === 'coach'
-                    ? '1px solid rgba(94,234,212,0.25)'
-                    : '1px solid rgba(255,255,255,0.08)',
-              }}
+              key={`${item.role}-${index}`}
+              className={`messageBubble ${item.role === "user" ? "userBubble" : "uthynkBubble"}`}
             >
-              <span>
-                {item.role === 'coach' ? 'UThynk Coach' : 'You'}
-              </span>
+              <span>{item.role === "user" ? "You" : "UThynk"}</span>
               <p>{item.content}</p>
             </div>
           ))}
 
           {streamingText ? (
-            <div className="coachBlock highlightBlock">
-              <span>Streaming Coach Response</span>
+            <div className="messageBubble uthynkBubble liveBubble">
+              <span>UThynk reasoning live</span>
               <p>{streamingText}</p>
             </div>
           ) : null}
         </div>
 
+        <section className="contradictionStrip">
+          <div>
+            <span>Contradiction prompt</span>
+            <p>{strongestOpposingCase}</p>
+          </div>
+          <div>
+            <span>Recursive follow-up</span>
+            <p>{feedback.followUp}</p>
+          </div>
+        </section>
+
         <label className="responseLabel" htmlFor="response">
-          Continue the reasoning session
+          Continue with UThynk
         </label>
 
         <textarea
           id="response"
-          className="textarea responseBox"
+          className="textarea responseBox conversationInput"
           value={response}
           onChange={(e) => setResponse(e.target.value)}
-          placeholder="Respond by typing or use voice input below."
+          placeholder="Make a claim, add evidence, test an assumption, or respond by voice."
         />
 
         {error ? <p className="panelNote">{error}</p> : null}
@@ -418,7 +498,7 @@ function ReasoningExperience() {
             disabled={loading || !response.trim()}
             onClick={analyzeReasoning}
           >
-            {loading ? 'Coach is Thinking...' : 'Continue Adaptive Loop'}
+            {loading ? 'UThynk is reasoning...' : 'Send to UThynk'}
           </button>
 
           <button
@@ -431,52 +511,60 @@ function ReasoningExperience() {
           >
             Hold To Talk
           </button>
-
-          <Link className="btn" href="/">
-            Home
-          </Link>
-        </div>
-      </article>
-
-      <aside className="card coachPanel">
-        <div className="panelLabel">Live Cognitive Evolution</div>
-
-        <div className="rewardCard">
-          <strong>+{feedback.xp} XP</strong>
-          <span>Reasoning Score: {feedback.score}</span>
-          <span>Trait Evolution Active</span>
         </div>
 
-        <div className="progressBar" aria-label="Reasoning evolution">
-          <div
-            className="progressFill"
-            style={{ width: `${feedback.score}%` }}
-          />
-        </div>
-
-        <div className="coachBlock highlightBlock">
-          <span>Identity Reinforcement</span>
-          <p>
-            Your reasoning identity evolves continuously based on strategic depth,
-            emotional control, incentive awareness, and intellectual flexibility.
-          </p>
-        </div>
-
-        <div className="feedbackGrid">
-          <div>
-            <strong>Strengths</strong>
-            {feedback.strengths?.map((item) => (
-              <small key={item}>{item}</small>
+        <section className="reasoningTimeline">
+          <div className="panelLabel">Reasoning Timeline</div>
+          <div className="timelineRail">
+            {timeline.map((item) => (
+              <article key={item.title}>
+                <strong>{item.title}</strong>
+                <p>{item.text}</p>
+              </article>
             ))}
           </div>
+        </section>
+      </main>
 
-          <div>
-            <strong>Pressure Areas</strong>
-            {feedback.weaknesses?.map((item) => (
-              <small key={item}>{item}</small>
+      <aside className="uthynkSidePanel uthynkRightPanel">
+        <section>
+          <div className="panelLabel">Categories</div>
+          <div className="categoryPills">
+            {categoryLinks.map((item) => (
+              <span key={item}>{item}</span>
             ))}
           </div>
-        </div>
+        </section>
+
+        <section>
+          <div className="panelLabel">Did You Know?</div>
+          <div className="cognitionFeed">
+            {cognitionFeed.map((item) => (
+              <article key={item.title}>
+                <strong>{item.title}</strong>
+                <p>{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="logicSystem">
+          <div className="panelLabel">Logic Arguments</div>
+          <div className="logicGrid">
+            <div><span>Claim</span><p>{response || "State the position you want UThynk to evaluate."}</p></div>
+            <div><span>Evidence</span><p>{feedback.strengths.join(", ") || "Support the claim with examples, data, or observation."}</p></div>
+            <div><span>Counterargument</span><p>{feedback.contrarian}</p></div>
+            <div><span>Contradiction analysis</span><p>{feedback.weaknesses.join(", ")}</p></div>
+            <div><span>Strongest opposing case</span><p>{strongestOpposingCase}</p></div>
+          </div>
+        </section>
+
+        <section className="logicScores">
+          <div><span>Logic quality</span><strong>{feedback.score}</strong></div>
+          <div><span>Evidence strength</span><strong>{feedback.verifier?.behavioral?.evidence || feedback.score}</strong></div>
+          <div><span>Emotional rigidity</span><strong>{100 - (feedback.verifier?.behavioral?.emotionalControl || 50)}</strong></div>
+          <div><span>Manipulation tactics</span><strong>{feedback.verifier?.signals?.incentives ? "Flagged" : "Scanning"}</strong></div>
+        </section>
       </aside>
     </section>
   );
