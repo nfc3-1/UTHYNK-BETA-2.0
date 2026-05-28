@@ -21,7 +21,7 @@ body{
   margin:0;
   color: var(--text);
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  background:#090d1b;
+  background:#121936;
 }
 
 a{
@@ -377,7 +377,7 @@ a{
 }
 
 .reasoningShell .appTop{
-  background:rgba(8,12,22,0.86);
+  background:rgba(18,25,54,0.90);
   border-color:rgba(255,255,255,0.10);
   box-shadow:0 14px 40px rgba(0,0,0,0.22);
 }
@@ -393,7 +393,7 @@ a{
 .uthynkSidePanel,
 .uthynkConversationPanel{
   border:1px solid rgba(255,255,255,0.10);
-  background:rgba(8,12,22,0.82);
+  background:rgba(18,25,54,0.86);
   border-radius:18px;
   box-shadow:0 20px 70px rgba(0,0,0,0.26);
 }
