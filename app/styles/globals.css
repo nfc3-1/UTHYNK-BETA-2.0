@@ -211,7 +211,8 @@ a{
   text-transform:uppercase;
 }
 
-.authForm input{
+.authForm input,
+.authForm select{
   width:100%;
   border-radius:14px;
   border:1px solid rgba(255,255,255,0.14);
@@ -222,7 +223,12 @@ a{
   outline:none;
 }
 
-.authForm input:focus{
+.authForm select option{
+  color:#111936;
+}
+
+.authForm input:focus,
+.authForm select:focus{
   border-color:rgba(246,198,79,0.78);
   box-shadow:0 0 0 3px rgba(246,198,79,0.16);
 }

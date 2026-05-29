@@ -2,22 +2,22 @@
 
 import { FormEvent, Suspense, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { hasSupabaseEnv, supabase } from "@/lib/supabase";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextPath = useMemo(() => searchParams.get("next") || "/", [searchParams]);
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [status, setStatus] = useState("");
+  const [username, setUsername] = useState("");
+  const [ageBand, setAgeBand] = useState("18_plus");
+  const [onboardingGoal, setOnboardingGoal] = useState("sharpen_reasoning");
+  const [onboardingStyle, setOnboardingStyle] = useState("balanced");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function establishCookie(accessToken: string) {
+  async function establishCookie(profile: Record<string, unknown>) {
     const response = await fetch("/api/auth/session", {
-      body: JSON.stringify({ accessToken }),
+      body: JSON.stringify({ profile }),
       headers: { "Content-Type": "application/json" },
       method: "POST",
     });
@@ -32,34 +32,29 @@ function LoginForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
-    setStatus("");
     setLoading(true);
 
     try {
-      if (!hasSupabaseEnv() || !supabase) {
-        throw new Error("Supabase login is not configured for this deployment.");
+      const profileResponse = await fetch("/api/profile", {
+        body: JSON.stringify({
+          ageBand,
+          email,
+          onboardingGoal,
+          onboardingStyle,
+          username,
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      });
+
+      const payload = await profileResponse.json().catch(() => ({}));
+
+      if (!profileResponse.ok || !payload.profile) {
+        throw new Error(payload.error || "Profile could not be created.");
       }
 
-      const credentials = {
-        email: email.trim().toLowerCase(),
-        password,
-      };
-
-      const result =
-        mode === "signin"
-          ? await supabase.auth.signInWithPassword(credentials)
-          : await supabase.auth.signUp(credentials);
-
-      if (result.error) {
-        throw result.error;
-      }
-
-      if (!result.data.session?.access_token) {
-        setStatus("Check your email to confirm the account, then sign in.");
-        return;
-      }
-
-      await establishCookie(result.data.session.access_token);
+      localStorage.setItem("uthynk-profile", JSON.stringify(payload.profile));
+      await establishCookie(payload.profile);
       router.replace(nextPath.startsWith("/") ? nextPath : "/");
       router.refresh();
     } catch (caught) {
@@ -73,29 +68,10 @@ function LoginForm() {
     <main className="authShell">
       <section className="authCard card">
         <div className="panelLabel">UThynk Access</div>
-        <h1>Sign in to continue</h1>
+        <h1>Start your profile</h1>
         <p>
-          UThynk saves reasoning progress, traits, and session continuity to your account.
+          Create or restore a UThynk profile so your reasoning streak, traits, and sessions persist across devices.
         </p>
-
-        <div className="authModeSwitch" role="tablist" aria-label="Login mode">
-          <button
-            aria-selected={mode === "signin"}
-            className={mode === "signin" ? "active" : ""}
-            onClick={() => setMode("signin")}
-            type="button"
-          >
-            Sign in
-          </button>
-          <button
-            aria-selected={mode === "signup"}
-            className={mode === "signup" ? "active" : ""}
-            onClick={() => setMode("signup")}
-            type="button"
-          >
-            Create account
-          </button>
-        </div>
 
         <form className="authForm" onSubmit={handleSubmit}>
           <label>
@@ -110,22 +86,50 @@ function LoginForm() {
           </label>
 
           <label>
-            <span>Password</span>
+            <span>Name</span>
             <input
-              autoComplete={mode === "signin" ? "current-password" : "new-password"}
-              minLength={6}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-              type="password"
-              value={password}
+              autoComplete="name"
+              onChange={(event) => setUsername(event.target.value)}
+              placeholder="What should UThynk call you?"
+              type="text"
+              value={username}
             />
           </label>
 
+          <label>
+            <span>Age range</span>
+            <select value={ageBand} onChange={(event) => setAgeBand(event.target.value)}>
+              <option value="under_13">Under 13</option>
+              <option value="13_17">13-17</option>
+              <option value="18_plus">18+</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Primary goal</span>
+            <select value={onboardingGoal} onChange={(event) => setOnboardingGoal(event.target.value)}>
+              <option value="sharpen_reasoning">Sharpen reasoning</option>
+              <option value="debate_better">Debate better</option>
+              <option value="make_better_decisions">Make better decisions</option>
+              <option value="spot_manipulation">Spot manipulation</option>
+              <option value="build_confidence">Build confidence</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Coaching style</span>
+            <select value={onboardingStyle} onChange={(event) => setOnboardingStyle(event.target.value)}>
+              <option value="balanced">Balanced</option>
+              <option value="direct">Direct</option>
+              <option value="supportive">Supportive</option>
+              <option value="challenging">Challenging</option>
+            </select>
+          </label>
+
           {error ? <p className="authError">{error}</p> : null}
-          {status ? <p className="authStatus">{status}</p> : null}
 
           <button className="btn btnPrimary" disabled={loading} type="submit">
-            {loading ? "Checking..." : mode === "signin" ? "Enter UThynk" : "Create account"}
+            {loading ? "Setting up..." : "Continue to UThynk"}
           </button>
         </form>
       </section>
@@ -140,7 +144,7 @@ export default function Login() {
         <main className="authShell">
           <section className="authCard card">
             <div className="panelLabel">UThynk Access</div>
-            <h1>Sign in to continue</h1>
+            <h1>Start your profile</h1>
           </section>
         </main>
       }
