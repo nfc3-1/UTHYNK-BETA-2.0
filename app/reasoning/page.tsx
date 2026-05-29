@@ -442,36 +442,6 @@ function ReasoningExperience() {
           </div>
         </div>
 
-        <div className="conversationThread" aria-live="polite">
-          {conversation.map((item, index) => (
-            <div
-              key={`${item.role}-${index}`}
-              className={`messageBubble ${item.role === "user" ? "userBubble" : "uthynkBubble"}`}
-            >
-              <span>{item.role === "user" ? "You" : "UThynk"}</span>
-              <p>{item.content}</p>
-            </div>
-          ))}
-
-          {streamingText ? (
-            <div className="messageBubble uthynkBubble liveBubble">
-              <span>UThynk reasoning live</span>
-              <p>{streamingText}</p>
-            </div>
-          ) : null}
-        </div>
-
-        <section className="contradictionStrip">
-          <div>
-            <span>Contradiction prompt</span>
-            <p>{strongestOpposingCase}</p>
-          </div>
-          <div>
-            <span>Recursive follow-up</span>
-            <p>{feedback.followUp}</p>
-          </div>
-        </section>
-
         <label className="responseLabel" htmlFor="response">
           Continue with UThynk
         </label>
@@ -507,6 +477,36 @@ function ReasoningExperience() {
             Hold To Talk
           </button>
         </div>
+
+        <div className="conversationThread" aria-live="polite">
+          {conversation.map((item, index) => (
+            <div
+              key={`${item.role}-${index}`}
+              className={`messageBubble ${item.role === "user" ? "userBubble" : "uthynkBubble"}`}
+            >
+              <span>{item.role === "user" ? "You" : "UThynk"}</span>
+              <p>{item.content}</p>
+            </div>
+          ))}
+
+          {streamingText ? (
+            <div className="messageBubble uthynkBubble liveBubble">
+              <span>UThynk reasoning live</span>
+              <p>{streamingText}</p>
+            </div>
+          ) : null}
+        </div>
+
+        <section className="contradictionStrip">
+          <div>
+            <span>Contradiction prompt</span>
+            <p>{strongestOpposingCase}</p>
+          </div>
+          <div>
+            <span>Recursive follow-up</span>
+            <p>{feedback.followUp}</p>
+          </div>
+        </section>
 
         <section className="reasoningTimeline">
           <div className="panelLabel">Reasoning Timeline</div>
