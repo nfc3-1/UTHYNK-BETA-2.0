@@ -439,6 +439,13 @@ function ReasoningExperience({
             <span key={item}>{item}</span>
           ))}
         </div>
+
+        <section className="logicScores">
+          <div><span>{copy.logicQuality}</span><strong>{visibleFeedback.score}</strong></div>
+          <div><span>{copy.evidenceStrength}</span><strong>{feedback.verifier?.behavioral?.evidence || visibleFeedback.score}</strong></div>
+          <div><span>{copy.emotionalRigidity}</span><strong>{100 - (feedback.verifier?.behavioral?.emotionalControl || 50)}</strong></div>
+          <div><span>{copy.manipulationTactics}</span><strong>{feedback.verifier?.signals?.incentives ? copy.flagged : copy.scanning}</strong></div>
+        </section>
       </aside>
 
       <main className="uthynkConversationPanel">
@@ -570,12 +577,6 @@ function ReasoningExperience({
           </div>
         </section>
 
-        <section className="logicScores">
-          <div><span>{copy.logicQuality}</span><strong>{visibleFeedback.score}</strong></div>
-          <div><span>{copy.evidenceStrength}</span><strong>{feedback.verifier?.behavioral?.evidence || visibleFeedback.score}</strong></div>
-          <div><span>{copy.emotionalRigidity}</span><strong>{100 - (feedback.verifier?.behavioral?.emotionalControl || 50)}</strong></div>
-          <div><span>{copy.manipulationTactics}</span><strong>{feedback.verifier?.signals?.incentives ? copy.flagged : copy.scanning}</strong></div>
-        </section>
       </aside>
     </section>
   );
