@@ -1,31 +1,58 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const protectedRoutes = ['/dashboard', '/profile', '/leaderboard'];
+const protectedRoutes = [
+  '/',
+  '/reasoning',
+  '/dashboard',
+  '/profile',
+  '/leaderboard',
+  '/category',
+  '/challenge',
+  '/daily',
+  '/debate',
+  '/enterprise',
+  '/stats',
+  '/store',
+];
+
+function isProtectedRoute(pathname: string) {
+  return protectedRoutes.some((route) =>
+    route === '/' ? pathname === '/' : pathname.startsWith(route)
+  );
+}
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
+  const hasSession = Boolean(request.cookies.get('uthynk-session')?.value);
 
-  const isProtected = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  if (pathname === '/login' && hasSession) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
 
-  if (!isProtected) {
+  if (!isProtectedRoute(pathname) || hasSession) {
     return NextResponse.next();
   }
 
-  const profile = request.cookies.get('uthynk-profile');
-
-  if (!profile) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/';
-    url.searchParams.set('auth', 'required');
-    return NextResponse.redirect(url);
-  }
-
-  return NextResponse.next();
+  const loginUrl = new URL('/login', request.url);
+  loginUrl.searchParams.set('next', `${pathname}${search}`);
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/profile/:path*', '/leaderboard/:path*'],
+  matcher: [
+    '/',
+    '/reasoning/:path*',
+    '/dashboard/:path*',
+    '/profile/:path*',
+    '/leaderboard/:path*',
+    '/category/:path*',
+    '/challenge/:path*',
+    '/daily/:path*',
+    '/debate/:path*',
+    '/enterprise/:path*',
+    '/stats/:path*',
+    '/store/:path*',
+    '/login',
+  ],
 };
