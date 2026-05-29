@@ -745,7 +745,8 @@ export async function POST(request: Request) {
     const sessionId = body.sessionId || crypto.randomUUID();
     const conversationId = body.conversationId || body.challengeId || sessionId;
     const challenge = body.challenge?.trim() || "Daily reasoning challenge";
-    const language = body.language === "es" || body.language === "fr" ? body.language : "en";
+    const language: "en" | "es" | "fr" =
+      body.language === "es" || body.language === "fr" ? body.language : "en";
     const response = body.response?.trim() || "";
 
     if (!response) {
