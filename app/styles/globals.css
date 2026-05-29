@@ -70,6 +70,14 @@ a{
   align-items:center;
 }
 
+.topControls{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:12px;
+  margin-left:auto;
+}
+
 .appNav a{
   padding:10px 14px;
   border-radius:999px;
@@ -478,6 +486,10 @@ a{
 .languageSelect option{
   background:#121936;
   color:white;
+}
+
+.topLanguageSelect{
+  width:150px;
 }
 
 .identityStack{

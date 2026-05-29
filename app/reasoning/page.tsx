@@ -45,10 +45,8 @@ const categoryLinks = Array.from(
 
 function ReasoningExperience({
   language,
-  onLanguageChange,
 }: {
   language: Language;
-  onLanguageChange: (language: Language) => void;
 }) {
   const searchParams = useSearchParams();
   const initialChallenge = useMemo(() => {
@@ -453,21 +451,6 @@ function ReasoningExperience({
             <span>{visibleChallenge.category}</span>
             <span>{visibleDifficulty}</span>
             <span>{visiblePressure}</span>
-            <label className="languageSelectLabel">
-              <span>{copy.adaptiveLanguage}</span>
-              <select
-                aria-label={copy.adaptiveLanguage}
-                className="languageSelect"
-                value={language}
-                onChange={(event) => onLanguageChange(event.target.value as Language)}
-              >
-                {languageOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
           </div>
         </div>
 
@@ -627,11 +610,29 @@ export default function ReasoningPage() {
           UThynk
         </Link>
 
-        <nav className="appNav" aria-label="Reasoning navigation">
-          <Link href="/">{copy.home}</Link>
-          <Link href="/profile">{copy.identity}</Link>
-          <Link href="/dashboard">{copy.progress}</Link>
-        </nav>
+        <div className="topControls">
+          <nav className="appNav" aria-label="Reasoning navigation">
+            <Link href="/">{copy.home}</Link>
+            <Link href="/profile">{copy.identity}</Link>
+            <Link href="/dashboard">{copy.progress}</Link>
+          </nav>
+
+          <label className="languageSelectLabel topLanguageSelect">
+            <span>{copy.adaptiveLanguage}</span>
+            <select
+              aria-label={copy.adaptiveLanguage}
+              className="languageSelect"
+              value={language}
+              onChange={(event) => changeLanguage(event.target.value as Language)}
+            >
+              {languageOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </header>
 
       <Suspense
@@ -642,7 +643,7 @@ export default function ReasoningPage() {
           </section>
         }
       >
-        <ReasoningExperience language={language} onLanguageChange={changeLanguage} />
+        <ReasoningExperience language={language} />
       </Suspense>
     </main>
   );
