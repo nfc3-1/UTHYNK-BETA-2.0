@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import ReasoningPage from "./reasoning/page";
 
 export default function Home() {
-  redirect("/reasoning");
+  return <ReasoningPage />;
 }
