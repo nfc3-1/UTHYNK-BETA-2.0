@@ -14,6 +14,7 @@ type ReasoningRequest = {
   challengeId?: string;
   category?: string;
   conversationId?: string;
+  language?: "en" | "es" | "fr";
   response?: string;
   sessionId?: string;
   stream?: boolean;
@@ -284,6 +285,7 @@ function sanitizeFeedback(
 function buildAdaptiveSystemPrompt({
   categoryPrompt,
   conversationId,
+  language,
   memory,
   mode,
   profile,
@@ -292,6 +294,7 @@ function buildAdaptiveSystemPrompt({
 }: {
   categoryPrompt: CategoryPrompt;
   conversationId: string;
+  language: "en" | "es" | "fr";
   memory?: any;
   mode: string;
   profile?: any;
@@ -301,9 +304,12 @@ function buildAdaptiveSystemPrompt({
   const ageBand = profile?.age_band || "18_plus";
   const style = profile?.onboarding_style || "balanced";
   const recentFollowUps = memory?.recentFollowUps?.filter(Boolean).slice(0, 8) || [];
+  const responseLanguage =
+    language === "es" ? "Spanish" : language === "fr" ? "French" : "English";
 
   return [
     "You are UThynk, an adaptive reasoning coach. You must produce specific, non-repetitive feedback.",
+    `Write every user-facing response field in ${responseLanguage}. Keep JSON keys in English.`,
     `Session identity: sessionId=${sessionId}, conversationId=${conversationId}.`,
     `Category: ${categoryPrompt.category}. Role: ${categoryPrompt.evaluatorRole}.`,
     `Response mode: ${mode}. Do not reuse the same opening, cadence, or follow-up shape from prior turns.`,
@@ -541,6 +547,7 @@ async function callOpenAi({
   categoryPrompt,
   challenge,
   conversationId,
+  language,
   memory,
   mode,
   profile,
@@ -553,6 +560,7 @@ async function callOpenAi({
   categoryPrompt: CategoryPrompt;
   challenge: string;
   conversationId: string;
+  language: "en" | "es" | "fr";
   memory?: any;
   mode: string;
   profile?: any;
@@ -578,6 +586,7 @@ async function callOpenAi({
           content: buildAdaptiveSystemPrompt({
             categoryPrompt,
             conversationId,
+            language,
             memory,
             mode,
             profile,
@@ -621,6 +630,7 @@ function streamingFeedback(args: {
   challenge: string;
   challengeId?: string;
   conversationId: string;
+  language: "en" | "es" | "fr";
   memory?: any;
   mode: string;
   profile?: any;
@@ -735,6 +745,7 @@ export async function POST(request: Request) {
     const sessionId = body.sessionId || crypto.randomUUID();
     const conversationId = body.conversationId || body.challengeId || sessionId;
     const challenge = body.challenge?.trim() || "Daily reasoning challenge";
+    const language = body.language === "es" || body.language === "fr" ? body.language : "en";
     const response = body.response?.trim() || "";
 
     if (!response) {
@@ -775,6 +786,7 @@ export async function POST(request: Request) {
       categoryPrompt,
       challenge,
       conversationId,
+      language,
       memory,
       mode,
       profile,

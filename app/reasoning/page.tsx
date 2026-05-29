@@ -4,6 +4,14 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { challenges, getChallengeById, type Challenge } from "@/lib/challenges";
+import {
+  cognitionFeedByLanguage,
+  languageOptions,
+  localizeChallenge,
+  localizeText,
+  type Language,
+  uiCopy,
+} from "@/lib/reasoningI18n";
 
 const initialFeedback = {
   score: 72,
@@ -31,34 +39,17 @@ const initialFeedback = {
   weaknesses: ["needs incentive analysis", "clarify the next step"],
 };
 
-const cognitionFeed = [
-  {
-    title: "Manipulation pattern",
-    text: "Urgency narrows attention. When a prompt demands speed, ask who benefits from you skipping verification.",
-  },
-  {
-    title: "Strategic insight",
-    text: "A strong move preserves options. If an answer commits early, test the reversible path first.",
-  },
-  {
-    title: "Historical contradiction",
-    text: "Many confident public narratives survive by hiding inconvenient timelines. Sequence the facts before judging motive.",
-  },
-  {
-    title: "Bias example",
-    text: "Availability bias makes the vivid example feel typical. Ask for the base rate before trusting the story.",
-  },
-  {
-    title: "Probability prompt",
-    text: "Replace certainty with odds: what would make this 30%, 60%, or 90% likely?",
-  },
-];
-
 const categoryLinks = Array.from(
   new Set(challenges.map((challenge) => challenge.category))
 );
 
-function ReasoningExperience() {
+function ReasoningExperience({
+  language,
+  onLanguageChange,
+}: {
+  language: Language;
+  onLanguageChange: (language: Language) => void;
+}) {
   const searchParams = useSearchParams();
   const initialChallenge = useMemo(() => {
     const requestedId = searchParams.get("id");
@@ -99,6 +90,26 @@ function ReasoningExperience() {
         "Welcome back. I remember your previous reasoning patterns. Let's continue sharpening your thinking.",
     },
   ]);
+  const copy = uiCopy[language];
+  const visibleChallenge = localizeChallenge(challenge, language);
+  const visibleFeedback = {
+    ...feedback,
+    analysis: localizeText(feedback.analysis, language),
+    contrarian: localizeText(feedback.contrarian, language),
+    followUp: localizeText(feedback.followUp, language),
+    trait: localizeText(feedback.trait, language),
+    strengths: feedback.strengths.map((item) => localizeText(item, language)),
+    weaknesses: feedback.weaknesses.map((item) => localizeText(item, language)),
+  };
+  const visibleCategoryLinks = categoryLinks.map((category) => {
+    const matchingChallenge = challenges.find((item) => item.category === category);
+
+    return matchingChallenge
+      ? localizeChallenge(matchingChallenge, language).category
+      : category;
+  });
+  const visibleDifficulty = localizeText(difficulty, language);
+  const visiblePressure = localizeText(pressure, language);
 
   const recognitionRef = useRef<any>(null);
   const conversationIdRef = useRef<string>("");
@@ -138,6 +149,7 @@ function ReasoningExperience() {
 
     recognition.continuous = true;
     recognition.interimResults = true;
+    recognition.lang = language === "es" ? "es-US" : language === "fr" ? "fr-FR" : "en-US";
 
     recognition.onresult = (event: any) => {
       const transcript = Array.from(event.results)
@@ -148,7 +160,7 @@ function ReasoningExperience() {
     };
 
     recognitionRef.current = recognition;
-  }, [challenge.id]);
+  }, [challenge.id, language]);
 
   function selectNextChallenge(currentChallenge: Challenge, score: number) {
     const preferredDifficulty =
@@ -222,7 +234,8 @@ function ReasoningExperience() {
         body: JSON.stringify({
           challengeId: challenge.id,
           category: challenge.category,
-          challenge: challenge.prompt,
+          challenge: visibleChallenge.prompt,
+          language,
           response,
           conversationId: conversationIdRef.current,
           sessionId: sessionIdRef.current,
@@ -369,61 +382,62 @@ function ReasoningExperience() {
   }
 
   const strongestOpposingCase =
-    feedback.contrarian || "What would a careful opponent say is missing from your reasoning?";
+    visibleFeedback.contrarian ||
+    localizeText("What would a careful opponent say is missing from your reasoning?", language);
   const timeline = [
     {
-      title: "Session continuity",
-      text: `${conversation.length} reasoning turns in this thread. Current pressure: ${pressure}.`,
+      title: copy.sessionContinuity,
+      text: `${conversation.length} ${copy.sessionTurns} ${visiblePressure}.`,
     },
     {
-      title: "Prior contradiction",
-      text: feedback.contrarian,
+      title: copy.priorContradiction,
+      text: visibleFeedback.contrarian,
     },
     {
-      title: "Evolving insight",
-      text: feedback.analysis,
+      title: copy.evolvingInsight,
+      text: visibleFeedback.analysis,
     },
     {
-      title: "Recursive follow-up",
-      text: feedback.followUp,
+      title: copy.recursiveFollowUp,
+      text: visibleFeedback.followUp,
     },
   ];
 
   return (
     <section className="uthynkReasoningLayout">
       <aside className="uthynkSidePanel uthynkLeftPanel">
-        <div className="panelLabel">Identity</div>
+        <div className="panelLabel">{copy.identity}</div>
         <div className="identityStack">
           <div>
-            <span>Rank</span>
-            <strong>{profile?.rank || "Observer"}</strong>
+            <span>{copy.rank}</span>
+            <strong>{localizeText(profile?.rank || "Observer", language)}</strong>
           </div>
           <div>
-            <span>Streak</span>
-            <strong>{profile?.streak || 0} days</strong>
+            <span>{copy.streak}</span>
+            <strong>{profile?.streak || 0} {copy.streakDays}</strong>
           </div>
           <div>
-            <span>Trait</span>
-            <strong>{profile?.primary_trait || feedback.trait}</strong>
+            <span>{copy.trait}</span>
+            <strong>{localizeText(profile?.primary_trait, language) || visibleFeedback.trait}</strong>
           </div>
           <div>
-            <span>Progression</span>
-            <strong>{profile?.reasoning_score || feedback.score}</strong>
+            <span>{copy.progression}</span>
+            <strong>{profile?.reasoning_score || visibleFeedback.score}</strong>
           </div>
         </div>
 
-        <div className="progressBar" aria-label="Identity progression">
+        <div className="progressBar" aria-label={copy.identityProgression}>
           <div
             className="progressFill uthynkProgressFill"
-            style={{ width: `${Math.min(100, profile?.reasoning_score || feedback.score)}%` }}
+            style={{ width: `${Math.min(100, profile?.reasoning_score || visibleFeedback.score)}%` }}
           />
         </div>
 
         <div className="traitList">
-          {feedback.strengths.map((item) => (
+          {visibleFeedback.strengths.map((item) => (
             <span key={item}>{item}</span>
           ))}
-          {feedback.weaknesses.map((item) => (
+          {visibleFeedback.weaknesses.map((item) => (
             <span key={item}>{item}</span>
           ))}
         </div>
@@ -432,18 +446,33 @@ function ReasoningExperience() {
       <main className="uthynkConversationPanel">
         <div className="conversationHeader">
           <div>
-            <div className="panelLabel">Live UThynk Conversation</div>
-            <h1>{challenge.prompt}</h1>
+            <div className="panelLabel">{copy.liveConversation}</div>
+            <h1>{visibleChallenge.prompt}</h1>
           </div>
           <div className="threadMeta">
-            <span>{challenge.category}</span>
-            <span>{difficulty}</span>
-            <span>{pressure}</span>
+            <span>{visibleChallenge.category}</span>
+            <span>{visibleDifficulty}</span>
+            <span>{visiblePressure}</span>
+            <label className="languageSelectLabel">
+              <span>{copy.adaptiveLanguage}</span>
+              <select
+                aria-label={copy.adaptiveLanguage}
+                className="languageSelect"
+                value={language}
+                onChange={(event) => onLanguageChange(event.target.value as Language)}
+              >
+                {languageOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
           </div>
         </div>
 
         <label className="responseLabel" htmlFor="response">
-          Continue with UThynk
+          {copy.continueWithUthynk}
         </label>
 
         <textarea
@@ -451,7 +480,7 @@ function ReasoningExperience() {
           className="textarea responseBox conversationInput"
           value={response}
           onChange={(e) => setResponse(e.target.value)}
-          placeholder="Make a claim, add evidence, test an assumption, or respond by voice."
+          placeholder={copy.placeholder}
         />
 
         {error ? <p className="panelNote">{error}</p> : null}
@@ -463,7 +492,7 @@ function ReasoningExperience() {
             disabled={loading || !response.trim()}
             onClick={analyzeReasoning}
           >
-            {loading ? 'UThynk is reasoning...' : 'Send to UThynk'}
+            {loading ? copy.sending : copy.send}
           </button>
 
           <button
@@ -474,7 +503,7 @@ function ReasoningExperience() {
             onTouchStart={startVoiceInput}
             onTouchEnd={stopVoiceInput}
           >
-            Hold To Talk
+            {copy.holdToTalk}
           </button>
         </div>
 
@@ -484,14 +513,18 @@ function ReasoningExperience() {
               key={`${item.role}-${index}`}
               className={`messageBubble ${item.role === "user" ? "userBubble" : "uthynkBubble"}`}
             >
-              <span>{item.role === "user" ? "You" : "UThynk"}</span>
-              <p>{item.content}</p>
+              <span>{item.role === "user" ? copy.userLabel : "UThynk"}</span>
+              <p>
+                {item.content === uiCopy.en.welcome
+                  ? copy.welcome
+                  : localizeText(item.content, language) || item.content}
+              </p>
             </div>
           ))}
 
           {streamingText ? (
             <div className="messageBubble uthynkBubble liveBubble">
-              <span>UThynk reasoning live</span>
+              <span>{copy.liveReasoning}</span>
               <p>{streamingText}</p>
             </div>
           ) : null}
@@ -499,17 +532,17 @@ function ReasoningExperience() {
 
         <section className="contradictionStrip">
           <div>
-            <span>Contradiction prompt</span>
+            <span>{copy.contradictionPrompt}</span>
             <p>{strongestOpposingCase}</p>
           </div>
           <div>
-            <span>Recursive follow-up</span>
-            <p>{feedback.followUp}</p>
+            <span>{copy.recursiveFollowUp}</span>
+            <p>{visibleFeedback.followUp}</p>
           </div>
         </section>
 
         <section className="reasoningTimeline">
-          <div className="panelLabel">Reasoning Timeline</div>
+          <div className="panelLabel">{copy.reasoningTimeline}</div>
           <div className="timelineRail">
             {timeline.map((item) => (
               <article key={item.title}>
@@ -523,18 +556,18 @@ function ReasoningExperience() {
 
       <aside className="uthynkSidePanel uthynkRightPanel">
         <section>
-          <div className="panelLabel">Categories</div>
+          <div className="panelLabel">{copy.categories}</div>
           <div className="categoryPills">
-            {categoryLinks.map((item) => (
+            {visibleCategoryLinks.map((item) => (
               <span key={item}>{item}</span>
             ))}
           </div>
         </section>
 
         <section>
-          <div className="panelLabel">Did You Know?</div>
+          <div className="panelLabel">{copy.didYouKnow}</div>
           <div className="cognitionFeed">
-            {cognitionFeed.map((item) => (
+            {cognitionFeedByLanguage[language].map((item) => (
               <article key={item.title}>
                 <strong>{item.title}</strong>
                 <p>{item.text}</p>
@@ -544,21 +577,21 @@ function ReasoningExperience() {
         </section>
 
         <section className="logicSystem">
-          <div className="panelLabel">Logic Arguments</div>
+          <div className="panelLabel">{copy.logicArguments}</div>
           <div className="logicGrid">
-            <div><span>Claim</span><p>{response || "State the position you want UThynk to evaluate."}</p></div>
-            <div><span>Evidence</span><p>{feedback.strengths.join(", ") || "Support the claim with examples, data, or observation."}</p></div>
-            <div><span>Counterargument</span><p>{feedback.contrarian}</p></div>
-            <div><span>Contradiction analysis</span><p>{feedback.weaknesses.join(", ")}</p></div>
-            <div><span>Strongest opposing case</span><p>{strongestOpposingCase}</p></div>
+            <div><span>{copy.claim}</span><p>{response || copy.stateClaim}</p></div>
+            <div><span>{copy.evidence}</span><p>{visibleFeedback.strengths.join(", ") || copy.evidenceEmpty}</p></div>
+            <div><span>{copy.counterargument}</span><p>{visibleFeedback.contrarian}</p></div>
+            <div><span>{copy.contradictionAnalysis}</span><p>{visibleFeedback.weaknesses.join(", ")}</p></div>
+            <div><span>{copy.strongestOpposingCase}</span><p>{strongestOpposingCase}</p></div>
           </div>
         </section>
 
         <section className="logicScores">
-          <div><span>Logic quality</span><strong>{feedback.score}</strong></div>
-          <div><span>Evidence strength</span><strong>{feedback.verifier?.behavioral?.evidence || feedback.score}</strong></div>
-          <div><span>Emotional rigidity</span><strong>{100 - (feedback.verifier?.behavioral?.emotionalControl || 50)}</strong></div>
-          <div><span>Manipulation tactics</span><strong>{feedback.verifier?.signals?.incentives ? "Flagged" : "Scanning"}</strong></div>
+          <div><span>{copy.logicQuality}</span><strong>{visibleFeedback.score}</strong></div>
+          <div><span>{copy.evidenceStrength}</span><strong>{feedback.verifier?.behavioral?.evidence || visibleFeedback.score}</strong></div>
+          <div><span>{copy.emotionalRigidity}</span><strong>{100 - (feedback.verifier?.behavioral?.emotionalControl || 50)}</strong></div>
+          <div><span>{copy.manipulationTactics}</span><strong>{feedback.verifier?.signals?.incentives ? copy.flagged : copy.scanning}</strong></div>
         </section>
       </aside>
     </section>
@@ -566,6 +599,27 @@ function ReasoningExperience() {
 }
 
 export default function ReasoningPage() {
+  const [language, setLanguage] = useState<Language>("en");
+  const copy = uiCopy[language];
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const storedLanguage = localStorage.getItem("uthynk-language");
+
+    if (storedLanguage === "en" || storedLanguage === "es" || storedLanguage === "fr") {
+      setLanguage(storedLanguage);
+    }
+  }, []);
+
+  function changeLanguage(nextLanguage: Language) {
+    setLanguage(nextLanguage);
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("uthynk-language", nextLanguage);
+    }
+  }
+
   return (
     <main className="appShell reasoningShell">
       <header className="appTop card">
@@ -574,21 +628,21 @@ export default function ReasoningPage() {
         </Link>
 
         <nav className="appNav" aria-label="Reasoning navigation">
-          <Link href="/">Home</Link>
-          <Link href="/profile">Identity</Link>
-          <Link href="/dashboard">Progress</Link>
+          <Link href="/">{copy.home}</Link>
+          <Link href="/profile">{copy.identity}</Link>
+          <Link href="/dashboard">{copy.progress}</Link>
         </nav>
       </header>
 
       <Suspense
         fallback={
           <section className="card reasoningMain" style={{ marginTop: 18 }}>
-            <div className="panelLabel">Loading UThynk Session</div>
-            <p className="panelNote">Restoring your cognitive history...</p>
+            <div className="panelLabel">{copy.loadingSession}</div>
+            <p className="panelNote">{copy.restoredHistory}</p>
           </section>
         }
       >
-        <ReasoningExperience />
+        <ReasoningExperience language={language} onLanguageChange={changeLanguage} />
       </Suspense>
     </main>
   );

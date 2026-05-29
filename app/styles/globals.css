@@ -450,6 +450,36 @@ a{
   font-weight:800;
 }
 
+.languageSelectLabel{
+  display:grid;
+  gap:6px;
+  width:100%;
+  color:rgba(255,255,255,0.62);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.languageSelect{
+  width:100%;
+  min-height:38px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.08);
+  color:white;
+  font:inherit;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:0;
+  padding:0 12px;
+}
+
+.languageSelect option{
+  background:#121936;
+  color:white;
+}
+
 .identityStack{
   display:grid;
   gap:14px;
