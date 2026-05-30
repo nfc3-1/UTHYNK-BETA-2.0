@@ -13,7 +13,7 @@ import {
   type Language,
   uiCopy,
 } from "@/lib/reasoningI18n";
-import { getCategories, slugifyCategory } from "@/lib/questionBank";
+import { slugifyCategory } from "@/lib/questionBank";
 
 const initialFeedback = {
   score: 72,
@@ -42,7 +42,7 @@ const initialFeedback = {
 };
 
 const categoryLinks = Array.from(
-  new Set(getCategories())
+  new Set(challenges.map((challenge) => challenge.category))
 );
 
 const rankThresholds = [
@@ -139,10 +139,17 @@ function ReasoningExperience({
     strengths: feedback.strengths.map((item) => localizeText(item, language)),
     weaknesses: feedback.weaknesses.map((item) => localizeText(item, language)),
   };
-  const visibleCategoryLinks = categoryLinks.map((category) => ({
-    href: `/lessons/${slugifyCategory(category)}`,
-    label: category,
-  }));
+  const visibleCategoryLinks = categoryLinks.map((category) => {
+    const matchingChallenge = challenges.find((item) => item.category === category);
+
+    return {
+      category,
+      href: `/lessons/${slugifyCategory(category)}`,
+      label: matchingChallenge
+        ? localizeChallenge(matchingChallenge, language).category
+        : category,
+    };
+  });
   const visibleDifficulty = localizeText(difficulty, language);
   const visiblePressure = localizeText(pressure, language);
   const progressionState = getProgressionState(profile?.xp || 0);
@@ -233,6 +240,41 @@ function ReasoningExperience({
 
     return pool[seed % pool.length] || currentChallenge;
   }
+
+  function selectCategory(category: string) {
+    const seenIds =
+      typeof window === "undefined"
+        ? []
+        : (JSON.parse(localStorage.getItem("uthynk-seen-challenge-ids") || "[]") as string[]);
+    const categoryPool = challenges.filter(
+      (item) => item.category === category && !seenIds.includes(item.id)
+    );
+    const fallbackPool = challenges.filter((item) => item.category === category);
+    const pool = categoryPool.length ? categoryPool : fallbackPool;
+    const nextChallenge = pool[(Date.now() + category.length) % pool.length];
+
+    if (!nextChallenge) return;
+
+    setChallenge(nextChallenge);
+    setDifficulty(nextChallenge.difficulty);
+    setPressure(
+      nextChallenge.difficulty === "advanced"
+        ? "High"
+        : nextChallenge.difficulty === "starter"
+          ? "Low"
+          : "Moderate"
+    );
+    setResponse("");
+    setStreamingText("");
+    setError("");
+
+    if (typeof window !== "undefined") {
+      const nextSeen = Array.from(new Set([...seenIds, nextChallenge.id]));
+      localStorage.setItem("uthynk-seen-challenge-ids", JSON.stringify(nextSeen));
+      window.history.replaceState(null, "", `/reasoning?id=${nextChallenge.id}`);
+    }
+  }
+
   function startVoiceInput() {
     recognitionRef.current?.start();
   }
@@ -728,9 +770,19 @@ function ReasoningExperience({
             <div className="panelLabel">{copy.categories}</div>
             <div className="categoryPills">
               {visibleCategoryLinks.map((item) => (
-                <Link href={item.href} key={item.href}>{item.label}</Link>
+                <button
+                  className={challenge.category === item.category ? "active" : ""}
+                  key={item.category}
+                  onClick={() => selectCategory(item.category)}
+                  type="button"
+                >
+                  {item.label}
+                </button>
               ))}
             </div>
+            <Link className="categoryLessonsLink" href="/lessons">
+              Open full lesson library
+            </Link>
           </section>
         ) : null}
 

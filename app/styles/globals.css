@@ -909,6 +909,7 @@ a{
 .threadMeta span,
 .categoryPills span,
 .categoryPills a,
+.categoryPills button,
 .traitList span{
   padding:8px 10px;
   border-radius:999px;
@@ -917,6 +918,25 @@ a{
   color:rgba(255,255,255,0.76);
   font-size:12px;
   font-weight:800;
+}
+
+.categoryPills button{
+  cursor:pointer;
+  font:inherit;
+}
+
+.categoryPills button.active{
+  background:#f6c64f;
+  border-color:rgba(246,198,79,0.72);
+  color:#17133b;
+}
+
+.categoryLessonsLink{
+  display:inline-flex;
+  margin-top:14px;
+  color:rgba(246,198,79,0.88);
+  font-size:13px;
+  font-weight:850;
 }
 
 .languageSelectLabel{
