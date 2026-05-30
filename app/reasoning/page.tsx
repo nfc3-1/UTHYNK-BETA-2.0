@@ -572,17 +572,32 @@ function ReasoningExperience({
 
         <section className="claimEvaluationInline">
           <div className="panelLabel">{copy.claimEvaluation}</div>
-          <div className="logicGrid">
-            <div><span>{copy.claim}</span><p>{response || copy.stateClaim}</p></div>
-            <div><span>{copy.evidence}</span><p>{visibleFeedback.strengths.join(", ") || copy.evidenceEmpty}</p></div>
-            <div><span>{copy.counterargument}</span><p>{visibleFeedback.contrarian}</p></div>
-            <div><span>{copy.contradictionAnalysis}</span><p>{visibleFeedback.weaknesses.join(", ")}</p></div>
-            <div><span>{copy.strongestOpposingCase}</span><p>{strongestOpposingCase}</p></div>
+          <div className="reasoningSteps">
+            <article>
+              <span>Step 1</span>
+              <strong>{copy.reasoningStepOne}</strong>
+              <p>{response || copy.stateClaim}</p>
+            </article>
+            <article>
+              <span>Step 2</span>
+              <strong>{copy.reasoningStepTwo}</strong>
+              <p>{visibleFeedback.strengths.join(", ") || copy.evidenceEmpty}</p>
+            </article>
+            <article>
+              <span>Step 3</span>
+              <strong>{copy.reasoningStepThree}</strong>
+              <p>{strongestOpposingCase}</p>
+            </article>
+            <article>
+              <span>Step 4</span>
+              <strong>{copy.reasoningStepFour}</strong>
+              <p>{visibleFeedback.analysis}</p>
+            </article>
           </div>
         </section>
 
-        <section className="reasoningTimeline">
-          <div className="panelLabel">{copy.reasoningTimeline}</div>
+        <details className="reasoningTimeline">
+          <summary>{copy.reasoningTimeline}</summary>
           <div className="timelineRail">
             {timeline.map((item) => (
               <article key={item.title}>
@@ -591,7 +606,7 @@ function ReasoningExperience({
               </article>
             ))}
           </div>
-        </section>
+        </details>
       </main>
 
       <aside className="uthynkSidePanel uthynkRightPanel">

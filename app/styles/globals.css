@@ -687,7 +687,8 @@ a{
 
 .identityStack span,
 .logicScores span,
-.logicGrid span{
+.logicGrid span,
+.reasoningSteps span{
   color:rgba(255,255,255,0.56);
   font-size:12px;
   letter-spacing:0.08em;
@@ -772,7 +773,8 @@ a{
 .contradictionStrip div,
 .reasoningTimeline,
 .cognitionFeed article,
-.logicGrid div{
+.logicGrid div,
+.reasoningSteps article{
   border:1px solid rgba(255,255,255,0.08);
   background:rgba(255,255,255,0.045);
   border-radius:14px;
@@ -793,6 +795,7 @@ a{
 .contradictionStrip p,
 .cognitionFeed p,
 .logicGrid p,
+.reasoningSteps p,
 .timelineRail p{
   margin:8px 0 0;
   color:rgba(255,255,255,0.70);
@@ -810,18 +813,57 @@ a{
   margin-top:18px;
 }
 
-.claimEvaluationInline .logicGrid{
-  grid-template-columns:repeat(2,minmax(0,1fr));
+.reasoningSteps{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
 }
 
-.claimEvaluationInline .logicGrid div:first-child,
-.claimEvaluationInline .logicGrid div:last-child{
-  grid-column:1 / -1;
+.reasoningSteps article{
+  padding:14px;
+}
+
+.reasoningSteps strong{
+  display:block;
+  margin-top:6px;
+  color:rgba(255,255,255,0.92);
+  font-size:14px;
 }
 
 .reasoningTimeline{
   margin-top:22px;
   padding:18px;
+}
+
+.reasoningTimeline summary{
+  cursor:pointer;
+  color:rgba(255,255,255,0.82);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:0.08em;
+  list-style:none;
+  text-transform:uppercase;
+}
+
+.reasoningTimeline summary::-webkit-details-marker{
+  display:none;
+}
+
+.reasoningTimeline summary::before{
+  content:"+";
+  display:inline-grid;
+  place-items:center;
+  width:18px;
+  height:18px;
+  margin-right:8px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.08);
+  color:rgba(246,198,79,0.92);
+}
+
+.reasoningTimeline[open] summary::before{
+  content:"-";
 }
 
 .timelineRail{
@@ -923,18 +965,17 @@ a{
   .threadMeta{
     justify-content:flex-start;
   }
+
+  .reasoningSteps{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
 }
 
 @media (max-width: 760px){
   .conversationHeader,
   .contradictionStrip,
-  .claimEvaluationInline .logicGrid{
+  .reasoningSteps{
     grid-template-columns:1fr;
-  }
-
-  .claimEvaluationInline .logicGrid div:first-child,
-  .claimEvaluationInline .logicGrid div:last-child{
-    grid-column:auto;
   }
 
   .messageBubble{
