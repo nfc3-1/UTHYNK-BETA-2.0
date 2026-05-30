@@ -43,6 +43,31 @@ const categoryLinks = Array.from(
   new Set(challenges.map((challenge) => challenge.category))
 );
 
+const rankThresholds = [
+  { rank: "Observer", xp: 0 },
+  { rank: "Analyst", xp: 500 },
+  { rank: "Strategist", xp: 1500 },
+  { rank: "Architect", xp: 3500 },
+  { rank: "Philosopher", xp: 6000 },
+  { rank: "Master of Thought", xp: 10000 },
+];
+
+function getProgressionState(xp: number) {
+  const currentIndex = rankThresholds.findLastIndex((item) => xp >= item.xp);
+  const current = rankThresholds[Math.max(0, currentIndex)];
+  const next = rankThresholds[Math.min(rankThresholds.length - 1, currentIndex + 1)];
+
+  if (!next || current.rank === next.rank) {
+    return { percent: 100, value: `${xp} XP` };
+  }
+
+  const earnedInRank = xp - current.xp;
+  const neededForRank = next.xp - current.xp;
+  const percent = Math.max(4, Math.min(100, Math.round((earnedInRank / neededForRank) * 100)));
+
+  return { percent, value: `${xp} XP` };
+}
+
 function ReasoningExperience({
   language,
 }: {
@@ -108,6 +133,7 @@ function ReasoningExperience({
   });
   const visibleDifficulty = localizeText(difficulty, language);
   const visiblePressure = localizeText(pressure, language);
+  const progressionState = getProgressionState(profile?.xp || 0);
 
   const recognitionRef = useRef<any>(null);
   const conversationIdRef = useRef<string>("");
@@ -420,14 +446,14 @@ function ReasoningExperience({
           </div>
           <div>
             <span>{copy.progression}</span>
-            <strong>{profile?.reasoning_score || visibleFeedback.score}</strong>
+            <strong>{progressionState.value}</strong>
           </div>
         </div>
 
         <div className="progressBar" aria-label={copy.identityProgression}>
           <div
             className="progressFill uthynkProgressFill"
-            style={{ width: `${Math.min(100, profile?.reasoning_score || visibleFeedback.score)}%` }}
+            style={{ width: `${progressionState.percent}%` }}
           />
         </div>
 
