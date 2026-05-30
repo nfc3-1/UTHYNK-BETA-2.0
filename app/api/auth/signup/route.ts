@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { publicProfile, setAuthCookies } from "@/lib/authCookies";
 import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
+import { supabasePublishableKey, supabaseUrl } from "@/lib/supabaseConfig";
 
 type SignupBody = {
   ageBand?: string;
@@ -34,14 +35,7 @@ export async function POST(request: Request) {
     }
 
     if (!hasSupabaseAdminEnv() || !supabaseAdmin) {
-      const supabaseUrl =
-        process.env.NEXT_PUBLIC_SUPABASE_URL ||
-        "https://oxgogjxrrpqpvtpkxevv.supabase.co";
-      const supabaseAnonKey =
-        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-        "sb_publishable_p-2i4etsV_L1zcIEWOsq1A_Ep7xWGEx";
-      const authClient = createClient(supabaseUrl, supabaseAnonKey, {
+      const authClient = createClient(supabaseUrl, supabasePublishableKey, {
         auth: {
           autoRefreshToken: false,
           persistSession: false,

@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { publicProfile, setAuthCookies } from "@/lib/authCookies";
 import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
+import { supabasePublishableKey, supabaseUrl } from "@/lib/supabaseConfig";
 
 type LoginBody = {
   email?: string;
@@ -13,26 +14,18 @@ export async function POST(request: Request) {
     const body = (await request.json()) as LoginBody;
     const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
-    const supabaseUrl =
-      process.env.NEXT_PUBLIC_SUPABASE_URL ||
-      "https://oxgogjxrrpqpvtpkxevv.supabase.co";
-    const supabaseAnonKey =
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-      "sb_publishable_p-2i4etsV_L1zcIEWOsq1A_Ep7xWGEx";
-
     if (!email || !password) {
       return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
     }
 
-    if (!supabaseUrl || !supabaseAnonKey) {
+    if (!supabaseUrl || !supabasePublishableKey) {
       return NextResponse.json(
         { error: "Supabase Auth is not configured for this deployment." },
         { status: 503 }
       );
     }
 
-    const authClient = createClient(supabaseUrl, supabaseAnonKey, {
+    const authClient = createClient(supabaseUrl, supabasePublishableKey, {
       auth: {
         autoRefreshToken: false,
         persistSession: false,

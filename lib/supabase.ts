@@ -1,19 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl =
-  process.env.NEXT_PUBLIC_SUPABASE_URL ||
-  'https://oxgogjxrrpqpvtpkxevv.supabase.co';
-const supabaseAnonKey =
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-  'sb_publishable_p-2i4etsV_L1zcIEWOsq1A_Ep7xWGEx';
+import {
+  hasSupabasePublicConfig,
+  supabasePublishableKey,
+  supabaseUrl,
+} from '@/lib/supabaseConfig';
 
 export function hasSupabaseEnv() {
-  return Boolean(supabaseUrl && supabaseAnonKey);
+  return hasSupabasePublicConfig();
 }
 
 export const supabase = hasSupabaseEnv()
-  ? createClient(supabaseUrl, supabaseAnonKey, {
+  ? createClient(supabaseUrl, supabasePublishableKey, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
