@@ -7,119 +7,80 @@ export type Challenge = {
   trait: string;
 };
 
-export const challenges: Challenge[] = [
-  {
-    id: "work-credit",
-    category: "Workplace Strategy",
-    title: "Credit Taken",
-    prompt:
-      "A coworker takes credit for your work in front of leadership. What do you do next?",
-    difficulty: "starter",
-    trait: "Tactical Thinking",
-  },
-  {
-    id: "luxury-car",
-    category: "Financial Judgment",
-    title: "Luxury Purchase",
-    prompt:
-      "You want to finance a luxury car because it feels like a reward for your hard work. What reasoning should guide the decision?",
-    difficulty: "starter",
-    trait: "Opportunity Cost",
-  },
-  {
-    id: "viral-headline",
-    category: "Media Manipulation",
-    title: "Emotional Headline",
-    prompt:
-      "A viral headline makes you angry before you read the article. How do you evaluate whether you are being manipulated?",
-    difficulty: "starter",
-    trait: "Bias Detection",
-  },
-  {
-    id: "logic-pressure",
-    category: "Logic Under Pressure",
-    title: "Fast Decision Trap",
-    prompt:
-      "You are pressured to make a fast decision with incomplete information. How do you slow down your thinking without missing the opportunity?",
-    difficulty: "starter",
-    trait: "Decision Discipline",
-  },
-  {
-    id: "friend-conflict",
-    category: "Social Intelligence",
-    title: "Conflict Control",
-    prompt:
-      "A friend publicly disrespects you. How do you respond without losing self-control or status?",
-    difficulty: "starter",
-    trait: "Emotional Control",
-  },
-  {
-    id: "business-risk",
-    category: "Strategic Thinking",
-    title: "Risk Tradeoff",
-    prompt:
-      "You have a chance to make a risky career move with higher upside but less security. What factors should drive the decision?",
-    difficulty: "intermediate",
-    trait: "Strategic Judgment",
-  },
-  {
-    id: "history-narrative",
-    category: "Philosophy of History",
-    title: "Competing Narratives",
-    prompt:
-      "Two people explain the same historical event in completely different ways. How do you evaluate which narrative is stronger?",
-    difficulty: "intermediate",
-    trait: "Historical Reasoning",
-  },
-  {
-    id: "worldview-disagreement",
-    category: "Worldview & Cultures",
-    title: "Intelligent Disagreement",
-    prompt:
-      "Someone from a different culture reaches a conclusion you strongly disagree with. How do you test whether your own assumptions are limiting your judgment?",
-    difficulty: "intermediate",
-    trait: "Perspective Taking",
-  },
-  {
-    id: "applied-ethics-tradeoff",
-    category: "Applied Ethics",
-    title: "Hard Tradeoff",
-    prompt:
-      "A decision helps one group but hurts another. How do you reason through the tradeoff without relying only on emotion?",
-    difficulty: "intermediate",
-    trait: "Moral Reasoning",
-  },
-  {
-    id: "creative-reframe",
-    category: "Creative Thinking",
-    title: "Problem Reframe",
-    prompt:
-      "You are stuck on a problem and every obvious solution has failed. How do you reframe the problem to find a better path?",
-    difficulty: "starter",
-    trait: "Reframing",
-  },
-  {
-    id: "street-incentives",
-    category: "Street Lessons",
-    title: "Hidden Incentives",
-    prompt:
-      "Someone gives you advice that sounds helpful but may benefit them more than you. How do you evaluate their incentives?",
-    difficulty: "starter",
-    trait: "Incentive Awareness",
-  },
-  {
-    id: "literature-character",
-    category: "Literature & Wisdom",
-    title: "Character Judgment",
-    prompt:
-      "A character makes a destructive choice while believing they are right. How do you analyze the flaw in their reasoning?",
-    difficulty: "starter",
-    trait: "Wisdom Pattern Recognition",
-  },
-];
+const challengeDomains = [
+  ["Workplace Strategy", "credit, timing, reputation, and leverage at work", "Tactical Thinking"],
+  ["Financial Judgment", "risk, incentives, debt, upside, and opportunity cost", "Opportunity Cost"],
+  ["Media Manipulation", "headlines, outrage, framing, and emotional triggers", "Bias Detection"],
+  ["Logic Under Pressure", "fast decisions, uncertainty, and clean argument structure", "Decision Discipline"],
+  ["Social Intelligence", "status, tone, trust, conflict, and emotional control", "Social Calibration"],
+  ["Strategic Thinking", "tradeoffs, second-order effects, and long-term positioning", "Strategic Judgment"],
+  ["Philosophy of History", "timelines, causality, narratives, and historical bias", "Historical Reasoning"],
+  ["Worldview & Cultures", "intelligent disagreement, culture, values, and assumptions", "Perspective Taking"],
+  ["Applied Ethics", "stakeholders, harm, fairness, and competing principles", "Moral Reasoning"],
+  ["Creative Thinking", "constraints, reframing, invention, and useful originality", "Creative Reframing"],
+  ["Street Lessons", "hidden incentives, pressure, risk, and human behavior", "Incentive Awareness"],
+  ["Literature & Wisdom", "character, motive, tragedy, pride, and timeless patterns", "Wisdom Pattern Recognition"],
+  ["Debate & Argument", "claims, evidence, warrants, counterarguments, and steelmanning", "Argument Mapping"],
+  ["Science & Evidence", "measurement, uncertainty, base rates, and causal claims", "Evidence Discipline"],
+  ["Technology & AI", "automation, privacy, dependency, and unintended consequences", "Systems Awareness"],
+  ["Health & Habits", "discipline, comfort, identity, incentives, and self-deception", "Habit Reasoning"],
+  ["Leadership", "responsibility, standards, incentives, and group trust", "Leadership Judgment"],
+  ["Relationships", "boundaries, repair, loyalty, honesty, and emotional timing", "Relational Judgment"],
+  ["Civic Thinking", "policy tradeoffs, rights, duties, and public incentives", "Civic Reasoning"],
+  ["Personal Identity", "ego, self-image, fear, ambition, and changing your mind", "Self-Reflection"],
+] as const;
+
+const promptFrames = [
+  ["Assumption Audit", "What assumption are most people likely to make about {focus}, and how would you test it before acting?"],
+  ["Evidence Check", "Someone makes a confident claim about {focus}. What evidence would actually move your confidence up or down?"],
+  ["Incentive Map", "Who benefits if you accept the obvious interpretation of {focus}, and what incentive might they be hiding?"],
+  ["Second-Order Move", "If your first solution to {focus} works, what second problem might it create?"],
+  ["Opposing Case", "What is the strongest opposing view on {focus}, and what part of it deserves respect?"],
+  ["Emotional Control", "A situation involving {focus} makes you angry. How do you separate the signal from the emotional noise?"],
+  ["Tradeoff Decision", "You must choose between speed and accuracy in {focus}. What tradeoff would guide your decision?"],
+  ["Status Pressure", "People around you reward the popular answer about {focus}. How do you reason independently without becoming reckless?"],
+  ["Long-Term Lens", "What decision about {focus} looks good today but may weaken your position later?"],
+  ["Hidden Variable", "What missing variable would most change your judgment about {focus}?"],
+  ["Principle Test", "What principle would you use to judge {focus}, and where might that principle break down?"],
+  ["Probability Shift", "What would make your current view of {focus} 30%, 60%, or 90% likely?"],
+  ["Narrative Trap", "What story do people tell about {focus}, and what facts might the story leave out?"],
+  ["Action Threshold", "At what point would you stop analyzing {focus} and take action?"],
+  ["Risk Reversal", "What risk in {focus} are you overestimating, and what risk are you underestimating?"],
+  ["Stakeholder Scan", "Who is affected by a decision about {focus}, and whose perspective is easiest to ignore?"],
+  ["Character Read", "What does a person's choice around {focus} reveal about their priorities?"],
+  ["Growth Reflection", "How would a more disciplined version of you reason through {focus}?"],
+] as const;
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function difficultyForIndex(index: number): Challenge["difficulty"] {
+  if (index < 6) return "starter";
+  if (index < 12) return "intermediate";
+
+  return "advanced";
+}
+
+export const challenges: Challenge[] = challengeDomains.flatMap(
+  ([category, focus, trait], domainIndex) =>
+    promptFrames.map(([title, prompt], promptIndex) => ({
+      id: `${slugify(category)}-${String(promptIndex + 1).padStart(2, "0")}`,
+      category,
+      title,
+      prompt: prompt.replace("{focus}", focus),
+      difficulty: difficultyForIndex(promptIndex),
+      trait,
+    }))
+);
 
 export function getDailyChallenge(date = new Date()): Challenge {
   const daySeed = Math.floor(date.getTime() / 86_400_000);
+
   return challenges[daySeed % challenges.length];
 }
 

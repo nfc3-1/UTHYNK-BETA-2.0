@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { challenges, getChallengeById, type Challenge } from "@/lib/challenges";
 import {
@@ -81,6 +82,7 @@ function ReasoningExperience({
 }: {
   language: Language;
 }) {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialChallenge = useMemo(() => {
     const requestedId = searchParams.get("id");
@@ -117,7 +119,7 @@ function ReasoningExperience({
     ...initialFeedback,
     trait: challenge.trait,
   });
-
+  const [freePassUsed, setFreePassUsed] = useState(0);
   const [conversation, setConversation] = useState<any[]>([
     {
       role: "uthynk",
@@ -156,6 +158,7 @@ function ReasoningExperience({
 
     const storedProfile = localStorage.getItem("uthynk-profile");
     setProfile(storedProfile ? JSON.parse(storedProfile) : null);
+    setFreePassUsed(Number(localStorage.getItem("uthynk-free-pass-used") || "0"));
 
     conversationIdRef.current =
       conversationIdRef.current ||
@@ -232,7 +235,6 @@ function ReasoningExperience({
 
     return pool[seed % pool.length] || currentChallenge;
   }
-
   function startVoiceInput() {
     recognitionRef.current?.start();
   }
@@ -251,6 +253,12 @@ function ReasoningExperience({
       if (typeof window !== "undefined") {
         const stored = localStorage.getItem("uthynk-profile");
         activeProfile = stored ? JSON.parse(stored) : null;
+        const used = Number(localStorage.getItem("uthynk-free-pass-used") || "0");
+
+        if (!activeProfile?.id && used >= 3) {
+          router.push("/login?reason=free-pass");
+          return;
+        }
       }
 
       setConversation((prev) => [
@@ -283,6 +291,10 @@ function ReasoningExperience({
 
       if (!res.ok) {
         const data = await res.json();
+        if (data.code === "auth_required") {
+          router.push("/login?reason=free-pass");
+          return;
+        }
         setError(data.error || "Reasoning analysis failed.");
         return;
       }
@@ -342,6 +354,15 @@ function ReasoningExperience({
       }
 
       setEvaluatedClaim(response);
+      if (!activeProfile?.id && typeof window !== "undefined") {
+        const nextFreePassUsed = Math.min(
+          3,
+          Number(localStorage.getItem("uthynk-free-pass-used") || "0") + 1
+        );
+        localStorage.setItem("uthynk-free-pass-used", String(nextFreePassUsed));
+        document.cookie = `uthynk-free-pass-used=${nextFreePassUsed}; path=/; max-age=2592000; SameSite=Lax`;
+        setFreePassUsed(nextFreePassUsed);
+      }
       setFeedback({ ...data, trait: data.trait || challenge.trait });
       setLatestReward({
         evidenceDelta: Math.max(
@@ -532,6 +553,7 @@ function ReasoningExperience({
             <span>{visibleChallenge.category}</span>
             <span>{visibleDifficulty}</span>
             <span>{visiblePressure}</span>
+            {!profile?.id ? <span>{Math.max(0, 3 - freePassUsed)} free left</span> : null}
           </div>
         </div>
 
@@ -577,12 +599,24 @@ function ReasoningExperience({
         />
 
         {error ? <p className="panelNote">{error}</p> : null}
+        {!profile?.id && freePassUsed >= 3 ? (
+          <div className="freePassGate">
+            <strong>Create a free beta profile to continue.</strong>
+            <span>
+              You used your 3 free UThynk challenges. Sign up to save memory,
+              streaks, traits, and future sessions.
+            </span>
+            <Link className="btn btnPrimary" href="/login?reason=free-pass">
+              Create Profile
+            </Link>
+          </div>
+        ) : null}
 
         <div className="reasoningActions">
           <button
             className="btn btnPrimary"
             type="button"
-            disabled={loading || !response.trim()}
+            disabled={loading || !response.trim() || (!profile?.id && freePassUsed >= 3)}
             onClick={analyzeReasoning}
           >
             {loading ? copy.sending : copy.send}
@@ -770,6 +804,7 @@ export default function ReasoningPage() {
             <Link href="/">{copy.home}</Link>
             <Link href="/profile">{copy.identity}</Link>
             <Link href="/dashboard">{copy.progress}</Link>
+            <Link href="/login">Sign in</Link>
           </nav>
 
           <label className="languageSelectLabel topLanguageSelect">

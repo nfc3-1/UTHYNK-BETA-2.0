@@ -10,6 +10,7 @@ export type SessionUser = {
 export async function getServerSessionUser(): Promise<SessionUser | null> {
   const cookieStore = cookies();
   const sessionCookie = cookieStore.get('uthynk-session')?.value;
+  const profileCookie = cookieStore.get('uthynk-profile')?.value;
 
   if (sessionCookie) {
     try {
@@ -18,8 +19,6 @@ export async function getServerSessionUser(): Promise<SessionUser | null> {
       return null;
     }
   }
-
-  const profileCookie = cookieStore.get('uthynk-profile')?.value;
 
   if (profileCookie) {
     try {

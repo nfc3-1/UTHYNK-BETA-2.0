@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 const protectedRoutes = [
-  '/',
-  '/reasoning',
   '/dashboard',
   '/profile',
   '/leaderboard',
@@ -17,20 +15,19 @@ const protectedRoutes = [
 ];
 
 function isProtectedRoute(pathname: string) {
-  return protectedRoutes.some((route) =>
-    route === '/' ? pathname === '/' : pathname.startsWith(route)
-  );
+  return protectedRoutes.some((route) => pathname.startsWith(route));
 }
 
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const hasSession = Boolean(request.cookies.get('uthynk-session')?.value);
+  const hasProfile = Boolean(request.cookies.get('uthynk-profile')?.value);
 
-  if (pathname === '/login' && hasSession) {
+  if (pathname === '/login' && (hasSession || hasProfile)) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  if (!isProtectedRoute(pathname) || hasSession) {
+  if (!isProtectedRoute(pathname) || hasSession || hasProfile) {
     return NextResponse.next();
   }
 
@@ -41,8 +38,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/',
-    '/reasoning/:path*',
     '/dashboard/:path*',
     '/profile/:path*',
     '/leaderboard/:path*',

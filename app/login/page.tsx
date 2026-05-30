@@ -1,64 +1,67 @@
 "use client";
 
-import { FormEvent, Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+
+const STORAGE_KEY = "uthynk-profile";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextPath = useMemo(() => searchParams.get("next") || "/", [searchParams]);
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [mode, setMode] = useState<"signup" | "login">(
+    searchParams.get("mode") === "login" ? "login" : "signup"
+  );
   const [ageBand, setAgeBand] = useState("18_plus");
-  const [onboardingGoal, setOnboardingGoal] = useState("sharpen_reasoning");
-  const [onboardingStyle, setOnboardingStyle] = useState("balanced");
+  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [onboardingGoal, setOnboardingGoal] = useState("sharpen_reasoning");
+  const [onboardingStyle, setOnboardingStyle] = useState("balanced");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
 
-  async function establishCookie(profile: Record<string, unknown>) {
-    const response = await fetch("/api/auth/session", {
-      body: JSON.stringify({ profile }),
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-    });
+  useEffect(() => {
+    async function checkSession() {
+      const response = await fetch("/api/auth/me");
+      const payload = await response.json().catch(() => ({}));
 
-    const payload = await response.json().catch(() => ({}));
-
-    if (!response.ok) {
-      throw new Error(payload.error || "Login cookie could not be created.");
+      if (payload.authenticated) {
+        router.replace(nextPath.startsWith("/") ? nextPath : "/");
+      }
     }
-  }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+    checkSession();
+  }, [nextPath, router]);
+
+  async function handleSubmit() {
     setError("");
     setLoading(true);
 
     try {
-      const profileResponse = await fetch("/api/profile", {
+      const response = await fetch(mode === "signup" ? "/api/auth/signup" : "/api/auth/login", {
         body: JSON.stringify({
           ageBand,
           email,
           onboardingGoal,
           onboardingStyle,
+          password,
           username,
         }),
         headers: { "Content-Type": "application/json" },
         method: "POST",
       });
+      const payload = await response.json().catch(() => ({}));
 
-      const payload = await profileResponse.json().catch(() => ({}));
-
-      if (!profileResponse.ok || !payload.profile) {
-        throw new Error(payload.error || "Profile could not be created.");
+      if (!response.ok || !payload.profile) {
+        throw new Error(payload.error || "Authentication failed.");
       }
 
-      localStorage.setItem("uthynk-profile", JSON.stringify(payload.profile));
-      await establishCookie(payload.profile);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload.profile));
       router.replace(nextPath.startsWith("/") ? nextPath : "/");
       router.refresh();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Login failed.");
+      setError(caught instanceof Error ? caught.message : "Authentication failed.");
     } finally {
       setLoading(false);
     }
@@ -74,13 +77,48 @@ function LoginForm() {
             <span>Better thinking. <em>Better decisions.</em></span>
           </div>
         </div>
-        <div className="panelLabel">UThynk Access</div>
-        <h1>Start your profile</h1>
+
+        <div className="authModeSwitch" aria-label="Authentication mode">
+          <button
+            className={mode === "signup" ? "active" : ""}
+            type="button"
+            onClick={() => setMode("signup")}
+          >
+            Create account
+          </button>
+          <button
+            className={mode === "login" ? "active" : ""}
+            type="button"
+            onClick={() => setMode("login")}
+          >
+            Sign in
+          </button>
+        </div>
+
+        <div className="panelLabel">
+          {mode === "signup" ? "Beta onboarding" : "Welcome back"}
+        </div>
+        <h1>{mode === "signup" ? "Start your profile" : "Continue your profile"}</h1>
         <p>
-          Create or restore a UThynk profile so your reasoning streak, traits, and sessions persist across devices.
+          {mode === "signup"
+            ? "Create a UThynk account so your reasoning streak, traits, and sessions persist across devices."
+            : "Sign in to restore your memory, streak, traits, and session continuity."}
         </p>
 
-        <form className="authForm" onSubmit={handleSubmit}>
+        <div className="authForm">
+          {mode === "signup" ? (
+            <label>
+              <span>Name</span>
+              <input
+                autoComplete="name"
+                onChange={(event) => setUsername(event.target.value)}
+                placeholder="What should UThynk call you?"
+                type="text"
+                value={username}
+              />
+            </label>
+          ) : null}
+
           <label>
             <span>Email</span>
             <input
@@ -93,52 +131,71 @@ function LoginForm() {
           </label>
 
           <label>
-            <span>Name</span>
+            <span>Password</span>
             <input
-              autoComplete="name"
-              onChange={(event) => setUsername(event.target.value)}
-              placeholder="What should UThynk call you?"
-              type="text"
-              value={username}
+              autoComplete={mode === "signup" ? "new-password" : "current-password"}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+              type="password"
+              value={password}
             />
           </label>
 
-          <label>
-            <span>Age range</span>
-            <select value={ageBand} onChange={(event) => setAgeBand(event.target.value)}>
-              <option value="under_13">Under 13</option>
-              <option value="13_17">13-17</option>
-              <option value="18_plus">18+</option>
-            </select>
-          </label>
+          {mode === "signup" ? (
+            <>
+              <label>
+                <span>Age range</span>
+                <select value={ageBand} onChange={(event) => setAgeBand(event.target.value)}>
+                  <option value="under_13">Under 13</option>
+                  <option value="13_17">13-17</option>
+                  <option value="18_plus">18+</option>
+                </select>
+              </label>
 
-          <label>
-            <span>Primary goal</span>
-            <select value={onboardingGoal} onChange={(event) => setOnboardingGoal(event.target.value)}>
-              <option value="sharpen_reasoning">Sharpen reasoning</option>
-              <option value="debate_better">Debate better</option>
-              <option value="make_better_decisions">Make better decisions</option>
-              <option value="spot_manipulation">Spot manipulation</option>
-              <option value="build_confidence">Build confidence</option>
-            </select>
-          </label>
+              <label>
+                <span>Primary goal</span>
+                <select
+                  value={onboardingGoal}
+                  onChange={(event) => setOnboardingGoal(event.target.value)}
+                >
+                  <option value="sharpen_reasoning">Sharpen reasoning</option>
+                  <option value="debate_better">Debate better</option>
+                  <option value="make_better_decisions">Make better decisions</option>
+                  <option value="spot_manipulation">Spot manipulation</option>
+                  <option value="build_confidence">Build confidence</option>
+                </select>
+              </label>
 
-          <label>
-            <span>Coaching style</span>
-            <select value={onboardingStyle} onChange={(event) => setOnboardingStyle(event.target.value)}>
-              <option value="balanced">Balanced</option>
-              <option value="direct">Direct</option>
-              <option value="supportive">Supportive</option>
-              <option value="challenging">Challenging</option>
-            </select>
-          </label>
+              <label>
+                <span>Coaching style</span>
+                <select
+                  value={onboardingStyle}
+                  onChange={(event) => setOnboardingStyle(event.target.value)}
+                >
+                  <option value="balanced">Balanced</option>
+                  <option value="direct">Direct</option>
+                  <option value="supportive">Supportive</option>
+                  <option value="challenging">Challenging</option>
+                </select>
+              </label>
+            </>
+          ) : null}
 
           {error ? <p className="authError">{error}</p> : null}
 
-          <button className="btn btnPrimary" disabled={loading} type="submit">
-            {loading ? "Setting up..." : "Continue to UThynk"}
+          <button
+            className="btn btnPrimary"
+            disabled={!email || !password || loading}
+            type="button"
+            onClick={handleSubmit}
+          >
+            {loading ? "Checking..." : mode === "signup" ? "Start UThynk" : "Sign in"}
           </button>
-        </form>
+        </div>
+
+        <p className="authFinePrint">
+          New users can try 3 reasoning challenges before creating a profile.
+        </p>
       </section>
     </main>
   );

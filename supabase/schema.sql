@@ -2,6 +2,7 @@ create extension if not exists "uuid-ossp";
 
 create table if not exists public.user_profiles (
   id uuid primary key default uuid_generate_v4(),
+  auth_user_id uuid references auth.users(id) on delete set null,
   email text unique,
   username text,
   age_band text default '18_plus',
@@ -117,6 +118,13 @@ create table if not exists public.reasoning_sessions (
   memory_snapshot jsonb,
   created_at timestamptz default now()
 );
+
+alter table public.user_profiles
+add column if not exists auth_user_id uuid references auth.users(id) on delete set null;
+
+create unique index if not exists user_profiles_auth_user_idx
+on public.user_profiles(auth_user_id)
+where auth_user_id is not null;
 
 alter table public.reasoning_sessions
 add column if not exists session_id text;

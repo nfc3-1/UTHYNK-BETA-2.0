@@ -579,6 +579,17 @@ function jsonStreamEvent(type: string, payload: unknown) {
   return `event: ${type}\ndata: ${JSON.stringify(payload)}\n\n`;
 }
 
+function readGuestFreePassUsed(request: Request) {
+  const cookie = request.headers
+    .get("cookie")
+    ?.split(";")
+    .map((value) => value.trim())
+    .find((value) => value.startsWith("uthynk-free-pass-used="))
+    ?.replace("uthynk-free-pass-used=", "");
+
+  return Number(cookie || "0") || 0;
+}
+
 async function callOpenAi({
   apiKey,
   categoryPrompt,
@@ -794,6 +805,16 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: "A response is required before reasoning can be analyzed." },
         { status: 400 }
+      );
+    }
+
+    if (!userId && readGuestFreePassUsed(request) >= 3) {
+      return NextResponse.json(
+        {
+          code: "auth_required",
+          error: "Create a free UThynk profile to continue after 3 guest challenges.",
+        },
+        { status: 401 }
       );
     }
 
