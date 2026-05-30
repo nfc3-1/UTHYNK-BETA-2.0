@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { adaptQuestionForAge, ageBandLabel, normalizeAgeBand } from '@/lib/ageAdaptivePrompts';
 
 type Props = {
   category: string;
@@ -11,8 +12,28 @@ export default function LessonQuestionClient({ category, questions }: Props) {
   const [answer, setAnswer] = useState('');
   const [feedback, setFeedback] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [selectedQuestion, setSelectedQuestion] = useState(questions[0] || '');
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [ageBand, setAgeBand] = useState('18_plus');
   const [error, setError] = useState('');
+  const safeAgeBand = normalizeAgeBand(ageBand);
+  const adaptedQuestions = useMemo(
+    () => questions.map((question, index) => adaptQuestionForAge(question, category, safeAgeBand, index)),
+    [category, questions, safeAgeBand]
+  );
+  const selectedQuestion = adaptedQuestions[selectedIndex] || adaptedQuestions[0] || '';
+
+  useEffect(() => {
+    const stored = localStorage.getItem('uthynk-profile');
+
+    if (!stored) return;
+
+    try {
+      const profile = JSON.parse(stored);
+      setAgeBand(profile?.age_band || '18_plus');
+    } catch {
+      setAgeBand('18_plus');
+    }
+  }, []);
 
   async function startLesson(question = selectedQuestion) {
     if (!question || !answer.trim()) return;
@@ -25,6 +46,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
       const response = await fetch('/api/reasoning', {
         body: JSON.stringify({
           category,
+          ageBand: safeAgeBand,
           challenge: question,
           question,
           response: answer,
@@ -51,11 +73,11 @@ export default function LessonQuestionClient({ category, questions }: Props) {
   return (
     <section className="lessonQuestionLayout">
       <div className="lessonQuestionList">
-        {questions.map((question) => (
+        {adaptedQuestions.map((question, index) => (
           <button
-            className={selectedQuestion === question ? 'lessonQuestion active' : 'lessonQuestion'}
-            key={question}
-            onClick={() => setSelectedQuestion(question)}
+            className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}
+            key={`${category}-${index}-${question}`}
+            onClick={() => setSelectedIndex(index)}
             type="button"
           >
             {question}
@@ -65,6 +87,9 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
       <div className="card lessonStartPanel">
         <div className="panelLabel">Selected Question</div>
+        {safeAgeBand !== '18_plus' ? (
+          <div className="ageModeBadge">{ageBandLabel(safeAgeBand)}</div>
+        ) : null}
         <h2>{selectedQuestion}</h2>
         <textarea
           className="textarea conversationInput"

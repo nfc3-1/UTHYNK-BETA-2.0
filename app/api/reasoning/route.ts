@@ -311,6 +311,12 @@ function buildAdaptiveSystemPrompt({
 }) {
   const ageBand = profile?.age_band || "18_plus";
   const style = profile?.onboarding_style || "balanced";
+  const ageDirective =
+    ageBand === "under_13"
+      ? "Use short, concrete language for a younger user. Prefer school, friends, games, family, online posts, fairness, and simple choices. Avoid workplace, finance, politics, dating, and adult-risk examples unless the user raises them. Be curious, not intimidating."
+      : ageBand === "13_17"
+        ? "Use teen-relevant examples: school, first jobs, friends, social media, reputation, peer pressure, identity, money habits, and online information. Keep the reasoning rigorous but approachable."
+        : "Use adult-level reasoning, including work, finance, leadership, relationships, civic tradeoffs, and long-term strategy where relevant.";
   const recentFollowUps = memory?.recentFollowUps?.filter(Boolean).slice(0, 8) || [];
   const responseLanguage =
     language === "es" ? "Spanish" : language === "fr" ? "French" : "English";
@@ -325,6 +331,7 @@ function buildAdaptiveSystemPrompt({
     `Follow-up directive: ${categoryPrompt.followUpDirective}`,
     `Available trait labels: ${categoryPrompt.traitOptions.join(", ")}.`,
     `User age band: ${ageBand}. Coaching style: ${style}.`,
+    `Age adaptation rule: ${ageDirective}`,
     `Persistent memory: ${JSON.stringify(memory || null)}.`,
     `Verifier engine result: ${JSON.stringify(verifier)}.`,
     `Do not repeat these follow-ups: ${JSON.stringify(recentFollowUps)}.`,
@@ -653,6 +660,7 @@ async function callOpenAi({
         {
           role: "user",
           content: JSON.stringify({
+            ageBand: profile?.age_band || "18_plus",
             challenge,
             priorSessions: memory?.recentPatterns || [],
             question,
@@ -838,7 +846,16 @@ export async function POST(request: Request) {
     const category = normalizeCategory(body.category, challenge);
     const categoryPrompt = categoryPromptMap[category];
     const memory = await getReasoningMemory(userId);
-    const profile = await loadProfile(userId);
+    const profile =
+      (await loadProfile(userId)) ||
+      (body.ageBand
+        ? {
+            age_band:
+              body.ageBand === "under_13" || body.ageBand === "13_17"
+                ? body.ageBand
+                : "18_plus",
+          }
+        : null);
     const verifier = verifierEngine(response, category);
     const modeSeed = stableModeSeed({
       category,

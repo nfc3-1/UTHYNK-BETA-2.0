@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { adaptChallengeForAge, ageBandLabel, normalizeAgeBand } from "@/lib/ageAdaptivePrompts";
 import { challenges, getChallengeById, type Challenge } from "@/lib/challenges";
 import {
   cognitionFeedByLanguage,
@@ -129,7 +130,9 @@ function ReasoningExperience({
     },
   ]);
   const copy = uiCopy[language];
-  const visibleChallenge = localizeChallenge(challenge, language);
+  const ageBand = normalizeAgeBand(profile?.age_band);
+  const ageAdjustedChallenge = adaptChallengeForAge(challenge, ageBand);
+  const visibleChallenge = localizeChallenge(ageAdjustedChallenge, language);
   const visibleFeedback = {
     ...feedback,
     analysis: localizeText(feedback.analysis, language),
@@ -318,6 +321,7 @@ function ReasoningExperience({
         },
         body: JSON.stringify({
           challengeId: challenge.id,
+          ageBand,
           category: challenge.category,
           challenge: `${visibleChallenge.prompt}\nThinking lens: ${thinkingLens}`,
           language,
@@ -594,6 +598,7 @@ function ReasoningExperience({
             <span>{visibleChallenge.category}</span>
             <span>{visibleDifficulty}</span>
             <span>{visiblePressure}</span>
+            {ageBand !== "18_plus" ? <span>{ageBandLabel(ageBand)}</span> : null}
             {!profile?.id ? <span>{Math.max(0, 3 - freePassUsed)} free left</span> : null}
           </div>
         </div>
