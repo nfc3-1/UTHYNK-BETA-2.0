@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import categories from '@/data/categories.json';
 import dykItems from '@/data/did_you_know.json';
 import Link from 'next/link';
+import { slugifyCategory } from '@/lib/questionBank';
 
 function pickIndex(seed:number, len:number){
   return Math.abs(Math.floor(seed)) % Math.max(1,len);
@@ -142,7 +143,7 @@ export default function HomeShell(){
 function CategoryTile({ c, emphasized }: { c:any; emphasized?: boolean }){
   const tag = emphasized ? 'Foundation' : 'Skill';
   return (
-    <div className="tile" role="button" tabIndex={0} aria-label={`Open ${c.name}`}>
+    <Link className="tile" href={`/lessons/${slugifyCategory(c.name)}`} aria-label={`Open ${c.name}`}>
       <div className="tileTop">
         <div>
           <div className="tileName">{c.name}</div>
@@ -152,12 +153,12 @@ function CategoryTile({ c, emphasized }: { c:any; emphasized?: boolean }){
       </div>
 
       <div className="tileOverlay" aria-hidden>
-        <div className="overlayText">{c.synopsis}</div>
+        <div className="overlayText">{c.synopsis || c.description}</div>
         <div className="overlayCta">
           <span>Hover synopsis</span>
           <span>Explore →</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

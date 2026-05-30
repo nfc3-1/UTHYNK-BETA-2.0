@@ -908,6 +908,7 @@ a{
 
 .threadMeta span,
 .categoryPills span,
+.categoryPills a,
 .traitList span{
   padding:8px 10px;
   border-radius:999px;

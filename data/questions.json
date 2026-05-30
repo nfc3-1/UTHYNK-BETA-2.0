@@ -1,4 +1,16 @@
 {
+  "Epistemology": [
+    "What would you accept as good evidence, and why?",
+    "How do you tell the difference between believing and knowing?",
+    "When is doubt a strength, and when is it avoidance?",
+    "When should you trust experts, and when should you question them?",
+    "What would verify a claim you heard recently?",
+    "What would have to happen for you to change your mind on something important?",
+    "How much certainty do you need before acting?",
+    "What belief do you hold with less evidence than you admit?",
+    "How can two smart people inspect the same facts and disagree?",
+    "What source of knowledge do you over-trust?"
+  ],
   "Philosophy of History": [
     "Does history move in cycles or progress forward?",
     "When do winners write history, and when does evidence correct them?",
@@ -22,6 +34,18 @@
     "What is the difference between explanation and excuse?",
     "When does a pattern become evidence?",
     "What would falsify your current view?"
+  ],
+  "Mind & Self": [
+    "When do emotions improve thinking, and when do they distort it?",
+    "What belief feels like part of who you are, and why?",
+    "How do you tell overthinking from careful planning?",
+    "How can you tell when you are rationalizing?",
+    "Where are you overconfident or underconfident?",
+    "What small habit would most improve your thinking?",
+    "When does your ego protect you from useful feedback?",
+    "What fear is shaping a decision more than evidence?",
+    "What would you notice if you observed your own thinking from the outside?",
+    "When does comfort become a weak argument?"
   ],
   "Strategic Thinking": [
     "When is doing nothing the strongest move?",
@@ -47,6 +71,42 @@
     "What value are you protecting in your current decision?",
     "Where might your ethical position become inconsistent?"
   ],
+  "Literature & Wisdom": [
+    "What does a character's mistake reveal about human nature?",
+    "When does pride make someone confuse strength with stubbornness?",
+    "What story best explains a destructive choice made with good intentions?",
+    "How can fiction reveal a truth that statistics miss?",
+    "What timeless pattern appears in a conflict you are facing?",
+    "When does ambition become self-deception?",
+    "What does betrayal usually reveal about incentives?",
+    "How would a wiser character handle your current problem?",
+    "What flaw is easiest to see in others but hardest to see in yourself?",
+    "What lesson should be visible without someone explaining it?"
+  ],
+  "Worldview & Cultures": [
+    "How do cultural assumptions shape what feels obvious?",
+    "When is disagreement a sign of different values rather than bad logic?",
+    "What would your view look like from another culture's starting point?",
+    "How do you respect a worldview without accepting every claim it makes?",
+    "What belief seems strange until you understand its environment?",
+    "When does tolerance become avoidance of judgment?",
+    "What does your culture teach you to notice first?",
+    "How can two cultures define success differently and both be coherent?",
+    "What question would help you understand an opposing worldview better?",
+    "Where might your background limit your imagination?"
+  ],
+  "Modern Questions": [
+    "What modern convenience is quietly weakening judgment?",
+    "When does optimization make life worse?",
+    "How should people reason about privacy when convenience is tempting?",
+    "What problem today is mostly an incentive problem?",
+    "When does public opinion become a poor guide to truth?",
+    "What new technology changes behavior before people understand it?",
+    "How do you judge progress without confusing it with novelty?",
+    "What tradeoff are people avoiding in a current debate?",
+    "When is disruption valuable, and when is it vanity?",
+    "What modern belief might age badly?"
+  ],
   "Media Manipulation": [
     "Who benefits if you react before verifying?",
     "What emotional trigger is the headline using?",
@@ -59,6 +119,18 @@
     "What would the strongest neutral version of this story say?",
     "What question should you ask before sharing?"
   ],
+  "Pop Culture & Media Literacy": [
+    "What does popularity hide about quality?",
+    "How do algorithms train attention without asking permission?",
+    "When does entertainment become persuasion?",
+    "What social reward makes a bad opinion spread?",
+    "How does celebrity distort credibility?",
+    "What does a trend reveal about incentives?",
+    "When is a viral moment more performance than truth?",
+    "How do memes compress arguments too far?",
+    "What would you ask before trusting a creator's claim?",
+    "How does identity shape what media people defend?"
+  ],
   "Social Intelligence": [
     "When does defending yourself lower your status?",
     "How do you respond to disrespect without escalating?",
@@ -70,5 +142,41 @@
     "How do public and private responses differ?",
     "What emotional signal should you listen to but not obey?",
     "How would a calm observer interpret your next move?"
+  ],
+  "Street Lessons": [
+    "When is someone's advice useful to you and profitable to them?",
+    "How do you spot hidden leverage in a social situation?",
+    "What risk is obvious to experienced people but invisible to beginners?",
+    "When does politeness hide pressure?",
+    "How do you tell confidence from competence?",
+    "What does a person reveal by what they avoid saying?",
+    "When should you walk away instead of winning the argument?",
+    "How do incentives change when money or status enters the room?",
+    "What signal tells you a deal is becoming unsafe?",
+    "How do you protect yourself without becoming paranoid?"
+  ],
+  "Creative Thinking": [
+    "What constraint could make the idea stronger?",
+    "How would you solve the problem if the obvious tool disappeared?",
+    "What assumption makes the current solution boring?",
+    "How can you combine two unrelated ideas into a useful third option?",
+    "When is originality less important than usefulness?",
+    "What would a beginner notice that an expert might miss?",
+    "How do you reframe failure as information?",
+    "What question would create more possibilities?",
+    "When should you stop brainstorming and start testing?",
+    "How would you simplify the idea without weakening it?"
+  ],
+  "Work & Hustle": [
+    "When does working harder become the wrong strategy?",
+    "What kind of effort compounds over time?",
+    "How do you separate ambition from impatience?",
+    "What reputation are your repeated actions building?",
+    "When should you ask for credit, and when should results speak first?",
+    "What opportunity cost hides inside a grind mindset?",
+    "How do you know whether a mentor's advice fits your situation?",
+    "What system would make discipline easier?",
+    "When is a shortcut strategic, and when is it fragile?",
+    "What should you stop doing to make progress faster?"
   ]
 }

@@ -15,6 +15,17 @@ export function slugifyCategory(category: string) {
     .replace(/^-+|-+$/g, '');
 }
 
+function canonicalizeSlug(slug: string) {
+  return slug
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+    .replace(/(^|-)and(-|$)/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 export function getCategories() {
   return Object.keys(questionBank);
 }
@@ -24,5 +35,7 @@ export function getQuestionsForCategory(category: string) {
 }
 
 export function getCategoryBySlug(slug: string) {
-  return getCategories().find((category) => slugifyCategory(category) === slug);
+  const requested = canonicalizeSlug(slug);
+
+  return getCategories().find((category) => canonicalizeSlug(slugifyCategory(category)) === requested);
 }

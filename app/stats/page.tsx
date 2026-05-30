@@ -1,6 +1,7 @@
 import titles from '@/data/titles.json';
 import categories from '@/data/categories.json';
 import Link from 'next/link';
+import { slugifyCategory } from '@/lib/questionBank';
 
 export default function Stats(){
   // mock values
@@ -56,7 +57,7 @@ export default function Stats(){
                 <div style={{fontWeight:900}}>{c.name}</div>
                 <div className="smallMuted">7 / 31 challenges explored</div>
               </div>
-              <Link className="smallMuted" href={`/category/${c.slug}`}>Open →</Link>
+              <Link className="smallMuted" href={`/lessons/${slugifyCategory(c.name)}`}>Open →</Link>
             </div>
           ))}
         </div>

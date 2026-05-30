@@ -13,6 +13,7 @@ import {
   type Language,
   uiCopy,
 } from "@/lib/reasoningI18n";
+import { getCategories, slugifyCategory } from "@/lib/questionBank";
 
 const initialFeedback = {
   score: 72,
@@ -41,7 +42,7 @@ const initialFeedback = {
 };
 
 const categoryLinks = Array.from(
-  new Set(challenges.map((challenge) => challenge.category))
+  new Set(getCategories())
 );
 
 const rankThresholds = [
@@ -138,13 +139,10 @@ function ReasoningExperience({
     strengths: feedback.strengths.map((item) => localizeText(item, language)),
     weaknesses: feedback.weaknesses.map((item) => localizeText(item, language)),
   };
-  const visibleCategoryLinks = categoryLinks.map((category) => {
-    const matchingChallenge = challenges.find((item) => item.category === category);
-
-    return matchingChallenge
-      ? localizeChallenge(matchingChallenge, language).category
-      : category;
-  });
+  const visibleCategoryLinks = categoryLinks.map((category) => ({
+    href: `/lessons/${slugifyCategory(category)}`,
+    label: category,
+  }));
   const visibleDifficulty = localizeText(difficulty, language);
   const visiblePressure = localizeText(pressure, language);
   const progressionState = getProgressionState(profile?.xp || 0);
@@ -730,7 +728,7 @@ function ReasoningExperience({
             <div className="panelLabel">{copy.categories}</div>
             <div className="categoryPills">
               {visibleCategoryLinks.map((item) => (
-                <span key={item}>{item}</span>
+                <Link href={item.href} key={item.href}>{item.label}</Link>
               ))}
             </div>
           </section>
