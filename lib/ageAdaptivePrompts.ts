@@ -1,6 +1,10 @@
-import type { Challenge } from "@/lib/challenges";
-
 export type AgeBand = "under_13" | "13_17" | "18_plus";
+
+type AgeAdaptiveChallenge = {
+  category: string;
+  prompt: string;
+  title: string;
+};
 
 type PromptFrame =
   | "assumption"
@@ -181,7 +185,7 @@ function promptForFrame(frame: PromptFrame, category: string, ageBand: AgeBand) 
   const context = contextFor(category, ageBand);
 
   if (ageBand === "under_13") {
-    const prompts: Record<PromptFrame, string> = {
+  const prompts = {
       action: `In ${context}, what would tell you it is time to stop guessing and make a choice?`,
       assumption: `In ${context}, what might you be assuming before you know enough?`,
       character: `In ${context}, what does someone's choice show about what matters to them?`,
@@ -205,7 +209,7 @@ function promptForFrame(frame: PromptFrame, category: string, ageBand: AgeBand) 
     return prompts[frame];
   }
 
-  const prompts: Record<PromptFrame, string> = {
+    const prompts = {
     action: `In ${context}, when would you stop analyzing and take action?`,
     assumption: `In ${context}, what assumption could be shaping your first reaction?`,
     character: `In ${context}, what does someone's choice reveal about their priorities?`,
@@ -244,7 +248,10 @@ export function adaptQuestionForAge(
   return promptForFrame(inferFrame(question, index), category, ageBand);
 }
 
-export function adaptChallengeForAge(challenge: Challenge, ageBandValue?: string | null): Challenge {
+export function adaptChallengeForAge<T extends AgeAdaptiveChallenge>(
+  challenge: T,
+  ageBandValue?: string | null
+): T {
   const ageBand = normalizeAgeBand(ageBandValue);
 
   if (ageBand === "18_plus") {
@@ -256,4 +263,3 @@ export function adaptChallengeForAge(challenge: Challenge, ageBandValue?: string
     prompt: promptForFrame(titleFrameMap[challenge.title] || inferFrame(challenge.prompt), challenge.category, ageBand),
   };
 }
-
