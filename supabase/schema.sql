@@ -17,6 +17,71 @@ create table if not exists public.user_profiles (
   updated_at timestamptz default now()
 );
 
+create table if not exists public.users (
+  id uuid primary key default uuid_generate_v4(),
+  auth_user_id uuid references auth.users(id) on delete set null,
+  profile_id uuid references public.user_profiles(id) on delete set null,
+  email text unique not null,
+  username text,
+  age_band text default '18_plus',
+  onboarding_goal text,
+  onboarding_style text default 'balanced',
+  xp integer default 0,
+  streak integer default 0,
+  rank text default 'Observer',
+  reasoning_score integer default 70,
+  primary_trait text default 'Analytical',
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists public.sessions (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references public.users(id) on delete cascade,
+  session_key text not null,
+  conversation_id text,
+  started_at timestamptz default now(),
+  last_activity_at timestamptz default now(),
+  message_count integer default 0,
+  xp_earned integer default 0,
+  metadata jsonb default '{}'::jsonb
+);
+
+create table if not exists public.claims (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references public.users(id) on delete cascade,
+  session_id uuid references public.sessions(id) on delete set null,
+  session_key text,
+  conversation_id text,
+  challenge_id text,
+  challenge_category text,
+  thinking_lens text,
+  prompt text,
+  claim_text text,
+  ai_analysis text,
+  contrarian_response text,
+  follow_up text,
+  reasoning_score integer,
+  xp_awarded integer default 0,
+  trait_detected text,
+  strengths jsonb default '[]'::jsonb,
+  weaknesses jsonb default '[]'::jsonb,
+  verifier jsonb default '{}'::jsonb,
+  memory_snapshot jsonb,
+  created_at timestamptz default now()
+);
+
+create table if not exists public.user_traits (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references public.users(id) on delete cascade,
+  trait_name text not null,
+  trait_score integer default 50,
+  evidence_count integer default 0,
+  last_evidence text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
 alter table public.user_profiles
 add column if not exists age_band text default '18_plus';
 
@@ -168,3 +233,26 @@ on public.cognitive_traits(user_id, trait_name);
 
 create index if not exists daily_progress_user_idx
 on public.daily_progress(user_id);
+
+create unique index if not exists users_profile_idx
+on public.users(profile_id)
+where profile_id is not null;
+
+create index if not exists users_auth_user_idx
+on public.users(auth_user_id)
+where auth_user_id is not null;
+
+create unique index if not exists sessions_user_session_key_idx
+on public.sessions(user_id, session_key);
+
+create index if not exists sessions_user_activity_idx
+on public.sessions(user_id, last_activity_at desc);
+
+create index if not exists claims_user_created_idx
+on public.claims(user_id, created_at desc);
+
+create index if not exists claims_conversation_idx
+on public.claims(user_id, conversation_id, created_at desc);
+
+create unique index if not exists user_traits_user_trait_idx
+on public.user_traits(user_id, trait_name);

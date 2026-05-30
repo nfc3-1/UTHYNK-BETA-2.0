@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { upsertCanonicalUser } from '@/lib/canonicalPersistence';
 import { hasSupabaseAdminEnv, supabaseAdmin } from '@/lib/supabaseAdmin';
 
 const cookieOptions = {
@@ -45,6 +46,15 @@ export async function POST(request: Request) {
         };
       }
 
+      await upsertCanonicalUser({
+        id: sessionUser.id,
+        email: sessionUser.email,
+        username: sessionUser.username,
+        age_band: sessionUser.age_band,
+        onboarding_goal: sessionUser.onboarding_goal,
+        onboarding_style: sessionUser.onboarding_style,
+      });
+
       const response = NextResponse.json({ user: sessionUser });
       response.cookies.set('uthynk-session', JSON.stringify(sessionUser), cookieOptions);
       response.cookies.set('uthynk-profile', JSON.stringify(profile), {
@@ -77,6 +87,14 @@ export async function POST(request: Request) {
         data.user.user_metadata?.name ||
         data.user.email?.split('@')[0],
     };
+
+    if (sessionUser.email) {
+      await upsertCanonicalUser({
+        id: sessionUser.id,
+        email: sessionUser.email,
+        username: sessionUser.username,
+      });
+    }
 
     const response = NextResponse.json({ user: sessionUser });
     response.cookies.set('uthynk-session', JSON.stringify(sessionUser), cookieOptions);

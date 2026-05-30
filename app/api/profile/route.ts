@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { upsertCanonicalUser } from "@/lib/canonicalPersistence";
 import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function POST(request: Request) {
@@ -56,7 +57,10 @@ export async function POST(request: Request) {
         .select("*")
         .single();
 
-      return NextResponse.json({ source: "supabase", profile: updated || existing });
+      const profile = updated || existing;
+      const canonicalUser = await upsertCanonicalUser(profile);
+
+      return NextResponse.json({ source: "supabase", profile, user: canonicalUser });
     }
 
     const { data: created, error } = await supabaseAdmin
@@ -78,7 +82,9 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ source: "supabase", profile: created });
+    const canonicalUser = await upsertCanonicalUser(created);
+
+    return NextResponse.json({ source: "supabase", profile: created, user: canonicalUser });
   } catch {
     return NextResponse.json(
       { error: "Profile request failed." },

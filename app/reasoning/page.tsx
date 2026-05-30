@@ -275,6 +275,7 @@ function ReasoningExperience({
           response,
           conversationId: conversationIdRef.current,
           sessionId: sessionIdRef.current,
+          thinkingLens,
           userId: activeProfile?.id,
           stream: true,
         }),

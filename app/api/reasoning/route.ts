@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 import { getServerSessionUser } from "@/lib/auth";
+import {
+  persistCanonicalConversation,
+  updateCanonicalUserProgress,
+  upsertCanonicalTrait,
+} from "@/lib/canonicalPersistence";
 import { getReasoningMemory } from "@/lib/memory";
 import {
   calculateNextStreak,
@@ -18,6 +23,7 @@ type ReasoningRequest = {
   response?: string;
   sessionId?: string;
   stream?: boolean;
+  thinkingLens?: string;
   userId?: string;
 };
 
@@ -369,6 +375,13 @@ async function updateTrait(userId: string, traitName: string, reasoningScore: nu
     });
   }
 
+  await upsertCanonicalTrait({
+    evidence: `Reasoning score ${reasoningScore}`,
+    profileId: userId,
+    traitName,
+    traitScore: nextScore,
+  });
+
   return { traitName, traitScore: nextScore };
 }
 
@@ -453,6 +466,15 @@ async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
     })
     .eq("id", userId);
 
+  await updateCanonicalUserProgress({
+    primaryTrait: feedback.trait || existing.primary_trait,
+    profileId: userId,
+    rank: nextRank,
+    reasoningScore: nextScore,
+    streak: nextStreak,
+    xp: nextXp,
+  });
+
   return {
     evolvedTrait,
     reasoningProfile,
@@ -473,6 +495,7 @@ async function persistSession({
   mode,
   response,
   sessionId,
+  thinkingLens,
   userId,
 }: {
   categoryPrompt: CategoryPrompt;
@@ -484,6 +507,7 @@ async function persistSession({
   mode: string;
   response: string;
   sessionId: string;
+  thinkingLens?: string;
   userId?: string;
 }) {
   if (!hasSupabaseAdminEnv() || !supabaseAdmin || !userId) {
@@ -535,6 +559,19 @@ async function persistSession({
     signals: feedback.verifier,
   });
 
+  await persistCanonicalConversation({
+    category: categoryPrompt.category,
+    challenge,
+    challengeId,
+    claim: response,
+    conversationId,
+    feedback,
+    memory,
+    sessionId,
+    thinkingLens,
+    userId,
+  });
+
   return updateUserProgress(userId, feedback);
 }
 
@@ -554,6 +591,7 @@ async function callOpenAi({
   response,
   sessionId,
   stream,
+  thinkingLens,
   verifier,
 }: {
   apiKey: string;
@@ -567,6 +605,7 @@ async function callOpenAi({
   response: string;
   sessionId: string;
   stream: boolean;
+  thinkingLens?: string;
   verifier: VerifierResult;
 }) {
   return fetch("https://api.openai.com/v1/chat/completions", {
@@ -600,6 +639,7 @@ async function callOpenAi({
             challenge,
             priorSessions: memory?.recentPatterns || [],
             response,
+            thinkingLens,
           }),
         },
       ],
@@ -636,6 +676,7 @@ function streamingFeedback(args: {
   profile?: any;
   response: string;
   sessionId: string;
+  thinkingLens?: string;
   userId?: string;
   verifier: VerifierResult;
 }) {
@@ -794,6 +835,7 @@ export async function POST(request: Request) {
       response,
       sessionId,
       stream: false,
+      thinkingLens: body.thinkingLens,
       verifier,
     };
 
@@ -801,6 +843,7 @@ export async function POST(request: Request) {
       return streamingFeedback({
         ...openAiArgs,
         challengeId: body.challengeId,
+        thinkingLens: body.thinkingLens,
         userId,
       });
     }
@@ -817,6 +860,7 @@ export async function POST(request: Request) {
       mode,
       response,
       sessionId,
+      thinkingLens: body.thinkingLens,
       userId,
     });
 

@@ -24,12 +24,26 @@ body{
   background:#121936;
 }
 
+.brandWatermark{
+  position:fixed;
+  right:24px;
+  bottom:18px;
+  width:180px;
+  height:180px;
+  pointer-events:none;
+  background:url("/brand/uthynk-wing-mark.svg") center/contain no-repeat;
+  opacity:0.035;
+  z-index:0;
+}
+
 a{
   color:inherit;
   text-decoration:none;
 }
 
 .appShell{
+  position:relative;
+  z-index:1;
   width:min(1450px,96vw);
   margin:20px auto;
 }
