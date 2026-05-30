@@ -84,6 +84,7 @@ export default function Profile() {
 
         <nav className="appNav">
           <Link href="/">Home</Link>
+          <Link href="/lessons">Lessons</Link>
           <Link href="/reasoning">Reasoning</Link>
           <Link href="/profile">Profile</Link>
           <Link href="/store">Store</Link>

@@ -20,7 +20,9 @@ type ReasoningRequest = {
   category?: string;
   conversationId?: string;
   language?: "en" | "es" | "fr";
+  question?: string;
   response?: string;
+  section?: string;
   sessionId?: string;
   stream?: boolean;
   thinkingLens?: string;
@@ -599,7 +601,9 @@ async function callOpenAi({
   memory,
   mode,
   profile,
+  question,
   response,
+  section,
   sessionId,
   stream,
   thinkingLens,
@@ -613,7 +617,9 @@ async function callOpenAi({
   memory?: any;
   mode: string;
   profile?: any;
+  question?: string;
   response: string;
+  section?: string;
   sessionId: string;
   stream: boolean;
   thinkingLens?: string;
@@ -649,7 +655,9 @@ async function callOpenAi({
           content: JSON.stringify({
             challenge,
             priorSessions: memory?.recentPatterns || [],
+            question,
             response,
+            section,
             thinkingLens,
           }),
         },
@@ -853,7 +861,9 @@ export async function POST(request: Request) {
       memory,
       mode,
       profile,
+      question: body.question,
       response,
+      section: body.section,
       sessionId,
       stream: false,
       thinkingLens: body.thinkingLens,

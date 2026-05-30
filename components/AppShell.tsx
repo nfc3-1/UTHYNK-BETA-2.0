@@ -12,6 +12,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
           </div>
           <nav className="ppNav">
             <Link href="/">Home</Link>
+            <Link href="/lessons">Lessons</Link>
             <Link href="/profile">Profile</Link>
             <Link href="/store">Store</Link>
           </nav>
@@ -26,6 +27,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
       <div className="ppBody">
         <aside className="card ppSide">
           <Link href="/">Home</Link>
+          <Link href="/lessons">Lessons</Link>
           <Link href="/profile">Profile</Link>
           <Link href="/store">Store</Link>
           <Link href="/login">Log Out</Link>
