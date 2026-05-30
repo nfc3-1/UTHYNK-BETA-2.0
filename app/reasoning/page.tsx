@@ -653,7 +653,7 @@ function ReasoningExperience({
             <article>
               <span>Step 4</span>
               <strong>{copy.reasoningStepFour}</strong>
-              <p>{visibleFeedback.analysis}</p>
+              <p>{visibleFeedback.weaknesses.join(", ") || visibleFeedback.analysis}</p>
             </article>
           </div>
         </section>
