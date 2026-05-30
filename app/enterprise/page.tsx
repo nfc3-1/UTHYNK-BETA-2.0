@@ -29,7 +29,10 @@ export default function EnterprisePage() {
       <header className="appTop card">
         <Link href="/" className="appBrandText">
           <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
-          <span>UThynk Enterprise</span>
+          <span className="brandCopy">
+            <strong>UThynk Enterprise</strong>
+            <small>Better thinking. <em>Better decisions.</em></small>
+          </span>
         </Link>
 
         <nav className="appNav">

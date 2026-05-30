@@ -60,18 +60,35 @@ a{
   display:inline-flex;
   align-items:center;
   gap:10px;
-  font-size:14px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
   opacity:0.85;
-  font-weight:900;
 }
 
+.brandCopy{
+  display:grid;
+  gap:2px;
+  line-height:1.05;
+}
+
+.brandCopy strong,
 .appBrand span{
   font-size:14px;
   letter-spacing:0.08em;
   text-transform:uppercase;
-  opacity:0.85;
+  font-weight:900;
+}
+
+.brandCopy small{
+  color:rgba(255,255,255,0.58);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0;
+  text-transform:none;
+}
+
+.brandCopy em,
+.authBrandLockup em{
+  color:#9fb6ff;
+  font-style:normal;
 }
 
 .appBrandLogo{
@@ -183,6 +200,36 @@ a{
 .authCard p{
   color:var(--muted);
   line-height:1.55;
+}
+
+.authBrandLockup{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:22px;
+}
+
+.authBrandLogo{
+  width:54px;
+  height:54px;
+  border-radius:16px;
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,0.36));
+}
+
+.authBrandLockup div{
+  display:grid;
+  gap:3px;
+}
+
+.authBrandLockup strong{
+  font-size:28px;
+  line-height:1;
+}
+
+.authBrandLockup span{
+  color:rgba(255,255,255,0.66);
+  font-size:13px;
+  font-weight:700;
 }
 
 .authModeSwitch{

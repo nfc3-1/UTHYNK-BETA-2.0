@@ -67,6 +67,13 @@ function LoginForm() {
   return (
     <main className="authShell">
       <section className="authCard card">
+        <div className="authBrandLockup">
+          <img src="/brand/uthynk-wing-mark.svg" alt="" className="authBrandLogo" />
+          <div>
+            <strong>UThynk</strong>
+            <span>Better thinking. <em>Better decisions.</em></span>
+          </div>
+        </div>
         <div className="panelLabel">UThynk Access</div>
         <h1>Start your profile</h1>
         <p>
@@ -143,6 +150,13 @@ export default function Login() {
       fallback={
         <main className="authShell">
           <section className="authCard card">
+            <div className="authBrandLockup">
+              <img src="/brand/uthynk-wing-mark.svg" alt="" className="authBrandLogo" />
+              <div>
+                <strong>UThynk</strong>
+                <span>Better thinking. <em>Better decisions.</em></span>
+              </div>
+            </div>
             <div className="panelLabel">UThynk Access</div>
             <h1>Start your profile</h1>
           </section>
