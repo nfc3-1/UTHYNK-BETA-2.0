@@ -167,6 +167,94 @@
     "When should you stop brainstorming and start testing?",
     "How would you simplify the idea without weakening it?"
   ],
+  "Workplace Strategy": [
+    "What would make your current view of credit, timing, reputation, and leverage at work 30%, 60%, or 90% likely?",
+    "When should you ask for credit directly, and when should you let visible results create leverage?",
+    "What reputation cost could hide inside a short-term workplace win?",
+    "Who benefits if you accept the obvious interpretation of a workplace conflict?",
+    "What second-order problem might your first response at work create?",
+    "What evidence would show whether waiting is strategic or avoidant?"
+  ],
+  "Financial Judgment": [
+    "What opportunity cost are you ignoring in this financial choice?",
+    "What risk looks small now but could compound if conditions change?",
+    "Who benefits if you make this decision quickly?",
+    "What would make the upside worth the downside?",
+    "How would you judge this decision if the first outcome went badly?",
+    "What evidence would change your confidence about the money risk?"
+  ],
+  "Logic Under Pressure": [
+    "What conclusion are you reaching fastest, and what premise does it depend on?",
+    "What would you need to know before acting under pressure?",
+    "Which part of your argument is evidence, and which part is urgency?",
+    "What would a calm observer say you are overweighing?",
+    "When does speed improve the decision, and when does it weaken it?",
+    "What single question would prevent the biggest reasoning mistake?"
+  ],
+  "Debate & Argument": [
+    "What claim are you actually defending?",
+    "What evidence would your strongest opponent respect?",
+    "What is the strongest version of the argument against you?",
+    "Where does your argument rely on a hidden assumption?",
+    "What would make your position more precise and harder to misread?",
+    "When should you concede a smaller point to protect the stronger one?"
+  ],
+  "Science & Evidence": [
+    "What would count as reliable evidence for this claim?",
+    "What measurement problem could distort the conclusion?",
+    "What base rate would make this result less surprising?",
+    "How would you separate correlation from causation here?",
+    "What uncertainty should stay visible even after the evidence improves?",
+    "What result would make you update your view?"
+  ],
+  "Technology & AI": [
+    "What task should be automated, and what judgment should remain human?",
+    "What dependency could this technology create over time?",
+    "Who gains power if this tool becomes normal?",
+    "What privacy tradeoff is easy to overlook?",
+    "What unintended behavior might the system reward?",
+    "How would you decide whether convenience is worth the risk?"
+  ],
+  "Health & Habits": [
+    "What comfort are you mistaking for a reason?",
+    "What habit would compound if repeated for eight weeks?",
+    "What incentive makes the unhealthy choice easier right now?",
+    "How would you design the environment so discipline matters less?",
+    "What identity story is helping or hurting the habit?",
+    "What evidence would show whether your plan is realistic?"
+  ],
+  "Leadership": [
+    "What standard are you setting with your next decision?",
+    "Who is affected by your choice but least likely to speak up?",
+    "What incentive will your response create for the group?",
+    "When should a leader absorb pressure, and when should they clarify consequences?",
+    "What would make people trust the decision even if they dislike it?",
+    "What short-term approval could weaken long-term leadership?"
+  ],
+  "Relationships": [
+    "What does the other person think they are protecting?",
+    "What boundary would be clear without becoming punitive?",
+    "When does honesty need timing as much as accuracy?",
+    "What would repair trust without pretending nothing happened?",
+    "What emotional signal should you notice but not obey?",
+    "How would you explain your position without trying to win?"
+  ],
+  "Civic Thinking": [
+    "What tradeoff does this public policy debate avoid naming?",
+    "Who pays the cost if the proposal succeeds?",
+    "What incentive would the policy create after people adapt to it?",
+    "Which right or duty is easiest to ignore in this issue?",
+    "What would make the opposing side's concern legitimate?",
+    "How would you judge the idea if your preferred group lost power?"
+  ],
+  "Personal Identity": [
+    "What belief feels like part of you instead of just an idea?",
+    "What would changing your mind cost socially or emotionally?",
+    "Where might pride be disguising itself as principle?",
+    "What fear is shaping the conclusion before evidence arrives?",
+    "How would a less defensive version of you evaluate this?",
+    "What pattern would show real growth over the next month?"
+  ],
   "Work & Hustle": [
     "When does working harder become the wrong strategy?",
     "What kind of effort compounds over time?",

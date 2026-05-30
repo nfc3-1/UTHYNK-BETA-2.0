@@ -271,7 +271,8 @@ function ReasoningExperience({
     if (typeof window !== "undefined") {
       const nextSeen = Array.from(new Set([...seenIds, nextChallenge.id]));
       localStorage.setItem("uthynk-seen-challenge-ids", JSON.stringify(nextSeen));
-      window.history.replaceState(null, "", `/reasoning?id=${nextChallenge.id}`);
+      const currentPath = window.location.pathname === "/" ? "/" : "/reasoning";
+      window.history.replaceState(null, "", `${currentPath}?id=${nextChallenge.id}`);
     }
   }
 
@@ -768,20 +769,28 @@ function ReasoningExperience({
         {rightTab === "categories" ? (
           <section>
             <div className="panelLabel">{copy.categories}</div>
+            <p className="categoryHelper">
+              Choose a category to load a new active challenge.
+            </p>
             <div className="categoryPills">
               {visibleCategoryLinks.map((item) => (
                 <button
                   className={challenge.category === item.category ? "active" : ""}
                   key={item.category}
+                  aria-pressed={challenge.category === item.category}
                   onClick={() => selectCategory(item.category)}
                   type="button"
                 >
-                  {item.label}
+                  <span>{item.label}</span>
+                  <small>{challenge.category === item.category ? "Active" : "Switch"}</small>
                 </button>
               ))}
             </div>
-            <Link className="categoryLessonsLink" href="/lessons">
-              Open full lesson library
+            <Link className="categoryLessonsLink" href={`/lessons/${slugifyCategory(challenge.category)}`}>
+              Open {visibleChallenge.category} questions
+            </Link>
+            <Link className="categoryLessonsLink secondary" href="/lessons">
+              View all lesson categories
             </Link>
           </section>
         ) : null}
