@@ -56,12 +56,30 @@ a{
   font-weight:800;
 }
 
-.appBrand span,
 .appBrandText{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
   font-size:14px;
   letter-spacing:0.08em;
   text-transform:uppercase;
   opacity:0.85;
+  font-weight:900;
+}
+
+.appBrand span{
+  font-size:14px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  opacity:0.85;
+}
+
+.appBrandLogo{
+  width:34px;
+  height:34px;
+  flex:0 0 auto;
+  border-radius:10px;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,0.34));
 }
 
 .appNav{

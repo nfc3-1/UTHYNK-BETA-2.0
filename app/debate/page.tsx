@@ -25,7 +25,8 @@ export default function DebatePage() {
     <main className="appShell">
       <header className="appTop card">
         <Link href="/" className="appBrandText">
-          UThynk
+          <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
+          <span>UThynk</span>
         </Link>
 
         <nav className="appNav">

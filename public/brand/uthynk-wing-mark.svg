@@ -1,0 +1,30 @@
+<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">UThynk logo mark</title>
+  <desc id="desc">A metallic U shaped mark with wing forms and circuit branches.</desc>
+  <defs>
+    <linearGradient id="metal" x1="14" y1="8" x2="58" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="0.42" stop-color="#cfd7e8"/>
+      <stop offset="0.72" stop-color="#76839e"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="18" y1="4" x2="52" y2="70" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#6b7289"/>
+    </linearGradient>
+    <filter id="glow" x="-8" y="-8" width="88" height="88" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="0" stdDeviation="2.5" flood-color="#ffffff" flood-opacity="0.36"/>
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#00081f" flood-opacity="0.42"/>
+    </filter>
+  </defs>
+  <rect width="72" height="72" rx="18" fill="#071226"/>
+  <path d="M19 12v30.5C19 54 26 62 36 62s17-8 17-19.5V12l-8 9v21.5c0 6.7-3.5 11.4-9 11.4s-9-4.7-9-11.4V21l-8-9Z" fill="url(#metal)" filter="url(#glow)"/>
+  <path d="M20 43c5.8 4.1 11 6.2 15.6 6.4M52 43c-5.8 4.1-11 6.2-15.6 6.4M21 35c5.2 4.3 9.8 6.8 14.1 7.4M51 35c-5.2 4.3-9.8 6.8-14.1 7.4M21 27c4.5 4 8.4 6.5 11.8 7.5M51 27c-4.5 4-8.4 6.5-11.8 7.5" stroke="#11182a" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M36 56V35M36 35l-7-7M36 39l8-8M36 46l-10-6M36 46l11-7" stroke="url(#edge)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="36" cy="56" r="2.7" fill="#dbe4f4" stroke="#11182a" stroke-width="1"/>
+  <circle cx="29" cy="28" r="2.4" fill="#dbe4f4" stroke="#11182a" stroke-width="1"/>
+  <circle cx="44" cy="31" r="2.4" fill="#dbe4f4" stroke="#11182a" stroke-width="1"/>
+  <circle cx="26" cy="40" r="2.2" fill="#dbe4f4" stroke="#11182a" stroke-width="1"/>
+  <circle cx="47" cy="39" r="2.2" fill="#dbe4f4" stroke="#11182a" stroke-width="1"/>
+  <path d="M52 14l2.2-5.8L56.5 14l5.8 2.2-5.8 2.2-2.3 5.8-2.2-5.8-5.8-2.2L52 14Z" fill="#ffffff" opacity="0.86"/>
+</svg>

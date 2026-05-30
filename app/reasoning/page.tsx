@@ -680,7 +680,8 @@ export default function ReasoningPage() {
     <main className="appShell reasoningShell">
       <header className="appTop card">
         <Link href="/" className="appBrandText">
-          UThynk
+          <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
+          <span>UThynk</span>
         </Link>
 
         <div className="topControls">
