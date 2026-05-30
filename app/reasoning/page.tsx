@@ -52,6 +52,14 @@ const rankThresholds = [
   { rank: "Master of Thought", xp: 10000 },
 ];
 
+const thinkingLenses = [
+  { id: "logic", labelKey: "lensLogic" },
+  { id: "incentives", labelKey: "lensIncentives" },
+  { id: "ethics", labelKey: "lensEthics" },
+  { id: "history", labelKey: "lensHistory" },
+  { id: "strategy", labelKey: "lensStrategy" },
+] as const;
+
 function getProgressionState(xp: number) {
   const currentIndex = rankThresholds.findLastIndex((item) => xp >= item.xp);
   const current = rankThresholds[Math.max(0, currentIndex)];
@@ -102,6 +110,9 @@ function ReasoningExperience({
   const [pressure, setPressure] = useState("Moderate");
   const [profile, setProfile] = useState<any>(null);
   const [rightTab, setRightTab] = useState<"categories" | "insights" | "analysis">("insights");
+  const [thinkingLens, setThinkingLens] = useState<(typeof thinkingLenses)[number]["id"]>("logic");
+  const [evaluatedClaim, setEvaluatedClaim] = useState("");
+  const [latestReward, setLatestReward] = useState<any>(null);
   const [feedback, setFeedback] = useState({
     ...initialFeedback,
     trait: challenge.trait,
@@ -259,7 +270,7 @@ function ReasoningExperience({
         body: JSON.stringify({
           challengeId: challenge.id,
           category: challenge.category,
-          challenge: visibleChallenge.prompt,
+          challenge: `${visibleChallenge.prompt}\nThinking lens: ${thinkingLens}`,
           language,
           response,
           conversationId: conversationIdRef.current,
@@ -329,7 +340,16 @@ function ReasoningExperience({
         return;
       }
 
+      setEvaluatedClaim(response);
       setFeedback({ ...data, trait: data.trait || challenge.trait });
+      setLatestReward({
+        evidenceDelta: Math.max(
+          1,
+          Math.round(((data.verifier?.behavioral?.evidence || data.score || 70) - 62) / 8)
+        ),
+        pattern: data.trait || challenge.trait,
+        xp: data.xp || 8,
+      });
 
       if (typeof window !== "undefined") {
         const stored = localStorage.getItem("uthynk-profile");
@@ -427,6 +447,12 @@ function ReasoningExperience({
       text: visibleFeedback.followUp,
     },
   ];
+  const primaryIdentity = localizeText(profile?.primary_trait, language) || visibleFeedback.trait;
+  const identitySignals = [
+    primaryIdentity || "Analytical Thinker",
+    visibleFeedback.strengths[0] || "Evidence Builder",
+    visibleFeedback.weaknesses[0] || "Question Assumptions",
+  ];
 
   return (
     <section className="uthynkReasoningLayout">
@@ -449,6 +475,14 @@ function ReasoningExperience({
             <span>{copy.progression}</span>
             <strong>{progressionState.value}</strong>
           </div>
+        </div>
+
+        <div className="identitySignals">
+          {identitySignals.map((signal) => (
+            <article key={signal}>
+              <strong>{signal}</strong>
+            </article>
+          ))}
         </div>
 
         <div className="progressBar" aria-label={copy.identityProgression}>
@@ -500,6 +534,35 @@ function ReasoningExperience({
           </div>
         </div>
 
+        <section className="thinkingLensPanel">
+          <div className="panelLabel">{copy.chooseThinkingLens}</div>
+          <div className="thinkingLensOptions" role="radiogroup" aria-label={copy.chooseThinkingLens}>
+            {thinkingLenses.map((lens) => (
+              <button
+                key={lens.id}
+                type="button"
+                role="radio"
+                aria-checked={thinkingLens === lens.id}
+                className={thinkingLens === lens.id ? "active" : ""}
+                onClick={() => setThinkingLens(lens.id)}
+              >
+                {copy[lens.labelKey]}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="contradictionStrip priorityInsightStrip">
+          <div>
+            <span>{copy.contradictionPrompt}</span>
+            <p>{strongestOpposingCase}</p>
+          </div>
+          <div>
+            <span>{copy.recursiveFollowUp}</span>
+            <p>{visibleFeedback.followUp}</p>
+          </div>
+        </section>
+
         <label className="responseLabel" htmlFor="response">
           {copy.continueWithUthynk}
         </label>
@@ -536,6 +599,16 @@ function ReasoningExperience({
           </button>
         </div>
 
+        {latestReward ? (
+          <section className="growthReward" aria-live="polite">
+            <div>
+              <span>+{latestReward.xp} {copy.insightXp}</span>
+              <strong>{copy.rewardPattern}: {localizeText(latestReward.pattern, language)}</strong>
+            </div>
+            <p>{copy.improved}: {copy.evidenceStrength} +{latestReward.evidenceDelta}</p>
+          </section>
+        ) : null}
+
         <div className="conversationThread" aria-live="polite">
           {conversation.map((item, index) => (
             <div
@@ -559,24 +632,13 @@ function ReasoningExperience({
           ) : null}
         </div>
 
-        <section className="contradictionStrip">
-          <div>
-            <span>{copy.contradictionPrompt}</span>
-            <p>{strongestOpposingCase}</p>
-          </div>
-          <div>
-            <span>{copy.recursiveFollowUp}</span>
-            <p>{visibleFeedback.followUp}</p>
-          </div>
-        </section>
-
         <section className="claimEvaluationInline">
           <div className="panelLabel">{copy.claimEvaluation}</div>
           <div className="reasoningSteps">
             <article>
               <span>Step 1</span>
               <strong>{copy.reasoningStepOne}</strong>
-              <p>{response || copy.stateClaim}</p>
+              <p>{evaluatedClaim || response || copy.stateClaim}</p>
             </article>
             <article>
               <span>Step 2</span>
