@@ -101,6 +101,7 @@ function ReasoningExperience({
   const [difficulty, setDifficulty] = useState(challenge.difficulty);
   const [pressure, setPressure] = useState("Moderate");
   const [profile, setProfile] = useState<any>(null);
+  const [rightTab, setRightTab] = useState<"categories" | "insights" | "analysis">("insights");
   const [feedback, setFeedback] = useState({
     ...initialFeedback,
     trait: challenge.trait,
@@ -467,10 +468,22 @@ function ReasoningExperience({
         </div>
 
         <section className="logicScores">
-          <div><span>{copy.logicQuality}</span><strong>{visibleFeedback.score}</strong></div>
-          <div><span>{copy.evidenceStrength}</span><strong>{feedback.verifier?.behavioral?.evidence || visibleFeedback.score}</strong></div>
-          <div><span>{copy.emotionalRigidity}</span><strong>{100 - (feedback.verifier?.behavioral?.emotionalControl || 50)}</strong></div>
-          <div><span>{copy.manipulationTactics}</span><strong>{feedback.verifier?.signals?.incentives ? copy.flagged : copy.scanning}</strong></div>
+          <div>
+            <span title={copy.logicQualityTooltip}>{copy.logicQuality}</span>
+            <strong>{visibleFeedback.score}</strong>
+          </div>
+          <div>
+            <span title={copy.evidenceStrengthTooltip}>{copy.evidenceStrength}</span>
+            <strong>{feedback.verifier?.behavioral?.evidence || visibleFeedback.score}</strong>
+          </div>
+          <div>
+            <span title={copy.emotionalRigidityTooltip}>{copy.emotionalRigidity}</span>
+            <strong>{100 - (feedback.verifier?.behavioral?.emotionalControl || 50)}</strong>
+          </div>
+          <div>
+            <span title={copy.manipulationTacticsTooltip}>{copy.manipulationTactics}</span>
+            <strong>{feedback.verifier?.signals?.incentives ? copy.flagged : copy.scanning}</strong>
+          </div>
         </section>
       </aside>
 
@@ -557,6 +570,17 @@ function ReasoningExperience({
           </div>
         </section>
 
+        <section className="claimEvaluationInline">
+          <div className="panelLabel">{copy.claimEvaluation}</div>
+          <div className="logicGrid">
+            <div><span>{copy.claim}</span><p>{response || copy.stateClaim}</p></div>
+            <div><span>{copy.evidence}</span><p>{visibleFeedback.strengths.join(", ") || copy.evidenceEmpty}</p></div>
+            <div><span>{copy.counterargument}</span><p>{visibleFeedback.contrarian}</p></div>
+            <div><span>{copy.contradictionAnalysis}</span><p>{visibleFeedback.weaknesses.join(", ")}</p></div>
+            <div><span>{copy.strongestOpposingCase}</span><p>{strongestOpposingCase}</p></div>
+          </div>
+        </section>
+
         <section className="reasoningTimeline">
           <div className="panelLabel">{copy.reasoningTimeline}</div>
           <div className="timelineRail">
@@ -571,37 +595,59 @@ function ReasoningExperience({
       </main>
 
       <aside className="uthynkSidePanel uthynkRightPanel">
-        <section>
-          <div className="panelLabel">{copy.categories}</div>
-          <div className="categoryPills">
-            {visibleCategoryLinks.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
-          </div>
-        </section>
+        <div className="rightRailTabs" role="tablist" aria-label="UThynk side panel">
+          {[
+            { id: "categories", label: copy.categoryTab },
+            { id: "insights", label: copy.insightsTab },
+            { id: "analysis", label: copy.analysisTab },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              className={rightTab === tab.id ? "active" : ""}
+              aria-selected={rightTab === tab.id}
+              onClick={() => setRightTab(tab.id as "categories" | "insights" | "analysis")}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
 
-        <section>
-          <div className="panelLabel">{copy.didYouKnow}</div>
-          <div className="cognitionFeed">
-            {cognitionFeedByLanguage[language].map((item) => (
-              <article key={item.title}>
-                <strong>{item.title}</strong>
-                <p>{item.text}</p>
-              </article>
-            ))}
-          </div>
-        </section>
+        {rightTab === "categories" ? (
+          <section>
+            <div className="panelLabel">{copy.categories}</div>
+            <div className="categoryPills">
+              {visibleCategoryLinks.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
-        <section className="logicSystem">
-          <div className="panelLabel">{copy.logicArguments}</div>
-          <div className="logicGrid">
-            <div><span>{copy.claim}</span><p>{response || copy.stateClaim}</p></div>
-            <div><span>{copy.evidence}</span><p>{visibleFeedback.strengths.join(", ") || copy.evidenceEmpty}</p></div>
-            <div><span>{copy.counterargument}</span><p>{visibleFeedback.contrarian}</p></div>
-            <div><span>{copy.contradictionAnalysis}</span><p>{visibleFeedback.weaknesses.join(", ")}</p></div>
-            <div><span>{copy.strongestOpposingCase}</span><p>{strongestOpposingCase}</p></div>
-          </div>
-        </section>
+        {rightTab === "insights" ? (
+          <section>
+            <div className="panelLabel">{copy.didYouKnow}</div>
+            <div className="cognitionFeed">
+              {cognitionFeedByLanguage[language].map((item) => (
+                <article key={item.title}>
+                  <strong>{item.title}</strong>
+                  <p>{item.text}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {rightTab === "analysis" ? (
+          <section>
+            <div className="panelLabel">{copy.claimEvaluation}</div>
+            <div className="logicGrid sideAnalysisGrid">
+              <div><span>{copy.counterargument}</span><p>{visibleFeedback.contrarian}</p></div>
+              <div><span>{copy.recursiveFollowUp}</span><p>{visibleFeedback.followUp}</p></div>
+              <div><span>{copy.strongestOpposingCase}</span><p>{strongestOpposingCase}</p></div>
+            </div>
+          </section>
+        ) : null}
 
       </aside>
     </section>
