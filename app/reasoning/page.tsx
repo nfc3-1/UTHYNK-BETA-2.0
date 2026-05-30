@@ -802,8 +802,7 @@ export default function ReasoningPage() {
         <div className="topControls">
           <nav className="appNav" aria-label="Reasoning navigation">
             <Link href="/">{copy.home}</Link>
-            <Link href="/profile">{copy.identity}</Link>
-            <Link href="/dashboard">{copy.progress}</Link>
+            <Link href="/profile">Profile</Link>
             <Link href="/login">Sign in</Link>
           </nav>
 

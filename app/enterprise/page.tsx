@@ -36,7 +36,7 @@ export default function EnterprisePage() {
         </Link>
 
         <nav className="appNav">
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/profile">Profile</Link>
           <Link href="/leaderboard">Leaderboard</Link>
           <Link href="/debate">Debate</Link>
         </nav>

@@ -33,7 +33,7 @@ export default function DebatePage() {
         </Link>
 
         <nav className="appNav">
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/profile">Profile</Link>
           <Link href="/reasoning">Challenge</Link>
           <Link href="/leaderboard">Leaderboard</Link>
         </nav>

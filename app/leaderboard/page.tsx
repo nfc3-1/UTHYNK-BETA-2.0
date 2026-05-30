@@ -40,7 +40,6 @@ export default function LeaderboardPage() {
 
         <nav className="appNav">
           <Link href="/">Home</Link>
-          <Link href="/dashboard">Dashboard</Link>
           <Link href="/profile">Profile</Link>
         </nav>
       </header>

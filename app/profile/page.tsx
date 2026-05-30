@@ -2,6 +2,10 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
+import {
+  getAdaptiveChallenges,
+  getCoachingIntensity,
+} from '@/lib/adaptive';
 
 const STORAGE_KEY = 'uthynk-profile';
 
@@ -59,6 +63,13 @@ export default function Profile() {
           sessions.length
       )
     : profile.reasoning_score || 70;
+  const recommendations = useMemo(() => getAdaptiveChallenges(profile), [profile]);
+  const coachingIntensity = getCoachingIntensity(profile.streak, profile.reasoning_score);
+  const identityLabels = [
+    profile.primary_trait || 'Analytical Thinker',
+    sessions.length >= 3 ? 'Evidence Builder' : 'Question Assumptions',
+    averageReasoning >= 80 ? 'Strategic Pattern Spotter' : 'Growth in Progress',
+  ];
 
   return (
     <main className="appShell">
@@ -73,46 +84,63 @@ export default function Profile() {
 
         <nav className="appNav">
           <Link href="/">Home</Link>
-          <Link href="/reasoning">Challenge</Link>
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/reasoning">Reasoning</Link>
+          <Link href="/profile">Profile</Link>
+          <Link href="/store">Store</Link>
         </nav>
       </header>
 
       <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
-          <div className="eyebrow">Cognitive Profile</div>
-          <h1>Track how you think.</h1>
+          <div className="eyebrow">Profile</div>
+          <h1>{profile.rank || 'Observer'}</h1>
           <p>
-            UThynk measures reasoning growth, challenge consistency, and
-            decision-making patterns over time.
+            Your identity, progress, traits, and session history now live in one place.
+            UThynk tracks who your thinking is becoming, not just what you scored.
           </p>
+          <div className="profileIdentityTags">
+            {identityLabels.map((label) => (
+              <span key={label}>{label}</span>
+            ))}
+          </div>
         </div>
 
         <div className="challengePreview">
-          <div className="panelLabel">Current Identity</div>
-          <h2>{profile.rank || 'Observer'}</h2>
+          <div className="panelLabel">Growth Snapshot</div>
+          <h2>{profile.primary_trait || 'Analytical Thinker'}</h2>
           <p>
-            Your strongest emerging trait is {profile.primary_trait || 'Analytical'}.
+            Coaching mode: {coachingIntensity}. Your next sessions should strengthen
+            evidence, adaptability, and strategic restraint.
           </p>
-          <div className="rewardCard">
-            <strong>{profile.xp || 0} XP</strong>
-            <span>Current streak: {profile.streak || 0} days</span>
+          <div className="profileMetricStrip">
+            <div>
+              <strong>{profile.xp || 0}</strong>
+              <span>XP</span>
+            </div>
+            <div>
+              <strong>{profile.streak || 0}</strong>
+              <span>day streak</span>
+            </div>
+            <div>
+              <strong>{profile.reasoning_score || 70}</strong>
+              <span>score</span>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="appGrid">
         <aside className="card statPanel">
-          <div className="panelLabel">Reasoning Metrics</div>
+          <div className="panelLabel">Overview</div>
 
           <div className="statList">
             <div className="statItem">
-              <span>Reasoning Score</span>
-              <strong>{profile.reasoning_score || 70}</strong>
+              <span>Current identity</span>
+              <strong>{profile.primary_trait || 'Analytical'}</strong>
             </div>
 
             <div className="statItem">
-              <span>Challenges Completed</span>
+              <span>Completed</span>
               <strong>{sessions.length}</strong>
             </div>
 
@@ -129,7 +157,7 @@ export default function Profile() {
         </aside>
 
         <section className="card methodPanel">
-          <div className="panelLabel">Reasoning Traits</div>
+          <div className="panelLabel">Traits</div>
 
           <div className="methodSteps">
             {traits.map((trait) => (
@@ -142,14 +170,33 @@ export default function Profile() {
         </section>
 
         <section className="card focusPanel">
-          <div className="panelLabel">Challenge History</div>
+          <div className="panelLabel">Recommended Next</div>
 
           <div className="focusGrid" style={{ gridTemplateColumns: '1fr' }}>
-            {sessions.slice(0, 5).map((session: any) => (
+            {recommendations.slice(0, 4).map((challenge) => (
+              <Link
+                href={`/reasoning?id=${challenge.id}`}
+                className="focusCard"
+                key={challenge.id}
+              >
+                <strong>{challenge.title}</strong>
+                <span>{challenge.category} - {challenge.difficulty}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </section>
+
+      <section className="appGrid profileLowerGrid">
+        <section className="card focusPanel">
+          <div className="panelLabel">Session History</div>
+
+          <div className="focusGrid" style={{ gridTemplateColumns: '1fr' }}>
+            {sessions.slice(0, 6).map((session: any) => (
               <div className="focusCard" key={session.id}>
-                <strong>{session.challenge_category || 'Reasoning Session'}</strong>
+                <strong>{session.trait_detected || 'Trait evolving'}</strong>
                 <span>
-                  {session.reasoning_score || 0} reasoning score - {session.trait_detected || 'Trait evolving'}
+                  {session.challenge_category || 'Reasoning Session'} - {session.reasoning_score || 0}
                 </span>
               </div>
             ))}
@@ -161,39 +208,27 @@ export default function Profile() {
             ) : null}
           </div>
         </section>
-      </section>
 
-      <section className="card methodPanel" style={{ marginTop: 18 }}>
-        <div className="panelLabel">Challenge Intensity</div>
+        <section className="card methodPanel">
+          <div className="panelLabel">Challenge Intensity</div>
 
-        <div className="methodSteps">
-          <label>
-            <input
-              type="radio"
-              checked={style === 'gentle'}
-              onChange={() => setStyle('gentle')}
-            />{' '}
-            Gentle Reflection
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              checked={style === 'balanced'}
-              onChange={() => setStyle('balanced')}
-            />{' '}
-            Balanced Challenge
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              checked={style === 'strong'}
-              onChange={() => setStyle('strong')}
-            />{' '}
-            Strong Challenge
-          </label>
-        </div>
+          <div className="methodSteps">
+            {[
+              ['gentle', 'Gentle Reflection'],
+              ['balanced', 'Balanced Challenge'],
+              ['strong', 'Strong Challenge'],
+            ].map(([value, label]) => (
+              <label key={value}>
+                <input
+                  type="radio"
+                  checked={style === value}
+                  onChange={() => setStyle(value)}
+                />{' '}
+                {label}
+              </label>
+            ))}
+          </div>
+        </section>
       </section>
     </main>
   );
