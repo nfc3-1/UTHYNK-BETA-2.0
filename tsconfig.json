@@ -22,7 +22,13 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -30,7 +36,8 @@
     "**/*.tsx",
     "**/*.js",
     "**/*.jsx",
-    "**/*.json"
+    "**/*.json",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

@@ -15,6 +15,7 @@ import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
 import { evolveTraitScore } from "@/lib/traits";
 
 type ReasoningRequest = {
+  ageBand?: "under_13" | "13_17" | "18_plus";
   challenge?: string;
   challengeId?: string;
   category?: string;
