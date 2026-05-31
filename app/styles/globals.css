@@ -1210,6 +1210,88 @@ a{
   line-height:1.25;
 }
 
+.leftSignalPanel{
+  gap:10px;
+}
+
+.leftSignalHeader{
+  display:grid;
+  gap:10px;
+}
+
+.leftSignalTabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  padding:5px;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  background:rgba(255,255,255,0.045);
+}
+
+.leftSignalTabs button{
+  min-height:34px;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:rgba(255,255,255,0.68);
+  cursor:pointer;
+  font:inherit;
+  font-size:12px;
+  font-weight:900;
+}
+
+.leftSignalTabs button.active{
+  background:rgba(246,198,79,0.94);
+  color:#111936;
+}
+
+.compactTraitList{
+  max-height:104px;
+  overflow:auto;
+  padding-right:2px;
+}
+
+.compactMetricGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.compactMetricGrid div{
+  display:grid;
+  gap:5px;
+  min-height:70px;
+  padding:10px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.045);
+  border:1px solid rgba(255,255,255,0.075);
+}
+
+.compactMetricGrid span{
+  color:rgba(255,255,255,0.56);
+  font-size:10px;
+  letter-spacing:0.08em;
+  line-height:1.25;
+  text-transform:uppercase;
+  font-weight:850;
+}
+
+.compactMetricGrid span[title]{
+  cursor:help;
+  text-decoration:underline;
+  text-decoration-color:rgba(246,198,79,0.34);
+  text-decoration-style:dotted;
+  text-underline-offset:4px;
+}
+
+.compactMetricGrid strong{
+  align-self:end;
+  color:rgba(255,255,255,0.94);
+  font-size:20px;
+  line-height:1;
+}
+
 .logicScores span[title]{
   cursor:help;
   text-decoration:underline;

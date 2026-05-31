@@ -246,6 +246,7 @@ function ReasoningExperience({
   const [profile, setProfile] = useState<any>(null);
   const [rightTab, setRightTab] = useState<"categories" | "insights" | "analysis">("insights");
   const [thinkingToolTab, setThinkingToolTab] = useState<"challenge" | "followUp" | "lab" | "timeline">("challenge");
+  const [leftSignalTab, setLeftSignalTab] = useState<"patterns" | "metrics">("patterns");
   const [thinkingLens, setThinkingLens] = useState<(typeof thinkingLenses)[number]["id"]>("logic");
   const [evaluatedClaim, setEvaluatedClaim] = useState("");
   const [latestReward, setLatestReward] = useState<any>(null);
@@ -717,36 +718,59 @@ function ReasoningExperience({
           </div>
         </section>
 
-        <section className="leftRailSection detectedPatternCard">
-          <div className="panelLabel">Detected Patterns</div>
-          <div className="traitList">
-            {visibleFeedback.strengths.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
-            {visibleFeedback.weaknesses.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
+        <section className="leftRailSection leftSignalPanel">
+          <div className="leftSignalHeader">
+            <div className="panelLabel">Live Signals</div>
+            <div className="leftSignalTabs" role="tablist" aria-label="Live reasoning signals">
+              {[
+                { id: "patterns", label: "Patterns" },
+                { id: "metrics", label: "Metrics" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={leftSignalTab === tab.id}
+                  className={leftSignalTab === tab.id ? "active" : ""}
+                  onClick={() => setLeftSignalTab(tab.id as "patterns" | "metrics")}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </section>
 
-        <section className="leftRailSection logicScores">
-          <div className="panelLabel">Reasoning Metrics</div>
-          <div>
-            <span title={copy.logicQualityTooltip}>{copy.logicQuality}</span>
-            <strong>{visibleFeedback.score}</strong>
-          </div>
-          <div>
-            <span title={copy.evidenceStrengthTooltip}>{copy.evidenceStrength}</span>
-            <strong>{feedback.verifier?.behavioral?.evidence || visibleFeedback.score}</strong>
-          </div>
-          <div>
-            <span title={copy.emotionalRigidityTooltip}>{copy.emotionalRigidity}</span>
-            <strong>{100 - (feedback.verifier?.behavioral?.emotionalControl || 50)}</strong>
-          </div>
-          <div>
-            <span title={copy.manipulationTacticsTooltip}>{copy.manipulationTactics}</span>
-            <strong>{feedback.verifier?.signals?.incentives ? copy.flagged : copy.scanning}</strong>
-          </div>
+          {leftSignalTab === "patterns" ? (
+            <div className="traitList compactTraitList">
+              {visibleFeedback.strengths.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+              {visibleFeedback.weaknesses.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+          ) : null}
+
+          {leftSignalTab === "metrics" ? (
+            <div className="compactMetricGrid">
+              <div>
+                <span title={copy.logicQualityTooltip}>{copy.logicQuality}</span>
+                <strong>{visibleFeedback.score}</strong>
+              </div>
+              <div>
+                <span title={copy.evidenceStrengthTooltip}>{copy.evidenceStrength}</span>
+                <strong>{feedback.verifier?.behavioral?.evidence || visibleFeedback.score}</strong>
+              </div>
+              <div>
+                <span title={copy.emotionalRigidityTooltip}>{copy.emotionalRigidity}</span>
+                <strong>{100 - (feedback.verifier?.behavioral?.emotionalControl || 50)}</strong>
+              </div>
+              <div>
+                <span title={copy.manipulationTacticsTooltip}>{copy.manipulationTactics}</span>
+                <strong>{feedback.verifier?.signals?.incentives ? copy.flagged : copy.scanning}</strong>
+              </div>
+            </div>
+          ) : null}
         </section>
       </aside>
 
