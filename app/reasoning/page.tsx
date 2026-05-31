@@ -100,9 +100,10 @@ function ReasoningExperience({
     const seenIds = JSON.parse(
       localStorage.getItem("uthynk-seen-challenge-ids") || "[]"
     ) as string[];
-    const nextUnseen = challenges.find((item) => !seenIds.includes(item.id));
+    const freshPool = challenges.filter((item) => !seenIds.includes(item.id));
+    const pool = freshPool.length ? freshPool : challenges;
 
-    return nextUnseen || challenges[seenIds.length % challenges.length];
+    return pool[Math.floor(Math.random() * pool.length)] || getChallengeById();
   }, [searchParams]);
   const [challenge, setChallenge] = useState<Challenge>(initialChallenge);
 

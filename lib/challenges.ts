@@ -1,3 +1,5 @@
+import { getCategories, getQuestionsForCategory, slugifyCategory } from "@/lib/questionBank";
+
 export type Challenge = {
   id: string;
   category: string;
@@ -7,72 +9,53 @@ export type Challenge = {
   trait: string;
 };
 
-const challengeDomains = [
-  ["Work & Ambition", "effort, timing, reputation, career leverage, and long-term growth", "Tactical Thinking"],
-  ["Financial Judgment", "risk, incentives, debt, upside, and opportunity cost", "Opportunity Cost"],
-  ["Media Literacy", "headlines, creators, algorithms, outrage, framing, and credibility", "Bias Detection"],
-  ["Logic & Debate", "claims, premises, evidence, counterarguments, and pressure-tested reasoning", "Argument Mapping"],
-  ["People & Leadership", "status, trust, relationships, responsibility, boundaries, and group incentives", "Social Calibration"],
-  ["Strategic Thinking", "tradeoffs, second-order effects, and long-term positioning", "Strategic Judgment"],
-  ["Philosophy of History", "timelines, causality, narratives, and historical bias", "Historical Reasoning"],
-  ["Worldview & Cultures", "intelligent disagreement, culture, values, and assumptions", "Perspective Taking"],
-  ["Ethics & Values", "stakeholders, harm, fairness, duties, and competing principles", "Moral Reasoning"],
-  ["Creative Thinking", "constraints, reframing, invention, and useful originality", "Creative Reframing"],
-  ["Literature & Wisdom", "character, motive, tragedy, pride, and timeless patterns", "Wisdom Pattern Recognition"],
-  ["Science & Evidence", "measurement, uncertainty, base rates, and causal claims", "Evidence Discipline"],
-  ["Technology & AI", "automation, privacy, dependency, and unintended consequences", "Systems Awareness"],
-  ["Health & Habits", "discipline, comfort, identity, incentives, and self-deception", "Habit Reasoning"],
-  ["Civic Thinking", "policy tradeoffs, rights, duties, and public incentives", "Civic Reasoning"],
-  ["Personal Identity", "ego, self-image, fear, ambition, and changing your mind", "Self-Reflection"],
-  ["Epistemology", "knowledge, evidence, certainty, trust, doubt, and belief revision", "Evidence Discipline"],
-] as const;
-
-const promptFrames = [
-  ["Assumption Audit", "What assumption are most people likely to make about {focus}, and how would you test it before acting?"],
-  ["Evidence Check", "Someone makes a confident claim about {focus}. What evidence would actually move your confidence up or down?"],
-  ["Incentive Map", "Who benefits if you accept the obvious interpretation of {focus}, and what incentive might they be hiding?"],
-  ["Second-Order Move", "If your first solution to {focus} works, what second problem might it create?"],
-  ["Opposing Case", "What is the strongest opposing view on {focus}, and what part of it deserves respect?"],
-  ["Emotional Control", "A situation involving {focus} makes you angry. How do you separate the signal from the emotional noise?"],
-  ["Tradeoff Decision", "You must choose between speed and accuracy in {focus}. What tradeoff would guide your decision?"],
-  ["Status Pressure", "People around you reward the popular answer about {focus}. How do you reason independently without becoming reckless?"],
-  ["Long-Term Lens", "What decision about {focus} looks good today but may weaken your position later?"],
-  ["Hidden Variable", "What missing variable would most change your judgment about {focus}?"],
-  ["Principle Test", "What principle would you use to judge {focus}, and where might that principle break down?"],
-  ["Probability Shift", "What would make your current view of {focus} 30%, 60%, or 90% likely?"],
-  ["Narrative Trap", "What story do people tell about {focus}, and what facts might the story leave out?"],
-  ["Action Threshold", "At what point would you stop analyzing {focus} and take action?"],
-  ["Risk Reversal", "What risk in {focus} are you overestimating, and what risk are you underestimating?"],
-  ["Stakeholder Scan", "Who is affected by a decision about {focus}, and whose perspective is easiest to ignore?"],
-  ["Character Read", "What does a person's choice around {focus} reveal about their priorities?"],
-  ["Growth Reflection", "How would a more disciplined version of you reason through {focus}?"],
-] as const;
-
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
+const traitByCategory: Record<string, string> = {
+  "Work & Ambition": "Tactical Thinking",
+  "Financial Judgment": "Opportunity Cost",
+  "Media Literacy": "Bias Detection",
+  "Logic & Debate": "Argument Mapping",
+  "People & Leadership": "Social Calibration",
+  "Strategic Thinking": "Strategic Judgment",
+  "Philosophy of History": "Historical Reasoning",
+  "Worldview & Cultures": "Perspective Taking",
+  "Ethics & Values": "Moral Reasoning",
+  "Creative Thinking": "Creative Reframing",
+  "Literature & Wisdom": "Wisdom Pattern Recognition",
+  "Science & Evidence": "Evidence Discipline",
+  "Technology & AI": "Systems Awareness",
+  "Health & Habits": "Habit Reasoning",
+  "Civic Thinking": "Civic Reasoning",
+  "Personal Identity": "Self-Reflection",
+  Epistemology: "Evidence Discipline",
+};
 
 function difficultyForIndex(index: number): Challenge["difficulty"] {
-  if (index < 6) return "starter";
-  if (index < 12) return "intermediate";
+  if (index < 10) return "starter";
+  if (index < 20) return "intermediate";
 
   return "advanced";
 }
 
-export const challenges: Challenge[] = challengeDomains.flatMap(
-  ([category, focus, trait], domainIndex) =>
-    promptFrames.map(([title, prompt], promptIndex) => ({
-      id: `${slugify(category)}-${String(promptIndex + 1).padStart(2, "0")}`,
-      category,
-      title,
-      prompt: prompt.replace("{focus}", focus),
-      difficulty: difficultyForIndex(promptIndex),
-      trait,
-    }))
+function titleForPrompt(prompt: string, index: number) {
+  const firstClause = prompt
+    .split("?")[0]
+    .replace(/^(A|An|The|In)\s+/i, "")
+    .trim();
+
+  if (!firstClause) return `Scenario ${index + 1}`;
+
+  return firstClause.length > 44 ? `${firstClause.slice(0, 41)}...` : firstClause;
+}
+
+export const challenges: Challenge[] = getCategories().flatMap((category) =>
+  getQuestionsForCategory(category).map((prompt, index) => ({
+    id: `${slugifyCategory(category)}-${String(index + 1).padStart(2, "0")}`,
+    category,
+    title: titleForPrompt(prompt, index),
+    prompt,
+    difficulty: difficultyForIndex(index),
+    trait: traitByCategory[category] || "Reasoning Discipline",
+  }))
 );
 
 export function getDailyChallenge(date = new Date()): Challenge {
