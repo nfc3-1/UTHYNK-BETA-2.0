@@ -63,6 +63,90 @@ const thinkingLenses = [
   { id: "strategy", labelKey: "lensStrategy" },
 ] as const;
 
+const onboardingCopy = {
+  en: {
+    title: "How to use UThynk",
+    intro:
+      "UThynk is a reasoning trainer. Pick a lens, answer the active question, then use the feedback to sharpen your next response.",
+    steps: [
+      {
+        title: "Choose a thinking lens",
+        text: "Logic checks structure, incentives checks motives, ethics checks values, history checks patterns, and strategy checks long-term tradeoffs.",
+      },
+      {
+        title: "Answer in your own words",
+        text: "A few clear sentences are enough. Add an example, a reason, or a counterargument when you can.",
+      },
+      {
+        title: "Review the challenge",
+        text: "UThynk gives a contradiction prompt, follow-up, evidence score, and growth signal so you can improve the next answer.",
+      },
+      {
+        title: "Switch categories anytime",
+        text: "Use the right-side categories to practice work, money, media, literature, science, identity, and more.",
+      },
+    ],
+    close: "Start thinking",
+    reopen: "How to use",
+  },
+  es: {
+    title: "Cómo usar UThynk",
+    intro:
+      "UThynk entrena tu razonamiento. Elige un enfoque, responde la pregunta activa y usa la retroalimentación para mejorar tu siguiente respuesta.",
+    steps: [
+      {
+        title: "Elige un enfoque",
+        text: "Lógica revisa estructura, incentivos revisa motivos, ética revisa valores, historia revisa patrones y estrategia revisa consecuencias.",
+      },
+      {
+        title: "Responde con tus palabras",
+        text: "Unas frases claras bastan. Agrega un ejemplo, una razón o un contraargumento cuando puedas.",
+      },
+      {
+        title: "Revisa el reto",
+        text: "UThynk muestra una contradicción, una pregunta de seguimiento, evidencia y una señal de crecimiento.",
+      },
+      {
+        title: "Cambia de categoría",
+        text: "Usa las categorías de la derecha para practicar trabajo, dinero, medios, literatura, ciencia, identidad y más.",
+      },
+    ],
+    close: "Empezar",
+    reopen: "Cómo usar",
+  },
+  fr: {
+    title: "Comment utiliser UThynk",
+    intro:
+      "UThynk entraîne ton raisonnement. Choisis une lentille, réponds à la question active, puis utilise le retour pour améliorer ta prochaine réponse.",
+    steps: [
+      {
+        title: "Choisis une lentille",
+        text: "Logique vérifie la structure, incitations vérifie les motivations, éthique vérifie les valeurs, histoire vérifie les modèles et stratégie vérifie les compromis.",
+      },
+      {
+        title: "Réponds avec tes mots",
+        text: "Quelques phrases claires suffisent. Ajoute un exemple, une raison ou un contre-argument quand tu peux.",
+      },
+      {
+        title: "Analyse le défi",
+        text: "UThynk donne une contradiction, une question de suivi, un score d'évidence et un signal de progression.",
+      },
+      {
+        title: "Change de catégorie",
+        text: "Utilise les catégories à droite pour pratiquer travail, argent, médias, littérature, science, identité et plus.",
+      },
+    ],
+    close: "Commencer",
+    reopen: "Mode d'emploi",
+  },
+} satisfies Record<Language, {
+  title: string;
+  intro: string;
+  steps: Array<{ title: string; text: string }>;
+  close: string;
+  reopen: string;
+}>;
+
 function getProgressionState(xp: number) {
   const currentIndex = rankThresholds.findLastIndex((item) => xp >= item.xp);
   const current = rankThresholds[Math.max(0, currentIndex)];
@@ -833,7 +917,9 @@ function ReasoningExperience({
 
 export default function ReasoningPage() {
   const [language, setLanguage] = useState<Language>("en");
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const copy = uiCopy[language];
+  const helpCopy = onboardingCopy[language];
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -843,6 +929,10 @@ export default function ReasoningPage() {
     if (storedLanguage === "en" || storedLanguage === "es" || storedLanguage === "fr") {
       setLanguage(storedLanguage);
     }
+
+    if (localStorage.getItem("uthynk-onboarding-dismissed") !== "true") {
+      setShowOnboarding(true);
+    }
   }, []);
 
   function changeLanguage(nextLanguage: Language) {
@@ -850,6 +940,14 @@ export default function ReasoningPage() {
 
     if (typeof window !== "undefined") {
       localStorage.setItem("uthynk-language", nextLanguage);
+    }
+  }
+
+  function closeOnboarding() {
+    setShowOnboarding(false);
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("uthynk-onboarding-dismissed", "true");
     }
   }
 
@@ -871,6 +969,14 @@ export default function ReasoningPage() {
             <Link href="/profile">Profile</Link>
             <Link href="/login">Sign in</Link>
           </nav>
+
+          <button
+            className="helpButton"
+            type="button"
+            onClick={() => setShowOnboarding(true)}
+          >
+            {helpCopy.reopen}
+          </button>
 
           <label className="languageSelectLabel topLanguageSelect">
             <span>{copy.adaptiveLanguage}</span>
@@ -900,6 +1006,49 @@ export default function ReasoningPage() {
       >
         <ReasoningExperience language={language} />
       </Suspense>
+
+      {showOnboarding ? (
+        <div className="onboardingOverlay" role="presentation">
+          <section
+            className="onboardingModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="uthynk-onboarding-title"
+          >
+            <div className="onboardingHero">
+              <div>
+                <span className="panelLabel">UThynk</span>
+                <h2 id="uthynk-onboarding-title">{helpCopy.title}</h2>
+                <p>{helpCopy.intro}</p>
+              </div>
+              <button
+                className="modalCloseButton"
+                type="button"
+                aria-label="Close"
+                onClick={closeOnboarding}
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="onboardingSteps">
+              {helpCopy.steps.map((step, index) => (
+                <article key={step.title}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <strong>{step.title}</strong>
+                  <p>{step.text}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="onboardingFooter">
+              <button className="btn btnPrimary" type="button" onClick={closeOnboarding}>
+                {helpCopy.close}
+              </button>
+            </div>
+          </section>
+        </div>
+      ) : null}
     </main>
   );
 }
