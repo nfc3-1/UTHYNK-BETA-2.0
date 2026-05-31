@@ -648,60 +648,89 @@ function ReasoningExperience({
     },
   ];
   const primaryIdentity = localizeText(profile?.primary_trait, language) || visibleFeedback.trait;
-  const identitySignals = [
-    primaryIdentity || "Analytical Thinker",
-    visibleFeedback.strengths[0] || "Evidence Builder",
-    visibleFeedback.weaknesses[0] || "Question Assumptions",
-  ];
+  const secondaryMode = visibleFeedback.strengths[0] || "Strategic restraint";
+  const growthEdge = visibleFeedback.weaknesses[0] || "Evidence strength";
+  const biasWatch =
+    feedback.verifier?.signals?.incentives
+      ? "Incentive blind spot"
+      : (100 - (feedback.verifier?.behavioral?.emotionalControl || 50)) > 35
+        ? "Emotional rigidity"
+        : "Overconfidence";
+  const activeLens =
+    thinkingLenses.find((lens) => lens.id === thinkingLens)?.labelKey || "lensLogic";
+  const questionType =
+    thinkingLens === "incentives"
+      ? "Incentive map"
+      : thinkingLens === "ethics"
+        ? "Value conflict"
+        : thinkingLens === "history"
+          ? "Pattern test"
+          : thinkingLens === "strategy"
+            ? "Tradeoff move"
+            : "Evidence test";
 
   return (
     <section className="uthynkReasoningLayout">
       <aside className="uthynkSidePanel uthynkLeftPanel">
-        <div className="panelLabel">{copy.identity}</div>
-        <div className="identityStack">
-          <div>
-            <span>{copy.rank}</span>
-            <strong>{localizeText(profile?.rank || "Observer", language)}</strong>
-          </div>
-          <div>
-            <span>{copy.streak}</span>
-            <strong>{profile?.streak || 0} {copy.streakDays}</strong>
+        <section className="leftRailSection identitySummaryCard">
+          <div className="panelLabel">{copy.identity}</div>
+          <strong className="identityRank">{localizeText(profile?.rank || "Observer", language)}</strong>
+          <div className="identityMetaGrid">
+            <div>
+              <span>{copy.streak}</span>
+              <strong>{profile?.streak || 0} {copy.streakDays}</strong>
+            </div>
+            <div>
+              <span>XP</span>
+              <strong>{progressionState.value}</strong>
+            </div>
           </div>
           <div>
             <span>{copy.trait}</span>
-            <strong>{localizeText(profile?.primary_trait, language) || visibleFeedback.trait}</strong>
+            <strong>{primaryIdentity}</strong>
           </div>
-          <div>
-            <span>{copy.progression}</span>
-            <strong>{progressionState.value}</strong>
+          <div className="progressBar" aria-label={copy.identityProgression}>
+            <div
+              className="progressFill uthynkProgressFill"
+              style={{ width: `${progressionState.percent}%` }}
+            />
           </div>
-        </div>
+        </section>
 
-        <div className="identitySignals">
-          {identitySignals.map((signal) => (
-            <article key={signal}>
-              <strong>{signal}</strong>
-            </article>
-          ))}
-        </div>
+        <section className="leftRailSection profileSignalCard">
+          <div className="panelLabel">Thinking Profile</div>
+          <div className="profileRows">
+            <div><span>Primary Mode</span><strong>{primaryIdentity}</strong></div>
+            <div><span>Style</span><strong>{localizeText(secondaryMode, language)}</strong></div>
+            <div><span>Growth Edge</span><strong>{localizeText(growthEdge, language)}</strong></div>
+            <div><span>Bias Watch</span><strong>{localizeText(biasWatch, language)}</strong></div>
+          </div>
+        </section>
 
-        <div className="progressBar" aria-label={copy.identityProgression}>
-          <div
-            className="progressFill uthynkProgressFill"
-            style={{ width: `${progressionState.percent}%` }}
-          />
-        </div>
+        <section className="leftRailSection sessionSignalCard">
+          <div className="panelLabel">Current Session</div>
+          <div className="profileRows">
+            <div><span>Lens</span><strong>{copy[activeLens]}</strong></div>
+            <div><span>Difficulty</span><strong>{visibleDifficulty}</strong></div>
+            <div><span>Intensity</span><strong>{visiblePressure}</strong></div>
+            <div><span>Question Type</span><strong>{questionType}</strong></div>
+          </div>
+        </section>
 
-        <div className="traitList">
-          {visibleFeedback.strengths.map((item) => (
-            <span key={item}>{item}</span>
-          ))}
-          {visibleFeedback.weaknesses.map((item) => (
-            <span key={item}>{item}</span>
-          ))}
-        </div>
+        <section className="leftRailSection detectedPatternCard">
+          <div className="panelLabel">Detected Patterns</div>
+          <div className="traitList">
+            {visibleFeedback.strengths.map((item) => (
+              <span key={item}>{item}</span>
+            ))}
+            {visibleFeedback.weaknesses.map((item) => (
+              <span key={item}>{item}</span>
+            ))}
+          </div>
+        </section>
 
-        <section className="logicScores">
+        <section className="leftRailSection logicScores">
+          <div className="panelLabel">Reasoning Metrics</div>
           <div>
             <span title={copy.logicQualityTooltip}>{copy.logicQuality}</span>
             <strong>{visibleFeedback.score}</strong>

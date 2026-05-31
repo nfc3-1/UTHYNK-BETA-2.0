@@ -1143,20 +1143,31 @@ a{
   margin-top:20px;
 }
 
-.identityStack{
+.leftRailSection{
   display:grid;
-  gap:14px;
-}
-
-.identityStack div,
-.logicScores div{
-  display:grid;
-  gap:6px;
-  padding-bottom:12px;
+  gap:12px;
+  padding-bottom:16px;
   border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
-.identityStack span,
+.leftRailSection:last-child{
+  padding-bottom:0;
+  border-bottom:0;
+}
+
+.identitySummaryCard{
+  gap:14px;
+}
+
+.identitySummaryCard > div:not(.progressBar),
+.profileRows div,
+.logicScores div{
+  display:grid;
+  gap:6px;
+}
+
+.identitySummaryCard span,
+.profileRows span,
 .logicScores span,
 .logicGrid span,
 .reasoningSteps span{
@@ -1167,6 +1178,38 @@ a{
   font-weight:800;
 }
 
+.identityRank{
+  display:block;
+  color:rgba(255,255,255,0.95);
+  font-size:28px;
+  line-height:1;
+}
+
+.identityMetaGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.identityMetaGrid div,
+.profileRows div{
+  padding:11px 12px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.045);
+  border:1px solid rgba(255,255,255,0.075);
+}
+
+.profileRows{
+  display:grid;
+  gap:9px;
+}
+
+.profileRows strong{
+  color:rgba(255,255,255,0.90);
+  font-size:14px;
+  line-height:1.25;
+}
+
 .logicScores span[title]{
   cursor:help;
   text-decoration:underline;
@@ -1175,27 +1218,9 @@ a{
   text-underline-offset:4px;
 }
 
-.identityStack strong,
+.identitySummaryCard strong,
 .logicScores strong{
   font-size:24px;
-}
-
-.identitySignals{
-  display:grid;
-  gap:10px;
-}
-
-.identitySignals article{
-  padding:12px;
-  border-radius:12px;
-  background:rgba(255,255,255,0.055);
-  border:1px solid rgba(255,255,255,0.08);
-}
-
-.identitySignals strong{
-  color:rgba(255,255,255,0.92);
-  font-size:15px;
-  line-height:1.25;
 }
 
 .uthynkProgressFill{
