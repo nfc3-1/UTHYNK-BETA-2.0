@@ -1,51 +1,39 @@
 {
   "Epistemology": [
-    "What would you accept as good evidence, and why?",
-    "How do you tell the difference between believing and knowing?",
+    "What would count as good evidence for this belief?",
+    "How do you tell the difference between believing something and knowing it?",
     "When is doubt a strength, and when is it avoidance?",
-    "When should you trust experts, and when should you question them?",
-    "What would verify a claim you heard recently?",
-    "What would have to happen for you to change your mind on something important?",
+    "Which source are you trusting, and why does it deserve that trust?",
+    "What would have to happen for you to change your mind?",
     "How much certainty do you need before acting?",
     "What belief do you hold with less evidence than you admit?",
-    "How can two smart people inspect the same facts and disagree?",
-    "What source of knowledge do you over-trust?"
+    "When should you trust an expert, and when should you question one?",
+    "How can two careful people inspect the same facts and disagree?",
+    "What would falsify the belief instead of merely weakening it?"
   ],
   "Philosophy of History": [
-    "Does history move in cycles or progress forward?",
+    "Does history move in cycles, progress forward, or depend on conditions?",
     "When do winners write history, and when does evidence correct them?",
-    "How should we judge people from the past by modern standards?",
-    "What makes a historical explanation stronger than a story?",
-    "Can one person change history, or do conditions matter more?",
+    "How should we judge people from the past without pretending context does not matter?",
+    "What makes a historical explanation stronger than a memorable story?",
+    "Can one person change history, or do institutions and conditions matter more?",
     "How do economic incentives shape historical events?",
     "When does patriotism help historical understanding, and when does it distort it?",
-    "What hidden assumptions shape the way we explain empires?",
-    "How should we weigh eyewitness accounts against later analysis?",
-    "What would change your mind about a historical narrative?"
+    "What hidden assumption shapes the way people explain empires?",
+    "How should eyewitness accounts be weighed against later analysis?",
+    "What evidence would change your mind about a historical narrative?"
   ],
-  "Logic & Critical Thinking": [
-    "What premise must be true for this conclusion to follow?",
+  "Logic & Debate": [
+    "What claim are you actually defending?",
+    "What premise must be true for your conclusion to follow?",
     "Where does the argument move from evidence to assumption?",
-    "What would make this argument valid but still unsound?",
-    "Which word in the claim needs a clearer definition?",
+    "What warrant connects your evidence to your conclusion?",
+    "What is the strongest version of the argument against you?",
     "What counterexample would break the rule being proposed?",
-    "Is this a necessary cause, a sufficient cause, or neither?",
-    "What inference is doing the most work in this argument?",
-    "Where might the argument be confusing possibility with probability?",
-    "What claim could be true while the conclusion is still false?",
-    "What would falsify the central premise?"
-  ],
-  "Mind & Self": [
-    "What mental shortcut are you using before you notice it?",
-    "How do you tell careful reflection from rumination?",
-    "What emotion is giving useful information without deserving control?",
-    "Where are you confusing familiarity with truth?",
-    "What would you notice if you observed your own attention for one hour?",
-    "When does confidence become a substitute for checking?",
-    "What thought pattern repeats when you feel criticized?",
-    "Where might your memory be editing the story in your favor?",
-    "What condition makes your thinking noticeably worse?",
-    "What habit would make your judgment more stable?"
+    "Where are you confusing possibility with probability?",
+    "What would count as a fair objection instead of a bad-faith attack?",
+    "When should you concede a smaller point to protect the stronger one?",
+    "What would make the debate more truth-seeking and less performative?"
   ],
   "Strategic Thinking": [
     "What option preserves the most future flexibility?",
@@ -59,7 +47,7 @@
     "What information should you gather before committing resources?",
     "What would make doing nothing the strongest move?"
   ],
-  "Applied Ethics": [
+  "Ethics & Values": [
     "When should fairness outweigh efficiency?",
     "How do you reason when every option harms someone?",
     "What principle would survive if roles were reversed?",
@@ -68,7 +56,7 @@
     "What duty do you have to people you will never meet?",
     "When is forgiveness wise, and when is it avoidance?",
     "How do you separate moral clarity from moral performance?",
-    "What value are you protecting in your current decision?",
+    "What value are you protecting in this decision?",
     "Where might your ethical position become inconsistent?"
   ],
   "Literature & Wisdom": [
@@ -78,7 +66,7 @@
     "How can fiction reveal a truth that statistics miss?",
     "What timeless pattern appears in a conflict you are facing?",
     "When does ambition become self-deception?",
-    "What does betrayal usually reveal about incentives?",
+    "What does betrayal usually reveal about motive or fear?",
     "How would a wiser character handle your current problem?",
     "What flaw is easiest to see in others but hardest to see in yourself?",
     "What lesson should be visible without someone explaining it?"
@@ -95,65 +83,29 @@
     "What question would help you understand an opposing worldview better?",
     "Where might your background limit your imagination?"
   ],
-  "Modern Questions": [
-    "What modern norm feels natural mainly because it is recent?",
-    "When does optimization make daily life worse?",
-    "What problem today is mostly a coordination problem?",
-    "How do you judge progress without confusing it with novelty?",
-    "What social habit became normal before people debated its cost?",
-    "Where are people trading depth for convenience?",
-    "What modern status symbol might age badly?",
-    "What tradeoff are people avoiding in a current debate?",
-    "When does public opinion become a poor guide to truth?",
-    "What belief from this decade might look strange in the future?"
-  ],
-  "Media Manipulation": [
+  "Media Literacy": [
     "What reaction is this headline trying to create before you inspect the facts?",
     "Who benefits if people share the story before verifying it?",
     "What context is missing from the viral claim?",
     "How would the story change if the order of facts changed?",
     "What image, statistic, or anecdote is doing the persuasion?",
     "When does a true fact become misleading framing?",
-    "What base rate would make this story less shocking?",
-    "How is outrage being turned into attention or profit?",
-    "What would the strongest neutral version of this story say?",
-    "What question should you ask before sharing it?"
-  ],
-  "Pop Culture & Media Literacy": [
-    "What does popularity hide about quality?",
-    "When does fandom make criticism feel personal?",
     "How does celebrity distort credibility outside someone's expertise?",
     "What does a trend reveal about what people want to signal?",
     "When is a viral moment more performance than truth?",
-    "How do memes compress an argument too far?",
-    "What would you ask before trusting a creator's claim?",
-    "How does identity shape what media people defend?",
-    "When does entertainment quietly teach a value system?",
-    "What social reward makes a shallow opinion spread?"
+    "What would you ask before trusting a creator's claim?"
   ],
-  "Social Intelligence": [
+  "People & Leadership": [
     "What status game is happening beneath the conversation?",
-    "When does defending yourself lower your position?",
     "How do you respond to disrespect without escalating?",
-    "What incentive might explain someone's behavior besides malice?",
-    "When should you be direct, and when should you wait?",
-    "What does the room reward: honesty, loyalty, confidence, or restraint?",
-    "When is silence strategic rather than passive?",
-    "How do public and private responses differ?",
-    "What signal shows someone wants status more than resolution?",
-    "How would a calm observer interpret your next move?"
-  ],
-  "Street Lessons": [
-    "When is someone's advice useful to you and profitable to them?",
-    "What pressure tactic is being hidden inside politeness?",
-    "What risk is obvious to experienced people but invisible to beginners?",
-    "How do you tell confidence from competence?",
-    "What does a person reveal by what they avoid saying?",
-    "When should you walk away instead of proving a point?",
-    "How do incentives change when money or status enters the room?",
-    "What signal tells you a deal is becoming unsafe?",
-    "How do you protect yourself without becoming paranoid?",
-    "What boundary should be set before the situation gets emotional?"
+    "What does the other person think they are protecting?",
+    "What boundary would be clear without becoming punitive?",
+    "When does honesty need timing as much as accuracy?",
+    "What standard are you setting with your next decision?",
+    "Who is affected by your choice but least likely to speak up?",
+    "What behavior will the group copy if you ignore it?",
+    "What would make people trust the decision even if they dislike it?",
+    "How do you distinguish loyalty from avoiding accountability?"
   ],
   "Creative Thinking": [
     "What constraint could make the idea stronger?",
@@ -167,17 +119,17 @@
     "When should you stop brainstorming and start testing?",
     "How would you simplify the idea without weakening it?"
   ],
-  "Workplace Strategy": [
+  "Work & Ambition": [
+    "When does working harder become the wrong strategy?",
+    "What kind of effort compounds over time?",
     "Who needs to see the work before credit becomes possible?",
     "When should you ask for credit directly, and when should visible results create leverage?",
     "What reputation cost could hide inside a short-term workplace win?",
-    "Who benefits if you accept the obvious interpretation of a workplace conflict?",
-    "What second-order problem might your first response at work create?",
-    "What evidence would show whether waiting is strategic or avoidant?",
-    "What stakeholder would quietly block this move if ignored?",
-    "Which conversation should happen privately before the public decision?",
-    "What would make your manager's incentives different from yours?",
-    "Where could timing matter more than being right?"
+    "What task feels productive but avoids the harder work?",
+    "What opportunity cost hides inside a grind mindset?",
+    "How do you know whether a mentor's advice fits your situation?",
+    "What system would make discipline easier?",
+    "What skill would raise your ceiling more than extra hours?"
   ],
   "Financial Judgment": [
     "What opportunity cost are you ignoring in this financial choice?",
@@ -191,37 +143,17 @@
     "What downside would you still be able to survive?",
     "When does waiting create value instead of just delaying?"
   ],
-  "Logic Under Pressure": [
-    "What conclusion are you reaching fastest, and what premise does it depend on?",
-    "What would you need to know before acting under pressure?",
-    "Which part of your reasoning is evidence, and which part is urgency?",
-    "What would a calm observer say you are overweighing?",
-    "When does speed improve the decision, and when does it weaken it?",
-    "What single question would prevent the biggest reasoning mistake?",
-    "What fact should be checked before adrenaline chooses for you?",
-    "What is the safest reversible move available right now?",
-    "What mistake becomes more likely when everyone is watching?",
-    "How would you simplify the decision without oversimplifying the truth?"
-  ],
-  "Debate & Argument": [
-    "What claim are you actually defending?",
-    "What evidence would your strongest opponent respect?",
-    "What is the strongest version of the argument against you?",
-    "Where does your argument rely on a hidden assumption?",
-    "What would make your position more precise and harder to misread?",
-    "When should you concede a smaller point to protect the stronger one?",
-    "What warrant connects your evidence to your conclusion?",
-    "What would count as a fair objection instead of a bad-faith attack?",
-    "Where are you attacking the person instead of the argument?",
-    "What would make the debate more truth-seeking and less performative?"
-  ],
   "Science & Evidence": [
     "What would count as reliable evidence for this claim?",
     "What measurement problem could distort the conclusion?",
     "What base rate would make this result less surprising?",
     "How would you separate correlation from causation here?",
     "What uncertainty should stay visible even after the evidence improves?",
-    "What result would make you update your view?"
+    "What result would make you update your view?",
+    "What would a better experiment control for?",
+    "Where could sample size or selection bias mislead you?",
+    "What causal mechanism would make the claim more believable?",
+    "What would replication prove that one result cannot?"
   ],
   "Technology & AI": [
     "What task should be automated, and what judgment should remain human?",
@@ -247,37 +179,17 @@
     "What reward are you actually getting from the habit?",
     "How would you make the healthy choice more automatic?"
   ],
-  "Leadership": [
-    "What standard are you setting with your next decision?",
-    "Who is affected by your choice but least likely to speak up?",
-    "What incentive will your response create for the group?",
-    "When should a leader absorb pressure, and when should they clarify consequences?",
-    "What would make people trust the decision even if they dislike it?",
-    "What short-term approval could weaken long-term leadership?",
-    "What behavior will the group copy if you ignore it?",
-    "Where does kindness need a boundary to stay useful?",
-    "What information should be transparent, and what should stay private?",
-    "How do you distinguish loyalty from avoiding accountability?"
-  ],
-  "Relationships": [
-    "What does the other person think they are protecting?",
-    "What boundary would be clear without becoming punitive?",
-    "When does honesty need timing as much as accuracy?",
-    "What would repair trust without pretending nothing happened?",
-    "What emotional signal should you notice but not obey?",
-    "How would you explain your position without trying to win?",
-    "What pattern keeps repeating in this relationship?",
-    "Where are you asking for understanding without offering clarity?",
-    "What would accountability look like without humiliation?",
-    "When is patience loving, and when is it avoidance?"
-  ],
   "Civic Thinking": [
     "What tradeoff does this public policy debate avoid naming?",
     "Who pays the cost if the proposal succeeds?",
     "What incentive would the policy create after people adapt to it?",
     "Which right or duty is easiest to ignore in this issue?",
     "What would make the opposing side's concern legitimate?",
-    "How would you judge the idea if your preferred group lost power?"
+    "How would you judge the idea if your preferred group lost power?",
+    "What public good is being protected, and what private cost follows?",
+    "When should local choice matter more than central coordination?",
+    "What unintended consequence would appear after the rule becomes normal?",
+    "What evidence would show whether the policy actually works?"
   ],
   "Personal Identity": [
     "What belief feels like part of you instead of just an idea?",
@@ -290,17 +202,5 @@
     "Which part of your self-image needs more evidence?",
     "What would remain true about you if this opinion changed?",
     "Where are you confusing consistency with loyalty to an old version of yourself?"
-  ],
-  "Work & Hustle": [
-    "When does working harder become the wrong strategy?",
-    "What kind of effort compounds over time?",
-    "How do you separate ambition from impatience?",
-    "What task feels productive but avoids the harder work?",
-    "What opportunity cost hides inside a grind mindset?",
-    "How do you know whether a mentor's advice fits your situation?",
-    "What system would make discipline easier?",
-    "When is a shortcut strategic, and when is it fragile?",
-    "What should you stop doing to make progress faster?",
-    "What skill would raise your ceiling more than extra hours?"
   ]
 }

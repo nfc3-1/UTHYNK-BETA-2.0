@@ -8,26 +8,23 @@ export type Challenge = {
 };
 
 const challengeDomains = [
-  ["Workplace Strategy", "credit, timing, reputation, and leverage at work", "Tactical Thinking"],
+  ["Work & Ambition", "effort, timing, reputation, career leverage, and long-term growth", "Tactical Thinking"],
   ["Financial Judgment", "risk, incentives, debt, upside, and opportunity cost", "Opportunity Cost"],
-  ["Media Manipulation", "headlines, outrage, framing, and emotional triggers", "Bias Detection"],
-  ["Logic Under Pressure", "fast decisions, uncertainty, and clean argument structure", "Decision Discipline"],
-  ["Social Intelligence", "status, tone, trust, conflict, and emotional control", "Social Calibration"],
+  ["Media Literacy", "headlines, creators, algorithms, outrage, framing, and credibility", "Bias Detection"],
+  ["Logic & Debate", "claims, premises, evidence, counterarguments, and pressure-tested reasoning", "Argument Mapping"],
+  ["People & Leadership", "status, trust, relationships, responsibility, boundaries, and group incentives", "Social Calibration"],
   ["Strategic Thinking", "tradeoffs, second-order effects, and long-term positioning", "Strategic Judgment"],
   ["Philosophy of History", "timelines, causality, narratives, and historical bias", "Historical Reasoning"],
   ["Worldview & Cultures", "intelligent disagreement, culture, values, and assumptions", "Perspective Taking"],
-  ["Applied Ethics", "stakeholders, harm, fairness, and competing principles", "Moral Reasoning"],
+  ["Ethics & Values", "stakeholders, harm, fairness, duties, and competing principles", "Moral Reasoning"],
   ["Creative Thinking", "constraints, reframing, invention, and useful originality", "Creative Reframing"],
-  ["Street Lessons", "hidden incentives, pressure, risk, and human behavior", "Incentive Awareness"],
   ["Literature & Wisdom", "character, motive, tragedy, pride, and timeless patterns", "Wisdom Pattern Recognition"],
-  ["Debate & Argument", "claims, evidence, warrants, counterarguments, and steelmanning", "Argument Mapping"],
   ["Science & Evidence", "measurement, uncertainty, base rates, and causal claims", "Evidence Discipline"],
   ["Technology & AI", "automation, privacy, dependency, and unintended consequences", "Systems Awareness"],
   ["Health & Habits", "discipline, comfort, identity, incentives, and self-deception", "Habit Reasoning"],
-  ["Leadership", "responsibility, standards, incentives, and group trust", "Leadership Judgment"],
-  ["Relationships", "boundaries, repair, loyalty, honesty, and emotional timing", "Relational Judgment"],
   ["Civic Thinking", "policy tradeoffs, rights, duties, and public incentives", "Civic Reasoning"],
   ["Personal Identity", "ego, self-image, fear, ambition, and changing your mind", "Self-Reflection"],
+  ["Epistemology", "knowledge, evidence, certainty, trust, doubt, and belief revision", "Evidence Discipline"],
 ] as const;
 
 const promptFrames = [
