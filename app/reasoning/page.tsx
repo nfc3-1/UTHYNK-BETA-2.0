@@ -147,6 +147,52 @@ const onboardingCopy = {
   reopen: string;
 }>;
 
+const thinkingToolCopy = {
+  en: {
+    section: "Thinking Tools",
+    challenge: "Challenge",
+    followUp: "Follow-Up",
+    lab: "Lab",
+    timeline: "Timeline",
+    position: "Your position",
+    support: "What backs it up?",
+    opposition: "Strongest challenge",
+    assumptions: "Hidden assumptions",
+  },
+  es: {
+    section: "Herramientas de pensamiento",
+    challenge: "Reto",
+    followUp: "Seguimiento",
+    lab: "Laboratorio",
+    timeline: "Línea",
+    position: "Tu posición",
+    support: "Qué la respalda",
+    opposition: "Mayor reto",
+    assumptions: "Supuestos ocultos",
+  },
+  fr: {
+    section: "Outils de pensée",
+    challenge: "Défi",
+    followUp: "Suivi",
+    lab: "Labo",
+    timeline: "Parcours",
+    position: "Ta position",
+    support: "Ce qui l'appuie",
+    opposition: "Défi le plus fort",
+    assumptions: "Hypothèses cachées",
+  },
+} satisfies Record<Language, {
+  section: string;
+  challenge: string;
+  followUp: string;
+  lab: string;
+  timeline: string;
+  position: string;
+  support: string;
+  opposition: string;
+  assumptions: string;
+}>;
+
 function getProgressionState(xp: number) {
   const currentIndex = rankThresholds.findLastIndex((item) => xp >= item.xp);
   const current = rankThresholds[Math.max(0, currentIndex)];
@@ -199,6 +245,7 @@ function ReasoningExperience({
   const [pressure, setPressure] = useState("Moderate");
   const [profile, setProfile] = useState<any>(null);
   const [rightTab, setRightTab] = useState<"categories" | "insights" | "analysis">("insights");
+  const [thinkingToolTab, setThinkingToolTab] = useState<"challenge" | "followUp" | "lab" | "timeline">("challenge");
   const [thinkingLens, setThinkingLens] = useState<(typeof thinkingLenses)[number]["id"]>("logic");
   const [evaluatedClaim, setEvaluatedClaim] = useState("");
   const [latestReward, setLatestReward] = useState<any>(null);
@@ -215,6 +262,7 @@ function ReasoningExperience({
     },
   ]);
   const copy = uiCopy[language];
+  const toolsCopy = thinkingToolCopy[language];
   const ageBand = normalizeAgeBand(profile?.age_band);
   const ageAdjustedChallenge = adaptChallengeForAge(challenge, ageBand);
   const visibleChallenge = localizeChallenge(ageAdjustedChallenge, language);
@@ -706,15 +754,81 @@ function ReasoningExperience({
           </div>
         </section>
 
-        <section className="contradictionStrip priorityInsightStrip">
-          <div>
-            <span>{copy.contradictionPrompt}</span>
-            <p>{strongestOpposingCase}</p>
+        <section className="thinkingToolsPanel">
+          <div className="thinkingToolsHeader">
+            <div className="panelLabel">{toolsCopy.section}</div>
+            <div className="thinkingToolTabs" role="tablist" aria-label={toolsCopy.section}>
+              {[
+                { id: "challenge", label: toolsCopy.challenge },
+                { id: "followUp", label: toolsCopy.followUp },
+                { id: "lab", label: toolsCopy.lab },
+                { id: "timeline", label: toolsCopy.timeline },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={thinkingToolTab === tab.id}
+                  className={thinkingToolTab === tab.id ? "active" : ""}
+                  onClick={() =>
+                    setThinkingToolTab(tab.id as "challenge" | "followUp" | "lab" | "timeline")
+                  }
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
-          <div>
-            <span>{copy.recursiveFollowUp}</span>
-            <p>{visibleFeedback.followUp}</p>
-          </div>
+
+          {thinkingToolTab === "challenge" ? (
+            <article className="thinkingToolPane">
+              <span>{copy.contradictionPrompt}</span>
+              <p>{strongestOpposingCase}</p>
+            </article>
+          ) : null}
+
+          {thinkingToolTab === "followUp" ? (
+            <article className="thinkingToolPane">
+              <span>{copy.recursiveFollowUp}</span>
+              <p>{visibleFeedback.followUp}</p>
+            </article>
+          ) : null}
+
+          {thinkingToolTab === "lab" ? (
+            <div className="reasoningSteps compactReasoningSteps">
+              <article>
+                <span>Step 1</span>
+                <strong>{toolsCopy.position}</strong>
+                <p>{evaluatedClaim || response || copy.stateClaim}</p>
+              </article>
+              <article>
+                <span>Step 2</span>
+                <strong>{toolsCopy.support}</strong>
+                <p>{visibleFeedback.strengths.join(", ") || copy.evidenceEmpty}</p>
+              </article>
+              <article>
+                <span>Step 3</span>
+                <strong>{toolsCopy.opposition}</strong>
+                <p>{strongestOpposingCase}</p>
+              </article>
+              <article>
+                <span>Step 4</span>
+                <strong>{toolsCopy.assumptions}</strong>
+                <p>{visibleFeedback.weaknesses.join(", ") || visibleFeedback.analysis}</p>
+              </article>
+            </div>
+          ) : null}
+
+          {thinkingToolTab === "timeline" ? (
+            <div className="timelineRail thinkingTimelineRail">
+              {timeline.map((item) => (
+                <article key={item.title}>
+                  <strong>{item.title}</strong>
+                  <p>{item.text}</p>
+                </article>
+              ))}
+            </div>
+          ) : null}
         </section>
 
         <label className="responseLabel" htmlFor="response">
@@ -798,43 +912,6 @@ function ReasoningExperience({
           ) : null}
         </div>
 
-        <section className="claimEvaluationInline">
-          <div className="panelLabel">{copy.claimEvaluation}</div>
-          <div className="reasoningSteps">
-            <article>
-              <span>Step 1</span>
-              <strong>{copy.reasoningStepOne}</strong>
-              <p>{evaluatedClaim || response || copy.stateClaim}</p>
-            </article>
-            <article>
-              <span>Step 2</span>
-              <strong>{copy.reasoningStepTwo}</strong>
-              <p>{visibleFeedback.strengths.join(", ") || copy.evidenceEmpty}</p>
-            </article>
-            <article>
-              <span>Step 3</span>
-              <strong>{copy.reasoningStepThree}</strong>
-              <p>{strongestOpposingCase}</p>
-            </article>
-            <article>
-              <span>Step 4</span>
-              <strong>{copy.reasoningStepFour}</strong>
-              <p>{visibleFeedback.weaknesses.join(", ") || visibleFeedback.analysis}</p>
-            </article>
-          </div>
-        </section>
-
-        <details className="reasoningTimeline">
-          <summary>{copy.reasoningTimeline}</summary>
-          <div className="timelineRail">
-            {timeline.map((item) => (
-              <article key={item.title}>
-                <strong>{item.title}</strong>
-                <p>{item.text}</p>
-              </article>
-            ))}
-          </div>
-        </details>
       </main>
 
       <aside className="uthynkSidePanel uthynkRightPanel">
