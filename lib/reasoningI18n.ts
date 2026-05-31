@@ -284,6 +284,224 @@ export const cognitionFeedByLanguage = {
   ],
 } satisfies Record<Language, Array<{ title: string; text: string }>>;
 
+const categoryCopy: Partial<Record<Language, Record<string, string>>> = {
+  es: {
+    "Work & Ambition": "Trabajo y ambicion",
+    "Financial Judgment": "Juicio financiero",
+    "Media Literacy": "Lectura de medios",
+    "Logic & Debate": "Logica y debate",
+    "People & Leadership": "Personas y liderazgo",
+    "Strategic Thinking": "Pensamiento estrategico",
+    "Philosophy of History": "Filosofia de la historia",
+    "Worldview & Cultures": "Cosmovisiones y culturas",
+    "Ethics & Values": "Etica y valores",
+    "Creative Thinking": "Pensamiento creativo",
+    "Literature & Wisdom": "Literatura y sabiduria",
+    "Science & Evidence": "Ciencia y evidencia",
+    "Technology & AI": "Tecnologia e IA",
+    "Health & Habits": "Salud y habitos",
+    "Civic Thinking": "Pensamiento civico",
+    "Personal Identity": "Identidad personal",
+    Epistemology: "Conocimiento y evidencia",
+  },
+  fr: {
+    "Work & Ambition": "Travail et ambition",
+    "Financial Judgment": "Jugement financier",
+    "Media Literacy": "Lecture des medias",
+    "Logic & Debate": "Logique et debat",
+    "People & Leadership": "Relations et leadership",
+    "Strategic Thinking": "Pensee strategique",
+    "Philosophy of History": "Philosophie de l'histoire",
+    "Worldview & Cultures": "Visions du monde et cultures",
+    "Ethics & Values": "Ethique et valeurs",
+    "Creative Thinking": "Pensee creative",
+    "Literature & Wisdom": "Litterature et sagesse",
+    "Science & Evidence": "Science et preuves",
+    "Technology & AI": "Technologie et IA",
+    "Health & Habits": "Sante et habitudes",
+    "Civic Thinking": "Pensee civique",
+    "Personal Identity": "Identite personnelle",
+    Epistemology: "Connaissance et preuves",
+  },
+};
+
+const localizedQuestionPools: Partial<Record<Language, Record<string, string[]>>> = {
+  es: {
+    "Work & Ambition": [
+      "Un estudiante parece ocupado todo el dia, pero evita la tarea mas importante. Que deberia cambiar primero?",
+      "Una persona quiere avanzar rapido en su carrera. Que habilidad le daria mas ventaja que solo trabajar mas horas?",
+      "Un equipo premia a quien habla mas, no a quien aporta mejor trabajo. Como se puede hacer visible la competencia real?",
+    ],
+    "Financial Judgment": [
+      "Un amigo quiere invertir porque todos en redes estan emocionados. Que pregunta haria mas lento y fuerte su juicio?",
+      "Una compra parece barata por mes, pero cara en total. Que costos faltan antes de decidir?",
+      "Una oportunidad promete mucha ganancia y poco riesgo. Que evidencia te haria confiar menos o mas?",
+    ],
+    "Media Literacy": [
+      "Un video viral empieza a mitad de una discusion. Que contexto faltante podria cambiar la historia?",
+      "Un titular te enoja antes de leer. Que deberias verificar antes de compartirlo?",
+      "Un creador cuenta una historia emocional y luego vende un producto. Que incentivo debes notar?",
+    ],
+    "Logic & Debate": [
+      "Alguien usa un ejemplo dramatico como si probara una regla general. Que pregunta debilita ese salto?",
+      "En un debate, alguien ataca a la persona en vez del argumento. Como vuelves a la afirmacion central?",
+      "Tu posicion tiene una buena objecion en contra. Como la explicarias con justicia antes de responder?",
+    ],
+    "People & Leadership": [
+      "Un lider permite que la persona mas talentosa rompa reglas. Que mensaje recibe el equipo?",
+      "Un amigo se disculpa, pero no cambia su conducta. Que deberias observar despues?",
+      "Un grupo premia confianza mas que preparacion. Que errores aparecen con el tiempo?",
+    ],
+    "Strategic Thinking": [
+      "Puedes ganar una discusion hoy o proteger una relacion importante. Que tradeoff deberia guiarte?",
+      "Una empresa acepta ganancia rapida pero debilita su reputacion. Cuando conviene rechazar el beneficio?",
+      "Que movimiento parece lento ahora, pero podria darte una posicion mas fuerte despues?",
+    ],
+    "Philosophy of History": [
+      "Dos libros explican la caida de un imperio de formas distintas. Que evidencia compararias primero?",
+      "Un monumento celebra una victoria. Que costos o voces podria estar ocultando esa memoria?",
+      "Como contarian la misma guerra un soldado, un comerciante y una familia comun?",
+    ],
+    "Worldview & Cultures": [
+      "Una costumbre parece extrana desde afuera. Que deberias aprender antes de juzgarla?",
+      "Dos familias definen el exito de formas opuestas. Como pueden tener sentido ambas?",
+      "Cuando el respeto cultural se convierte en excusa para ignorar un dano real?",
+    ],
+    "Ethics & Values": [
+      "Una regla ayuda a la mayoria, pero perjudica a una persona en un caso raro. Deberia doblarse la regla?",
+      "Un amigo pide que mientas para protegerlo de consecuencias. Que valor esta en prueba?",
+      "Una promesa se vuelve danina de cumplir. Cuando seria correcto romperla?",
+    ],
+    "Creative Thinking": [
+      "Un artista no puede usar color. Que otros recursos podrian hacer fuerte la obra?",
+      "Un proyecto tiene una restriccion molesta. Como podria convertirse en ventaja creativa?",
+      "Una historia es demasiado predecible. Que expectativa deberias invertir?",
+    ],
+    "Literature & Wisdom": [
+      "En Macbeth, la ambicion se vuelve destructiva. Que senal muestra que una meta ya esta controlando a la persona?",
+      "En Frankenstein, alguien crea algo poderoso y evita responsabilidad. Donde ves ese patron hoy?",
+      "Que personaje confunde orgullo con fuerza, y que le cuesta esa confusion?",
+    ],
+    "Science & Evidence": [
+      "Un estudio dice que dos cosas estan relacionadas. Que demostraria que una causa la otra?",
+      "Una grafica parece dramatica por la escala. Como cambia eso tu reaccion?",
+      "Un experimento funciona una vez. Que probaria repetirlo?",
+    ],
+    "Technology & AI": [
+      "Un estudiante usa IA para escribir. Que ayuda es util y que aprendizaje podria perderse?",
+      "Un algoritmo decide entrevistas de trabajo. A quien podria perjudicar injustamente?",
+      "Una aplicacion optimiza atencion, no bienestar. Que conducta entrenara?",
+    ],
+    "Health & Habits": [
+      "Una persona quiere dormir mejor, pero deja el telefono junto a la cama. Que senal del ambiente falla?",
+      "Alguien empieza un plan muy duro y abandona en una semana. Que version pequena podria durar?",
+      "Un habito funciona en semanas tranquilas, pero falla bajo presion. Que debe incluir el plan?",
+    ],
+    "Civic Thinking": [
+      "Una ciudad quiere mas camaras de seguridad. Que intercambio entre seguridad y privacidad debe debatirse?",
+      "Una politica ayuda a muchas personas un poco, pero perjudica mucho a unas pocas. Como deberia evaluarse?",
+      "Como juzgarias la misma regla si tu grupo preferido perdiera poder?",
+    ],
+    "Personal Identity": [
+      "Alguien dice 'asi soy yo' despues de hacer dano. Cuando la identidad se vuelve excusa?",
+      "Una persona protege una etiqueta aunque ya no le ayuda. Que esta intentando conservar?",
+      "Que seguiria siendo verdad sobre ti si una opinion importante cambiara?",
+    ],
+    Epistemology: [
+      "Un amigo dice que algo es verdad porque todos lo repiten. Que revisarias primero?",
+      "Una publicacion segura no muestra fuentes. Que la haria digna de confianza?",
+      "Que opinion actual deberias tratar como incierta en vez de cerrada?",
+    ],
+  },
+  fr: {
+    "Work & Ambition": [
+      "Un eleve semble occupe toute la journee, mais evite la tache la plus importante. Que devrait-il changer d'abord?",
+      "Une personne veut progresser vite dans sa carriere. Quelle competence donnerait plus d'avantage que travailler plus d'heures?",
+      "Une equipe recompense celui qui parle le plus, pas celui qui apporte le meilleur travail. Comment rendre la competence visible?",
+    ],
+    "Financial Judgment": [
+      "Un ami veut investir parce que tout le monde est excite en ligne. Quelle question ralentirait et renforcerait son jugement?",
+      "Un achat semble abordable par mois, mais cher au total. Quels couts manquent avant de decider?",
+      "Une opportunite promet beaucoup de gain et peu de risque. Quelle preuve te ferait plus ou moins confiance?",
+    ],
+    "Media Literacy": [
+      "Une video virale commence au milieu d'une dispute. Quel contexte manquant pourrait changer l'histoire?",
+      "Un titre te met en colere avant la lecture. Que verifier avant de le partager?",
+      "Un createur raconte une histoire emotionnelle puis vend un produit. Quelle incitation faut-il remarquer?",
+    ],
+    "Logic & Debate": [
+      "Quelqu'un utilise un exemple dramatique comme preuve d'une regle generale. Quelle question affaiblit ce saut?",
+      "Dans un debat, quelqu'un attaque la personne au lieu de l'argument. Comment revenir a l'affirmation centrale?",
+      "Ta position a une objection solide. Comment l'expliquer justement avant de repondre?",
+    ],
+    "People & Leadership": [
+      "Un leader laisse la personne la plus talentueuse enfreindre les regles. Quel message recoit l'equipe?",
+      "Un ami s'excuse, mais ne change rien. Que faudrait-il observer ensuite?",
+      "Un groupe recompense la confiance plus que la preparation. Quelles erreurs apparaissent avec le temps?",
+    ],
+    "Strategic Thinking": [
+      "Tu peux gagner une dispute aujourd'hui ou proteger une relation importante. Quel compromis devrait te guider?",
+      "Une entreprise accepte un profit rapide mais affaiblit sa reputation. Quand faut-il refuser le gain?",
+      "Quel mouvement semble lent maintenant, mais pourrait donner une position plus forte plus tard?",
+    ],
+    "Philosophy of History": [
+      "Deux livres expliquent la chute d'un empire differemment. Quelle preuve comparerais-tu d'abord?",
+      "Un monument celebre une victoire. Quels couts ou quelles voix cette memoire pourrait-elle cacher?",
+      "Comment un soldat, un marchand et une famille ordinaire raconteraient-ils la meme guerre?",
+    ],
+    "Worldview & Cultures": [
+      "Une coutume semble etrange de l'exterieur. Que faudrait-il apprendre avant de la juger?",
+      "Deux familles definissent le succes de facons opposees. Comment les deux peuvent-elles etre raisonnables?",
+      "Quand le respect culturel devient-il une excuse pour ignorer un vrai tort?",
+    ],
+    "Ethics & Values": [
+      "Une regle aide la majorite, mais nuit a une personne dans un cas rare. La regle devrait-elle plier?",
+      "Un ami te demande de mentir pour eviter les consequences. Quelle valeur est mise a l'epreuve?",
+      "Une promesse devient nuisible a tenir. Quand serait-il juste de la rompre?",
+    ],
+    "Creative Thinking": [
+      "Un artiste ne peut pas utiliser la couleur. Quels autres outils pourraient rendre l'oeuvre forte?",
+      "Un projet a une contrainte genante. Comment pourrait-elle devenir un avantage creatif?",
+      "Une histoire est trop previsible. Quelle attente faudrait-il renverser?",
+    ],
+    "Literature & Wisdom": [
+      "Dans Macbeth, l'ambition devient destructrice. Quel signe montre qu'un objectif controle deja la personne?",
+      "Dans Frankenstein, quelqu'un cree quelque chose de puissant puis evite la responsabilite. Ou vois-tu ce schema aujourd'hui?",
+      "Quel personnage confond l'orgueil avec la force, et que lui coute cette confusion?",
+    ],
+    "Science & Evidence": [
+      "Une etude dit que deux choses sont liees. Qu'est-ce qui montrerait que l'une cause l'autre?",
+      "Un graphique semble dramatique a cause de son echelle. Comment cela change-t-il ta reaction?",
+      "Une experience marche une fois. Que prouverait sa repetition?",
+    ],
+    "Technology & AI": [
+      "Un eleve utilise l'IA pour ecrire. Quelle aide est utile, et quel apprentissage pourrait etre perdu?",
+      "Un algorithme choisit les entretiens d'embauche. Qui pourrait-il blesser injustement?",
+      "Une application optimise l'attention, pas le bien-etre. Quel comportement va-t-elle entrainer?",
+    ],
+    "Health & Habits": [
+      "Une personne veut mieux dormir, mais garde son telephone pres du lit. Quel signal de l'environnement pose probleme?",
+      "Quelqu'un commence un plan tres dur et abandonne en une semaine. Quelle petite version pourrait durer?",
+      "Une habitude marche pendant les semaines calmes, mais echoue sous pression. Que doit inclure le plan?",
+    ],
+    "Civic Thinking": [
+      "Une ville veut plus de cameras de securite. Quel compromis entre securite et vie privee faut-il debattre?",
+      "Une politique aide beaucoup de gens un peu, mais nuit fortement a quelques-uns. Comment l'evaluer?",
+      "Comment jugerais-tu la meme regle si ton groupe prefere perdait le pouvoir?",
+    ],
+    "Personal Identity": [
+      "Quelqu'un dit 'c'est juste comme ca que je suis' apres avoir blesse quelqu'un. Quand l'identite devient-elle une excuse?",
+      "Une personne protege une etiquette meme si elle ne l'aide plus. Que cherche-t-elle a conserver?",
+      "Qu'est-ce qui resterait vrai sur toi si une opinion importante changeait?",
+    ],
+    Epistemology: [
+      "Un ami dit qu'une chose est vraie parce que tout le monde la repete. Que verifierais-tu d'abord?",
+      "Une publication tres sure d'elle ne montre aucune source. Qu'est-ce qui la rendrait digne de confiance?",
+      "Quelle opinion actuelle devrais-tu traiter comme incertaine plutot que definitive?",
+    ],
+  },
+};
+
 const challengeCopy: Record<string, Partial<Record<Language, Partial<Challenge>>>> = {
   "work-credit": {
     es: {
@@ -524,9 +742,34 @@ const phraseCopy = {
 } satisfies Record<Language, Record<string, string>>;
 
 export function localizeChallenge(challenge: Challenge, language: Language): Challenge {
+  const directCopy = challengeCopy[challenge.id]?.[language];
+
+  if (directCopy) {
+    return {
+      ...challenge,
+      ...directCopy,
+    };
+  }
+
+  if (language !== "en") {
+    const pool = localizedQuestionPools[language]?.[challenge.category];
+    const questionNumber = Number(challenge.id.match(/-(\d+)$/)?.[1] || "1");
+    const prompt = pool?.[(Math.max(1, questionNumber) - 1) % pool.length];
+    const category = categoryCopy[language]?.[challenge.category] || challenge.category;
+
+    if (prompt) {
+      return {
+        ...challenge,
+        category,
+        prompt,
+        title: prompt.split("?")[0].slice(0, 48),
+      };
+    }
+  }
+
   return {
     ...challenge,
-    ...(challengeCopy[challenge.id]?.[language] || {}),
+    category: categoryCopy[language]?.[challenge.category] || challenge.category,
   };
 }
 
