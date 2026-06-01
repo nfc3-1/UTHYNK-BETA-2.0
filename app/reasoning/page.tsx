@@ -664,14 +664,14 @@ function ReasoningExperience({
     thinkingLenses.find((lens) => lens.id === thinkingLens)?.labelKey || "lensLogic";
   const questionType =
     thinkingLens === "incentives"
-      ? "Incentive map"
+      ? copy.incentiveMap
       : thinkingLens === "ethics"
-        ? "Value conflict"
+        ? copy.valueConflict
         : thinkingLens === "history"
-          ? "Pattern test"
+          ? copy.patternTest
           : thinkingLens === "strategy"
-            ? "Tradeoff move"
-            : "Evidence test";
+            ? copy.tradeoffMove
+            : copy.evidenceTest;
 
   return (
     <section className="uthynkReasoningLayout">
@@ -702,28 +702,28 @@ function ReasoningExperience({
         </section>
 
         <section className="leftRailSection profileSignalCard">
-          <div className="panelLabel">Thinking Profile</div>
+          <div className="panelLabel">{copy.thinkingProfile}</div>
           <div className="profileRows">
-            <div><span>Primary Mode</span><strong>{primaryIdentity}</strong></div>
-            <div><span>Style</span><strong>{localizeText(secondaryMode, language)}</strong></div>
-            <div><span>Growth Edge</span><strong>{localizeText(growthEdge, language)}</strong></div>
-            <div><span>Bias Watch</span><strong>{localizeText(biasWatch, language)}</strong></div>
+            <div><span>{copy.primaryMode}</span><strong>{primaryIdentity}</strong></div>
+            <div><span>{copy.style}</span><strong>{localizeText(secondaryMode, language)}</strong></div>
+            <div><span>{copy.growthEdge}</span><strong>{localizeText(growthEdge, language)}</strong></div>
+            <div><span>{copy.biasWatch}</span><strong>{localizeText(biasWatch, language)}</strong></div>
           </div>
         </section>
 
         <section className="leftRailSection sessionSignalCard">
-          <div className="panelLabel">Current Session</div>
+          <div className="panelLabel">{copy.currentSession}</div>
           <div className="profileRows">
-            <div><span>Lens</span><strong>{copy[activeLens]}</strong></div>
-            <div><span>Difficulty</span><strong>{visibleDifficulty}</strong></div>
-            <div><span>Intensity</span><strong>{visiblePressure}</strong></div>
-            <div><span>Question Type</span><strong>{questionType}</strong></div>
+            <div><span>{copy.lens}</span><strong>{copy[activeLens]}</strong></div>
+            <div><span>{copy.progress}</span><strong>{visibleDifficulty}</strong></div>
+            <div><span>{copy.intensity}</span><strong>{visiblePressure}</strong></div>
+            <div><span>{copy.questionType}</span><strong>{questionType}</strong></div>
           </div>
         </section>
 
         <section className="leftRailSection leftSignalPanel">
           <div className="leftSignalHeader">
-            <div className="panelLabel">Live Signals</div>
+            <div className="panelLabel">{copy.liveSignals}</div>
             <div className="leftSignalTabs" role="tablist" aria-label="Live reasoning signals">
               {[
                 { id: "patterns", label: "Patterns" },
