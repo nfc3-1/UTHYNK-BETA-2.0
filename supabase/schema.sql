@@ -218,6 +218,20 @@ create table if not exists public.daily_progress (
   created_at timestamptz default now()
 );
 
+create table if not exists public.feedback_submissions (
+  id uuid primary key default uuid_generate_v4(),
+  profile_id uuid references public.user_profiles(id) on delete set null,
+  event_type text not null default 'provided_feedback',
+  context text,
+  message text not null,
+  page_path text,
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+alter table public.feedback_submissions
+enable row level security;
+
 create index if not exists reasoning_sessions_user_idx
 on public.reasoning_sessions(user_id);
 
@@ -264,3 +278,10 @@ on public.claims(user_id, conversation_id, created_at desc);
 
 create unique index if not exists user_traits_user_trait_idx
 on public.user_traits(user_id, trait_name);
+
+create index if not exists feedback_submissions_created_idx
+on public.feedback_submissions(created_at desc);
+
+create index if not exists feedback_submissions_profile_created_idx
+on public.feedback_submissions(profile_id, created_at desc)
+where profile_id is not null;
