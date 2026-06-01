@@ -850,6 +850,60 @@ a{
   line-height:1.5;
 }
 
+.recommendedLessons{
+  margin-top:18px;
+  display:grid;
+  gap:14px;
+}
+
+.recommendedLessonsHeader{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(240px,0.7fr);
+  gap:16px;
+  align-items:end;
+}
+
+.recommendedLessonsHeader h2{
+  margin:6px 0 0;
+  color:rgba(255,255,255,0.94);
+  font-size:28px;
+  line-height:1.08;
+}
+
+.recommendedLessonsHeader p{
+  margin:0;
+  color:rgba(255,255,255,0.62);
+  line-height:1.5;
+}
+
+.recommendedLessonGrid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+
+.recommendedLessonCard{
+  padding:18px;
+  display:grid;
+  gap:10px;
+  min-height:154px;
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(246,198,79,0.14),rgba(94,234,212,0.07));
+  border-color:rgba(246,198,79,0.20);
+}
+
+.recommendedLessonCard strong{
+  color:rgba(255,255,255,0.95);
+  font-size:22px;
+  line-height:1.1;
+}
+
+.recommendedLessonCard p{
+  margin:0;
+  color:rgba(255,255,255,0.66);
+  line-height:1.45;
+}
+
 .lessonQuestionLayout{
   margin-top:18px;
   display:grid;
@@ -942,6 +996,8 @@ a{
   .appGrid,
   .reasoningGrid,
   .authPage,
+  .recommendedLessonsHeader,
+  .recommendedLessonGrid,
   .lessonCategoryGrid,
   .lessonQuestionLayout{
     grid-template-columns:1fr;
