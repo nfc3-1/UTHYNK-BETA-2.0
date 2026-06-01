@@ -773,6 +773,23 @@ export function localizeChallenge(challenge: Challenge, language: Language): Cha
   };
 }
 
+export function localizeCategory(category: string, language: Language) {
+  return categoryCopy[language]?.[category] || category;
+}
+
+export function localizeQuestion(
+  category: string,
+  index: number,
+  fallbackQuestion: string,
+  language: Language
+) {
+  if (language === "en") return fallbackQuestion;
+
+  const pool = localizedQuestionPools[language]?.[category];
+
+  return pool?.[index % pool.length] || fallbackQuestion;
+}
+
 export function localizeText(value: string | undefined, language: Language) {
   if (!value) return "";
 
