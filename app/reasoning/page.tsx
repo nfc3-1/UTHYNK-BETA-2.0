@@ -57,11 +57,11 @@ const rankThresholds = [
 ];
 
 const thinkingLenses = [
-  { id: "logic", labelKey: "lensLogic" },
-  { id: "incentives", labelKey: "lensIncentives" },
-  { id: "ethics", labelKey: "lensEthics" },
-  { id: "history", labelKey: "lensHistory" },
-  { id: "strategy", labelKey: "lensStrategy" },
+  { id: "logic", labelKey: "lensLogic", descriptionKey: "lensDescriptionLogic" },
+  { id: "incentives", labelKey: "lensIncentives", descriptionKey: "lensDescriptionIncentives" },
+  { id: "ethics", labelKey: "lensEthics", descriptionKey: "lensDescriptionEthics" },
+  { id: "history", labelKey: "lensHistory", descriptionKey: "lensDescriptionHistory" },
+  { id: "strategy", labelKey: "lensStrategy", descriptionKey: "lensDescriptionStrategy" },
 ] as const;
 
 const onboardingCopy = {
@@ -72,7 +72,7 @@ const onboardingCopy = {
     steps: [
       {
         title: "Choose a thinking lens",
-        text: "Logic checks structure, incentives checks motives, ethics checks values, history checks patterns, and strategy checks long-term tradeoffs.",
+        text: "Logic checks whether the argument makes sense. Incentives looks at motivations and hidden interests. Ethics looks at fairness and values. History looks at patterns from the past. Strategy looks at long-term consequences.",
       },
       {
         title: "Answer in your own words",
@@ -713,8 +713,10 @@ function ReasoningExperience({
       : (100 - (feedback.verifier?.behavioral?.emotionalControl || 50)) > 35
         ? "Emotional rigidity"
         : "Overconfidence";
-  const activeLens =
-    thinkingLenses.find((lens) => lens.id === thinkingLens)?.labelKey || "lensLogic";
+  const selectedLens =
+    thinkingLenses.find((lens) => lens.id === thinkingLens) || thinkingLenses[0];
+  const activeLens = selectedLens.labelKey;
+  const activeLensDescription = copy[selectedLens.descriptionKey];
   const questionType =
     thinkingLens === "incentives"
       ? copy.incentiveMap
@@ -861,6 +863,7 @@ function ReasoningExperience({
               </button>
             ))}
           </div>
+          <p className="thinkingLensDescription">{activeLensDescription}</p>
         </section>
 
         <section className="thinkingToolsPanel">

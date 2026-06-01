@@ -1614,6 +1614,13 @@ a{
   color:rgba(255,255,255,0.95);
 }
 
+.thinkingLensDescription{
+  margin:10px 0 0;
+  color:rgba(255,255,255,0.62);
+  font-size:13px;
+  line-height:1.45;
+}
+
 .thinkingToolsPanel{
   margin-top:14px;
   padding:14px;
