@@ -718,6 +718,59 @@ a{
   grid-template-columns:1.35fr 0.65fr;
 }
 
+.snapshotPanel{
+  padding:20px;
+}
+
+.snapshotScoreGrid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+
+.snapshotScoreGrid div{
+  padding:14px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.09);
+}
+
+.snapshotScoreGrid strong{
+  display:block;
+  font-size:26px;
+  line-height:1;
+}
+
+.snapshotScoreGrid span,
+.snapshotStatus{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:850;
+}
+
+.snapshotPanel p{
+  margin:14px 0 0;
+  color:rgba(255,255,255,0.76);
+}
+
+.snapshotActions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+
+.snapshotActions .btn{
+  padding:10px 13px;
+  border-radius:12px;
+}
+
+.snapshotStatus{
+  display:block;
+  margin-top:10px;
+}
+
 .lessonCategoryGrid{
   margin-top:18px;
   display:grid;

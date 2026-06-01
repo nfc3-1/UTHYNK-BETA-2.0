@@ -10,6 +10,7 @@ import {
   type Language,
   uiCopy,
 } from '@/lib/reasoningI18n';
+import { createTelemetryEvent, trackEvent } from '@/lib/telemetry';
 
 type Props = {
   category: string;
@@ -42,17 +43,23 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
   useEffect(() => {
     const storedLanguage = localStorage.getItem('uthynk-language');
+    const storedProfile = localStorage.getItem('uthynk-profile');
+    const profile = storedProfile ? JSON.parse(storedProfile) : null;
 
     if (storedLanguage === 'en' || storedLanguage === 'es' || storedLanguage === 'fr') {
       setLanguage(storedLanguage);
     }
 
-    const stored = localStorage.getItem('uthynk-profile');
+    trackEvent(
+      createTelemetryEvent('lesson_category_arrived', profile?.id, {
+        category,
+        questions: questions.length,
+      })
+    );
 
-    if (!stored) return;
+    if (!storedProfile) return;
 
     try {
-      const profile = JSON.parse(stored);
       setAgeBand(profile?.age_band || '18_plus');
     } catch {
       setAgeBand('18_plus');
@@ -71,6 +78,16 @@ export default function LessonQuestionClient({ category, questions }: Props) {
       setLoading(true);
       setError('');
       setFeedback(null);
+      const storedProfile = localStorage.getItem('uthynk-profile');
+      const profile = storedProfile ? JSON.parse(storedProfile) : null;
+      trackEvent(
+        createTelemetryEvent('submitted_answer', profile?.id, {
+          category,
+          questionIndex: selectedIndex,
+          responseLength: answer.length,
+          source: 'lesson',
+        })
+      );
 
       const response = await fetch('/api/reasoning', {
         body: JSON.stringify({
@@ -93,6 +110,15 @@ export default function LessonQuestionClient({ category, questions }: Props) {
       }
 
       setFeedback(payload);
+      trackEvent(
+        createTelemetryEvent('completed_reasoning_loop', profile?.id, {
+          category,
+          questionIndex: selectedIndex,
+          score: payload.score,
+          source: 'lesson',
+          xp: payload.xp,
+        })
+      );
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : 'Lesson could not start.');
     } finally {
@@ -155,11 +181,22 @@ export default function LessonQuestionClient({ category, questions }: Props) {
         <div className="lessonQuestionList">
           {adaptedQuestions.map((question, index) => (
             <button
-              className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}
-              key={`${category}-${index}-${question}`}
-              onClick={() => setSelectedIndex(index)}
-              type="button"
-            >
+            className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}
+            key={`${category}-${index}-${question}`}
+            onClick={() => {
+              setSelectedIndex(index);
+              const storedProfile = localStorage.getItem('uthynk-profile');
+              const profile = storedProfile ? JSON.parse(storedProfile) : null;
+              trackEvent(
+                createTelemetryEvent('selected_question', profile?.id, {
+                  category,
+                  questionIndex: index,
+                  source: 'lesson',
+                })
+              );
+            }}
+            type="button"
+          >
               {question}
             </button>
           ))}

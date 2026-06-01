@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { adaptChallengeForAge, ageBandLabel, normalizeAgeBand } from "@/lib/ageAdaptivePrompts";
 import { challenges, getChallengeById, type Challenge } from "@/lib/challenges";
+import { createTelemetryEvent, trackEvent } from "@/lib/telemetry";
 import {
   cognitionFeedByLanguage,
   languageOptions,
@@ -299,8 +300,28 @@ function ReasoningExperience({
     if (typeof window === 'undefined') return;
 
     const storedProfile = localStorage.getItem("uthynk-profile");
-    setProfile(storedProfile ? JSON.parse(storedProfile) : null);
+    const parsedProfile = storedProfile ? JSON.parse(storedProfile) : null;
+    setProfile(parsedProfile);
     setFreePassUsed(Number(localStorage.getItem("uthynk-free-pass-used") || "0"));
+    trackEvent(
+      createTelemetryEvent("reasoning_arrived", parsedProfile?.id, {
+        challengeId: challenge.id,
+        category: challenge.category,
+      })
+    );
+    const today = new Date().toISOString().slice(0, 10);
+    const lastVisit = localStorage.getItem("uthynk-last-visit-date");
+
+    if (lastVisit && lastVisit !== today) {
+      trackEvent(
+        createTelemetryEvent("returned_next_day", parsedProfile?.id, {
+          lastVisit,
+          returnedAt: today,
+        })
+      );
+    }
+
+    localStorage.setItem("uthynk-last-visit-date", today);
 
     conversationIdRef.current =
       conversationIdRef.current ||
@@ -404,6 +425,13 @@ function ReasoningExperience({
     setResponse("");
     setStreamingText("");
     setError("");
+    trackEvent(
+      createTelemetryEvent("selected_category", profile?.id, {
+        category,
+        challengeId: nextChallenge.id,
+        source: "reasoning_right_rail",
+      })
+    );
 
     if (typeof window !== "undefined") {
       const nextSeen = Array.from(new Set([...seenIds, nextChallenge.id]));
@@ -446,6 +474,15 @@ function ReasoningExperience({
           content: response,
         },
       ]);
+      trackEvent(
+        createTelemetryEvent("submitted_answer", activeProfile?.id, {
+          category: challenge.category,
+          challengeId: challenge.id,
+          language,
+          responseLength: response.length,
+          thinkingLens,
+        })
+      );
 
       const res = await fetch("/api/reasoning", {
         method: "POST",
@@ -533,6 +570,15 @@ function ReasoningExperience({
       }
 
       setEvaluatedClaim(response);
+      trackEvent(
+        createTelemetryEvent("completed_reasoning_loop", activeProfile?.id, {
+          category: challenge.category,
+          challengeId: challenge.id,
+          freePassUser: !activeProfile?.id,
+          score: data.score,
+          xp: data.xp,
+        })
+      );
       if (!activeProfile?.id && typeof window !== "undefined") {
         const nextFreePassUsed = Math.min(
           3,
@@ -613,6 +659,13 @@ function ReasoningExperience({
       setChallenge(nextChallenge);
       setDifficulty(nextChallenge.difficulty);
       setResponse(data.followUp || '');
+      trackEvent(
+        createTelemetryEvent("received_next_challenge", activeProfile?.id, {
+          challengeId: nextChallenge.id,
+          category: nextChallenge.category,
+          difficulty: nextChallenge.difficulty,
+        })
+      );
 
       if (typeof window !== "undefined") {
         const seenIds = JSON.parse(

@@ -6,12 +6,14 @@ import {
   getAdaptiveChallenges,
   getCoachingIntensity,
 } from '@/lib/adaptive';
+import { createTelemetryEvent, trackEvent } from '@/lib/telemetry';
 
 const STORAGE_KEY = 'uthynk-profile';
 
 export default function Profile() {
   const [style, setStyle] = useState('balanced');
   const [data, setData] = useState<any>(null);
+  const [snapshotStatus, setSnapshotStatus] = useState('');
 
   useEffect(() => {
     async function loadProfile() {
@@ -70,6 +72,47 @@ export default function Profile() {
     sessions.length >= 3 ? 'Evidence Builder' : 'Question Assumptions',
     averageReasoning >= 80 ? 'Strategic Pattern Spotter' : 'Growth in Progress',
   ];
+  const snapshotText = [
+    'UThynk Thinking Snapshot',
+    `Logic: ${averageReasoning}`,
+    `Strategy: ${Math.min(99, Math.max(0, averageReasoning + (sessions.length >= 3 ? 4 : 0)))}`,
+    `Evidence: ${traits[0]?.value || averageReasoning}`,
+    `Current Trait: ${profile.primary_trait || 'Analytical Thinker'}`,
+    `Rank: ${profile.rank || 'Observer'}`,
+  ].join('\n');
+
+  async function copySnapshot() {
+    await navigator.clipboard.writeText(snapshotText);
+    setSnapshotStatus('Snapshot copied');
+    trackEvent(createTelemetryEvent('shared_thinking_snapshot', profile?.id, { method: 'copy' }));
+  }
+
+  function downloadSnapshot() {
+    const blob = new Blob([snapshotText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = 'uthynk-thinking-snapshot.txt';
+    link.click();
+    URL.revokeObjectURL(url);
+    setSnapshotStatus('Snapshot downloaded');
+    trackEvent(createTelemetryEvent('shared_thinking_snapshot', profile?.id, { method: 'download' }));
+  }
+
+  async function shareSnapshot() {
+    if (navigator.share) {
+      await navigator.share({
+        text: snapshotText,
+        title: 'UThynk Thinking Snapshot',
+      });
+      setSnapshotStatus('Snapshot shared');
+      trackEvent(createTelemetryEvent('shared_thinking_snapshot', profile?.id, { method: 'native_share' }));
+      return;
+    }
+
+    await copySnapshot();
+  }
 
   return (
     <main className="appShell">
@@ -168,6 +211,33 @@ export default function Profile() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="card snapshotPanel">
+          <div className="panelLabel">Thinking Snapshot</div>
+          <div className="snapshotScoreGrid">
+            <div>
+              <strong>{averageReasoning}</strong>
+              <span>Logic</span>
+            </div>
+            <div>
+              <strong>{Math.min(99, Math.max(0, averageReasoning + (sessions.length >= 3 ? 4 : 0)))}</strong>
+              <span>Strategy</span>
+            </div>
+            <div>
+              <strong>{traits[0]?.value || averageReasoning}</strong>
+              <span>Evidence</span>
+            </div>
+          </div>
+          <p>
+            Current trait: <strong>{profile.primary_trait || 'Analytical Thinker'}</strong>
+          </p>
+          <div className="snapshotActions">
+            <button className="btn btnPrimary" type="button" onClick={shareSnapshot}>Share</button>
+            <button className="btn" type="button" onClick={copySnapshot}>Copy</button>
+            <button className="btn" type="button" onClick={downloadSnapshot}>Download</button>
+          </div>
+          {snapshotStatus ? <span className="snapshotStatus">{snapshotStatus}</span> : null}
         </section>
 
         <section className="card focusPanel">

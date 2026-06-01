@@ -8,6 +8,7 @@ import {
   type Language,
   uiCopy,
 } from '@/lib/reasoningI18n';
+import { createTelemetryEvent, trackEvent } from '@/lib/telemetry';
 import { slugifyCategory } from '@/lib/questionBank';
 
 type LessonCategory = {
@@ -25,10 +26,14 @@ export default function LessonLanguageShell({ categories }: Props) {
 
   useEffect(() => {
     const storedLanguage = localStorage.getItem('uthynk-language');
+    const storedProfile = localStorage.getItem('uthynk-profile');
+    const profile = storedProfile ? JSON.parse(storedProfile) : null;
 
     if (storedLanguage === 'en' || storedLanguage === 'es' || storedLanguage === 'fr') {
       setLanguage(storedLanguage);
     }
+
+    trackEvent(createTelemetryEvent('lessons_arrived', profile?.id, { categories: categories.length }));
   }, []);
 
   function changeLanguage(nextLanguage: Language) {
@@ -93,6 +98,16 @@ export default function LessonLanguageShell({ categories }: Props) {
             className="card lessonCategoryCard"
             href={`/lessons/${slugifyCategory(item.category)}`}
             key={item.category}
+            onClick={() => {
+              const storedProfile = localStorage.getItem('uthynk-profile');
+              const profile = storedProfile ? JSON.parse(storedProfile) : null;
+              trackEvent(
+                createTelemetryEvent('selected_category', profile?.id, {
+                  category: item.category,
+                  source: 'lessons',
+                })
+              );
+            }}
           >
             <span className="panelLabel">
               {item.count} {language === 'es' ? 'preguntas' : language === 'fr' ? 'questions' : 'questions'}
