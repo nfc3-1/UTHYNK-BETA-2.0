@@ -1153,6 +1153,7 @@ export default function ReasoningPage() {
             <Link href="/">{copy.home}</Link>
             <Link href="/lessons">Lessons</Link>
             <Link href="/profile">Profile</Link>
+            <Link href="/feedback">Feedback</Link>
             <Link href="/login">Sign in</Link>
           </nav>
 

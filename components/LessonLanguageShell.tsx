@@ -57,6 +57,7 @@ export default function LessonLanguageShell({ categories }: Props) {
             <Link href="/">{copy.home}</Link>
             <Link href="/lessons">Lessons</Link>
             <Link href="/profile">Profile</Link>
+            <Link href="/feedback">Feedback</Link>
             <Link href="/store">Store</Link>
           </nav>
 

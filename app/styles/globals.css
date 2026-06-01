@@ -250,6 +250,60 @@ a{
   line-height:1.5;
 }
 
+.feedbackPanel{
+  width:min(760px,100%);
+  margin:18px auto 0;
+  padding:28px;
+  display:grid;
+  gap:16px;
+}
+
+.feedbackPanel h1{
+  margin:0;
+  font-size:clamp(36px,5vw,64px);
+  line-height:0.98;
+}
+
+.feedbackPanel p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+  font-size:17px;
+}
+
+.feedbackPanel label{
+  display:grid;
+  gap:8px;
+}
+
+.feedbackPanel label span{
+  color:rgba(255,255,255,0.62);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.feedbackPanel select{
+  min-height:48px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(0,0,0,0.18);
+  color:white;
+  padding:0 14px;
+  font:inherit;
+  font-weight:800;
+}
+
+.feedbackPanel textarea{
+  min-height:160px;
+}
+
+.feedbackStatus{
+  color:rgba(125,231,206,0.92);
+  font-weight:850;
+}
+
 .freePassGate{
   margin-top:14px;
   display:grid;

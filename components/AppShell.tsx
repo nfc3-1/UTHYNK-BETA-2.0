@@ -14,6 +14,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
             <Link href="/">Home</Link>
             <Link href="/lessons">Lessons</Link>
             <Link href="/profile">Profile</Link>
+            <Link href="/feedback">Feedback</Link>
             <Link href="/store">Store</Link>
           </nav>
         </div>
@@ -29,6 +30,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
           <Link href="/">Home</Link>
           <Link href="/lessons">Lessons</Link>
           <Link href="/profile">Profile</Link>
+          <Link href="/feedback">Feedback</Link>
           <Link href="/store">Store</Link>
           <Link href="/login">Log Out</Link>
         </aside>

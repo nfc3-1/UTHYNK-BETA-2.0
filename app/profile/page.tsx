@@ -130,6 +130,7 @@ export default function Profile() {
           <Link href="/lessons">Lessons</Link>
           <Link href="/reasoning">Reasoning</Link>
           <Link href="/profile">Profile</Link>
+          <Link href="/feedback">Feedback</Link>
           <Link href="/store">Store</Link>
         </nav>
       </header>
