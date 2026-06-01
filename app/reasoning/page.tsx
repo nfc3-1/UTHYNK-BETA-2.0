@@ -345,7 +345,7 @@ function ReasoningExperience({
 
   function selectNextChallenge(currentChallenge: Challenge, score: number) {
     const preferredDifficulty =
-      score >= 85 ? "advanced" : score >= 70 ? "intermediate" : "starter";
+      score >= 88 ? "strategic" : score >= 76 ? "critical" : score >= 62 ? "practical" : "everyday";
     const seenIds =
       typeof window === "undefined"
         ? []
@@ -395,9 +395,9 @@ function ReasoningExperience({
     setChallenge(nextChallenge);
     setDifficulty(nextChallenge.difficulty);
     setPressure(
-      nextChallenge.difficulty === "advanced"
+      nextChallenge.difficulty === "strategic" || nextChallenge.difficulty === "critical"
         ? "High"
-        : nextChallenge.difficulty === "starter"
+        : nextChallenge.difficulty === "everyday"
           ? "Low"
           : "Moderate"
     );
@@ -595,14 +595,17 @@ function ReasoningExperience({
         },
       ]);
 
-      if (data.score >= 85) {
-        setDifficulty('advanced');
+      if (data.score >= 88) {
+        setDifficulty('strategic');
         setPressure('High');
-      } else if (data.score >= 70) {
-        setDifficulty('intermediate');
+      } else if (data.score >= 76) {
+        setDifficulty('critical');
+        setPressure('High');
+      } else if (data.score >= 62) {
+        setDifficulty('practical');
         setPressure('Moderate');
       } else {
-        setDifficulty('starter');
+        setDifficulty('everyday');
         setPressure('Low');
       }
 

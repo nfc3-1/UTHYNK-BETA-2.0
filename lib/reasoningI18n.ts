@@ -696,7 +696,12 @@ const challengeCopy: Record<string, Partial<Record<Language, Partial<Challenge>>
 };
 
 const phraseCopy = {
-  en: {},
+  en: {
+    "everyday": "Everyday Thinking",
+    "practical": "Practical Reasoning",
+    "critical": "Critical Thinking",
+    "strategic": "Strategic Thinking",
+  },
   es: {
     "A strong answer should protect your reputation without reacting emotionally or escalating too early.":
       "Una respuesta fuerte debe proteger tu reputación sin reaccionar emocionalmente ni escalar demasiado pronto.",
@@ -714,9 +719,10 @@ const phraseCopy = {
     "Moderate": "Moderada",
     "High": "Alta",
     "Low": "Baja",
-    "starter": "inicial",
-    "intermediate": "intermedio",
-    "advanced": "avanzado",
+    "everyday": "Pensamiento cotidiano",
+    "practical": "Razonamiento practico",
+    "critical": "Pensamiento critico",
+    "strategic": "Pensamiento estrategico",
   },
   fr: {
     "A strong answer should protect your reputation without reacting emotionally or escalating too early.":
@@ -735,9 +741,10 @@ const phraseCopy = {
     "Moderate": "Modérée",
     "High": "Élevée",
     "Low": "Faible",
-    "starter": "débutant",
-    "intermediate": "intermédiaire",
-    "advanced": "avancé",
+    "everyday": "Pensee quotidienne",
+    "practical": "Raisonnement pratique",
+    "critical": "Pensee critique",
+    "strategic": "Pensee strategique",
   },
 } satisfies Record<Language, Record<string, string>>;
 

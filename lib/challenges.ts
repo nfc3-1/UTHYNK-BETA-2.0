@@ -5,7 +5,7 @@ export type Challenge = {
   category: string;
   title: string;
   prompt: string;
-  difficulty: "starter" | "intermediate" | "advanced";
+  difficulty: "everyday" | "practical" | "critical" | "strategic";
   trait: string;
 };
 
@@ -30,10 +30,11 @@ const traitByCategory: Record<string, string> = {
 };
 
 function difficultyForIndex(index: number): Challenge["difficulty"] {
-  if (index < 10) return "starter";
-  if (index < 20) return "intermediate";
+  if (index < 8) return "everyday";
+  if (index < 16) return "practical";
+  if (index < 24) return "critical";
 
-  return "advanced";
+  return "strategic";
 }
 
 function titleForPrompt(prompt: string, index: number) {

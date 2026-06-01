@@ -33,7 +33,7 @@ export function getAdaptiveChallenges(profile?: AdaptiveProfile) {
 
   if (reasoningScore >= 80) {
     filtered = filtered.filter(
-      (challenge) => challenge.difficulty !== 'starter'
+      (challenge) => challenge.difficulty !== 'everyday'
     );
   }
 

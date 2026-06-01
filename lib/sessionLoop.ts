@@ -6,13 +6,15 @@ export type ConversationTurn = {
 };
 
 export function getNextDifficulty(
-  current: 'starter' | 'intermediate' | 'advanced',
+  current: 'everyday' | 'practical' | 'critical' | 'strategic',
   score: number
 ) {
-  if (score >= 85 && current === 'starter') return 'intermediate';
-  if (score >= 85 && current === 'intermediate') return 'advanced';
-  if (score < 60 && current === 'advanced') return 'intermediate';
-  if (score < 55 && current === 'intermediate') return 'starter';
+  if (score >= 88 && current === 'critical') return 'strategic';
+  if (score >= 76 && current === 'practical') return 'critical';
+  if (score >= 62 && current === 'everyday') return 'practical';
+  if (score < 55 && current === 'strategic') return 'critical';
+  if (score < 50 && current === 'critical') return 'practical';
+  if (score < 45 && current === 'practical') return 'everyday';
   return current;
 }
 
