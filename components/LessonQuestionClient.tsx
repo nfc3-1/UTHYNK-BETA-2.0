@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { adaptQuestionForAge, ageBandLabel, normalizeAgeBand } from '@/lib/ageAdaptivePrompts';
 import {
   languageOptions,
@@ -25,6 +25,11 @@ export default function LessonQuestionClient({ category, questions }: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [ageBand, setAgeBand] = useState('18_plus');
   const [error, setError] = useState('');
+  const [voiceStatus, setVoiceStatus] = useState('');
+  const [voiceSupported, setVoiceSupported] = useState(true);
+  const answerRef = useRef<HTMLTextAreaElement | null>(null);
+  const recognitionRef = useRef<any>(null);
+  const listeningRef = useRef(false);
   const copy = uiCopy[language];
   const visibleCategory = localizeCategory(category, language);
   const safeAgeBand = normalizeAgeBand(ageBand);
@@ -66,13 +71,134 @@ export default function LessonQuestionClient({ category, questions }: Props) {
     }
   }, []);
 
+  useEffect(() => {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      setVoiceSupported(false);
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = language === 'es' ? 'es-US' : language === 'fr' ? 'fr-FR' : 'en-US';
+
+    recognition.onresult = (event: any) => {
+      const transcript = Array.from(event.results)
+        .map((result: any) => result[0]?.transcript || '')
+        .join(' ')
+        .trim();
+
+      setAnswer(transcript);
+    };
+
+    recognition.onerror = () => {
+      listeningRef.current = false;
+      setVoiceStatus(
+        language === 'es'
+          ? 'No se pudo escuchar. Revisa el permiso del microfono.'
+          : language === 'fr'
+            ? "Impossible d'ecouter. Verifie l'autorisation du micro."
+            : 'Could not listen. Check microphone permission.'
+      );
+    };
+
+    recognition.onend = () => {
+      listeningRef.current = false;
+      setVoiceStatus('');
+    };
+
+    recognitionRef.current = recognition;
+
+    return () => {
+      listeningRef.current = false;
+      try {
+        recognition.stop();
+      } catch {
+        // Browsers can throw if speech recognition was never started.
+      }
+      recognitionRef.current = null;
+    };
+  }, [language]);
+
   function changeLanguage(nextLanguage: Language) {
     setLanguage(nextLanguage);
     localStorage.setItem('uthynk-language', nextLanguage);
   }
 
+  function selectQuestion(index: number) {
+    setSelectedIndex(index);
+    setFeedback(null);
+    setError('');
+
+    const storedProfile = localStorage.getItem('uthynk-profile');
+    const profile = storedProfile ? JSON.parse(storedProfile) : null;
+    trackEvent(
+      createTelemetryEvent('selected_question', profile?.id, {
+        category,
+        questionIndex: index,
+        source: 'lesson',
+      })
+    );
+
+    window.setTimeout(() => answerRef.current?.focus(), 0);
+  }
+
+  function startVoiceInput() {
+    if (!recognitionRef.current) {
+      setVoiceStatus(
+        language === 'es'
+          ? 'La voz a texto no esta disponible en este navegador.'
+          : language === 'fr'
+            ? "La dictee vocale n'est pas disponible dans ce navigateur."
+            : 'Voice to text is not available in this browser.'
+      );
+      return;
+    }
+
+    setVoiceStatus(
+      language === 'es'
+        ? 'Escuchando...'
+        : language === 'fr'
+          ? 'Ecoute...'
+          : 'Listening...'
+    );
+
+    if (listeningRef.current) return;
+
+    try {
+      listeningRef.current = true;
+      recognitionRef.current.start();
+    } catch {
+      listeningRef.current = false;
+    }
+  }
+
+  function stopVoiceInput() {
+    if (!listeningRef.current) return;
+    listeningRef.current = false;
+    recognitionRef.current?.stop();
+    setVoiceStatus('');
+  }
+
   async function startLesson(question = selectedQuestion) {
-    if (!question || !answer.trim()) return;
+    if (!question) return;
+
+    if (!answer.trim()) {
+      setError(
+        language === 'es'
+          ? 'Escribe o dicta tu respuesta primero. Una o dos frases bastan.'
+          : language === 'fr'
+            ? "Ecris ou dicte d'abord ta reponse. Une ou deux phrases suffisent."
+            : 'Write or speak your answer first. One or two sentences is enough.'
+      );
+      answerRef.current?.focus();
+      return;
+    }
 
     try {
       setLoading(true);
@@ -184,20 +310,10 @@ export default function LessonQuestionClient({ category, questions }: Props) {
             <button
             className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}
             key={`${category}-${index}-${question}`}
-            onClick={() => {
-              setSelectedIndex(index);
-              const storedProfile = localStorage.getItem('uthynk-profile');
-              const profile = storedProfile ? JSON.parse(storedProfile) : null;
-              trackEvent(
-                createTelemetryEvent('selected_question', profile?.id, {
-                  category,
-                  questionIndex: index,
-                  source: 'lesson',
-                })
-              );
-            }}
+            onClick={() => selectQuestion(index)}
             type="button"
           >
+              <span>{language === 'es' ? 'Empezar con esta' : language === 'fr' ? 'Commencer avec celle-ci' : 'Start with this'}</span>
               {question}
             </button>
           ))}
@@ -211,21 +327,44 @@ export default function LessonQuestionClient({ category, questions }: Props) {
             <div className="ageModeBadge">{ageBandLabel(safeAgeBand)}</div>
           ) : null}
           <h2>{selectedQuestion}</h2>
+          <p className="lessonPromptHint">
+            {language === 'es'
+              ? 'Responde con tu mejor razonamiento. Puedes escribir o usar voz a texto.'
+              : language === 'fr'
+                ? 'Reponds avec ton meilleur raisonnement. Tu peux ecrire ou utiliser la dictee vocale.'
+                : 'Respond with your best reasoning. You can type or use voice to text.'}
+          </p>
           <textarea
+            ref={answerRef}
             className="textarea conversationInput"
             onChange={(event) => setAnswer(event.target.value)}
             placeholder={copy.placeholder}
             value={answer}
           />
           {error ? <p className="authError">{error}</p> : null}
-          <button
-            className="btn btnPrimary"
-            disabled={loading || !answer.trim()}
-            onClick={() => startLesson()}
-            type="button"
-          >
-            {loading ? copy.sending : language === 'es' ? 'Empezar leccion' : language === 'fr' ? 'Commencer la lecon' : 'Start Lesson'}
-          </button>
+          {voiceStatus ? <p className="panelNote">{voiceStatus}</p> : null}
+          <div className="lessonActionRow">
+            <button
+              className="btn btnPrimary"
+              disabled={loading}
+              onClick={() => startLesson()}
+              type="button"
+            >
+              {loading ? copy.sending : language === 'es' ? 'Empezar a pensar' : language === 'fr' ? 'Commencer a penser' : 'Start Thinking'}
+            </button>
+            <button
+              className="btn"
+              disabled={!voiceSupported}
+              onMouseDown={startVoiceInput}
+              onMouseUp={stopVoiceInput}
+              onMouseLeave={stopVoiceInput}
+              onTouchStart={startVoiceInput}
+              onTouchEnd={stopVoiceInput}
+              type="button"
+            >
+              {copy.holdToTalk}
+            </button>
+          </div>
           {feedback ? (
             <div className="lessonFeedback">
               <strong>{localizeText(feedback.trait, language) || 'UThynk feedback'}</strong>
