@@ -80,7 +80,7 @@ const onboardingCopy = {
       },
       {
         title: "Review the challenge",
-        text: "UThynk gives a contradiction prompt, follow-up, evidence score, and growth signal so you can improve the next answer.",
+        text: "UThynk gives a follow-up question, evidence score, and growth signal so you can improve the next answer.",
       },
       {
         title: "Switch categories anytime",
@@ -151,46 +151,38 @@ const onboardingCopy = {
 const thinkingToolCopy = {
   en: {
     section: "Thinking Tools",
-    challenge: "Challenge",
     followUp: "Follow-Up",
     lab: "Lab",
     timeline: "Timeline",
     position: "Your position",
     support: "What backs it up?",
-    opposition: "Strongest challenge",
     assumptions: "Hidden assumptions",
   },
   es: {
     section: "Herramientas de pensamiento",
-    challenge: "Reto",
     followUp: "Seguimiento",
     lab: "Laboratorio",
     timeline: "Línea",
     position: "Tu posición",
     support: "Qué la respalda",
-    opposition: "Mayor reto",
     assumptions: "Supuestos ocultos",
   },
   fr: {
     section: "Outils de pensée",
-    challenge: "Défi",
     followUp: "Suivi",
     lab: "Labo",
     timeline: "Parcours",
     position: "Ta position",
     support: "Ce qui l'appuie",
-    opposition: "Défi le plus fort",
     assumptions: "Hypothèses cachées",
   },
 } satisfies Record<Language, {
   section: string;
-  challenge: string;
   followUp: string;
   lab: string;
   timeline: string;
   position: string;
   support: string;
-  opposition: string;
   assumptions: string;
 }>;
 
