@@ -246,11 +246,12 @@ function ReasoningExperience({
   const [pressure, setPressure] = useState("Moderate");
   const [profile, setProfile] = useState<any>(null);
   const [rightTab, setRightTab] = useState<"categories" | "insights" | "analysis">("insights");
-  const [thinkingToolTab, setThinkingToolTab] = useState<"challenge" | "followUp" | "lab" | "timeline">("challenge");
+  const [thinkingToolTab, setThinkingToolTab] = useState<"followUp" | "lab" | "timeline">("followUp");
   const [leftSignalTab, setLeftSignalTab] = useState<"patterns" | "metrics">("patterns");
   const [thinkingLens, setThinkingLens] = useState<(typeof thinkingLenses)[number]["id"]>("logic");
   const [evaluatedClaim, setEvaluatedClaim] = useState("");
-  const [workoutStage, setWorkoutStage] = useState<"answer" | "challenge" | "reflection" | "complete">("answer");
+  const [workoutStage, setWorkoutStage] = useState<"answer" | "challenge" | "followUp" | "reflection" | "complete">("answer");
+  const [followUpResponse, setFollowUpResponse] = useState("");
   const [reflection, setReflection] = useState("");
   const [latestReward, setLatestReward] = useState<any>(null);
   const [feedback, setFeedback] = useState({
@@ -308,8 +309,13 @@ function ReasoningExperience({
       : `Good direction. Now make the reasoning sharper by naming the strongest example and the strongest objection.`;
 
   const recognitionRef = useRef<any>(null);
+  const workoutStageRef = useRef(workoutStage);
   const conversationIdRef = useRef<string>("");
   const sessionIdRef = useRef<string>("");
+
+  useEffect(() => {
+    workoutStageRef.current = workoutStage;
+  }, [workoutStage]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -373,7 +379,13 @@ function ReasoningExperience({
         .map((result: any) => result[0]?.transcript || '')
         .join(' ');
 
-      setResponse(transcript);
+      if (workoutStageRef.current === "followUp") {
+        setFollowUpResponse(transcript);
+      } else if (workoutStageRef.current === "reflection") {
+        setReflection(transcript);
+      } else {
+        setResponse(transcript);
+      }
     };
 
     recognitionRef.current = recognition;
@@ -438,6 +450,7 @@ function ReasoningExperience({
           : "Moderate"
     );
     setResponse("");
+    setFollowUpResponse("");
     setReflection("");
     setEvaluatedClaim("");
     setLatestReward(null);
@@ -481,6 +494,7 @@ function ReasoningExperience({
           : "Moderate"
     );
     setResponse("");
+    setFollowUpResponse("");
     setReflection("");
     setEvaluatedClaim("");
     setLatestReward(null);
@@ -517,6 +531,26 @@ function ReasoningExperience({
         challengeId: challenge.id,
         reflectionLength: reflection.length,
         score: feedback.score,
+      })
+    );
+  }
+
+  function continueToReflection() {
+    if (!followUpResponse.trim()) return;
+
+    setConversation((prev) => [
+      ...prev,
+      {
+        role: "user",
+        content: followUpResponse,
+      },
+    ]);
+    setWorkoutStage("reflection");
+    trackEvent(
+      createTelemetryEvent("submitted_follow_up_response", profile?.id, {
+        category: challenge.category,
+        challengeId: challenge.id,
+        responseLength: followUpResponse.length,
       })
     );
   }
@@ -707,7 +741,7 @@ function ReasoningExperience({
         )}; path=/; max-age=2592000; SameSite=Lax`;
       }
 
-      const uthynkMessage = `${data.analysis}\n\nPushback: ${data.contrarian}\n\nNext Challenge: ${data.followUp}`;
+      const uthynkMessage = `${data.analysis}\n\nFollow-up question: ${data.followUp}`;
 
       setConversation((prev) => [
         ...prev,
@@ -732,7 +766,8 @@ function ReasoningExperience({
       }
 
       setResponse("");
-      setWorkoutStage("reflection");
+      setFollowUpResponse("");
+      setWorkoutStage("followUp");
       trackEvent(
         createTelemetryEvent("received_challenge", activeProfile?.id, {
           challengeId: challenge.id,
@@ -749,9 +784,6 @@ function ReasoningExperience({
     }
   }
 
-  const strongestOpposingCase =
-    visibleFeedback.contrarian ||
-    localizeText("What would a careful opponent say is missing from your reasoning?", language);
   const timeline = [
     {
       title: copy.sessionContinuity,
@@ -795,11 +827,12 @@ function ReasoningExperience({
             : copy.evidenceTest;
   const workoutSteps = [
     { id: "answer", step: "Step 1 of 3", label: "Answer" },
-    { id: "challenge", step: "Step 2 of 3", label: "Challenge" },
+    { id: "followUp", step: "Step 2 of 3", label: "Follow-up" },
     { id: "reflection", step: "Step 3 of 3", label: "Reflection" },
     { id: "complete", step: "Complete", label: "Complete" },
   ] as const;
-  const workoutStageIndex = workoutSteps.findIndex((step) => step.id === workoutStage);
+  const displayedWorkoutStage = workoutStage === "challenge" ? "followUp" : workoutStage;
+  const workoutStageIndex = workoutSteps.findIndex((step) => step.id === displayedWorkoutStage);
 
   return (
     <section className="uthynkReasoningLayout">
@@ -927,7 +960,9 @@ function ReasoningExperience({
               {workoutStage === "answer"
                 ? "Answer the primary question"
                 : workoutStage === "challenge"
-                  ? "UThynk is building your challenge"
+                  ? "UThynk is preparing your follow-up"
+                  : workoutStage === "followUp"
+                    ? "Answer the follow-up question"
                   : workoutStage === "reflection"
                     ? "Write the final reflection"
                     : "Workout complete"}
@@ -976,7 +1011,6 @@ function ReasoningExperience({
             <div className="panelLabel">{toolsCopy.section}</div>
             <div className="thinkingToolTabs" role="tablist" aria-label={toolsCopy.section}>
               {[
-                { id: "challenge", label: toolsCopy.challenge },
                 { id: "followUp", label: toolsCopy.followUp },
                 { id: "lab", label: toolsCopy.lab },
                 { id: "timeline", label: toolsCopy.timeline },
@@ -988,7 +1022,7 @@ function ReasoningExperience({
                   aria-selected={thinkingToolTab === tab.id}
                   className={thinkingToolTab === tab.id ? "active" : ""}
                   onClick={() =>
-                    setThinkingToolTab(tab.id as "challenge" | "followUp" | "lab" | "timeline")
+                    setThinkingToolTab(tab.id as "followUp" | "lab" | "timeline")
                   }
                 >
                   {tab.label}
@@ -996,13 +1030,6 @@ function ReasoningExperience({
               ))}
             </div>
           </div>
-
-          {thinkingToolTab === "challenge" ? (
-            <article className="thinkingToolPane">
-              <span>{copy.contradictionPrompt}</span>
-              <p>{strongestOpposingCase}</p>
-            </article>
-          ) : null}
 
           {thinkingToolTab === "followUp" ? (
             <article className="thinkingToolPane">
@@ -1025,8 +1052,8 @@ function ReasoningExperience({
               </article>
               <article>
                 <span>Step 3</span>
-                <strong>{toolsCopy.opposition}</strong>
-                <p>{strongestOpposingCase}</p>
+                <strong>{toolsCopy.followUp}</strong>
+                <p>{visibleFeedback.followUp}</p>
               </article>
               <article>
                 <span>Step 4</span>
@@ -1048,7 +1075,21 @@ function ReasoningExperience({
           ) : null}
         </section>
 
-        {workoutStage === "reflection" || workoutStage === "complete" ? (
+        {workoutStage === "followUp" ? (
+          <section className="finalReflectionPanel followUpResponsePanel">
+            <div className="panelLabel">Follow-up Question</div>
+            <h2>{visibleFeedback.followUp}</h2>
+            <p>
+              Answer this before reflection. This is where UThynk checks whether your reasoning improved.
+            </p>
+            <textarea
+              className="textarea responseBox conversationInput"
+              value={followUpResponse}
+              onChange={(e) => setFollowUpResponse(e.target.value)}
+              placeholder="My answer to the follow-up is..."
+            />
+          </section>
+        ) : workoutStage === "reflection" || workoutStage === "complete" ? (
           <section className="finalReflectionPanel">
             <div className="panelLabel">Final Reflection</div>
             <h2>What changed in your thinking?</h2>
@@ -1073,8 +1114,9 @@ function ReasoningExperience({
               id="response"
               className="textarea responseBox conversationInput"
               value={response}
+              disabled={workoutStage === "challenge"}
               onChange={(e) => setResponse(e.target.value)}
-              placeholder={copy.placeholder}
+              placeholder={workoutStage === "challenge" ? "UThynk is preparing your follow-up..." : copy.placeholder}
             />
           </>
         )}
@@ -1093,7 +1135,28 @@ function ReasoningExperience({
           </div>
         ) : null}
 
-        {workoutStage === "reflection" ? (
+        {workoutStage === "followUp" ? (
+          <div className="reasoningActions">
+            <button
+              className="btn btnPrimary"
+              type="button"
+              disabled={!followUpResponse.trim()}
+              onClick={continueToReflection}
+            >
+              Continue to Reflection
+            </button>
+            <button
+              className="btn"
+              type="button"
+              onMouseDown={startVoiceInput}
+              onMouseUp={stopVoiceInput}
+              onTouchStart={startVoiceInput}
+              onTouchEnd={stopVoiceInput}
+            >
+              {copy.holdToTalk}
+            </button>
+          </div>
+        ) : workoutStage === "reflection" ? (
           <div className="reasoningActions">
             <button
               className="btn btnPrimary"
@@ -1102,6 +1165,16 @@ function ReasoningExperience({
               onClick={completeWorkout}
             >
               Complete Workout
+            </button>
+            <button
+              className="btn"
+              type="button"
+              onMouseDown={startVoiceInput}
+              onMouseUp={stopVoiceInput}
+              onTouchStart={startVoiceInput}
+              onTouchEnd={stopVoiceInput}
+            >
+              {copy.holdToTalk}
             </button>
           </div>
         ) : workoutStage === "complete" ? (
@@ -1119,7 +1192,7 @@ function ReasoningExperience({
             <button
               className="btn btnPrimary"
               type="button"
-              disabled={loading || !response.trim() || (!profile?.id && freePassUsed >= 3)}
+              disabled={loading || workoutStage === "challenge" || !response.trim() || (!profile?.id && freePassUsed >= 3)}
               onClick={analyzeReasoning}
             >
               {loading ? copy.sending : copy.send}
@@ -1167,7 +1240,6 @@ function ReasoningExperience({
               <summary>Why UThynk said this</summary>
               <div>
                 <p>{visibleFeedback.analysis}</p>
-                <p><strong>{copy.strongestOpposingCase}:</strong> {strongestOpposingCase}</p>
                 <p><strong>{copy.recursiveFollowUp}:</strong> {visibleFeedback.followUp}</p>
               </div>
             </details>
@@ -1265,9 +1337,9 @@ function ReasoningExperience({
           <section>
             <div className="panelLabel">{copy.claimEvaluation}</div>
             <div className="logicGrid sideAnalysisGrid">
-              <div><span>{copy.counterargument}</span><p>{visibleFeedback.contrarian}</p></div>
+              <div><span>Primary answer</span><p>{evaluatedClaim || response || copy.stateClaim}</p></div>
               <div><span>{copy.recursiveFollowUp}</span><p>{visibleFeedback.followUp}</p></div>
-              <div><span>{copy.strongestOpposingCase}</span><p>{strongestOpposingCase}</p></div>
+              <div><span>Follow-up answer</span><p>{followUpResponse || "Not answered yet."}</p></div>
             </div>
           </section>
         ) : null}
