@@ -991,6 +991,100 @@ a{
   line-height:1.5;
 }
 
+.uthynkLayeredResponse{
+  margin-top:14px;
+  display:grid;
+  gap:12px;
+  padding:16px;
+  border-radius:16px;
+  border:1px solid rgba(94,234,212,0.18);
+  background:rgba(94,234,212,0.07);
+}
+
+.plainResponseLayer{
+  display:grid;
+  gap:6px;
+}
+
+.plainResponseLayer span{
+  color:#5eead4;
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.plainResponseLayer p{
+  margin:0;
+  color:rgba(255,255,255,0.92);
+  font-size:17px;
+  line-height:1.5;
+}
+
+.thinkingLabelLayer{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.thinkingLabelLayer span{
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid rgba(246,198,79,0.24);
+  background:rgba(246,198,79,0.10);
+  color:rgba(255,255,255,0.82);
+  font-size:12px;
+  font-weight:900;
+}
+
+.advancedExplanationLayer{
+  border-top:1px solid rgba(255,255,255,0.09);
+  padding-top:10px;
+}
+
+.advancedExplanationLayer summary{
+  cursor:pointer;
+  color:rgba(255,255,255,0.68);
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:0.08em;
+  list-style:none;
+  text-transform:uppercase;
+}
+
+.advancedExplanationLayer summary::-webkit-details-marker{
+  display:none;
+}
+
+.advancedExplanationLayer summary::before{
+  content:"+";
+  display:inline-grid;
+  place-items:center;
+  width:18px;
+  height:18px;
+  margin-right:8px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.08);
+  color:rgba(246,198,79,0.92);
+}
+
+.advancedExplanationLayer[open] summary::before{
+  content:"-";
+}
+
+.advancedExplanationLayer div{
+  display:grid;
+  gap:8px;
+  margin-top:10px;
+}
+
+.advancedExplanationLayer p{
+  margin:0;
+  color:rgba(255,255,255,0.68);
+  font-size:14px;
+  line-height:1.5;
+}
+
 @media (max-width: 1100px){
   .appHero,
   .appGrid,

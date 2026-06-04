@@ -367,10 +367,29 @@ export default function LessonQuestionClient({ category, questions }: Props) {
           </div>
           {feedback ? (
             <div className="lessonFeedback">
-              <strong>{localizeText(feedback.trait, language) || 'UThynk feedback'}</strong>
-              <p>{localizeText(feedback.analysis, language)}</p>
-              <p>{localizeText(feedback.contrarian, language)}</p>
-              <p>{localizeText(feedback.followUp, language)}</p>
+              <div className="plainResponseLayer">
+                <span>UThynk</span>
+                <p>
+                  {language === 'es'
+                    ? 'Vas bien, pero necesito una prueba mas clara. Cual es el ejemplo mas fuerte que apoya tu punto?'
+                    : language === 'fr'
+                      ? "Tu vas dans la bonne direction, mais il manque une preuve plus claire. Quel est l'exemple le plus fort?"
+                      : "I like where you're going, but I'm missing proof. What's the strongest example that supports your point?"}
+                </p>
+              </div>
+              <div className="thinkingLabelLayer">
+                <span>{localizeText(feedback.trait, language) || 'Reasoning pattern'}</span>
+                <span>{localizeText(feedback.strengths?.[0] || 'Independent Verification', language)}</span>
+                <span>{localizeText(feedback.weaknesses?.[0] || 'Evidence +1', language)}</span>
+              </div>
+              <details className="advancedExplanationLayer">
+                <summary>Why UThynk said this</summary>
+                <div>
+                  <p>{localizeText(feedback.analysis, language)}</p>
+                  <p>{localizeText(feedback.contrarian, language)}</p>
+                  <p>{localizeText(feedback.followUp, language)}</p>
+                </div>
+              </details>
             </div>
           ) : null}
         </div>

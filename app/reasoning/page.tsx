@@ -293,6 +293,19 @@ function ReasoningExperience({
   const visibleDifficulty = localizeText(difficulty, language);
   const visiblePressure = localizeText(pressure, language);
   const progressionState = getProgressionState(profile?.xp || 0);
+  const evidenceDelta = Math.max(
+    1,
+    Math.round(((feedback.verifier?.behavioral?.evidence || feedback.score || 70) - 62) / 8)
+  );
+  const topWeakness = visibleFeedback.weaknesses[0]?.toLowerCase() || "";
+  const plainFeedback =
+    topWeakness.includes("incentive")
+      ? `I like where you're going, but I'm missing motives. Who benefits if your answer is right?`
+      : topWeakness.includes("evidence") || topWeakness.includes("proof")
+        ? `I like where you're going, but I'm missing proof. What's the strongest example that supports your point?`
+        : topWeakness.includes("next")
+          ? `Good start. Now make it practical: what is the next step your reasoning points toward?`
+      : `Good direction. Now make the reasoning sharper by naming the strongest example and the strongest objection.`;
 
   const recognitionRef = useRef<any>(null);
   const conversationIdRef = useRef<string>("");
@@ -1132,6 +1145,32 @@ function ReasoningExperience({
               <strong>{copy.rewardPattern}: {localizeText(latestReward.pattern, language)}</strong>
             </div>
             <p>{copy.improved}: {copy.evidenceStrength} +{latestReward.evidenceDelta}</p>
+          </section>
+        ) : null}
+
+        {evaluatedClaim ? (
+          <section className="uthynkLayeredResponse" aria-live="polite">
+            <div className="plainResponseLayer">
+              <span>UThynk</span>
+              <p>{plainFeedback}</p>
+            </div>
+
+            <div className="thinkingLabelLayer">
+              <span>{copy.evidenceStrength} +{evidenceDelta}</span>
+              <span>{copy.rewardPattern}: {visibleFeedback.trait || "Independent Verification"}</span>
+              {visibleFeedback.strengths.slice(0, 2).map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+
+            <details className="advancedExplanationLayer">
+              <summary>Why UThynk said this</summary>
+              <div>
+                <p>{visibleFeedback.analysis}</p>
+                <p><strong>{copy.strongestOpposingCase}:</strong> {strongestOpposingCase}</p>
+                <p><strong>{copy.recursiveFollowUp}:</strong> {visibleFeedback.followUp}</p>
+              </div>
+            </details>
           </section>
         ) : null}
 
