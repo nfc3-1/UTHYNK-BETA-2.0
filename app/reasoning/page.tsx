@@ -250,6 +250,8 @@ function ReasoningExperience({
   const [leftSignalTab, setLeftSignalTab] = useState<"patterns" | "metrics">("patterns");
   const [thinkingLens, setThinkingLens] = useState<(typeof thinkingLenses)[number]["id"]>("logic");
   const [evaluatedClaim, setEvaluatedClaim] = useState("");
+  const [workoutStage, setWorkoutStage] = useState<"answer" | "challenge" | "reflection" | "complete">("answer");
+  const [reflection, setReflection] = useState("");
   const [latestReward, setLatestReward] = useState<any>(null);
   const [feedback, setFeedback] = useState({
     ...initialFeedback,
@@ -423,6 +425,10 @@ function ReasoningExperience({
           : "Moderate"
     );
     setResponse("");
+    setReflection("");
+    setEvaluatedClaim("");
+    setLatestReward(null);
+    setWorkoutStage("answer");
     setStreamingText("");
     setError("");
     trackEvent(
@@ -449,11 +455,65 @@ function ReasoningExperience({
     recognitionRef.current?.stop();
   }
 
+  function startNextWorkout() {
+    const nextChallenge = selectNextChallenge(challenge, feedback.score || visibleFeedback.score || 70);
+
+    setChallenge(nextChallenge);
+    setDifficulty(nextChallenge.difficulty);
+    setPressure(
+      nextChallenge.difficulty === "strategic" || nextChallenge.difficulty === "critical"
+        ? "High"
+        : nextChallenge.difficulty === "everyday"
+          ? "Low"
+          : "Moderate"
+    );
+    setResponse("");
+    setReflection("");
+    setEvaluatedClaim("");
+    setLatestReward(null);
+    setWorkoutStage("answer");
+    setStreamingText("");
+    setError("");
+
+    trackEvent(
+      createTelemetryEvent("started_next_workout", profile?.id, {
+        challengeId: nextChallenge.id,
+        category: nextChallenge.category,
+        difficulty: nextChallenge.difficulty,
+      })
+    );
+
+    if (typeof window !== "undefined") {
+      const seenIds = JSON.parse(
+        localStorage.getItem("uthynk-seen-challenge-ids") || "[]"
+      ) as string[];
+      localStorage.setItem(
+        "uthynk-seen-challenge-ids",
+        JSON.stringify(Array.from(new Set([...seenIds, nextChallenge.id])))
+      );
+      const currentPath = window.location.pathname === "/" ? "/" : "/reasoning";
+      window.history.replaceState(null, "", `${currentPath}?id=${nextChallenge.id}`);
+    }
+  }
+
+  function completeWorkout() {
+    setWorkoutStage("complete");
+    trackEvent(
+      createTelemetryEvent("completed_workout_reflection", profile?.id, {
+        category: challenge.category,
+        challengeId: challenge.id,
+        reflectionLength: reflection.length,
+        score: feedback.score,
+      })
+    );
+  }
+
   async function analyzeReasoning() {
     try {
       setLoading(true);
       setError("");
       setStreamingText("");
+      setWorkoutStage("challenge");
       let activeProfile: any = null;
 
       if (typeof window !== "undefined") {
@@ -512,11 +572,13 @@ function ReasoningExperience({
           return;
         }
         setError(data.error || "Reasoning analysis failed.");
+        setWorkoutStage("answer");
         return;
       }
 
       if (!res.body) {
         setError("Reasoning stream did not start.");
+        setWorkoutStage("answer");
         return;
       }
 
@@ -566,6 +628,7 @@ function ReasoningExperience({
 
       if (!data) {
         setError("Reasoning analysis ended without final feedback.");
+        setWorkoutStage("answer");
         return;
       }
 
@@ -655,29 +718,19 @@ function ReasoningExperience({
         setPressure('Low');
       }
 
-      const nextChallenge = selectNextChallenge(challenge, data.score);
-      setChallenge(nextChallenge);
-      setDifficulty(nextChallenge.difficulty);
-      setResponse(data.followUp || '');
+      setResponse("");
+      setWorkoutStage("reflection");
       trackEvent(
-        createTelemetryEvent("received_next_challenge", activeProfile?.id, {
-          challengeId: nextChallenge.id,
-          category: nextChallenge.category,
-          difficulty: nextChallenge.difficulty,
+        createTelemetryEvent("received_challenge", activeProfile?.id, {
+          challengeId: challenge.id,
+          category: challenge.category,
+          difficulty,
+          followUpLength: data.followUp?.length || 0,
         })
       );
-
-      if (typeof window !== "undefined") {
-        const seenIds = JSON.parse(
-          localStorage.getItem("uthynk-seen-challenge-ids") || "[]"
-        ) as string[];
-        localStorage.setItem(
-          "uthynk-seen-challenge-ids",
-          JSON.stringify(Array.from(new Set([...seenIds, nextChallenge.id])))
-        );
-      }
     } catch {
       setError("Unable to analyze reasoning right now.");
+      setWorkoutStage("answer");
     } finally {
       setLoading(false);
     }
@@ -727,6 +780,13 @@ function ReasoningExperience({
           : thinkingLens === "strategy"
             ? copy.tradeoffMove
             : copy.evidenceTest;
+  const workoutSteps = [
+    { id: "answer", step: "Step 1 of 3", label: "Answer" },
+    { id: "challenge", step: "Step 2 of 3", label: "Challenge" },
+    { id: "reflection", step: "Step 3 of 3", label: "Reflection" },
+    { id: "complete", step: "Complete", label: "Complete" },
+  ] as const;
+  const workoutStageIndex = workoutSteps.findIndex((step) => step.id === workoutStage);
 
   return (
     <section className="uthynkReasoningLayout">
@@ -847,6 +907,38 @@ function ReasoningExperience({
           </div>
         </div>
 
+        <section className="workoutProgressPanel" aria-label="Reasoning workout progress">
+          <div className="workoutProgressHeader">
+            <span>{workoutSteps[Math.max(0, workoutStageIndex)]?.step}</span>
+            <strong>
+              {workoutStage === "answer"
+                ? "Answer the primary question"
+                : workoutStage === "challenge"
+                  ? "UThynk is building your challenge"
+                  : workoutStage === "reflection"
+                    ? "Write the final reflection"
+                    : "Workout complete"}
+            </strong>
+          </div>
+          <div className="workoutStepRail">
+            {workoutSteps.map((step, index) => (
+              <div
+                className={
+                  index < workoutStageIndex
+                    ? "workoutStep complete"
+                    : index === workoutStageIndex
+                      ? "workoutStep active"
+                      : "workoutStep"
+                }
+                key={step.id}
+              >
+                <span>{index < 3 ? index + 1 : "OK"}</span>
+                <strong>{step.label}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="thinkingLensPanel">
           <div className="panelLabel">{copy.chooseThinkingLens}</div>
           <div className="thinkingLensOptions" role="radiogroup" aria-label={copy.chooseThinkingLens}>
@@ -943,17 +1035,36 @@ function ReasoningExperience({
           ) : null}
         </section>
 
-        <label className="responseLabel" htmlFor="response">
-          {copy.continueWithUthynk}
-        </label>
+        {workoutStage === "reflection" || workoutStage === "complete" ? (
+          <section className="finalReflectionPanel">
+            <div className="panelLabel">Final Reflection</div>
+            <h2>What changed in your thinking?</h2>
+            <p>
+              Use one or two sentences. The goal is not endless debate; it is visible improvement.
+            </p>
+            <textarea
+              className="textarea responseBox conversationInput"
+              value={reflection}
+              disabled={workoutStage === "complete"}
+              onChange={(e) => setReflection(e.target.value)}
+              placeholder="I changed my view because... / The strongest challenge was... / I need better evidence on..."
+            />
+          </section>
+        ) : (
+          <>
+            <label className="responseLabel" htmlFor="response">
+              {copy.continueWithUthynk}
+            </label>
 
-        <textarea
-          id="response"
-          className="textarea responseBox conversationInput"
-          value={response}
-          onChange={(e) => setResponse(e.target.value)}
-          placeholder={copy.placeholder}
-        />
+            <textarea
+              id="response"
+              className="textarea responseBox conversationInput"
+              value={response}
+              onChange={(e) => setResponse(e.target.value)}
+              placeholder={copy.placeholder}
+            />
+          </>
+        )}
 
         {error ? <p className="panelNote">{error}</p> : null}
         {!profile?.id && freePassUsed >= 3 ? (
@@ -969,27 +1080,50 @@ function ReasoningExperience({
           </div>
         ) : null}
 
-        <div className="reasoningActions">
-          <button
-            className="btn btnPrimary"
-            type="button"
-            disabled={loading || !response.trim() || (!profile?.id && freePassUsed >= 3)}
-            onClick={analyzeReasoning}
-          >
-            {loading ? copy.sending : copy.send}
-          </button>
+        {workoutStage === "reflection" ? (
+          <div className="reasoningActions">
+            <button
+              className="btn btnPrimary"
+              type="button"
+              disabled={!reflection.trim()}
+              onClick={completeWorkout}
+            >
+              Complete Workout
+            </button>
+          </div>
+        ) : workoutStage === "complete" ? (
+          <div className="completionActions">
+            <div>
+              <span>Reasoning workout complete</span>
+              <strong>{localizeText(feedback.trait, language) || primaryIdentity}</strong>
+            </div>
+            <button className="btn btnPrimary" type="button" onClick={startNextWorkout}>
+              Start Next Challenge
+            </button>
+          </div>
+        ) : (
+          <div className="reasoningActions">
+            <button
+              className="btn btnPrimary"
+              type="button"
+              disabled={loading || !response.trim() || (!profile?.id && freePassUsed >= 3)}
+              onClick={analyzeReasoning}
+            >
+              {loading ? copy.sending : copy.send}
+            </button>
 
-          <button
-            className="btn"
-            type="button"
-            onMouseDown={startVoiceInput}
-            onMouseUp={stopVoiceInput}
-            onTouchStart={startVoiceInput}
-            onTouchEnd={stopVoiceInput}
-          >
-            {copy.holdToTalk}
-          </button>
-        </div>
+            <button
+              className="btn"
+              type="button"
+              onMouseDown={startVoiceInput}
+              onMouseUp={stopVoiceInput}
+              onTouchStart={startVoiceInput}
+              onTouchEnd={stopVoiceInput}
+            >
+              {copy.holdToTalk}
+            </button>
+          </div>
+        )}
 
         {latestReward ? (
           <section className="growthReward" aria-live="polite">

@@ -1581,6 +1581,89 @@ a{
   background:rgba(246,198,79,0.08);
 }
 
+.workoutProgressPanel{
+  margin-top:14px;
+  padding:14px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.09);
+  background:rgba(255,255,255,0.04);
+}
+
+.workoutProgressHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.workoutProgressHeader span{
+  color:rgba(246,198,79,0.88);
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.workoutProgressHeader strong{
+  color:rgba(255,255,255,0.88);
+  font-size:14px;
+}
+
+.workoutStepRail{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+}
+
+.workoutStep{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:42px;
+  padding:8px 10px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(0,0,0,0.14);
+  color:rgba(255,255,255,0.58);
+}
+
+.workoutStep span{
+  display:grid;
+  place-items:center;
+  width:24px;
+  height:24px;
+  flex:0 0 auto;
+  border-radius:999px;
+  background:rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.72);
+  font-size:11px;
+  font-weight:950;
+}
+
+.workoutStep strong{
+  font-size:12px;
+  font-weight:900;
+}
+
+.workoutStep.active{
+  border-color:rgba(246,198,79,0.34);
+  background:rgba(246,198,79,0.10);
+  color:rgba(255,255,255,0.94);
+}
+
+.workoutStep.active span,
+.workoutStep.complete span{
+  background:#f6c64f;
+  color:#111936;
+}
+
+.workoutStep.complete{
+  border-color:rgba(94,234,212,0.24);
+  background:rgba(94,234,212,0.09);
+  color:rgba(255,255,255,0.82);
+}
+
 .thinkingLensPanel{
   margin-top:16px;
   padding:14px;
@@ -1779,6 +1862,56 @@ a{
   font-weight:800;
 }
 
+.finalReflectionPanel{
+  margin-top:16px;
+  padding:16px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.09);
+  background:rgba(255,255,255,0.04);
+}
+
+.finalReflectionPanel h2{
+  margin:8px 0 6px;
+  color:rgba(255,255,255,0.94);
+  font-size:22px;
+  line-height:1.1;
+}
+
+.finalReflectionPanel p{
+  margin:0 0 12px;
+  color:rgba(255,255,255,0.64);
+  line-height:1.5;
+}
+
+.completionActions{
+  margin-top:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid rgba(94,234,212,0.22);
+  background:rgba(94,234,212,0.09);
+}
+
+.completionActions div{
+  display:grid;
+  gap:4px;
+}
+
+.completionActions span{
+  color:#5eead4;
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.completionActions strong{
+  color:rgba(255,255,255,0.92);
+}
+
 .claimEvaluationInline{
   margin-top:18px;
 }
@@ -1973,6 +2106,16 @@ a{
   .growthReward{
     align-items:flex-start;
     flex-direction:column;
+  }
+
+  .completionActions,
+  .workoutProgressHeader{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .workoutStepRail{
+    grid-template-columns:1fr 1fr;
   }
 
   .timelineRail{
