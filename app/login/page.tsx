@@ -9,6 +9,8 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextPath = useMemo(() => searchParams.get("next") || "/", [searchParams]);
+  const forceLogin = searchParams.get("force") === "1";
+  const shouldLogout = searchParams.get("logout") === "1";
   const [mode, setMode] = useState<"signup" | "login">(
     searchParams.get("mode") === "login" ? "login" : "signup"
   );
@@ -23,6 +25,22 @@ function LoginForm() {
 
   useEffect(() => {
     async function checkSession() {
+      if (shouldLogout) {
+        await fetch("/api/auth/logout", { method: "POST" }).catch(() => null);
+        localStorage.removeItem(STORAGE_KEY);
+        document.cookie = "uthynk-profile=; path=/; max-age=0; SameSite=Lax";
+        document.cookie = "uthynk-free-pass-used=; path=/; max-age=0; SameSite=Lax";
+        setMode("login");
+        return;
+      }
+
+      if (forceLogin) {
+        localStorage.removeItem(STORAGE_KEY);
+        document.cookie = "uthynk-profile=; path=/; max-age=0; SameSite=Lax";
+        setMode("login");
+        return;
+      }
+
       const response = await fetch("/api/auth/me");
       const payload = await response.json().catch(() => ({}));
 
@@ -32,7 +50,7 @@ function LoginForm() {
     }
 
     checkSession();
-  }, [nextPath, router]);
+  }, [forceLogin, nextPath, router, shouldLogout]);
 
   async function handleSubmit() {
     setError("");

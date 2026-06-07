@@ -1472,7 +1472,7 @@ export default function ReasoningPage() {
             <Link href="/lessons">Lessons</Link>
             <Link href="/profile">Profile</Link>
             <Link href="/feedback">Feedback</Link>
-            <Link href="/login">Sign in</Link>
+            <Link href="/login?mode=login&force=1">Sign in</Link>
           </nav>
 
           <button

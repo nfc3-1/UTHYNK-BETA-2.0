@@ -19,14 +19,14 @@ function isProtectedRoute(pathname: string) {
 
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+  const forceLogin = request.nextUrl.searchParams.get('force') === '1';
   const hasSession = Boolean(request.cookies.get('uthynk-session')?.value);
-  const hasProfile = Boolean(request.cookies.get('uthynk-profile')?.value);
 
-  if (pathname === '/login' && (hasSession || hasProfile)) {
+  if (pathname === '/login' && hasSession && !forceLogin) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  if (!isProtectedRoute(pathname) || hasSession || hasProfile) {
+  if (!isProtectedRoute(pathname) || hasSession) {
     return NextResponse.next();
   }
 

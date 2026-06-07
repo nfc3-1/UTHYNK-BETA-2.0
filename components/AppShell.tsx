@@ -32,7 +32,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
           <Link href="/profile">Profile</Link>
           <Link href="/feedback">Feedback</Link>
           <Link href="/store">Store</Link>
-          <Link href="/login">Log Out</Link>
+          <Link href="/login?mode=login&logout=1&force=1">Log Out</Link>
         </aside>
 
         <main className="card ppMain">
