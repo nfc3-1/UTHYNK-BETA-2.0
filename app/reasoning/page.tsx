@@ -202,6 +202,36 @@ function getProgressionState(xp: number) {
   return { percent, value: `${xp} XP` };
 }
 
+function getTraitExplanation(trait: string) {
+  const normalized = trait.toLowerCase();
+
+  if (normalized.includes("adaptive")) {
+    return "You adapt your reasoning when new evidence appears.";
+  }
+
+  if (normalized.includes("tactical") || normalized.includes("strategic")) {
+    return "You look for the move that protects future options.";
+  }
+
+  if (normalized.includes("evidence") || normalized.includes("verification")) {
+    return "You strengthen claims by looking for proof.";
+  }
+
+  if (normalized.includes("ethical") || normalized.includes("moral")) {
+    return "You test decisions against fairness and values.";
+  }
+
+  if (normalized.includes("historical") || normalized.includes("pattern")) {
+    return "You use past patterns to judge present choices.";
+  }
+
+  if (normalized.includes("analytical")) {
+    return "You slow down and separate claims from assumptions.";
+  }
+
+  return "This is the thinking habit UThynk is helping you strengthen.";
+}
+
 function ReasoningExperience({
   language,
 }: {
@@ -795,6 +825,7 @@ function ReasoningExperience({
     },
   ];
   const primaryIdentity = localizeText(profile?.primary_trait, language) || visibleFeedback.trait;
+  const traitExplanation = getTraitExplanation(primaryIdentity);
   const secondaryMode = visibleFeedback.strengths[0] || "Strategic restraint";
   const growthEdge = visibleFeedback.weaknesses[0] || "Evidence strength";
   const biasWatch =
@@ -825,6 +856,12 @@ function ReasoningExperience({
   ] as const;
   const displayedWorkoutStage = workoutStage === "challenge" ? "followUp" : workoutStage;
   const workoutStageIndex = workoutSteps.findIndex((step) => step.id === displayedWorkoutStage);
+  const nextWorkoutStep =
+    workoutSteps[Math.min(workoutSteps.length - 1, Math.max(0, workoutStageIndex + 1))];
+  const hasCompletedWorkout = workoutStage === "complete";
+  const hasStartedFeedback = Boolean(evaluatedClaim);
+  const expectedReward = latestReward?.xp || 20;
+  const todaysInsight = cognitionFeedByLanguage[language][0];
 
   return (
     <section className="uthynkReasoningLayout">
@@ -846,6 +883,7 @@ function ReasoningExperience({
             <span>{copy.trait}</span>
             <strong>{primaryIdentity}</strong>
           </div>
+          <p className="traitExplanation">{traitExplanation}</p>
           <div className="progressBar" aria-label={copy.identityProgression}>
             <div
               className="progressFill uthynkProgressFill"
@@ -854,7 +892,15 @@ function ReasoningExperience({
           </div>
         </section>
 
-        <section className="leftRailSection profileSignalCard">
+        <section className="leftRailSection whyUthynkCard">
+          <div className="panelLabel">Why use UThynk?</div>
+          <p>Improve decisions, spot weak arguments, and track how your thinking evolves.</p>
+          <p><strong>Adaptive thinking:</strong> you adjust your reasoning when new evidence appears.</p>
+        </section>
+
+        <details className="leftRailDetails" open={hasCompletedWorkout}>
+          <summary>{copy.thinkingProfile}</summary>
+          <section className="leftRailSection profileSignalCard">
           <div className="panelLabel">{copy.thinkingProfile}</div>
           <div className="profileRows">
             <div><span>{copy.primaryMode}</span><strong>{primaryIdentity}</strong></div>
@@ -862,9 +908,12 @@ function ReasoningExperience({
             <div><span>{copy.growthEdge}</span><strong>{localizeText(growthEdge, language)}</strong></div>
             <div><span>{copy.biasWatch}</span><strong>{localizeText(biasWatch, language)}</strong></div>
           </div>
-        </section>
+          </section>
+        </details>
 
-        <section className="leftRailSection sessionSignalCard">
+        <details className="leftRailDetails" open={hasCompletedWorkout}>
+          <summary>{copy.currentSession}</summary>
+          <section className="leftRailSection sessionSignalCard">
           <div className="panelLabel">{copy.currentSession}</div>
           <div className="profileRows">
             <div><span>{copy.lens}</span><strong>{copy[activeLens]}</strong></div>
@@ -872,9 +921,12 @@ function ReasoningExperience({
             <div><span>{copy.intensity}</span><strong>{visiblePressure}</strong></div>
             <div><span>{copy.questionType}</span><strong>{questionType}</strong></div>
           </div>
-        </section>
+          </section>
+        </details>
 
-        <section className="leftRailSection leftSignalPanel">
+        <details className="leftRailDetails" open={hasCompletedWorkout}>
+          <summary>{copy.liveSignals}</summary>
+          <section className="leftRailSection leftSignalPanel">
           <div className="leftSignalHeader">
             <div className="panelLabel">{copy.liveSignals}</div>
             <div className="leftSignalTabs" role="tablist" aria-label="Live reasoning signals">
@@ -927,7 +979,8 @@ function ReasoningExperience({
               </div>
             </div>
           ) : null}
-        </section>
+          </section>
+        </details>
       </aside>
 
       <main className="uthynkConversationPanel">
@@ -947,18 +1000,28 @@ function ReasoningExperience({
 
         <section className="workoutProgressPanel" aria-label="Reasoning workout progress">
           <div className="workoutProgressHeader">
-            <span>{workoutSteps[Math.max(0, workoutStageIndex)]?.step}</span>
-            <strong>
-              {workoutStage === "answer"
-                ? "Answer the primary question"
-                : workoutStage === "challenge"
-                  ? "UThynk is preparing your follow-up"
-                  : workoutStage === "followUp"
-                    ? "Answer the follow-up question"
-                  : workoutStage === "reflection"
-                    ? "Write the final reflection"
-                    : "Workout complete"}
-            </strong>
+            <div>
+              <span>Reasoning Challenge Progress</span>
+              <strong>
+                {workoutStage === "answer"
+                  ? "Current stage: Answer"
+                  : workoutStage === "challenge"
+                    ? "Current stage: Preparing follow-up"
+                    : workoutStage === "followUp"
+                      ? "Current stage: Follow-up"
+                    : workoutStage === "reflection"
+                      ? "Current stage: Reflection"
+                      : "Current stage: Complete"}
+              </strong>
+              <small>
+                {hasCompletedWorkout ? "Next stage: start a new challenge" : `Next stage: ${nextWorkoutStep.label}`}
+              </small>
+            </div>
+            <div className="progressRewardBadge">
+              <span>Reward</span>
+              <strong>+{expectedReward} XP</strong>
+              <small>{latestReward ? "Trait improved" : "Trait growth available"}</small>
+            </div>
           </div>
           <div className="workoutStepRail">
             {workoutSteps.map((step, index) => (
@@ -979,93 +1042,97 @@ function ReasoningExperience({
           </div>
         </section>
 
-        <section className="thinkingLensPanel">
-          <div className="panelLabel">{copy.chooseThinkingLens}</div>
-          <div className="thinkingLensOptions" role="radiogroup" aria-label={copy.chooseThinkingLens}>
-            {thinkingLenses.map((lens) => (
-              <button
-                key={lens.id}
-                type="button"
-                role="radio"
-                aria-checked={thinkingLens === lens.id}
-                className={thinkingLens === lens.id ? "active" : ""}
-                onClick={() => setThinkingLens(lens.id)}
-              >
-                {copy[lens.labelKey]}
-              </button>
-            ))}
-          </div>
-          <p className="thinkingLensDescription">{activeLensDescription}</p>
-        </section>
+        <details className="advancedThinkingDetails" open={hasStartedFeedback}>
+          <summary>Advanced Thinking Tools</summary>
 
-        <section className="thinkingToolsPanel">
-          <div className="thinkingToolsHeader">
-            <div className="panelLabel">{toolsCopy.section}</div>
-            <div className="thinkingToolTabs" role="tablist" aria-label={toolsCopy.section}>
-              {[
-                { id: "followUp", label: toolsCopy.followUp },
-                { id: "lab", label: toolsCopy.lab },
-                { id: "timeline", label: toolsCopy.timeline },
-              ].map((tab) => (
+          <section className="thinkingLensPanel">
+            <div className="panelLabel">{copy.chooseThinkingLens}</div>
+            <div className="thinkingLensOptions" role="radiogroup" aria-label={copy.chooseThinkingLens}>
+              {thinkingLenses.map((lens) => (
                 <button
-                  key={tab.id}
+                  key={lens.id}
                   type="button"
-                  role="tab"
-                  aria-selected={thinkingToolTab === tab.id}
-                  className={thinkingToolTab === tab.id ? "active" : ""}
-                  onClick={() =>
-                    setThinkingToolTab(tab.id as "followUp" | "lab" | "timeline")
-                  }
+                  role="radio"
+                  aria-checked={thinkingLens === lens.id}
+                  className={thinkingLens === lens.id ? "active" : ""}
+                  onClick={() => setThinkingLens(lens.id)}
                 >
-                  {tab.label}
+                  {copy[lens.labelKey]}
                 </button>
               ))}
             </div>
-          </div>
+            <p className="thinkingLensDescription">{activeLensDescription}</p>
+          </section>
 
-          {thinkingToolTab === "followUp" ? (
-            <article className="thinkingToolPane">
-              <span>{copy.recursiveFollowUp}</span>
-              <p>{visibleFeedback.followUp}</p>
-            </article>
-          ) : null}
+          <section className="thinkingToolsPanel">
+            <div className="thinkingToolsHeader">
+              <div className="panelLabel">{toolsCopy.section}</div>
+              <div className="thinkingToolTabs" role="tablist" aria-label={toolsCopy.section}>
+                {[
+                  { id: "followUp", label: toolsCopy.followUp },
+                  { id: "lab", label: toolsCopy.lab },
+                  { id: "timeline", label: toolsCopy.timeline },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={thinkingToolTab === tab.id}
+                    className={thinkingToolTab === tab.id ? "active" : ""}
+                    onClick={() =>
+                      setThinkingToolTab(tab.id as "followUp" | "lab" | "timeline")
+                    }
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-          {thinkingToolTab === "lab" ? (
-            <div className="reasoningSteps compactReasoningSteps">
-              <article>
-                <span>Step 1</span>
-                <strong>{toolsCopy.position}</strong>
-                <p>{evaluatedClaim || response || copy.stateClaim}</p>
-              </article>
-              <article>
-                <span>Step 2</span>
-                <strong>{toolsCopy.support}</strong>
-                <p>{visibleFeedback.strengths.join(", ") || copy.evidenceEmpty}</p>
-              </article>
-              <article>
-                <span>Step 3</span>
-                <strong>{toolsCopy.followUp}</strong>
+            {thinkingToolTab === "followUp" ? (
+              <article className="thinkingToolPane">
+                <span>{copy.recursiveFollowUp}</span>
                 <p>{visibleFeedback.followUp}</p>
               </article>
-              <article>
-                <span>Step 4</span>
-                <strong>{toolsCopy.assumptions}</strong>
-                <p>{visibleFeedback.weaknesses.join(", ") || visibleFeedback.analysis}</p>
-              </article>
-            </div>
-          ) : null}
+            ) : null}
 
-          {thinkingToolTab === "timeline" ? (
-            <div className="timelineRail thinkingTimelineRail">
-              {timeline.map((item) => (
-                <article key={item.title}>
-                  <strong>{item.title}</strong>
-                  <p>{item.text}</p>
+            {thinkingToolTab === "lab" ? (
+              <div className="reasoningSteps compactReasoningSteps">
+                <article>
+                  <span>Step 1</span>
+                  <strong>{toolsCopy.position}</strong>
+                  <p>{evaluatedClaim || response || copy.stateClaim}</p>
                 </article>
-              ))}
-            </div>
-          ) : null}
-        </section>
+                <article>
+                  <span>Step 2</span>
+                  <strong>{toolsCopy.support}</strong>
+                  <p>{visibleFeedback.strengths.join(", ") || copy.evidenceEmpty}</p>
+                </article>
+                <article>
+                  <span>Step 3</span>
+                  <strong>{toolsCopy.followUp}</strong>
+                  <p>{visibleFeedback.followUp}</p>
+                </article>
+                <article>
+                  <span>Step 4</span>
+                  <strong>{toolsCopy.assumptions}</strong>
+                  <p>{visibleFeedback.weaknesses.join(", ") || visibleFeedback.analysis}</p>
+                </article>
+              </div>
+            ) : null}
+
+            {thinkingToolTab === "timeline" ? (
+              <div className="timelineRail thinkingTimelineRail">
+                {timeline.map((item) => (
+                  <article key={item.title}>
+                    <strong>{item.title}</strong>
+                    <p>{item.text}</p>
+                  </article>
+                ))}
+              </div>
+            ) : null}
+          </section>
+        </details>
 
         {workoutStage === "followUp" ? (
           <section className="finalReflectionPanel followUpResponsePanel">
@@ -1264,25 +1331,36 @@ function ReasoningExperience({
       </main>
 
       <aside className="uthynkSidePanel uthynkRightPanel">
-        <div className="rightRailTabs" role="tablist" aria-label="UThynk side panel">
-          {[
-            { id: "categories", label: copy.categoryTab },
-            { id: "insights", label: copy.insightsTab },
-            { id: "analysis", label: copy.analysisTab },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              className={rightTab === tab.id ? "active" : ""}
-              aria-selected={rightTab === tab.id}
-              onClick={() => setRightTab(tab.id as "categories" | "insights" | "analysis")}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        {!hasCompletedWorkout ? (
+          <section className="todaysInsightCard">
+            <div className="panelLabel">Today's Insight</div>
+            <strong>{todaysInsight.title}</strong>
+            <p>{todaysInsight.text}</p>
+            <small>More insights unlock after you complete the workout.</small>
+          </section>
+        ) : null}
 
-        {rightTab === "categories" ? (
+        {hasCompletedWorkout ? (
+          <div className="rightRailTabs" role="tablist" aria-label="UThynk side panel">
+            {[
+              { id: "categories", label: copy.categoryTab },
+              { id: "insights", label: copy.insightsTab },
+              { id: "analysis", label: copy.analysisTab },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                className={rightTab === tab.id ? "active" : ""}
+                aria-selected={rightTab === tab.id}
+                onClick={() => setRightTab(tab.id as "categories" | "insights" | "analysis")}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        ) : null}
+
+        {hasCompletedWorkout && rightTab === "categories" ? (
           <section>
             <div className="panelLabel">{copy.categories}</div>
             <p className="categoryHelper">
@@ -1311,7 +1389,7 @@ function ReasoningExperience({
           </section>
         ) : null}
 
-        {rightTab === "insights" ? (
+        {hasCompletedWorkout && rightTab === "insights" ? (
           <section>
             <div className="panelLabel">{copy.didYouKnow}</div>
             <div className="cognitionFeed">
@@ -1325,7 +1403,7 @@ function ReasoningExperience({
           </section>
         ) : null}
 
-        {rightTab === "analysis" ? (
+        {hasCompletedWorkout && rightTab === "analysis" ? (
           <section>
             <div className="panelLabel">{copy.claimEvaluation}</div>
             <div className="logicGrid sideAnalysisGrid">
