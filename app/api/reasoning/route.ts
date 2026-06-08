@@ -810,7 +810,7 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ReasoningRequest;
     const sessionUser = await getServerSessionUser();
-    const userId = body.userId || sessionUser?.id;
+    const userId = sessionUser?.id;
     const sessionId = body.sessionId || crypto.randomUUID();
     const conversationId = body.conversationId || body.challengeId || sessionId;
     const challenge = body.challenge?.trim() || "Daily reasoning challenge";

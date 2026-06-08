@@ -1,8 +1,10 @@
 import { cookies } from 'next/headers';
+import { parseSessionCookieValue } from '@/lib/authCookies';
 import { hasSupabaseAdminEnv, supabaseAdmin } from '@/lib/supabaseAdmin';
 
 export type SessionUser = {
   id: string;
+  auth_user_id?: string | null;
   email?: string;
   username?: string;
 };
@@ -12,11 +14,7 @@ export async function getServerSessionUser(): Promise<SessionUser | null> {
   const sessionCookie = cookieStore.get('uthynk-session')?.value;
 
   if (sessionCookie) {
-    try {
-      return JSON.parse(sessionCookie) as SessionUser;
-    } catch {
-      return null;
-    }
+    return parseSessionCookieValue(sessionCookie) as SessionUser | null;
   }
 
   return null;

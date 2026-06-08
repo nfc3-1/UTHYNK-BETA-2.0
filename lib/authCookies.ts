@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createHmac, timingSafeEqual } from "crypto";
 
 const SESSION_COOKIE = "uthynk-session";
 const PROFILE_COOKIE = "uthynk-profile";
@@ -36,6 +37,82 @@ export function publicProfile(profile: UthynkCookieProfile) {
   };
 }
 
+function getCookieSecret() {
+  return (
+    process.env.AUTH_COOKIE_SECRET ||
+    process.env.COOKIE_SIGNING_SECRET ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    (process.env.NODE_ENV === "production" ? "" : "uthynk-local-dev-cookie-secret")
+  );
+}
+
+function base64UrlEncode(value: string) {
+  return Buffer.from(value, "utf8").toString("base64url");
+}
+
+function base64UrlDecode(value: string) {
+  return Buffer.from(value, "base64url").toString("utf8");
+}
+
+function signPayload(payload: string, secret: string) {
+  return createHmac("sha256", secret).update(payload).digest("base64url");
+}
+
+export function createSessionCookieValue(sessionUser: Pick<UthynkCookieProfile, "id" | "auth_user_id" | "email" | "username">) {
+  const payload = base64UrlEncode(JSON.stringify(sessionUser));
+  const secret = getCookieSecret();
+
+  if (!secret) {
+    return payload;
+  }
+
+  return `${payload}.${signPayload(payload, secret)}`;
+}
+
+export function parseSessionCookieValue(value?: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  const [payload, signature] = value.split(".");
+  const secret = getCookieSecret();
+
+  if (secret && payload && signature) {
+    const expected = signPayload(payload, secret);
+    const expectedBuffer = Buffer.from(expected);
+    const receivedBuffer = Buffer.from(signature);
+
+    if (
+      expectedBuffer.length !== receivedBuffer.length ||
+      !timingSafeEqual(expectedBuffer, receivedBuffer)
+    ) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(base64UrlDecode(payload)) as Pick<
+        UthynkCookieProfile,
+        "id" | "auth_user_id" | "email" | "username"
+      >;
+    } catch {
+      return null;
+    }
+  }
+
+  if (!secret && process.env.NODE_ENV !== "production") {
+    try {
+      return JSON.parse(base64UrlDecode(payload || value)) as Pick<
+        UthynkCookieProfile,
+        "id" | "auth_user_id" | "email" | "username"
+      >;
+    } catch {
+      return null;
+    }
+  }
+
+  return null;
+}
+
 export function setAuthCookies(response: NextResponse, profile: UthynkCookieProfile) {
   const safeProfile = publicProfile(profile);
 
@@ -47,7 +124,7 @@ export function setAuthCookies(response: NextResponse, profile: UthynkCookieProf
 
   response.cookies.set(
     SESSION_COOKIE,
-    JSON.stringify({
+    createSessionCookieValue({
       id: safeProfile.id,
       auth_user_id: safeProfile.auth_user_id,
       email: safeProfile.email,

@@ -17,10 +17,18 @@ function isProtectedRoute(pathname: string) {
   return protectedRoutes.some((route) => pathname.startsWith(route));
 }
 
+function hasUsableSessionCookie(request: NextRequest) {
+  const value = request.cookies.get('uthynk-session')?.value;
+
+  return Boolean(
+    value && /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]{32,}$/.test(value)
+  );
+}
+
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const forceLogin = request.nextUrl.searchParams.get('force') === '1';
-  const hasSession = Boolean(request.cookies.get('uthynk-session')?.value);
+  const hasSession = hasUsableSessionCookie(request);
 
   if (pathname === '/login' && hasSession && !forceLogin) {
     return NextResponse.redirect(new URL('/', request.url));

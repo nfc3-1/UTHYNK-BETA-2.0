@@ -232,6 +232,18 @@ create table if not exists public.feedback_submissions (
 alter table public.feedback_submissions
 enable row level security;
 
+alter table public.user_profiles enable row level security;
+alter table public.users enable row level security;
+alter table public.sessions enable row level security;
+alter table public.claims enable row level security;
+alter table public.user_traits enable row level security;
+alter table public.reasoning_sessions enable row level security;
+alter table public.cognitive_traits enable row level security;
+alter table public.reasoning_profiles enable row level security;
+alter table public.reasoning_followups enable row level security;
+alter table public.reasoning_verifier_scores enable row level security;
+alter table public.daily_progress enable row level security;
+
 create index if not exists reasoning_sessions_user_idx
 on public.reasoning_sessions(user_id);
 

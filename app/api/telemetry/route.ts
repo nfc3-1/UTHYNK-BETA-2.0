@@ -1,12 +1,6 @@
 import { NextResponse } from 'next/server';
+import { getServerSessionUser } from '@/lib/auth';
 import { hasSupabaseAdminEnv, supabaseAdmin } from '@/lib/supabaseAdmin';
-
-function isUuid(value: unknown) {
-  return (
-    typeof value === 'string' &&
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value)
-  );
-}
 
 function getString(value: unknown) {
   return typeof value === 'string' ? value.trim() : '';
@@ -15,19 +9,23 @@ function getString(value: unknown) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    const sessionUser = await getServerSessionUser();
     const receivedAt = new Date().toISOString();
     const metadata = body?.metadata && typeof body.metadata === 'object' ? body.metadata : {};
 
-    console.log('[Telemetry Event]', {
-      receivedAt,
-      ...body,
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[Telemetry Event]', {
+        receivedAt,
+        type: body?.type,
+        path: getString(metadata.path),
+      });
+    }
 
     if (body?.type !== 'provided_feedback') {
       return NextResponse.json({ success: true, persisted: false });
     }
 
-    const message = getString(metadata.message);
+    const message = getString(metadata.message).slice(0, 4000);
 
     if (!message) {
       return NextResponse.json(
@@ -42,7 +40,7 @@ export async function POST(request: Request) {
     }
 
     const { error } = await supabaseAdmin.from('feedback_submissions').insert({
-      profile_id: isUuid(body.userId) ? body.userId : null,
+      profile_id: sessionUser?.id || null,
       event_type: body.type,
       context: getString(metadata.context) || null,
       message,
