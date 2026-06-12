@@ -297,3 +297,12 @@ on public.feedback_submissions(created_at desc);
 create index if not exists feedback_submissions_profile_created_idx
 on public.feedback_submissions(profile_id, created_at desc)
 where profile_id is not null;
+
+create unique index if not exists feedback_submissions_one_soft_launch_survey_idx
+on public.feedback_submissions(profile_id)
+where profile_id is not null
+and event_type in (
+  'soft_launch_survey_prompted',
+  'soft_launch_survey_dismissed',
+  'soft_launch_survey_completed'
+);

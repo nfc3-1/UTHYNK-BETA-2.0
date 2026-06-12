@@ -276,7 +276,7 @@ function sanitizeFeedback(
     },
     contrarian: ensureString(
       parsed?.contrarian,
-      "What would make your current interpretation fail under pressure?"
+      "Have you considered that the strongest opposing view may explain the same facts with fewer assumptions?"
     ),
     followUp: ensureString(
       parsed?.followUp,
@@ -336,6 +336,10 @@ function buildAdaptiveSystemPrompt({
     `Persistent memory: ${JSON.stringify(memory || null)}.`,
     `Verifier engine result: ${JSON.stringify(verifier)}.`,
     `Do not repeat these follow-ups: ${JSON.stringify(recentFollowUps)}.`,
+    "Product success test: the user should regularly think, 'I had not considered that.' Your main job is to introduce one meaningful new perspective, not to merely ask them to elaborate.",
+    "The contrarian field must be a concrete perspective the user may have missed. Start from their actual response and introduce an alternate explanation, hidden tradeoff, strongest opposing case, incentive, evidence problem, or second-order effect.",
+    "The analysis field should use common language: name what is promising, then name the missing perspective in plain terms. Avoid academic phrasing.",
+    "The followUp field must be one practical question tied to that new perspective. Do not use generic prompts like 'explain further', 'give another example', or 'clarify your reasoning'.",
     "Score by blending your judgment with the verifier result. Penalize generic, unsupported, or evasive reasoning.",
     "Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.",
   ].join(" ");

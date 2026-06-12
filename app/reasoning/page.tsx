@@ -275,6 +275,11 @@ function ReasoningExperience({
   const [workoutStage, setWorkoutStage] = useState<"answer" | "challenge" | "followUp" | "reflection" | "complete">("answer");
   const [followUpResponse, setFollowUpResponse] = useState("");
   const [reflection, setReflection] = useState("");
+  const [confidenceBefore, setConfidenceBefore] = useState(7);
+  const [confidenceAfter, setConfidenceAfter] = useState(7);
+  const [perspectiveImpact, setPerspectiveImpact] = useState("");
+  const [standoutPerspective, setStandoutPerspective] = useState("");
+  const [showSoftLaunchSurvey, setShowSoftLaunchSurvey] = useState(false);
   const [latestReward, setLatestReward] = useState<any>(null);
   const [feedback, setFeedback] = useState({
     ...initialFeedback,
@@ -474,6 +479,10 @@ function ReasoningExperience({
     setResponse("");
     setFollowUpResponse("");
     setReflection("");
+    setConfidenceAfter(confidenceBefore);
+    setPerspectiveImpact("");
+    setStandoutPerspective("");
+    setShowSoftLaunchSurvey(false);
     setEvaluatedClaim("");
     setLatestReward(null);
     setWorkoutStage("answer");
@@ -518,6 +527,10 @@ function ReasoningExperience({
     setResponse("");
     setFollowUpResponse("");
     setReflection("");
+    setConfidenceAfter(confidenceBefore);
+    setPerspectiveImpact("");
+    setStandoutPerspective("");
+    setShowSoftLaunchSurvey(false);
     setEvaluatedClaim("");
     setLatestReward(null);
     setWorkoutStage("answer");
@@ -546,13 +559,55 @@ function ReasoningExperience({
   }
 
   function completeWorkout() {
+    if (!perspectiveImpact) return;
+
+    const confidenceChange = confidenceAfter - confidenceBefore;
+    const completedCount =
+      typeof window === "undefined"
+        ? 0
+        : Number(localStorage.getItem("uthynk-completed-workouts") || "0") + 1;
+
     setWorkoutStage("complete");
+
+    if (typeof window !== "undefined") {
+      const surveyDismissed = localStorage.getItem("uthynk-soft-launch-survey-dismissed") === "true";
+
+      localStorage.setItem("uthynk-completed-workouts", String(completedCount));
+      if (completedCount >= 3 && !surveyDismissed) {
+        fetch("/api/survey")
+          .then((response) => response.json())
+          .then((payload) => {
+            if (!payload.eligible) return;
+
+            setShowSoftLaunchSurvey(true);
+            localStorage.setItem("uthynk-soft-launch-survey-dismissed", "true");
+            fetch("/api/survey", {
+              body: JSON.stringify({
+                action: "prompted",
+                createdAt: new Date().toISOString(),
+              }),
+              headers: { "Content-Type": "application/json" },
+              method: "POST",
+            }).catch(() => null);
+          })
+          .catch(() => {
+            setShowSoftLaunchSurvey(true);
+            localStorage.setItem("uthynk-soft-launch-survey-dismissed", "true");
+          });
+      }
+    }
+
     trackEvent(
       createTelemetryEvent("completed_workout_reflection", profile?.id, {
         category: challenge.category,
         challengeId: challenge.id,
+        confidenceAfter,
+        confidenceBefore,
+        confidenceChange,
+        perspectiveImpact,
         reflectionLength: reflection.length,
         score: feedback.score,
+        standoutPerspectiveLength: standoutPerspective.length,
       })
     );
   }
@@ -607,6 +662,7 @@ function ReasoningExperience({
         createTelemetryEvent("submitted_answer", activeProfile?.id, {
           category: challenge.category,
           challengeId: challenge.id,
+          confidenceBefore,
           language,
           responseLength: response.length,
           thinkingLens,
@@ -763,7 +819,7 @@ function ReasoningExperience({
         )}; path=/; max-age=2592000; SameSite=Lax`;
       }
 
-      const uthynkMessage = `${data.analysis}\n\nFollow-up question: ${data.followUp}`;
+      const uthynkMessage = `${data.analysis}\n\nPerspective you may not have considered: ${data.contrarian}\n\nFollow-up question: ${data.followUp}`;
 
       setConversation((prev) => [
         ...prev,
@@ -854,6 +910,8 @@ function ReasoningExperience({
     { id: "reflection", step: "Step 3 of 3", label: "Reflection" },
     { id: "complete", step: "Complete", label: "Complete" },
   ] as const;
+  const confidenceScale = Array.from({ length: 10 }, (_, index) => index + 1);
+  const perspectiveOptions = ["Yes, definitely", "Maybe", "Not really", "No"];
   const displayedWorkoutStage = workoutStage === "challenge" ? "followUp" : workoutStage;
   const workoutStageIndex = workoutSteps.findIndex((step) => step.id === displayedWorkoutStage);
   const nextWorkoutStep =
@@ -1091,6 +1149,8 @@ function ReasoningExperience({
 
             {thinkingToolTab === "followUp" ? (
               <article className="thinkingToolPane">
+                <span>Perspective you may not have considered</span>
+                <p>{visibleFeedback.contrarian}</p>
                 <span>{copy.recursiveFollowUp}</span>
                 <p>{visibleFeedback.followUp}</p>
               </article>
@@ -1137,6 +1197,10 @@ function ReasoningExperience({
         {workoutStage === "followUp" ? (
           <section className="finalReflectionPanel followUpResponsePanel">
             <div className="panelLabel">Follow-up Question</div>
+            <article className="perspectiveNudge">
+              <span>Perspective you may not have considered</span>
+              <p>{visibleFeedback.contrarian}</p>
+            </article>
             <h2>{visibleFeedback.followUp}</h2>
             <p>
               Answer this before reflection. This is where UThynk checks whether your reasoning improved.
@@ -1151,20 +1215,87 @@ function ReasoningExperience({
         ) : workoutStage === "reflection" || workoutStage === "complete" ? (
           <section className="finalReflectionPanel">
             <div className="panelLabel">Final Reflection</div>
-            <h2>What changed in your thinking?</h2>
+            <h2>Did this conversation help you see a perspective you hadn't considered?</h2>
             <p>
-              Use one or two sentences. The goal is not endless debate; it is visible improvement.
+              UThynk is measuring whether the conversation changed how you see the problem, not whether you agreed.
             </p>
+            <div className="perspectiveChoiceGrid" role="radiogroup" aria-label="Perspective impact">
+              {perspectiveOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  role="radio"
+                  aria-checked={perspectiveImpact === option}
+                  className={perspectiveImpact === option ? "active" : ""}
+                  disabled={workoutStage === "complete"}
+                  onClick={() => setPerspectiveImpact(option)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+            <label className="responseLabel compactResponseLabel" htmlFor="standout-perspective">
+              What perspective stood out most? <span>(optional)</span>
+            </label>
             <textarea
+              id="standout-perspective"
               className="textarea responseBox conversationInput"
-              value={reflection}
+              value={standoutPerspective}
               disabled={workoutStage === "complete"}
-              onChange={(e) => setReflection(e.target.value)}
-              placeholder="I changed my view because... / The strongest challenge was... / I need better evidence on..."
+              onChange={(e) => {
+                setStandoutPerspective(e.target.value);
+                setReflection(e.target.value);
+              }}
+              placeholder="The perspective I hadn't considered was..."
             />
+            <section className="confidenceCheckPanel compactConfidencePanel" aria-label="Confidence after conversation">
+              <div>
+                <span>Confidence Now</span>
+                <strong>How confident are you now?</strong>
+              </div>
+              <div className="confidenceScale" role="radiogroup" aria-label="Confidence after conversation">
+                {confidenceScale.map((value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    role="radio"
+                    aria-checked={confidenceAfter === value}
+                    className={confidenceAfter === value ? "active" : ""}
+                    disabled={workoutStage === "complete"}
+                    onClick={() => setConfidenceAfter(value)}
+                  >
+                    {value}
+                  </button>
+                ))}
+              </div>
+            </section>
           </section>
         ) : (
           <>
+            <section className="confidenceCheckPanel" aria-label="Confidence before conversation">
+              <div>
+                <span>Confidence Check</span>
+                <strong>How confident are you in your position?</strong>
+              </div>
+              <div className="confidenceScale" role="radiogroup" aria-label="Confidence before conversation">
+                {confidenceScale.map((value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    role="radio"
+                    aria-checked={confidenceBefore === value}
+                    className={confidenceBefore === value ? "active" : ""}
+                    onClick={() => {
+                      setConfidenceBefore(value);
+                      setConfidenceAfter(value);
+                    }}
+                  >
+                    {value}
+                  </button>
+                ))}
+              </div>
+            </section>
+
             <label className="responseLabel" htmlFor="response">
               {copy.continueWithUthynk}
             </label>
@@ -1220,7 +1351,7 @@ function ReasoningExperience({
             <button
               className="btn btnPrimary"
               type="button"
-              disabled={!reflection.trim()}
+              disabled={!perspectiveImpact}
               onClick={completeWorkout}
             >
               Complete Workout
@@ -1237,15 +1368,53 @@ function ReasoningExperience({
             </button>
           </div>
         ) : workoutStage === "complete" ? (
-          <div className="completionActions">
-            <div>
-              <span>Reasoning workout complete</span>
-              <strong>{localizeText(feedback.trait, language) || primaryIdentity}</strong>
+          <>
+            <div className="completionActions">
+              <div>
+                <span>Reasoning workout complete</span>
+                <strong>{localizeText(feedback.trait, language) || primaryIdentity}</strong>
+              </div>
+              <button className="btn btnPrimary" type="button" onClick={startNextWorkout}>
+                Start Next Challenge
+              </button>
             </div>
-            <button className="btn btnPrimary" type="button" onClick={startNextWorkout}>
-              Start Next Challenge
-            </button>
-          </div>
+
+            {showSoftLaunchSurvey ? (
+              <section className="softLaunchSurveyPanel">
+                <div>
+                  <span>Soft Launch Survey</span>
+                  <strong>Help shape UThynk beta</strong>
+                  <p>
+                    After a few conversations, tell us what was valuable, confusing,
+                    and whether UThynk showed you a perspective you had not considered.
+                  </p>
+                </div>
+                <div className="surveyActionRow">
+                  <Link className="btn btnPrimary" href="/feedback">
+                    Give Feedback
+                  </Link>
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={() => {
+                      localStorage.setItem("uthynk-soft-launch-survey-dismissed", "true");
+                      setShowSoftLaunchSurvey(false);
+                      fetch("/api/survey", {
+                        body: JSON.stringify({
+                          action: "dismissed",
+                          createdAt: new Date().toISOString(),
+                        }),
+                        headers: { "Content-Type": "application/json" },
+                        method: "POST",
+                      }).catch(() => null);
+                    }}
+                  >
+                    Later
+                  </button>
+                </div>
+              </section>
+            ) : null}
+          </>
         ) : (
           <div className="reasoningActions">
             <button

@@ -669,6 +669,32 @@ a{
   flex-wrap:wrap;
 }
 
+.googleAuthButton{
+  width:100%;
+  justify-content:center;
+  border-color:rgba(255,255,255,0.16);
+  background:rgba(255,255,255,0.08);
+}
+
+.authDivider{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:rgba(255,255,255,0.48);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.authDivider::before,
+.authDivider::after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:rgba(255,255,255,0.10);
+}
+
 .coachBlock{
   margin-top:18px;
   padding:18px;
@@ -2091,6 +2117,135 @@ a{
   margin:0 0 12px;
   color:rgba(255,255,255,0.64);
   line-height:1.5;
+}
+
+.perspectiveNudge{
+  margin:10px 0 12px;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid rgba(246,198,79,0.24);
+  background:rgba(246,198,79,0.08);
+}
+
+.perspectiveNudge span{
+  display:block;
+  margin-bottom:6px;
+  color:#f6c64f;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.perspectiveNudge p{
+  margin:0;
+  color:rgba(255,255,255,0.78);
+}
+
+.confidenceCheckPanel{
+  margin-top:16px;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid rgba(94,234,212,0.18);
+  background:rgba(94,234,212,0.07);
+}
+
+.confidenceCheckPanel div:first-child{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+.confidenceCheckPanel span,
+.softLaunchSurveyPanel span{
+  color:#5eead4;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.confidenceCheckPanel strong,
+.softLaunchSurveyPanel strong{
+  color:rgba(255,255,255,0.92);
+}
+
+.confidenceScale,
+.perspectiveChoiceGrid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.confidenceScale button,
+.perspectiveChoiceGrid button{
+  min-height:38px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.06);
+  color:rgba(255,255,255,0.78);
+  font-weight:900;
+  cursor:pointer;
+}
+
+.confidenceScale button{
+  width:38px;
+}
+
+.perspectiveChoiceGrid button{
+  padding:0 14px;
+}
+
+.confidenceScale button.active,
+.perspectiveChoiceGrid button.active{
+  border-color:rgba(246,198,79,0.52);
+  background:#f6c64f;
+  color:#111936;
+}
+
+.confidenceScale button:disabled,
+.perspectiveChoiceGrid button:disabled{
+  cursor:default;
+  opacity:0.78;
+}
+
+.compactConfidencePanel{
+  margin-top:14px;
+}
+
+.compactResponseLabel{
+  margin-top:14px;
+}
+
+.compactResponseLabel span{
+  color:rgba(255,255,255,0.48);
+  font-size:13px;
+}
+
+.softLaunchSurveyPanel{
+  margin-top:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:16px;
+  border-radius:16px;
+  border:1px solid rgba(246,198,79,0.22);
+  background:rgba(246,198,79,0.08);
+}
+
+.softLaunchSurveyPanel p{
+  margin:6px 0 0;
+  color:rgba(255,255,255,0.68);
+  line-height:1.5;
+}
+
+.surveyActionRow{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
 .completionActions{
