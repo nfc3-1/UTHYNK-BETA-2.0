@@ -339,7 +339,9 @@ function buildAdaptiveSystemPrompt({
     "Product success test: the user should regularly think, 'I had not considered that.' Your main job is to introduce one meaningful new perspective, not to merely ask them to elaborate.",
     "The contrarian field must be a concrete perspective the user may have missed. Start from their actual response and introduce an alternate explanation, hidden tradeoff, strongest opposing case, incentive, evidence problem, or second-order effect.",
     "The analysis field should use common language: name what is promising, then name the missing perspective in plain terms. Avoid academic phrasing.",
-    "The followUp field must be one practical question tied to that new perspective. Do not use generic prompts like 'explain further', 'give another example', or 'clarify your reasoning'.",
+    "The followUp field must be one practical, conversational question tied to that new perspective. It should sound like a sharp person talking to the user, not a worksheet or essay prompt.",
+    "Prefer plain phrasing such as 'Have you thought about...', 'Could someone...', 'What if...', or 'What would change if...'. Avoid abstract academic wording like 'How might the emotional appeal of...' when a simpler sentence works.",
+    "Do not use generic prompts like 'explain further', 'give another example', or 'clarify your reasoning'.",
     "Score by blending your judgment with the verifier result. Penalize generic, unsupported, or evasive reasoning.",
     "Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.",
   ].join(" ");

@@ -1100,7 +1100,7 @@ function ReasoningExperience({
           </div>
         </section>
 
-        <details className="advancedThinkingDetails" open={hasStartedFeedback}>
+        <details className="advancedThinkingDetails">
           <summary>Advanced Thinking Tools</summary>
 
           <section className="thinkingLensPanel">
@@ -1149,8 +1149,6 @@ function ReasoningExperience({
 
             {thinkingToolTab === "followUp" ? (
               <article className="thinkingToolPane">
-                <span>Perspective you may not have considered</span>
-                <p>{visibleFeedback.contrarian}</p>
                 <span>{copy.recursiveFollowUp}</span>
                 <p>{visibleFeedback.followUp}</p>
               </article>
@@ -1203,7 +1201,7 @@ function ReasoningExperience({
             </article>
             <h2>{visibleFeedback.followUp}</h2>
             <p>
-              Answer this before reflection. This is where UThynk checks whether your reasoning improved.
+              Take a moment to explore this angle in your own words before reflecting.
             </p>
             <textarea
               className="textarea responseBox conversationInput"
@@ -1272,30 +1270,6 @@ function ReasoningExperience({
           </section>
         ) : (
           <>
-            <section className="confidenceCheckPanel" aria-label="Confidence before conversation">
-              <div>
-                <span>Confidence Check</span>
-                <strong>How confident are you in your position?</strong>
-              </div>
-              <div className="confidenceScale" role="radiogroup" aria-label="Confidence before conversation">
-                {confidenceScale.map((value) => (
-                  <button
-                    key={value}
-                    type="button"
-                    role="radio"
-                    aria-checked={confidenceBefore === value}
-                    className={confidenceBefore === value ? "active" : ""}
-                    onClick={() => {
-                      setConfidenceBefore(value);
-                      setConfidenceAfter(value);
-                    }}
-                  >
-                    {value}
-                  </button>
-                ))}
-              </div>
-            </section>
-
             <label className="responseLabel" htmlFor="response">
               {copy.continueWithUthynk}
             </label>
@@ -1308,6 +1282,32 @@ function ReasoningExperience({
               onChange={(e) => setResponse(e.target.value)}
               placeholder={workoutStage === "challenge" ? "UThynk is preparing your follow-up..." : copy.placeholder}
             />
+
+            {response.trim() && workoutStage !== "challenge" ? (
+              <section className="confidenceCheckPanel" aria-label="Confidence before UThynk response">
+                <div>
+                  <span>Confidence Check</span>
+                  <strong>How confident are you in your answer?</strong>
+                </div>
+                <div className="confidenceScale" role="radiogroup" aria-label="Confidence before UThynk response">
+                  {confidenceScale.map((value) => (
+                    <button
+                      key={value}
+                      type="button"
+                      role="radio"
+                      aria-checked={confidenceBefore === value}
+                      className={confidenceBefore === value ? "active" : ""}
+                      onClick={() => {
+                        setConfidenceBefore(value);
+                        setConfidenceAfter(value);
+                      }}
+                    >
+                      {value}
+                    </button>
+                  ))}
+                </div>
+              </section>
+            ) : null}
           </>
         )}
 
