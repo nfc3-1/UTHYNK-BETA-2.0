@@ -279,6 +279,7 @@ function ReasoningExperience({
   const [confidenceAfter, setConfidenceAfter] = useState(7);
   const [perspectiveImpact, setPerspectiveImpact] = useState("");
   const [standoutPerspective, setStandoutPerspective] = useState("");
+  const [completionFeedback, setCompletionFeedback] = useState("");
   const [showSoftLaunchSurvey, setShowSoftLaunchSurvey] = useState(false);
   const [latestReward, setLatestReward] = useState<any>(null);
   const [feedback, setFeedback] = useState({
@@ -295,6 +296,7 @@ function ReasoningExperience({
   ]);
   const copy = uiCopy[language];
   const toolsCopy = thinkingToolCopy[language];
+  const isDailyWorkout = searchParams.get("source") === "daily";
   const ageBand = normalizeAgeBand(profile?.age_band);
   const ageAdjustedChallenge = adaptChallengeForAge(challenge, ageBand);
   const visibleChallenge = localizeChallenge(ageAdjustedChallenge, language);
@@ -482,6 +484,7 @@ function ReasoningExperience({
     setConfidenceAfter(confidenceBefore);
     setPerspectiveImpact("");
     setStandoutPerspective("");
+    setCompletionFeedback("");
     setShowSoftLaunchSurvey(false);
     setEvaluatedClaim("");
     setLatestReward(null);
@@ -530,6 +533,7 @@ function ReasoningExperience({
     setConfidenceAfter(confidenceBefore);
     setPerspectiveImpact("");
     setStandoutPerspective("");
+    setCompletionFeedback("");
     setShowSoftLaunchSurvey(false);
     setEvaluatedClaim("");
     setLatestReward(null);
@@ -1045,6 +1049,7 @@ function ReasoningExperience({
         <div className="conversationHeader">
           <div>
             <div className="panelLabel">{copy.liveConversation}</div>
+            {isDailyWorkout ? <div className="dailyWorkoutBadge">Daily Thinking Workout</div> : null}
             <h1>{visibleChallenge.prompt}</h1>
           </div>
           <div className="threadMeta">
@@ -1052,6 +1057,7 @@ function ReasoningExperience({
             <span>{visibleDifficulty}</span>
             <span>{visiblePressure}</span>
             {ageBand !== "18_plus" ? <span>{ageBandLabel(ageBand)}</span> : null}
+            {isDailyWorkout ? <span>Daily workout</span> : null}
             {!profile?.id ? <span>{Math.max(0, 3 - freePassUsed)} free left</span> : null}
           </div>
         </div>
@@ -1379,6 +1385,38 @@ function ReasoningExperience({
               </button>
             </div>
 
+            <section className="completionFeedbackPanel" aria-label="Completion feedback">
+              <div>
+                <span>Quick Feedback</span>
+                <strong>Did this make you think differently?</strong>
+              </div>
+              <div className="completionFeedbackChoices" role="radiogroup" aria-label="Did this make you think differently?">
+                {["Yes", "Somewhat", "No"].map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    role="radio"
+                    aria-checked={completionFeedback === option}
+                    className={completionFeedback === option ? "active" : ""}
+                    onClick={() => {
+                      setCompletionFeedback(option);
+                      trackEvent(
+                        createTelemetryEvent("completed_thinking_difference_feedback", profile?.id, {
+                          answer: option,
+                          category: challenge.category,
+                          challengeId: challenge.id,
+                          confidenceAfter,
+                          confidenceBefore,
+                        })
+                      );
+                    }}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </section>
+
             {showSoftLaunchSurvey ? (
               <section className="softLaunchSurveyPanel">
                 <div>
@@ -1638,6 +1676,7 @@ export default function ReasoningPage() {
         <div className="topControls">
           <nav className="appNav" aria-label="Reasoning navigation">
             <Link href="/">{copy.home}</Link>
+            <Link href="/daily">Daily</Link>
             <Link href="/lessons">Lessons</Link>
             <Link href="/profile">Profile</Link>
             <Link href="/feedback">Feedback</Link>

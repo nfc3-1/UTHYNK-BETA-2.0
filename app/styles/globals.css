@@ -2278,6 +2278,72 @@ a{
   color:rgba(255,255,255,0.92);
 }
 
+.dailyWorkoutBadge{
+  display:inline-flex;
+  width:max-content;
+  margin:8px 0 2px;
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid rgba(246,198,79,0.32);
+  background:rgba(246,198,79,0.12);
+  color:#f6c64f;
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.completionFeedbackPanel{
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.045);
+}
+
+.completionFeedbackPanel > div:first-child{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+.completionFeedbackPanel span{
+  color:#5eead4;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.completionFeedbackPanel strong{
+  color:rgba(255,255,255,0.92);
+}
+
+.completionFeedbackChoices{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.completionFeedbackChoices button{
+  min-height:38px;
+  padding:0 16px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.06);
+  color:rgba(255,255,255,0.78);
+  font-weight:900;
+  cursor:pointer;
+}
+
+.completionFeedbackChoices button.active{
+  border-color:rgba(94,234,212,0.52);
+  background:#5eead4;
+  color:#111936;
+}
+
 .claimEvaluationInline{
   margin-top:18px;
 }
@@ -2514,9 +2580,47 @@ a{
   }
 
   .completionActions,
+  .completionFeedbackPanel > div:first-child,
+  .softLaunchSurveyPanel,
   .workoutProgressHeader{
     align-items:flex-start;
     flex-direction:column;
+  }
+
+  .completionActions .btn,
+  .surveyActionRow,
+  .surveyActionRow .btn,
+  .snapshotActions,
+  .snapshotActions .btn{
+    width:100%;
+  }
+
+  .completionFeedbackChoices,
+  .perspectiveChoiceGrid{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+
+  .confidenceScale{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+  }
+
+  .confidenceScale button{
+    width:100%;
+  }
+
+  .uthynkSidePanel{
+    padding:14px;
+  }
+
+  .uthynkConversationPanel{
+    padding:16px;
+  }
+
+  .conversationHeader h1{
+    font-size:34px;
+    line-height:1.05;
   }
 
   .workoutStepRail{

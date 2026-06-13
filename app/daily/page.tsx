@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation';
-import { getTodayChallengeId } from '@/lib/daily';
+import { getDailyChallenge } from '@/lib/challenges';
 
 export default function Daily(){
-  const id = getTodayChallengeId();
-  redirect(`/challenge/${id}`);
+  const challenge = getDailyChallenge();
+
+  redirect(`/reasoning?id=${challenge.id}&source=daily`);
 }

@@ -19,8 +19,7 @@ export default function Profile() {
     async function loadProfile() {
       const stored = localStorage.getItem(STORAGE_KEY);
       const profile = stored ? JSON.parse(stored) : null;
-      const url = profile?.id ? `/api/dashboard?userId=${profile.id}` : '/api/dashboard';
-      const res = await fetch(url);
+      const res = await fetch('/api/dashboard');
       const json = await res.json();
 
       setData({
@@ -79,12 +78,34 @@ export default function Profile() {
     `Evidence: ${traits[0]?.value || averageReasoning}`,
     `Current Trait: ${profile.primary_trait || 'Analytical Thinker'}`,
     `Rank: ${profile.rank || 'Observer'}`,
+    'https://uthynk-beta-2-0.vercel.app',
   ].join('\n');
 
+  async function writeSnapshotToClipboard() {
+    try {
+      await navigator.clipboard.writeText(snapshotText);
+      return true;
+    } catch {
+      const textarea = document.createElement('textarea');
+
+      textarea.value = snapshotText;
+      textarea.setAttribute('readonly', 'true');
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      const copied = document.execCommand('copy');
+      document.body.removeChild(textarea);
+
+      return copied;
+    }
+  }
+
   async function copySnapshot() {
-    await navigator.clipboard.writeText(snapshotText);
-    setSnapshotStatus('Snapshot copied');
-    trackEvent(createTelemetryEvent('shared_thinking_snapshot', profile?.id, { method: 'copy' }));
+    const copied = await writeSnapshotToClipboard();
+
+    setSnapshotStatus(copied ? 'Snapshot copied' : 'Snapshot ready to share');
+    trackEvent(createTelemetryEvent('shared_thinking_snapshot', profile?.id, { method: copied ? 'copy' : 'copy_attempt' }));
   }
 
   function downloadSnapshot() {
@@ -101,13 +122,19 @@ export default function Profile() {
   }
 
   async function shareSnapshot() {
-    if (navigator.share) {
-      await navigator.share({
-        text: snapshotText,
-        title: 'UThynk Thinking Snapshot',
-      });
-      setSnapshotStatus('Snapshot shared');
-      trackEvent(createTelemetryEvent('shared_thinking_snapshot', profile?.id, { method: 'native_share' }));
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          text: snapshotText,
+          title: 'UThynk Thinking Snapshot',
+          url: 'https://uthynk-beta-2-0.vercel.app',
+        });
+        setSnapshotStatus('Snapshot shared');
+        trackEvent(createTelemetryEvent('shared_thinking_snapshot', profile?.id, { method: 'native_share' }));
+        return;
+      }
+    } catch {
+      setSnapshotStatus('Share canceled');
       return;
     }
 
@@ -127,6 +154,7 @@ export default function Profile() {
 
         <nav className="appNav">
           <Link href="/">Home</Link>
+          <Link href="/daily">Daily</Link>
           <Link href="/lessons">Lessons</Link>
           <Link href="/reasoning">Reasoning</Link>
           <Link href="/profile">Profile</Link>
