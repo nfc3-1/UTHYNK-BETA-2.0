@@ -70,73 +70,73 @@ const onboardingCopy = {
   en: {
     title: "How to use UThynk",
     intro:
-      "UThynk is a reasoning trainer. Pick a lens, answer the active question, then use the feedback to sharpen your next response.",
+      "UThynk is a reasoning workout. Answer the prompt, test one new perspective, then finish with a quick reflection.",
     steps: [
       {
         title: "Choose a thinking lens",
         text: "Logic checks whether the argument makes sense. Incentives looks at motivations and hidden interests. Ethics looks at fairness and values. History looks at patterns from the past. Strategy looks at long-term consequences.",
       },
       {
-        title: "Answer in your own words",
-        text: "A few clear sentences are enough. Add an example, a reason, or a counterargument when you can.",
+        title: "Answer and rate confidence",
+        text: "Write a few clear sentences, then rate how confident you are. UThynk uses that to see whether your thinking moves after the challenge.",
       },
       {
-        title: "Review the challenge",
-        text: "UThynk gives a follow-up question, evidence score, and growth signal so you can improve the next answer.",
+        title: "Consider one new perspective",
+        text: "UThynk should show an angle you may not have considered, then ask one follow-up before the final reflection.",
       },
       {
-        title: "Switch categories anytime",
-        text: "Use the right-side categories to practice work, money, media, literature, science, identity, and more.",
+        title: "Complete the workout",
+        text: "Finish the reflection, earn XP, save progress, and keep building your thinking profile across sessions.",
       },
     ],
     close: "Start thinking",
     reopen: "How to use",
   },
   es: {
-    title: "Cómo usar UThynk",
+    title: "Como usar UThynk",
     intro:
-      "UThynk entrena tu razonamiento. Elige un enfoque, responde la pregunta activa y usa la retroalimentación para mejorar tu siguiente respuesta.",
+      "UThynk es un entrenamiento de razonamiento. Responde la pregunta, prueba una nueva perspectiva y termina con una reflexion breve.",
     steps: [
       {
         title: "Elige un enfoque",
-        text: "Lógica revisa estructura, incentivos revisa motivos, ética revisa valores, historia revisa patrones y estrategia revisa consecuencias.",
+        text: "Logica revisa si el argumento tiene sentido. Incentivos mira motivaciones ocultas. Etica mira valores. Historia mira patrones. Estrategia mira consecuencias a largo plazo.",
       },
       {
-        title: "Responde con tus palabras",
-        text: "Unas frases claras bastan. Agrega un ejemplo, una razón o un contraargumento cuando puedas.",
+        title: "Responde y mide tu confianza",
+        text: "Escribe unas frases claras y califica que tan seguro estas. UThynk usa eso para ver si tu pensamiento cambia despues del reto.",
       },
       {
-        title: "Revisa el reto",
-        text: "UThynk muestra una contradicción, una pregunta de seguimiento, evidencia y una señal de crecimiento.",
+        title: "Considera una nueva perspectiva",
+        text: "UThynk debe mostrar un angulo que quizas no habias considerado y luego hacer una pregunta de seguimiento antes de la reflexion final.",
       },
       {
-        title: "Cambia de categoría",
-        text: "Usa las categorías de la derecha para practicar trabajo, dinero, medios, literatura, ciencia, identidad y más.",
+        title: "Completa el entrenamiento",
+        text: "Termina la reflexion, gana XP, guarda tu progreso y sigue construyendo tu perfil de pensamiento entre sesiones.",
       },
     ],
     close: "Empezar",
-    reopen: "Cómo usar",
+    reopen: "Como usar",
   },
   fr: {
     title: "Comment utiliser UThynk",
     intro:
-      "UThynk entraîne ton raisonnement. Choisis une lentille, réponds à la question active, puis utilise le retour pour améliorer ta prochaine réponse.",
+      "UThynk est un exercice de raisonnement. Reponds au prompt, teste une nouvelle perspective, puis termine par une courte reflexion.",
     steps: [
       {
         title: "Choisis une lentille",
-        text: "Logique vérifie la structure, incitations vérifie les motivations, éthique vérifie les valeurs, histoire vérifie les modèles et stratégie vérifie les compromis.",
+        text: "Logique verifie si l'argument tient. Incitations regarde les motivations cachees. Ethique regarde les valeurs. Histoire regarde les schemas. Strategie regarde les consequences a long terme.",
       },
       {
-        title: "Réponds avec tes mots",
-        text: "Quelques phrases claires suffisent. Ajoute un exemple, une raison ou un contre-argument quand tu peux.",
+        title: "Reponds et note ta confiance",
+        text: "Ecris quelques phrases claires, puis note ton niveau de confiance. UThynk s'en sert pour voir si ta pensee evolue apres le defi.",
       },
       {
-        title: "Analyse le défi",
-        text: "UThynk donne une contradiction, une question de suivi, un score d'évidence et un signal de progression.",
+        title: "Considere une nouvelle perspective",
+        text: "UThynk doit montrer un angle que tu n'avais peut-etre pas considere, puis poser une question de suivi avant la reflexion finale.",
       },
       {
-        title: "Change de catégorie",
-        text: "Utilise les catégories à droite pour pratiquer travail, argent, médias, littérature, science, identité et plus.",
+        title: "Termine l'exercice",
+        text: "Finis la reflexion, gagne de l'XP, sauvegarde ta progression et continue a construire ton profil de pensee entre les sessions.",
       },
     ],
     close: "Commencer",

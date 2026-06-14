@@ -2,13 +2,14 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { safeInternalPath } from "@/lib/safeRedirect";
 
 const STORAGE_KEY = "uthynk-profile";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const nextPath = useMemo(() => searchParams.get("next") || "/", [searchParams]);
+  const nextPath = useMemo(() => safeInternalPath(searchParams.get("next")), [searchParams]);
   const oauthError = searchParams.get("error");
   const forceLogin = searchParams.get("force") === "1";
   const shouldLogout = searchParams.get("logout") === "1";
@@ -52,7 +53,7 @@ function LoginForm() {
       const payload = await response.json().catch(() => ({}));
 
       if (payload.authenticated) {
-        router.replace(nextPath.startsWith("/") ? nextPath : "/");
+        router.replace(nextPath);
       }
     }
 
@@ -83,7 +84,7 @@ function LoginForm() {
       }
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload.profile));
-      router.replace(nextPath.startsWith("/") ? nextPath : "/");
+      router.replace(nextPath);
       router.refresh();
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Authentication failed.");

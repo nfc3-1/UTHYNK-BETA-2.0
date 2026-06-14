@@ -1,14 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { publicProfile, setAuthCookies } from "@/lib/authCookies";
+import { safeInternalPath } from "@/lib/safeRedirect";
 import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
 import { supabasePublishableKey, supabaseUrl } from "@/lib/supabaseConfig";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
-  const nextPath = url.searchParams.get("next") || "/";
-  const safeNextPath = nextPath.startsWith("/") ? nextPath : "/";
+  const safeNextPath = safeInternalPath(url.searchParams.get("next"));
 
   if (!code) {
     return NextResponse.redirect(new URL(`/login?mode=login&error=oauth`, url.origin));

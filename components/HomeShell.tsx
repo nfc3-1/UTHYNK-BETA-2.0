@@ -52,8 +52,8 @@ export default function HomeShell(){
           <div className="smallMuted mt-12">Next title in ~120 XP</div>
 
           <div className="mt-16" style={{display:'flex', gap:10}}>
-            <button className="btn btnPrimary" style={{flex:1}}>Start Thinking</button>
-            <button className="btn" style={{flex:1}}>Continue</button>
+            <Link className="btn btnPrimary" href="/reasoning" style={{flex:1}}>Start Thinking</Link>
+            <Link className="btn" href="/profile" style={{flex:1}}>Continue</Link>
           </div>
         </div>
 

@@ -1,11 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
+import { safeInternalPath } from "@/lib/safeRedirect";
 import { supabasePublishableKey, supabaseUrl } from "@/lib/supabaseConfig";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const provider = url.searchParams.get("provider") || "google";
-  const nextPath = url.searchParams.get("next") || "/";
+  const nextPath = safeInternalPath(url.searchParams.get("next"));
 
   if (provider !== "google") {
     return NextResponse.json({ error: "Unsupported OAuth provider." }, { status: 400 });
@@ -24,9 +25,7 @@ export async function GET(request: Request) {
       persistSession: false,
     },
   });
-  const redirectTo = `${url.origin}/api/auth/callback?next=${encodeURIComponent(
-    nextPath.startsWith("/") ? nextPath : "/"
-  )}`;
+  const redirectTo = `${url.origin}/api/auth/callback?next=${encodeURIComponent(nextPath)}`;
   const { data, error } = await authClient.auth.signInWithOAuth({
     provider: "google",
     options: {
