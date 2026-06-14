@@ -43,6 +43,8 @@ const initialFeedback = {
   weaknesses: ["needs incentive analysis", "clarify the next step"],
 };
 
+const WELCOME_MESSAGE = "__uthynk_welcome__";
+
 const categoryLinks = Array.from(
   new Set(challenges.map((challenge) => challenge.category))
 );
@@ -186,6 +188,252 @@ const thinkingToolCopy = {
   assumptions: string;
 }>;
 
+const pageText = {
+  en: {
+    active: "Active",
+    adaptiveThinkingLabel: "Adaptive thinking:",
+    adaptiveThinkingText: "you adjust your reasoning when new evidence appears.",
+    advancedThinkingTools: "Advanced Thinking Tools",
+    categoryHelper: "Choose a category to load a new active challenge.",
+    confidenceAnswerQuestion: "How confident are you in your answer?",
+    confidenceCheck: "Confidence Check",
+    confidenceNow: "Confidence Now",
+    confidenceNowQuestion: "How confident are you now?",
+    continueReflection: "Continue to Reflection",
+    createFreeProfile: "Create a free beta profile to continue.",
+    createProfile: "Create Profile",
+    daily: "Daily",
+    dailyThinkingWorkout: "Daily Thinking Workout",
+    dailyWorkout: "Daily workout",
+    feedbackNav: "Feedback",
+    finalReflection: "Final Reflection",
+    followUpAnswer: "Follow-up answer",
+    followUpInstruction: "Take a moment to explore this angle in your own words before reflecting.",
+    followUpPlaceholder: "My answer to the follow-up is...",
+    followUpQuestion: "Follow-up Question",
+    freeGateText: "You used your 3 free UThynk challenges. Sign up to save memory, streaks, traits, and future sessions.",
+    freeLeft: "free left",
+    genericTraitExplanation: "This is the thinking habit UThynk is helping you strengthen.",
+    giveFeedback: "Give Feedback",
+    helpShapeBeta: "Help shape UThynk beta",
+    independentVerification: "Independent Verification",
+    later: "Later",
+    lessons: "Lessons",
+    liveSignalMetrics: "Metrics",
+    liveSignalPatterns: "Patterns",
+    moreInsightsUnlock: "More insights unlock after you complete the workout.",
+    nextStage: "Next stage",
+    nextStageStart: "Next stage: start a new challenge",
+    no: "No",
+    notAnsweredYet: "Not answered yet.",
+    openCategoryQuestions: "Open {category} questions",
+    perspectiveImpactQuestion: "Did this conversation help you see a perspective you hadn't considered?",
+    perspectiveImpactText: "UThynk is measuring whether the conversation changed how you see the problem, not whether you agreed.",
+    perspectiveLabel: "Perspective you may not have considered",
+    perspectivePlaceholder: "The perspective I hadn't considered was...",
+    plainFeedbackDefault: "Good direction. Now make the reasoning sharper by naming the strongest example and the strongest objection.",
+    plainFeedbackEvidence: "I like where you're going, but I'm missing proof. What's the strongest example that supports your point?",
+    plainFeedbackIncentive: "I like where you're going, but I'm missing motives. Who benefits if your answer is right?",
+    plainFeedbackNext: "Good start. Now make it practical: what is the next step your reasoning points toward?",
+    preparingFollowUp: "UThynk is preparing your follow-up...",
+    profileNav: "Profile",
+    progressTitle: "Reasoning Challenge Progress",
+    quickFeedback: "Quick Feedback",
+    reflectionOptional: "optional",
+    reward: "Reward",
+    signIn: "Sign in",
+    softLaunchSurvey: "Soft Launch Survey",
+    softLaunchSurveyText: "After a few conversations, tell us what was valuable, confusing, and whether UThynk showed you a perspective you had not considered.",
+    somewhat: "Somewhat",
+    stageAnswer: "Current stage: Answer",
+    stageComplete: "Current stage: Complete",
+    stageFollowUp: "Current stage: Follow-up",
+    stagePreparing: "Current stage: Preparing follow-up",
+    stageReflection: "Current stage: Reflection",
+    startNextChallenge: "Start Next Challenge",
+    stepWord: "Step",
+    stepAnswer: "Answer",
+    stepComplete: "Complete",
+    stepFollowUp: "Follow-up",
+    stepReflection: "Reflection",
+    switch: "Switch",
+    thinkDifferentlyQuestion: "Did this make you think differently?",
+    todaysInsight: "Today's Insight",
+    traitGrowthAvailable: "Trait growth available",
+    traitImproved: "Trait improved",
+    viewAllLessonCategories: "View all lesson categories",
+    welcomeNew: "Welcome to UThynk. Start with one response and I will help you look at the problem from a sharper angle.",
+    welcomeReturning: "Welcome back. I remember your previous reasoning patterns. Let's continue sharpening your thinking.",
+    whyUthynkSaidThis: "Why UThynk said this",
+    whyUseText: "Improve decisions, spot weak arguments, and track how your thinking evolves.",
+    whyUseUthynk: "Why use UThynk?",
+    workoutComplete: "Reasoning workout complete",
+    yes: "Yes",
+  },
+  es: {
+    active: "Activo",
+    adaptiveThinkingLabel: "Pensamiento adaptable:",
+    adaptiveThinkingText: "ajustas tu razonamiento cuando aparece nueva evidencia.",
+    advancedThinkingTools: "Herramientas avanzadas de pensamiento",
+    categoryHelper: "Elige una categoria para cargar un nuevo reto activo.",
+    confidenceAnswerQuestion: "Que tan seguro estas de tu respuesta?",
+    confidenceCheck: "Revision de confianza",
+    confidenceNow: "Confianza ahora",
+    confidenceNowQuestion: "Que tan seguro estas ahora?",
+    continueReflection: "Continuar a la reflexion",
+    createFreeProfile: "Crea un perfil beta gratuito para continuar.",
+    createProfile: "Crear perfil",
+    daily: "Diario",
+    dailyThinkingWorkout: "Entrenamiento diario de pensamiento",
+    dailyWorkout: "Entrenamiento diario",
+    feedbackNav: "Comentarios",
+    finalReflection: "Reflexion final",
+    followUpAnswer: "Respuesta de seguimiento",
+    followUpInstruction: "Toma un momento para explorar este angulo con tus propias palabras antes de reflexionar.",
+    followUpPlaceholder: "Mi respuesta al seguimiento es...",
+    followUpQuestion: "Pregunta de seguimiento",
+    freeGateText: "Usaste tus 3 retos gratuitos de UThynk. Registrate para guardar memoria, rachas, rasgos y sesiones futuras.",
+    freeLeft: "gratis restantes",
+    genericTraitExplanation: "Este es el habito de pensamiento que UThynk te esta ayudando a fortalecer.",
+    giveFeedback: "Dar comentarios",
+    helpShapeBeta: "Ayuda a moldear la beta de UThynk",
+    independentVerification: "Verificacion independiente",
+    later: "Despues",
+    lessons: "Lecciones",
+    liveSignalMetrics: "Metricas",
+    liveSignalPatterns: "Patrones",
+    moreInsightsUnlock: "Mas ideas se desbloquean cuando completes el entrenamiento.",
+    nextStage: "Siguiente etapa",
+    nextStageStart: "Siguiente etapa: iniciar un nuevo reto",
+    no: "No",
+    notAnsweredYet: "Aun no respondido.",
+    openCategoryQuestions: "Abrir preguntas de {category}",
+    perspectiveImpactQuestion: "Esta conversacion te ayudo a ver una perspectiva que no habias considerado?",
+    perspectiveImpactText: "UThynk mide si la conversacion cambio como ves el problema, no si estuviste de acuerdo.",
+    perspectiveLabel: "Perspectiva que quizas no habias considerado",
+    perspectivePlaceholder: "La perspectiva que no habia considerado fue...",
+    plainFeedbackDefault: "Vas en buena direccion. Ahora afina el razonamiento nombrando el ejemplo mas fuerte y la objecion mas fuerte.",
+    plainFeedbackEvidence: "Me gusta hacia donde vas, pero falta prueba. Cual es el ejemplo mas fuerte que apoya tu punto?",
+    plainFeedbackIncentive: "Me gusta hacia donde vas, pero faltan los motivos. Quien gana si tu respuesta es correcta?",
+    plainFeedbackNext: "Buen comienzo. Ahora hazlo practico: cual es el siguiente paso que apunta tu razonamiento?",
+    preparingFollowUp: "UThynk esta preparando tu seguimiento...",
+    profileNav: "Perfil",
+    progressTitle: "Progreso del reto de razonamiento",
+    quickFeedback: "Comentario rapido",
+    reflectionOptional: "opcional",
+    reward: "Recompensa",
+    signIn: "Iniciar sesion",
+    softLaunchSurvey: "Encuesta beta",
+    softLaunchSurveyText: "Despues de algunas conversaciones, dinos que fue valioso, confuso y si UThynk te mostro una perspectiva que no habias considerado.",
+    somewhat: "Algo",
+    stageAnswer: "Etapa actual: Respuesta",
+    stageComplete: "Etapa actual: Completo",
+    stageFollowUp: "Etapa actual: Seguimiento",
+    stagePreparing: "Etapa actual: preparando seguimiento",
+    stageReflection: "Etapa actual: Reflexion",
+    startNextChallenge: "Iniciar siguiente reto",
+    stepWord: "Paso",
+    stepAnswer: "Respuesta",
+    stepComplete: "Completo",
+    stepFollowUp: "Seguimiento",
+    stepReflection: "Reflexion",
+    switch: "Cambiar",
+    thinkDifferentlyQuestion: "Esto te hizo pensar de forma diferente?",
+    todaysInsight: "Idea de hoy",
+    traitGrowthAvailable: "Crecimiento de rasgo disponible",
+    traitImproved: "Rasgo mejorado",
+    viewAllLessonCategories: "Ver todas las categorias de lecciones",
+    welcomeNew: "Bienvenido a UThynk. Empieza con una respuesta y te ayudare a mirar el problema desde un angulo mas claro.",
+    welcomeReturning: "Bienvenido de nuevo. Recuerdo tus patrones de razonamiento previos. Sigamos afinando tu pensamiento.",
+    whyUthynkSaidThis: "Por que UThynk dijo esto",
+    whyUseText: "Mejora decisiones, detecta argumentos debiles y sigue como evoluciona tu pensamiento.",
+    whyUseUthynk: "Por que usar UThynk?",
+    workoutComplete: "Entrenamiento de razonamiento completo",
+    yes: "Si",
+  },
+  fr: {
+    active: "Actif",
+    adaptiveThinkingLabel: "Pensee adaptative :",
+    adaptiveThinkingText: "tu ajustes ton raisonnement quand de nouvelles preuves apparaissent.",
+    advancedThinkingTools: "Outils de pensee avances",
+    categoryHelper: "Choisis une categorie pour charger un nouveau defi actif.",
+    confidenceAnswerQuestion: "A quel point es-tu sur de ta reponse ?",
+    confidenceCheck: "Verification de confiance",
+    confidenceNow: "Confiance maintenant",
+    confidenceNowQuestion: "A quel point es-tu sur maintenant ?",
+    continueReflection: "Continuer vers la reflexion",
+    createFreeProfile: "Cree un profil beta gratuit pour continuer.",
+    createProfile: "Creer un profil",
+    daily: "Quotidien",
+    dailyThinkingWorkout: "Exercice quotidien de pensee",
+    dailyWorkout: "Exercice quotidien",
+    feedbackNav: "Avis",
+    finalReflection: "Reflexion finale",
+    followUpAnswer: "Reponse de suivi",
+    followUpInstruction: "Prends un moment pour explorer cet angle avec tes propres mots avant de reflechir.",
+    followUpPlaceholder: "Ma reponse au suivi est...",
+    followUpQuestion: "Question de suivi",
+    freeGateText: "Tu as utilise tes 3 defis UThynk gratuits. Inscris-toi pour enregistrer memoire, series, traits et futures sessions.",
+    freeLeft: "gratuits restants",
+    genericTraitExplanation: "C'est l'habitude de pensee qu'UThynk t'aide a renforcer.",
+    giveFeedback: "Donner un avis",
+    helpShapeBeta: "Aide a faconner la beta UThynk",
+    independentVerification: "Verification independante",
+    later: "Plus tard",
+    lessons: "Lecons",
+    liveSignalMetrics: "Mesures",
+    liveSignalPatterns: "Schemas",
+    moreInsightsUnlock: "Plus d'idees se debloquent quand tu termines l'exercice.",
+    nextStage: "Prochaine etape",
+    nextStageStart: "Prochaine etape : commencer un nouveau defi",
+    no: "Non",
+    notAnsweredYet: "Pas encore repondu.",
+    openCategoryQuestions: "Ouvrir les questions {category}",
+    perspectiveImpactQuestion: "Cette conversation t'a-t-elle aide a voir une perspective que tu n'avais pas consideree ?",
+    perspectiveImpactText: "UThynk mesure si la conversation a change ta facon de voir le probleme, pas si tu etais d'accord.",
+    perspectiveLabel: "Perspective que tu n'avais peut-etre pas consideree",
+    perspectivePlaceholder: "La perspective que je n'avais pas consideree etait...",
+    plainFeedbackDefault: "Bonne direction. Maintenant rends le raisonnement plus net en nommant le meilleur exemple et la meilleure objection.",
+    plainFeedbackEvidence: "J'aime la direction, mais il manque une preuve. Quel est le meilleur exemple qui soutient ton point ?",
+    plainFeedbackIncentive: "J'aime la direction, mais il manque les motivations. Qui gagne si ta reponse est juste ?",
+    plainFeedbackNext: "Bon debut. Maintenant rends-le pratique : quelle prochaine etape ton raisonnement indique-t-il ?",
+    preparingFollowUp: "UThynk prepare ton suivi...",
+    profileNav: "Profil",
+    progressTitle: "Progression du defi de raisonnement",
+    quickFeedback: "Avis rapide",
+    reflectionOptional: "facultatif",
+    reward: "Recompense",
+    signIn: "Connexion",
+    softLaunchSurvey: "Sondage beta",
+    softLaunchSurveyText: "Apres quelques conversations, dis-nous ce qui etait utile, confus, et si UThynk t'a montre une perspective que tu n'avais pas consideree.",
+    somewhat: "Un peu",
+    stageAnswer: "Etape actuelle : Reponse",
+    stageComplete: "Etape actuelle : Termine",
+    stageFollowUp: "Etape actuelle : Suivi",
+    stagePreparing: "Etape actuelle : preparation du suivi",
+    stageReflection: "Etape actuelle : Reflexion",
+    startNextChallenge: "Commencer le defi suivant",
+    stepWord: "Etape",
+    stepAnswer: "Reponse",
+    stepComplete: "Termine",
+    stepFollowUp: "Suivi",
+    stepReflection: "Reflexion",
+    switch: "Changer",
+    thinkDifferentlyQuestion: "Cela t'a-t-il fait penser differemment ?",
+    todaysInsight: "Idee du jour",
+    traitGrowthAvailable: "Progression de trait disponible",
+    traitImproved: "Trait ameliore",
+    viewAllLessonCategories: "Voir toutes les categories de lecons",
+    welcomeNew: "Bienvenue sur UThynk. Commence par une reponse et je t'aiderai a regarder le probleme sous un angle plus net.",
+    welcomeReturning: "Bon retour. Je me souviens de tes schemas de raisonnement precedents. Continuons a affiner ta pensee.",
+    whyUthynkSaidThis: "Pourquoi UThynk a dit cela",
+    whyUseText: "Ameliore tes decisions, repere les arguments faibles et suis l'evolution de ta pensee.",
+    whyUseUthynk: "Pourquoi utiliser UThynk ?",
+    workoutComplete: "Exercice de raisonnement termine",
+    yes: "Oui",
+  },
+} satisfies Record<Language, Record<string, string>>;
+
 function getProgressionState(xp: number) {
   const currentIndex = rankThresholds.findLastIndex((item) => xp >= item.xp);
   const current = rankThresholds[Math.max(0, currentIndex)];
@@ -202,34 +450,8 @@ function getProgressionState(xp: number) {
   return { percent, value: `${xp} XP` };
 }
 
-function getTraitExplanation(trait: string) {
-  const normalized = trait.toLowerCase();
-
-  if (normalized.includes("adaptive")) {
-    return "You adapt your reasoning when new evidence appears.";
-  }
-
-  if (normalized.includes("tactical") || normalized.includes("strategic")) {
-    return "You look for the move that protects future options.";
-  }
-
-  if (normalized.includes("evidence") || normalized.includes("verification")) {
-    return "You strengthen claims by looking for proof.";
-  }
-
-  if (normalized.includes("ethical") || normalized.includes("moral")) {
-    return "You test decisions against fairness and values.";
-  }
-
-  if (normalized.includes("historical") || normalized.includes("pattern")) {
-    return "You use past patterns to judge present choices.";
-  }
-
-  if (normalized.includes("analytical")) {
-    return "You slow down and separate claims from assumptions.";
-  }
-
-  return "This is the thinking habit UThynk is helping you strengthen.";
+function getTraitExplanation(_trait: string, fallback: string) {
+  return fallback;
 }
 
 function ReasoningExperience({
@@ -290,11 +512,11 @@ function ReasoningExperience({
   const [conversation, setConversation] = useState<any[]>([
     {
       role: "uthynk",
-      content:
-        "Welcome back. I remember your previous reasoning patterns. Let's continue sharpening your thinking.",
+      content: WELCOME_MESSAGE,
     },
   ]);
   const copy = uiCopy[language];
+  const text = pageText[language];
   const toolsCopy = thinkingToolCopy[language];
   const isDailyWorkout = searchParams.get("source") === "daily";
   const ageBand = normalizeAgeBand(profile?.age_band);
@@ -328,14 +550,20 @@ function ReasoningExperience({
     Math.round(((feedback.verifier?.behavioral?.evidence || feedback.score || 70) - 62) / 8)
   );
   const topWeakness = visibleFeedback.weaknesses[0]?.toLowerCase() || "";
+  const hasPriorThinkingHistory = Boolean(
+    profile?.id &&
+      ((profile?.xp || 0) > 0 ||
+        (profile?.streak || 0) > 0 ||
+        (profile?.completed_challenges || 0) > 0)
+  );
   const plainFeedback =
     topWeakness.includes("incentive")
-      ? `I like where you're going, but I'm missing motives. Who benefits if your answer is right?`
+      ? text.plainFeedbackIncentive
       : topWeakness.includes("evidence") || topWeakness.includes("proof")
-        ? `I like where you're going, but I'm missing proof. What's the strongest example that supports your point?`
+        ? text.plainFeedbackEvidence
         : topWeakness.includes("next")
-          ? `Good start. Now make it practical: what is the next step your reasoning points toward?`
-      : `Good direction. Now make the reasoning sharper by naming the strongest example and the strongest objection.`;
+          ? text.plainFeedbackNext
+      : text.plainFeedbackDefault;
 
   const recognitionRef = useRef<any>(null);
   const workoutStageRef = useRef(workoutStage);
@@ -823,7 +1051,7 @@ function ReasoningExperience({
         )}; path=/; max-age=2592000; SameSite=Lax`;
       }
 
-      const uthynkMessage = `${data.analysis}\n\nPerspective you may not have considered: ${data.contrarian}\n\nFollow-up question: ${data.followUp}`;
+      const uthynkMessage = `${data.analysis}\n\n${text.perspectiveLabel}: ${data.contrarian}\n\n${text.followUpQuestion}: ${data.followUp}`;
 
       setConversation((prev) => [
         ...prev,
@@ -885,7 +1113,7 @@ function ReasoningExperience({
     },
   ];
   const primaryIdentity = localizeText(profile?.primary_trait, language) || visibleFeedback.trait;
-  const traitExplanation = getTraitExplanation(primaryIdentity);
+  const traitExplanation = getTraitExplanation(primaryIdentity, text.genericTraitExplanation);
   const secondaryMode = visibleFeedback.strengths[0] || "Strategic restraint";
   const growthEdge = visibleFeedback.weaknesses[0] || "Evidence strength";
   const biasWatch =
@@ -909,13 +1137,13 @@ function ReasoningExperience({
             ? copy.tradeoffMove
             : copy.evidenceTest;
   const workoutSteps = [
-    { id: "answer", step: "Step 1 of 3", label: "Answer" },
-    { id: "followUp", step: "Step 2 of 3", label: "Follow-up" },
-    { id: "reflection", step: "Step 3 of 3", label: "Reflection" },
-    { id: "complete", step: "Complete", label: "Complete" },
+    { id: "answer", label: text.stepAnswer },
+    { id: "followUp", label: text.stepFollowUp },
+    { id: "reflection", label: text.stepReflection },
+    { id: "complete", label: text.stepComplete },
   ] as const;
   const confidenceScale = Array.from({ length: 10 }, (_, index) => index + 1);
-  const perspectiveOptions = ["Yes, definitely", "Maybe", "Not really", "No"];
+  const perspectiveOptions = [text.yes, text.somewhat, text.no];
   const displayedWorkoutStage = workoutStage === "challenge" ? "followUp" : workoutStage;
   const workoutStageIndex = workoutSteps.findIndex((step) => step.id === displayedWorkoutStage);
   const nextWorkoutStep =
@@ -955,9 +1183,9 @@ function ReasoningExperience({
         </section>
 
         <section className="leftRailSection whyUthynkCard">
-          <div className="panelLabel">Why use UThynk?</div>
-          <p>Improve decisions, spot weak arguments, and track how your thinking evolves.</p>
-          <p><strong>Adaptive thinking:</strong> you adjust your reasoning when new evidence appears.</p>
+          <div className="panelLabel">{text.whyUseUthynk}</div>
+          <p>{text.whyUseText}</p>
+          <p><strong>{text.adaptiveThinkingLabel}</strong> {text.adaptiveThinkingText}</p>
         </section>
 
         <details className="leftRailDetails" open={hasCompletedWorkout}>
@@ -993,8 +1221,8 @@ function ReasoningExperience({
             <div className="panelLabel">{copy.liveSignals}</div>
             <div className="leftSignalTabs" role="tablist" aria-label="Live reasoning signals">
               {[
-                { id: "patterns", label: "Patterns" },
-                { id: "metrics", label: "Metrics" },
+                { id: "patterns", label: text.liveSignalPatterns },
+                { id: "metrics", label: text.liveSignalMetrics },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -1049,7 +1277,7 @@ function ReasoningExperience({
         <div className="conversationHeader">
           <div>
             <div className="panelLabel">{copy.liveConversation}</div>
-            {isDailyWorkout ? <div className="dailyWorkoutBadge">Daily Thinking Workout</div> : null}
+            {isDailyWorkout ? <div className="dailyWorkoutBadge">{text.dailyThinkingWorkout}</div> : null}
             <h1>{visibleChallenge.prompt}</h1>
           </div>
           <div className="threadMeta">
@@ -1057,34 +1285,34 @@ function ReasoningExperience({
             <span>{visibleDifficulty}</span>
             <span>{visiblePressure}</span>
             {ageBand !== "18_plus" ? <span>{ageBandLabel(ageBand)}</span> : null}
-            {isDailyWorkout ? <span>Daily workout</span> : null}
-            {!profile?.id ? <span>{Math.max(0, 3 - freePassUsed)} free left</span> : null}
+            {isDailyWorkout ? <span>{text.dailyWorkout}</span> : null}
+            {!profile?.id ? <span>{Math.max(0, 3 - freePassUsed)} {text.freeLeft}</span> : null}
           </div>
         </div>
 
         <section className="workoutProgressPanel" aria-label="Reasoning workout progress">
           <div className="workoutProgressHeader">
             <div>
-              <span>Reasoning Challenge Progress</span>
+              <span>{text.progressTitle}</span>
               <strong>
                 {workoutStage === "answer"
-                  ? "Current stage: Answer"
+                  ? text.stageAnswer
                   : workoutStage === "challenge"
-                    ? "Current stage: Preparing follow-up"
+                    ? text.stagePreparing
                     : workoutStage === "followUp"
-                      ? "Current stage: Follow-up"
+                      ? text.stageFollowUp
                     : workoutStage === "reflection"
-                      ? "Current stage: Reflection"
-                      : "Current stage: Complete"}
+                      ? text.stageReflection
+                      : text.stageComplete}
               </strong>
               <small>
-                {hasCompletedWorkout ? "Next stage: start a new challenge" : `Next stage: ${nextWorkoutStep.label}`}
+                {hasCompletedWorkout ? text.nextStageStart : `${text.nextStage}: ${nextWorkoutStep.label}`}
               </small>
             </div>
             <div className="progressRewardBadge">
-              <span>Reward</span>
+              <span>{text.reward}</span>
               <strong>+{expectedReward} XP</strong>
-              <small>{latestReward ? "Trait improved" : "Trait growth available"}</small>
+              <small>{latestReward ? text.traitImproved : text.traitGrowthAvailable}</small>
             </div>
           </div>
           <div className="workoutStepRail">
@@ -1107,7 +1335,7 @@ function ReasoningExperience({
         </section>
 
         <details className="advancedThinkingDetails">
-          <summary>Advanced Thinking Tools</summary>
+          <summary>{text.advancedThinkingTools}</summary>
 
           <section className="thinkingLensPanel">
             <div className="panelLabel">{copy.chooseThinkingLens}</div>
@@ -1163,22 +1391,22 @@ function ReasoningExperience({
             {thinkingToolTab === "lab" ? (
               <div className="reasoningSteps compactReasoningSteps">
                 <article>
-                  <span>Step 1</span>
+                  <span>{text.stepWord} 1</span>
                   <strong>{toolsCopy.position}</strong>
                   <p>{evaluatedClaim || response || copy.stateClaim}</p>
                 </article>
                 <article>
-                  <span>Step 2</span>
+                  <span>{text.stepWord} 2</span>
                   <strong>{toolsCopy.support}</strong>
                   <p>{visibleFeedback.strengths.join(", ") || copy.evidenceEmpty}</p>
                 </article>
                 <article>
-                  <span>Step 3</span>
+                  <span>{text.stepWord} 3</span>
                   <strong>{toolsCopy.followUp}</strong>
                   <p>{visibleFeedback.followUp}</p>
                 </article>
                 <article>
-                  <span>Step 4</span>
+                  <span>{text.stepWord} 4</span>
                   <strong>{toolsCopy.assumptions}</strong>
                   <p>{visibleFeedback.weaknesses.join(", ") || visibleFeedback.analysis}</p>
                 </article>
@@ -1200,29 +1428,25 @@ function ReasoningExperience({
 
         {workoutStage === "followUp" ? (
           <section className="finalReflectionPanel followUpResponsePanel">
-            <div className="panelLabel">Follow-up Question</div>
+            <div className="panelLabel">{text.followUpQuestion}</div>
             <article className="perspectiveNudge">
-              <span>Perspective you may not have considered</span>
+              <span>{text.perspectiveLabel}</span>
               <p>{visibleFeedback.contrarian}</p>
             </article>
             <h2>{visibleFeedback.followUp}</h2>
-            <p>
-              Take a moment to explore this angle in your own words before reflecting.
-            </p>
+            <p>{text.followUpInstruction}</p>
             <textarea
               className="textarea responseBox conversationInput"
               value={followUpResponse}
               onChange={(e) => setFollowUpResponse(e.target.value)}
-              placeholder="My answer to the follow-up is..."
+              placeholder={text.followUpPlaceholder}
             />
           </section>
         ) : workoutStage === "reflection" || workoutStage === "complete" ? (
           <section className="finalReflectionPanel">
-            <div className="panelLabel">Final Reflection</div>
-            <h2>Did this conversation help you see a perspective you hadn't considered?</h2>
-            <p>
-              UThynk is measuring whether the conversation changed how you see the problem, not whether you agreed.
-            </p>
+            <div className="panelLabel">{text.finalReflection}</div>
+            <h2>{text.perspectiveImpactQuestion}</h2>
+            <p>{text.perspectiveImpactText}</p>
             <div className="perspectiveChoiceGrid" role="radiogroup" aria-label="Perspective impact">
               {perspectiveOptions.map((option) => (
                 <button
@@ -1239,7 +1463,7 @@ function ReasoningExperience({
               ))}
             </div>
             <label className="responseLabel compactResponseLabel" htmlFor="standout-perspective">
-              What perspective stood out most? <span>(optional)</span>
+              {text.perspectiveLabel} <span>({text.reflectionOptional})</span>
             </label>
             <textarea
               id="standout-perspective"
@@ -1250,12 +1474,12 @@ function ReasoningExperience({
                 setStandoutPerspective(e.target.value);
                 setReflection(e.target.value);
               }}
-              placeholder="The perspective I hadn't considered was..."
+              placeholder={text.perspectivePlaceholder}
             />
             <section className="confidenceCheckPanel compactConfidencePanel" aria-label="Confidence after conversation">
               <div>
-                <span>Confidence Now</span>
-                <strong>How confident are you now?</strong>
+                <span>{text.confidenceNow}</span>
+                <strong>{text.confidenceNowQuestion}</strong>
               </div>
               <div className="confidenceScale" role="radiogroup" aria-label="Confidence after conversation">
                 {confidenceScale.map((value) => (
@@ -1286,14 +1510,14 @@ function ReasoningExperience({
               value={response}
               disabled={workoutStage === "challenge"}
               onChange={(e) => setResponse(e.target.value)}
-              placeholder={workoutStage === "challenge" ? "UThynk is preparing your follow-up..." : copy.placeholder}
+              placeholder={workoutStage === "challenge" ? text.preparingFollowUp : copy.placeholder}
             />
 
             {response.trim() && workoutStage !== "challenge" ? (
               <section className="confidenceCheckPanel" aria-label="Confidence before UThynk response">
                 <div>
-                  <span>Confidence Check</span>
-                  <strong>How confident are you in your answer?</strong>
+                  <span>{text.confidenceCheck}</span>
+                  <strong>{text.confidenceAnswerQuestion}</strong>
                 </div>
                 <div className="confidenceScale" role="radiogroup" aria-label="Confidence before UThynk response">
                   {confidenceScale.map((value) => (
@@ -1320,13 +1544,10 @@ function ReasoningExperience({
         {error ? <p className="panelNote">{error}</p> : null}
         {!profile?.id && freePassUsed >= 3 ? (
           <div className="freePassGate">
-            <strong>Create a free beta profile to continue.</strong>
-            <span>
-              You used your 3 free UThynk challenges. Sign up to save memory,
-              streaks, traits, and future sessions.
-            </span>
+            <strong>{text.createFreeProfile}</strong>
+            <span>{text.freeGateText}</span>
             <Link className="btn btnPrimary" href="/login?reason=free-pass">
-              Create Profile
+              {text.createProfile}
             </Link>
           </div>
         ) : null}
@@ -1339,7 +1560,7 @@ function ReasoningExperience({
               disabled={!followUpResponse.trim()}
               onClick={continueToReflection}
             >
-              Continue to Reflection
+              {text.continueReflection}
             </button>
             <button
               className="btn"
@@ -1360,7 +1581,7 @@ function ReasoningExperience({
               disabled={!perspectiveImpact}
               onClick={completeWorkout}
             >
-              Complete Workout
+              {text.stepComplete}
             </button>
             <button
               className="btn"
@@ -1377,32 +1598,36 @@ function ReasoningExperience({
           <>
             <div className="completionActions">
               <div>
-                <span>Reasoning workout complete</span>
+                <span>{text.workoutComplete}</span>
                 <strong>{localizeText(feedback.trait, language) || primaryIdentity}</strong>
               </div>
               <button className="btn btnPrimary" type="button" onClick={startNextWorkout}>
-                Start Next Challenge
+                {text.startNextChallenge}
               </button>
             </div>
 
             <section className="completionFeedbackPanel" aria-label="Completion feedback">
               <div>
-                <span>Quick Feedback</span>
-                <strong>Did this make you think differently?</strong>
+                <span>{text.quickFeedback}</span>
+                <strong>{text.thinkDifferentlyQuestion}</strong>
               </div>
               <div className="completionFeedbackChoices" role="radiogroup" aria-label="Did this make you think differently?">
-                {["Yes", "Somewhat", "No"].map((option) => (
+                {[
+                  { label: text.yes, value: "Yes" },
+                  { label: text.somewhat, value: "Somewhat" },
+                  { label: text.no, value: "No" },
+                ].map((option) => (
                   <button
-                    key={option}
+                    key={option.value}
                     type="button"
                     role="radio"
-                    aria-checked={completionFeedback === option}
-                    className={completionFeedback === option ? "active" : ""}
+                    aria-checked={completionFeedback === option.value}
+                    className={completionFeedback === option.value ? "active" : ""}
                     onClick={() => {
-                      setCompletionFeedback(option);
+                      setCompletionFeedback(option.value);
                       trackEvent(
                         createTelemetryEvent("completed_thinking_difference_feedback", profile?.id, {
-                          answer: option,
+                          answer: option.value,
                           category: challenge.category,
                           challengeId: challenge.id,
                           confidenceAfter,
@@ -1411,7 +1636,7 @@ function ReasoningExperience({
                       );
                     }}
                   >
-                    {option}
+                    {option.label}
                   </button>
                 ))}
               </div>
@@ -1420,16 +1645,13 @@ function ReasoningExperience({
             {showSoftLaunchSurvey ? (
               <section className="softLaunchSurveyPanel">
                 <div>
-                  <span>Soft Launch Survey</span>
-                  <strong>Help shape UThynk beta</strong>
-                  <p>
-                    After a few conversations, tell us what was valuable, confusing,
-                    and whether UThynk showed you a perspective you had not considered.
-                  </p>
+                  <span>{text.softLaunchSurvey}</span>
+                  <strong>{text.helpShapeBeta}</strong>
+                  <p>{text.softLaunchSurveyText}</p>
                 </div>
                 <div className="surveyActionRow">
                   <Link className="btn btnPrimary" href="/feedback">
-                    Give Feedback
+                    {text.giveFeedback}
                   </Link>
                   <button
                     className="btn"
@@ -1447,7 +1669,7 @@ function ReasoningExperience({
                       }).catch(() => null);
                     }}
                   >
-                    Later
+                    {text.later}
                   </button>
                 </div>
               </section>
@@ -1496,14 +1718,14 @@ function ReasoningExperience({
 
             <div className="thinkingLabelLayer">
               <span>{copy.evidenceStrength} +{evidenceDelta}</span>
-              <span>{copy.rewardPattern}: {visibleFeedback.trait || "Independent Verification"}</span>
+              <span>{copy.rewardPattern}: {visibleFeedback.trait || text.independentVerification}</span>
               {visibleFeedback.strengths.slice(0, 2).map((item) => (
                 <span key={item}>{item}</span>
               ))}
             </div>
 
             <details className="advancedExplanationLayer">
-              <summary>Why UThynk said this</summary>
+              <summary>{text.whyUthynkSaidThis}</summary>
               <div>
                 <p>{visibleFeedback.analysis}</p>
                 <p><strong>{copy.recursiveFollowUp}:</strong> {visibleFeedback.followUp}</p>
@@ -1520,8 +1742,10 @@ function ReasoningExperience({
             >
               <span>{item.role === "user" ? copy.userLabel : "UThynk"}</span>
               <p>
-                {item.content === uiCopy.en.welcome
-                  ? copy.welcome
+                {item.content === WELCOME_MESSAGE
+                  ? hasPriorThinkingHistory
+                    ? text.welcomeReturning
+                    : text.welcomeNew
                   : localizeText(item.content, language) || item.content}
               </p>
             </div>
@@ -1540,10 +1764,10 @@ function ReasoningExperience({
       <aside className="uthynkSidePanel uthynkRightPanel">
         {!hasCompletedWorkout ? (
           <section className="todaysInsightCard">
-            <div className="panelLabel">Today's Insight</div>
+            <div className="panelLabel">{text.todaysInsight}</div>
             <strong>{todaysInsight.title}</strong>
             <p>{todaysInsight.text}</p>
-            <small>More insights unlock after you complete the workout.</small>
+            <small>{text.moreInsightsUnlock}</small>
           </section>
         ) : null}
 
@@ -1570,9 +1794,7 @@ function ReasoningExperience({
         {hasCompletedWorkout && rightTab === "categories" ? (
           <section>
             <div className="panelLabel">{copy.categories}</div>
-            <p className="categoryHelper">
-              Choose a category to load a new active challenge.
-            </p>
+            <p className="categoryHelper">{text.categoryHelper}</p>
             <div className="categoryPills">
               {visibleCategoryLinks.map((item) => (
                 <button
@@ -1583,15 +1805,15 @@ function ReasoningExperience({
                   type="button"
                 >
                   <span>{item.label}</span>
-                  <small>{challenge.category === item.category ? "Active" : "Switch"}</small>
+                  <small>{challenge.category === item.category ? text.active : text.switch}</small>
                 </button>
               ))}
             </div>
             <Link className="categoryLessonsLink" href={`/lessons/${slugifyCategory(challenge.category)}`}>
-              Open {visibleChallenge.category} questions
+              {text.openCategoryQuestions.replace("{category}", visibleChallenge.category)}
             </Link>
             <Link className="categoryLessonsLink secondary" href="/lessons">
-              View all lesson categories
+              {text.viewAllLessonCategories}
             </Link>
           </section>
         ) : null}
@@ -1614,9 +1836,9 @@ function ReasoningExperience({
           <section>
             <div className="panelLabel">{copy.claimEvaluation}</div>
             <div className="logicGrid sideAnalysisGrid">
-              <div><span>Primary answer</span><p>{evaluatedClaim || response || copy.stateClaim}</p></div>
+              <div><span>{copy.claim}</span><p>{evaluatedClaim || response || copy.stateClaim}</p></div>
               <div><span>{copy.recursiveFollowUp}</span><p>{visibleFeedback.followUp}</p></div>
-              <div><span>Follow-up answer</span><p>{followUpResponse || "Not answered yet."}</p></div>
+              <div><span>{text.followUpAnswer}</span><p>{followUpResponse || text.notAnsweredYet}</p></div>
             </div>
           </section>
         ) : null}
@@ -1676,11 +1898,11 @@ export default function ReasoningPage() {
         <div className="topControls">
           <nav className="appNav" aria-label="Reasoning navigation">
             <Link href="/">{copy.home}</Link>
-            <Link href="/daily">Daily</Link>
-            <Link href="/lessons">Lessons</Link>
-            <Link href="/profile">Profile</Link>
-            <Link href="/feedback">Feedback</Link>
-            <Link href="/login?mode=login&force=1">Sign in</Link>
+            <Link href="/daily">{pageText[language].daily}</Link>
+            <Link href="/lessons">{pageText[language].lessons}</Link>
+            <Link href="/profile">{pageText[language].profileNav}</Link>
+            <Link href="/feedback">{pageText[language].feedbackNav}</Link>
+            <Link href="/login?mode=login&force=1">{pageText[language].signIn}</Link>
           </nav>
 
           <button
