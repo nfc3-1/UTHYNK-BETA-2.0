@@ -36,6 +36,25 @@ body{
   z-index:0;
 }
 
+.betaBrowserNotice{
+  position:relative;
+  z-index:2;
+  width:min(1450px,96vw);
+  margin:12px auto -8px;
+  padding:9px 14px;
+  border:1px solid rgba(246,198,79,0.28);
+  border-radius:14px;
+  background:rgba(246,198,79,0.10);
+  color:rgba(255,255,255,0.86);
+  font-size:13px;
+  line-height:1.35;
+  text-align:center;
+}
+
+.betaBrowserNotice strong{
+  color:var(--uthynk-gold);
+}
+
 a{
   color:inherit;
   text-decoration:none;
