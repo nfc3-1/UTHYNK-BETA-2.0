@@ -10,7 +10,6 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextPath = useMemo(() => safeInternalPath(searchParams.get("next")), [searchParams]);
-  const oauthError = searchParams.get("error");
   const forceLogin = searchParams.get("force") === "1";
   const shouldLogout = searchParams.get("logout") === "1";
   const [mode, setMode] = useState<"signup" | "login">(
@@ -24,12 +23,6 @@ function LoginForm() {
   const [onboardingStyle, setOnboardingStyle] = useState("balanced");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    if (oauthError) {
-      setError("Google sign-in could not be completed. Check the Supabase redirect URL and provider setup.");
-    }
-  }, [oauthError]);
 
   useEffect(() => {
     async function checkSession() {
@@ -132,15 +125,6 @@ function LoginForm() {
         </p>
 
         <div className="authForm">
-          <a
-            className="btn googleAuthButton"
-            href={`/api/auth/oauth?provider=google&next=${encodeURIComponent(nextPath)}`}
-          >
-            Continue with Google
-          </a>
-
-          <div className="authDivider"><span>or</span></div>
-
           {mode === "signup" ? (
             <label>
               <span>Name</span>

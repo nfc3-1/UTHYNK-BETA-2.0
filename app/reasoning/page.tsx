@@ -77,12 +77,12 @@ const onboardingCopy = {
         text: "Logic checks whether the argument makes sense. Incentives looks at motivations and hidden interests. Ethics looks at fairness and values. History looks at patterns from the past. Strategy looks at long-term consequences.",
       },
       {
-        title: "Answer and rate confidence",
-        text: "Write a few clear sentences, then rate how confident you are. UThynk uses that to see whether your thinking moves after the challenge.",
+        title: "Answer in your own words",
+        text: "Write a few clear sentences. Add an example, a reason, or a tradeoff when you can.",
       },
       {
         title: "Consider one new perspective",
-        text: "UThynk should show an angle you may not have considered, then ask one follow-up before the final reflection.",
+        text: "UThynk should show an angle you may not have considered, then move you into a short reflection.",
       },
       {
         title: "Complete the workout",
@@ -102,12 +102,12 @@ const onboardingCopy = {
         text: "Logica revisa si el argumento tiene sentido. Incentivos mira motivaciones ocultas. Etica mira valores. Historia mira patrones. Estrategia mira consecuencias a largo plazo.",
       },
       {
-        title: "Responde y mide tu confianza",
-        text: "Escribe unas frases claras y califica que tan seguro estas. UThynk usa eso para ver si tu pensamiento cambia despues del reto.",
+        title: "Responde con tus palabras",
+        text: "Escribe unas frases claras. Agrega un ejemplo, una razon o un intercambio cuando puedas.",
       },
       {
         title: "Considera una nueva perspectiva",
-        text: "UThynk debe mostrar un angulo que quizas no habias considerado y luego hacer una pregunta de seguimiento antes de la reflexion final.",
+        text: "UThynk debe mostrar un angulo que quizas no habias considerado y luego llevarte a una reflexion breve.",
       },
       {
         title: "Completa el entrenamiento",
@@ -127,12 +127,12 @@ const onboardingCopy = {
         text: "Logique verifie si l'argument tient. Incitations regarde les motivations cachees. Ethique regarde les valeurs. Histoire regarde les schemas. Strategie regarde les consequences a long terme.",
       },
       {
-        title: "Reponds et note ta confiance",
-        text: "Ecris quelques phrases claires, puis note ton niveau de confiance. UThynk s'en sert pour voir si ta pensee evolue apres le defi.",
+        title: "Reponds avec tes mots",
+        text: "Ecris quelques phrases claires. Ajoute un exemple, une raison ou un compromis quand tu peux.",
       },
       {
         title: "Considere une nouvelle perspective",
-        text: "UThynk doit montrer un angle que tu n'avais peut-etre pas considere, puis poser une question de suivi avant la reflexion finale.",
+        text: "UThynk doit montrer un angle que tu n'avais peut-etre pas considere, puis passer a une courte reflexion.",
       },
       {
         title: "Termine l'exercice",
@@ -195,10 +195,6 @@ const pageText = {
     adaptiveThinkingText: "you adjust your reasoning when new evidence appears.",
     advancedThinkingTools: "Advanced Thinking Tools",
     categoryHelper: "Choose a category to load a new active challenge.",
-    confidenceAnswerQuestion: "How confident are you in your answer?",
-    confidenceCheck: "Confidence Check",
-    confidenceNow: "Confidence Now",
-    confidenceNowQuestion: "How confident are you now?",
     continueReflection: "Continue to Reflection",
     createFreeProfile: "Create a free beta profile to continue.",
     createProfile: "Create Profile",
@@ -276,10 +272,6 @@ const pageText = {
     adaptiveThinkingText: "ajustas tu razonamiento cuando aparece nueva evidencia.",
     advancedThinkingTools: "Herramientas avanzadas de pensamiento",
     categoryHelper: "Elige una categoria para cargar un nuevo reto activo.",
-    confidenceAnswerQuestion: "Que tan seguro estas de tu respuesta?",
-    confidenceCheck: "Revision de confianza",
-    confidenceNow: "Confianza ahora",
-    confidenceNowQuestion: "Que tan seguro estas ahora?",
     continueReflection: "Continuar a la reflexion",
     createFreeProfile: "Crea un perfil beta gratuito para continuar.",
     createProfile: "Crear perfil",
@@ -357,10 +349,6 @@ const pageText = {
     adaptiveThinkingText: "tu ajustes ton raisonnement quand de nouvelles preuves apparaissent.",
     advancedThinkingTools: "Outils de pensee avances",
     categoryHelper: "Choisis une categorie pour charger un nouveau defi actif.",
-    confidenceAnswerQuestion: "A quel point es-tu sur de ta reponse ?",
-    confidenceCheck: "Verification de confiance",
-    confidenceNow: "Confiance maintenant",
-    confidenceNowQuestion: "A quel point es-tu sur maintenant ?",
     continueReflection: "Continuer vers la reflexion",
     createFreeProfile: "Cree un profil beta gratuit pour continuer.",
     createProfile: "Creer un profil",
@@ -494,11 +482,8 @@ function ReasoningExperience({
   const [leftSignalTab, setLeftSignalTab] = useState<"patterns" | "metrics">("patterns");
   const [thinkingLens, setThinkingLens] = useState<(typeof thinkingLenses)[number]["id"]>("logic");
   const [evaluatedClaim, setEvaluatedClaim] = useState("");
-  const [workoutStage, setWorkoutStage] = useState<"answer" | "challenge" | "followUp" | "reflection" | "complete">("answer");
-  const [followUpResponse, setFollowUpResponse] = useState("");
+  const [workoutStage, setWorkoutStage] = useState<"answer" | "challenge" | "reflection" | "complete">("answer");
   const [reflection, setReflection] = useState("");
-  const [confidenceBefore, setConfidenceBefore] = useState(7);
-  const [confidenceAfter, setConfidenceAfter] = useState(7);
   const [perspectiveImpact, setPerspectiveImpact] = useState("");
   const [standoutPerspective, setStandoutPerspective] = useState("");
   const [completionFeedback, setCompletionFeedback] = useState("");
@@ -636,9 +621,7 @@ function ReasoningExperience({
         .map((result: any) => result[0]?.transcript || '')
         .join(' ');
 
-      if (workoutStageRef.current === "followUp") {
-        setFollowUpResponse(transcript);
-      } else if (workoutStageRef.current === "reflection") {
+      if (workoutStageRef.current === "reflection") {
         setReflection(transcript);
       } else {
         setResponse(transcript);
@@ -707,9 +690,7 @@ function ReasoningExperience({
           : "Moderate"
     );
     setResponse("");
-    setFollowUpResponse("");
     setReflection("");
-    setConfidenceAfter(confidenceBefore);
     setPerspectiveImpact("");
     setStandoutPerspective("");
     setCompletionFeedback("");
@@ -756,9 +737,7 @@ function ReasoningExperience({
           : "Moderate"
     );
     setResponse("");
-    setFollowUpResponse("");
     setReflection("");
-    setConfidenceAfter(confidenceBefore);
     setPerspectiveImpact("");
     setStandoutPerspective("");
     setCompletionFeedback("");
@@ -793,7 +772,6 @@ function ReasoningExperience({
   function completeWorkout() {
     if (!perspectiveImpact) return;
 
-    const confidenceChange = confidenceAfter - confidenceBefore;
     const completedCount =
       typeof window === "undefined"
         ? 0
@@ -833,33 +811,10 @@ function ReasoningExperience({
       createTelemetryEvent("completed_workout_reflection", profile?.id, {
         category: challenge.category,
         challengeId: challenge.id,
-        confidenceAfter,
-        confidenceBefore,
-        confidenceChange,
         perspectiveImpact,
         reflectionLength: reflection.length,
         score: feedback.score,
         standoutPerspectiveLength: standoutPerspective.length,
-      })
-    );
-  }
-
-  function continueToReflection() {
-    if (!followUpResponse.trim()) return;
-
-    setConversation((prev) => [
-      ...prev,
-      {
-        role: "user",
-        content: followUpResponse,
-      },
-    ]);
-    setWorkoutStage("reflection");
-    trackEvent(
-      createTelemetryEvent("submitted_follow_up_response", profile?.id, {
-        category: challenge.category,
-        challengeId: challenge.id,
-        responseLength: followUpResponse.length,
       })
     );
   }
@@ -894,7 +849,6 @@ function ReasoningExperience({
         createTelemetryEvent("submitted_answer", activeProfile?.id, {
           category: challenge.category,
           challengeId: challenge.id,
-          confidenceBefore,
           language,
           responseLength: response.length,
           thinkingLens,
@@ -1076,8 +1030,7 @@ function ReasoningExperience({
       }
 
       setResponse("");
-      setFollowUpResponse("");
-      setWorkoutStage("followUp");
+      setWorkoutStage("reflection");
       trackEvent(
         createTelemetryEvent("received_challenge", activeProfile?.id, {
           challengeId: challenge.id,
@@ -1138,13 +1091,11 @@ function ReasoningExperience({
             : copy.evidenceTest;
   const workoutSteps = [
     { id: "answer", label: text.stepAnswer },
-    { id: "followUp", label: text.stepFollowUp },
     { id: "reflection", label: text.stepReflection },
     { id: "complete", label: text.stepComplete },
   ] as const;
-  const confidenceScale = Array.from({ length: 10 }, (_, index) => index + 1);
   const perspectiveOptions = [text.yes, text.somewhat, text.no];
-  const displayedWorkoutStage = workoutStage === "challenge" ? "followUp" : workoutStage;
+  const displayedWorkoutStage = workoutStage === "challenge" ? "reflection" : workoutStage;
   const workoutStageIndex = workoutSteps.findIndex((step) => step.id === displayedWorkoutStage);
   const nextWorkoutStep =
     workoutSteps[Math.min(workoutSteps.length - 1, Math.max(0, workoutStageIndex + 1))];
@@ -1299,8 +1250,6 @@ function ReasoningExperience({
                   ? text.stageAnswer
                   : workoutStage === "challenge"
                     ? text.stagePreparing
-                    : workoutStage === "followUp"
-                      ? text.stageFollowUp
                     : workoutStage === "reflection"
                       ? text.stageReflection
                       : text.stageComplete}
@@ -1327,7 +1276,7 @@ function ReasoningExperience({
                 }
                 key={step.id}
               >
-                <span>{index < 3 ? index + 1 : "OK"}</span>
+                <span>{index + 1}</span>
                 <strong>{step.label}</strong>
               </div>
             ))}
@@ -1426,23 +1375,7 @@ function ReasoningExperience({
           </section>
         </details>
 
-        {workoutStage === "followUp" ? (
-          <section className="finalReflectionPanel followUpResponsePanel">
-            <div className="panelLabel">{text.followUpQuestion}</div>
-            <article className="perspectiveNudge">
-              <span>{text.perspectiveLabel}</span>
-              <p>{visibleFeedback.contrarian}</p>
-            </article>
-            <h2>{visibleFeedback.followUp}</h2>
-            <p>{text.followUpInstruction}</p>
-            <textarea
-              className="textarea responseBox conversationInput"
-              value={followUpResponse}
-              onChange={(e) => setFollowUpResponse(e.target.value)}
-              placeholder={text.followUpPlaceholder}
-            />
-          </section>
-        ) : workoutStage === "reflection" || workoutStage === "complete" ? (
+        {workoutStage === "reflection" || workoutStage === "complete" ? (
           <section className="finalReflectionPanel">
             <div className="panelLabel">{text.finalReflection}</div>
             <h2>{text.perspectiveImpactQuestion}</h2>
@@ -1476,27 +1409,6 @@ function ReasoningExperience({
               }}
               placeholder={text.perspectivePlaceholder}
             />
-            <section className="confidenceCheckPanel compactConfidencePanel" aria-label="Confidence after conversation">
-              <div>
-                <span>{text.confidenceNow}</span>
-                <strong>{text.confidenceNowQuestion}</strong>
-              </div>
-              <div className="confidenceScale" role="radiogroup" aria-label="Confidence after conversation">
-                {confidenceScale.map((value) => (
-                  <button
-                    key={value}
-                    type="button"
-                    role="radio"
-                    aria-checked={confidenceAfter === value}
-                    className={confidenceAfter === value ? "active" : ""}
-                    disabled={workoutStage === "complete"}
-                    onClick={() => setConfidenceAfter(value)}
-                  >
-                    {value}
-                  </button>
-                ))}
-              </div>
-            </section>
           </section>
         ) : (
           <>
@@ -1512,32 +1424,6 @@ function ReasoningExperience({
               onChange={(e) => setResponse(e.target.value)}
               placeholder={workoutStage === "challenge" ? text.preparingFollowUp : copy.placeholder}
             />
-
-            {response.trim() && workoutStage !== "challenge" ? (
-              <section className="confidenceCheckPanel" aria-label="Confidence before UThynk response">
-                <div>
-                  <span>{text.confidenceCheck}</span>
-                  <strong>{text.confidenceAnswerQuestion}</strong>
-                </div>
-                <div className="confidenceScale" role="radiogroup" aria-label="Confidence before UThynk response">
-                  {confidenceScale.map((value) => (
-                    <button
-                      key={value}
-                      type="button"
-                      role="radio"
-                      aria-checked={confidenceBefore === value}
-                      className={confidenceBefore === value ? "active" : ""}
-                      onClick={() => {
-                        setConfidenceBefore(value);
-                        setConfidenceAfter(value);
-                      }}
-                    >
-                      {value}
-                    </button>
-                  ))}
-                </div>
-              </section>
-            ) : null}
           </>
         )}
 
@@ -1552,28 +1438,7 @@ function ReasoningExperience({
           </div>
         ) : null}
 
-        {workoutStage === "followUp" ? (
-          <div className="reasoningActions">
-            <button
-              className="btn btnPrimary"
-              type="button"
-              disabled={!followUpResponse.trim()}
-              onClick={continueToReflection}
-            >
-              {text.continueReflection}
-            </button>
-            <button
-              className="btn"
-              type="button"
-              onMouseDown={startVoiceInput}
-              onMouseUp={stopVoiceInput}
-              onTouchStart={startVoiceInput}
-              onTouchEnd={stopVoiceInput}
-            >
-              {copy.holdToTalk}
-            </button>
-          </div>
-        ) : workoutStage === "reflection" ? (
+        {workoutStage === "reflection" ? (
           <div className="reasoningActions">
             <button
               className="btn btnPrimary"
@@ -1630,8 +1495,6 @@ function ReasoningExperience({
                           answer: option.value,
                           category: challenge.category,
                           challengeId: challenge.id,
-                          confidenceAfter,
-                          confidenceBefore,
                         })
                       );
                     }}
@@ -1838,7 +1701,6 @@ function ReasoningExperience({
             <div className="logicGrid sideAnalysisGrid">
               <div><span>{copy.claim}</span><p>{evaluatedClaim || response || copy.stateClaim}</p></div>
               <div><span>{copy.recursiveFollowUp}</span><p>{visibleFeedback.followUp}</p></div>
-              <div><span>{text.followUpAnswer}</span><p>{followUpResponse || text.notAnsweredYet}</p></div>
             </div>
           </section>
         ) : null}
