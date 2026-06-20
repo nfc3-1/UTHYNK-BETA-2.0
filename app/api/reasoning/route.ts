@@ -21,6 +21,7 @@ type ReasoningRequest = {
   category?: string;
   conversationId?: string;
   language?: "en" | "es" | "fr";
+  phase?: "follow_up" | "synthesis";
   question?: string;
   response?: string;
   section?: string;
@@ -297,6 +298,7 @@ function buildAdaptiveSystemPrompt({
   language,
   memory,
   mode,
+  phase,
   profile,
   sessionId,
   verifier,
@@ -306,6 +308,7 @@ function buildAdaptiveSystemPrompt({
   language: "en" | "es" | "fr";
   memory?: any;
   mode: string;
+  phase?: "follow_up" | "synthesis";
   profile?: any;
   sessionId: string;
   verifier: VerifierResult;
@@ -336,6 +339,9 @@ function buildAdaptiveSystemPrompt({
     `Persistent memory: ${JSON.stringify(memory || null)}.`,
     `Verifier engine result: ${JSON.stringify(verifier)}.`,
     `Do not repeat these follow-ups: ${JSON.stringify(recentFollowUps)}.`,
+    phase === "synthesis"
+      ? "Current workout phase: synthesis. The user has answered the original prompt and your follow-up. The analysis field must be an overarching response to both answers together: name the through-line, what improved, what is still missing, and one plain-language perspective they should carry forward. The followUp field should be a short optional next thought, not a required extra step."
+      : "Current workout phase: follow_up. The user has answered the original prompt. Give one perspective they may not have considered and one conversational follow-up question. Do not treat the workout as complete yet.",
     "Product success test: the user should regularly think, 'I had not considered that.' Your main job is to introduce one meaningful new perspective, not to merely ask them to elaborate.",
     "The contrarian field must be a concrete perspective the user may have missed. Start from their actual response and introduce an alternate explanation, hidden tradeoff, strongest opposing case, incentive, evidence problem, or second-order effect.",
     "The analysis field should use common language: name what is promising, then name the missing perspective in plain terms. Avoid academic phrasing.",
@@ -614,6 +620,7 @@ async function callOpenAi({
   language,
   memory,
   mode,
+  phase,
   profile,
   question,
   response,
@@ -630,6 +637,7 @@ async function callOpenAi({
   language: "en" | "es" | "fr";
   memory?: any;
   mode: string;
+  phase?: "follow_up" | "synthesis";
   profile?: any;
   question?: string;
   response: string;
@@ -659,6 +667,7 @@ async function callOpenAi({
             language,
             memory,
             mode,
+            phase,
             profile,
             sessionId,
             verifier,
@@ -670,6 +679,7 @@ async function callOpenAi({
             ageBand: profile?.age_band || "18_plus",
             challenge,
             priorSessions: memory?.recentPatterns || [],
+            phase,
             question,
             response,
             section,
@@ -707,6 +717,7 @@ function streamingFeedback(args: {
   language: "en" | "es" | "fr";
   memory?: any;
   mode: string;
+  phase?: "follow_up" | "synthesis";
   profile?: any;
   response: string;
   sessionId: string;
@@ -772,7 +783,8 @@ function streamingFeedback(args: {
 
         const parsed = JSON.parse(content);
         const feedback = sanitizeFeedback(parsed, args.verifier, args.categoryPrompt);
-        const progression = await persistSession({ ...args, feedback });
+        const progression =
+          args.phase === "follow_up" ? null : await persistSession({ ...args, feedback });
 
         controller.enqueue(
           encoder.encode(
@@ -884,6 +896,7 @@ export async function POST(request: Request) {
       language,
       memory,
       mode,
+      phase: body.phase || "synthesis",
       profile,
       question: body.question,
       response,
@@ -905,19 +918,22 @@ export async function POST(request: Request) {
 
     const parsed = await nonStreamingFeedback(openAiArgs);
     const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt);
-    const progression = await persistSession({
-      categoryPrompt,
-      challenge,
-      challengeId: body.challengeId,
-      conversationId,
-      feedback,
-      memory,
-      mode,
-      response,
-      sessionId,
-      thinkingLens: body.thinkingLens,
-      userId,
-    });
+    const progression =
+      body.phase === "follow_up"
+        ? null
+        : await persistSession({
+            categoryPrompt,
+            challenge,
+            challengeId: body.challengeId,
+            conversationId,
+            feedback,
+            memory,
+            mode,
+            response,
+            sessionId,
+            thinkingLens: body.thinkingLens,
+            userId,
+          });
 
     return NextResponse.json({
       source: "openai",

@@ -241,6 +241,8 @@ const pageText = {
     softLaunchSurvey: "Soft Launch Survey",
     softLaunchSurveyText: "After a few conversations, tell us what was valuable, confusing, and whether UThynk showed you a perspective you had not considered.",
     somewhat: "Somewhat",
+    synthesizeResponses: "Get UThynk Response",
+    synthesisInProgress: "UThynk is connecting both responses...",
     stageAnswer: "Current stage: Answer",
     stageComplete: "Current stage: Complete",
     stageFollowUp: "Current stage: Follow-up",
@@ -318,6 +320,8 @@ const pageText = {
     softLaunchSurvey: "Encuesta beta",
     softLaunchSurveyText: "Despues de algunas conversaciones, dinos que fue valioso, confuso y si UThynk te mostro una perspectiva que no habias considerado.",
     somewhat: "Algo",
+    synthesizeResponses: "Obtener respuesta de UThynk",
+    synthesisInProgress: "UThynk esta conectando ambas respuestas...",
     stageAnswer: "Etapa actual: Respuesta",
     stageComplete: "Etapa actual: Completo",
     stageFollowUp: "Etapa actual: Seguimiento",
@@ -395,6 +399,8 @@ const pageText = {
     softLaunchSurvey: "Sondage beta",
     softLaunchSurveyText: "Apres quelques conversations, dis-nous ce qui etait utile, confus, et si UThynk t'a montre une perspective que tu n'avais pas consideree.",
     somewhat: "Un peu",
+    synthesizeResponses: "Obtenir la reponse UThynk",
+    synthesisInProgress: "UThynk relie les deux reponses...",
     stageAnswer: "Etape actuelle : Reponse",
     stageComplete: "Etape actuelle : Termine",
     stageFollowUp: "Etape actuelle : Suivi",
@@ -482,7 +488,8 @@ function ReasoningExperience({
   const [leftSignalTab, setLeftSignalTab] = useState<"patterns" | "metrics">("patterns");
   const [thinkingLens, setThinkingLens] = useState<(typeof thinkingLenses)[number]["id"]>("logic");
   const [evaluatedClaim, setEvaluatedClaim] = useState("");
-  const [workoutStage, setWorkoutStage] = useState<"answer" | "challenge" | "reflection" | "complete">("answer");
+  const [workoutStage, setWorkoutStage] = useState<"answer" | "challenge" | "followUp" | "synthesis" | "reflection" | "complete">("answer");
+  const [followUpResponse, setFollowUpResponse] = useState("");
   const [reflection, setReflection] = useState("");
   const [perspectiveImpact, setPerspectiveImpact] = useState("");
   const [standoutPerspective, setStandoutPerspective] = useState("");
@@ -623,6 +630,8 @@ function ReasoningExperience({
 
       if (workoutStageRef.current === "reflection") {
         setReflection(transcript);
+      } else if (workoutStageRef.current === "followUp") {
+        setFollowUpResponse(transcript);
       } else {
         setResponse(transcript);
       }
@@ -690,6 +699,7 @@ function ReasoningExperience({
           : "Moderate"
     );
     setResponse("");
+    setFollowUpResponse("");
     setReflection("");
     setPerspectiveImpact("");
     setStandoutPerspective("");
@@ -737,6 +747,7 @@ function ReasoningExperience({
           : "Moderate"
     );
     setResponse("");
+    setFollowUpResponse("");
     setReflection("");
     setPerspectiveImpact("");
     setStandoutPerspective("");
@@ -867,6 +878,7 @@ function ReasoningExperience({
           category: challenge.category,
           challenge: `${visibleChallenge.prompt}\nThinking lens: ${thinkingLens}`,
           language,
+          phase: "follow_up",
           response,
           conversationId: conversationIdRef.current,
           sessionId: sessionIdRef.current,
@@ -943,7 +955,184 @@ function ReasoningExperience({
         return;
       }
 
-      setEvaluatedClaim(response);
+      setFeedback({ ...data, trait: data.trait || challenge.trait });
+
+      const uthynkMessage = `${data.analysis}\n\n${text.perspectiveLabel}: ${data.contrarian}\n\n${text.followUpQuestion}: ${data.followUp}`;
+
+      setConversation((prev) => [
+        ...prev,
+        {
+          role: "uthynk",
+          content: uthynkMessage,
+        },
+      ]);
+
+      if (data.score >= 88) {
+        setDifficulty('strategic');
+        setPressure('High');
+      } else if (data.score >= 76) {
+        setDifficulty('critical');
+        setPressure('High');
+      } else if (data.score >= 62) {
+        setDifficulty('practical');
+        setPressure('Moderate');
+      } else {
+        setDifficulty('everyday');
+        setPressure('Low');
+      }
+
+      setFollowUpResponse("");
+      setWorkoutStage("followUp");
+      trackEvent(
+        createTelemetryEvent("received_challenge", activeProfile?.id, {
+          challengeId: challenge.id,
+          category: challenge.category,
+          difficulty,
+          followUpLength: data.followUp?.length || 0,
+        })
+      );
+    } catch {
+      setError("Unable to analyze reasoning right now.");
+      setWorkoutStage("answer");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function synthesizeFollowUpResponse() {
+    try {
+      setLoading(true);
+      setError("");
+      setStreamingText("");
+      setWorkoutStage("synthesis");
+      let activeProfile: any = null;
+
+      if (typeof window !== "undefined") {
+        const stored = localStorage.getItem("uthynk-profile");
+        activeProfile = stored ? JSON.parse(stored) : null;
+        const used = Number(localStorage.getItem("uthynk-free-pass-used") || "0");
+
+        if (!activeProfile?.id && used >= 3) {
+          router.push("/login?reason=free-pass");
+          return;
+        }
+      }
+
+      const combinedResponse = [
+        `Initial answer: ${response}`,
+        `Follow-up question: ${feedback.followUp}`,
+        `Follow-up answer: ${followUpResponse}`,
+      ].join("\n\n");
+
+      setConversation((prev) => [
+        ...prev,
+        {
+          role: "user",
+          content: followUpResponse,
+        },
+      ]);
+
+      trackEvent(
+        createTelemetryEvent("submitted_follow_up_answer", activeProfile?.id, {
+          category: challenge.category,
+          challengeId: challenge.id,
+          followUpLength: followUpResponse.length,
+          initialResponseLength: response.length,
+          language,
+          thinkingLens,
+        })
+      );
+
+      const res = await fetch("/api/reasoning", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "text/event-stream",
+        },
+        body: JSON.stringify({
+          challengeId: challenge.id,
+          ageBand,
+          category: challenge.category,
+          challenge: `${visibleChallenge.prompt}\nThinking lens: ${thinkingLens}\nSynthesize the user's initial answer and follow-up answer into one overarching UThynk response.`,
+          language,
+          phase: "synthesis",
+          response: combinedResponse,
+          conversationId: conversationIdRef.current,
+          sessionId: sessionIdRef.current,
+          thinkingLens,
+          userId: activeProfile?.id,
+          stream: true,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        if (data.code === "auth_required") {
+          router.push("/login?reason=free-pass");
+          return;
+        }
+        setError(data.error || "Reasoning synthesis failed.");
+        setWorkoutStage("followUp");
+        return;
+      }
+
+      if (!res.body) {
+        setError("Reasoning synthesis stream did not start.");
+        setWorkoutStage("followUp");
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let data: any = null;
+
+      while (true) {
+        const { done, value } = await reader.read();
+
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split("\n\n");
+        buffer = events.pop() || "";
+
+        for (const event of events) {
+          const eventType = event
+            .split("\n")
+            .find((line) => line.startsWith("event:"))
+            ?.replace("event:", "")
+            .trim();
+          const eventData = event
+            .split("\n")
+            .find((line) => line.startsWith("data:"))
+            ?.replace("data:", "")
+            .trim();
+
+          if (!eventData) continue;
+
+          const payload = JSON.parse(eventData);
+
+          if (eventType === "token") {
+            setStreamingText((prev) => prev + payload.token);
+          }
+
+          if (eventType === "final") {
+            data = payload;
+          }
+
+          if (eventType === "error") {
+            setError(payload.error || "Reasoning synthesis failed.");
+          }
+        }
+      }
+
+      if (!data) {
+        setError("Reasoning synthesis ended without final feedback.");
+        setWorkoutStage("followUp");
+        return;
+      }
+
+      setEvaluatedClaim(combinedResponse);
       trackEvent(
         createTelemetryEvent("completed_reasoning_loop", activeProfile?.id, {
           category: challenge.category,
@@ -953,6 +1142,7 @@ function ReasoningExperience({
           xp: data.xp,
         })
       );
+
       if (!activeProfile?.id && typeof window !== "undefined") {
         const nextFreePassUsed = Math.min(
           3,
@@ -962,6 +1152,7 @@ function ReasoningExperience({
         document.cookie = `uthynk-free-pass-used=${nextFreePassUsed}; path=/; max-age=2592000; SameSite=Lax`;
         setFreePassUsed(nextFreePassUsed);
       }
+
       setFeedback({ ...data, trait: data.trait || challenge.trait });
       setLatestReward({
         evidenceDelta: Math.max(
@@ -1005,7 +1196,7 @@ function ReasoningExperience({
         )}; path=/; max-age=2592000; SameSite=Lax`;
       }
 
-      const uthynkMessage = `${data.analysis}\n\n${text.perspectiveLabel}: ${data.contrarian}\n\n${text.followUpQuestion}: ${data.followUp}`;
+      const uthynkMessage = `${data.analysis}\n\n${text.perspectiveLabel}: ${data.contrarian}`;
 
       setConversation((prev) => [
         ...prev,
@@ -1029,19 +1220,10 @@ function ReasoningExperience({
         setPressure('Low');
       }
 
-      setResponse("");
       setWorkoutStage("reflection");
-      trackEvent(
-        createTelemetryEvent("received_challenge", activeProfile?.id, {
-          challengeId: challenge.id,
-          category: challenge.category,
-          difficulty,
-          followUpLength: data.followUp?.length || 0,
-        })
-      );
     } catch {
-      setError("Unable to analyze reasoning right now.");
-      setWorkoutStage("answer");
+      setError("Unable to synthesize both responses right now.");
+      setWorkoutStage("followUp");
     } finally {
       setLoading(false);
     }
@@ -1091,11 +1273,12 @@ function ReasoningExperience({
             : copy.evidenceTest;
   const workoutSteps = [
     { id: "answer", label: text.stepAnswer },
+    { id: "followUp", label: text.stepFollowUp },
     { id: "reflection", label: text.stepReflection },
     { id: "complete", label: text.stepComplete },
   ] as const;
   const perspectiveOptions = [text.yes, text.somewhat, text.no];
-  const displayedWorkoutStage = workoutStage === "challenge" ? "reflection" : workoutStage;
+  const displayedWorkoutStage = workoutStage === "challenge" ? "followUp" : workoutStage === "synthesis" ? "reflection" : workoutStage;
   const workoutStageIndex = workoutSteps.findIndex((step) => step.id === displayedWorkoutStage);
   const nextWorkoutStep =
     workoutSteps[Math.min(workoutSteps.length - 1, Math.max(0, workoutStageIndex + 1))];
@@ -1250,9 +1433,13 @@ function ReasoningExperience({
                   ? text.stageAnswer
                   : workoutStage === "challenge"
                     ? text.stagePreparing
-                    : workoutStage === "reflection"
-                      ? text.stageReflection
-                      : text.stageComplete}
+                    : workoutStage === "followUp"
+                      ? text.stageFollowUp
+                      : workoutStage === "synthesis"
+                        ? text.synthesisInProgress
+                        : workoutStage === "reflection"
+                          ? text.stageReflection
+                          : text.stageComplete}
               </strong>
               <small>
                 {hasCompletedWorkout ? text.nextStageStart : `${text.nextStage}: ${nextWorkoutStep.label}`}
@@ -1410,6 +1597,20 @@ function ReasoningExperience({
               placeholder={text.perspectivePlaceholder}
             />
           </section>
+        ) : workoutStage === "followUp" || workoutStage === "synthesis" ? (
+          <section className="followUpResponsePanel">
+            <div className="panelLabel">{text.followUpQuestion}</div>
+            <h2>{visibleFeedback.followUp}</h2>
+            <p>{text.followUpInstruction}</p>
+            <textarea
+              id="follow-up-response"
+              className="textarea responseBox conversationInput"
+              value={followUpResponse}
+              disabled={workoutStage === "synthesis"}
+              onChange={(e) => setFollowUpResponse(e.target.value)}
+              placeholder={workoutStage === "synthesis" ? text.synthesisInProgress : text.followUpPlaceholder}
+            />
+          </section>
         ) : (
           <>
             <label className="responseLabel" htmlFor="response">
@@ -1448,6 +1649,28 @@ function ReasoningExperience({
             >
               {text.stepComplete}
             </button>
+            <button
+              className="btn"
+              type="button"
+              onMouseDown={startVoiceInput}
+              onMouseUp={stopVoiceInput}
+              onTouchStart={startVoiceInput}
+              onTouchEnd={stopVoiceInput}
+            >
+              {copy.holdToTalk}
+            </button>
+          </div>
+        ) : workoutStage === "followUp" || workoutStage === "synthesis" ? (
+          <div className="reasoningActions">
+            <button
+              className="btn btnPrimary"
+              type="button"
+              disabled={loading || workoutStage === "synthesis" || !followUpResponse.trim()}
+              onClick={synthesizeFollowUpResponse}
+            >
+              {loading ? copy.sending : text.synthesizeResponses}
+            </button>
+
             <button
               className="btn"
               type="button"

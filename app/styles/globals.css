@@ -2092,7 +2092,8 @@ a{
   font-weight:800;
 }
 
-.finalReflectionPanel{
+.finalReflectionPanel,
+.followUpResponsePanel{
   margin-top:16px;
   padding:16px;
   border-radius:16px;
@@ -2100,14 +2101,16 @@ a{
   background:rgba(255,255,255,0.04);
 }
 
-.finalReflectionPanel h2{
+.finalReflectionPanel h2,
+.followUpResponsePanel h2{
   margin:8px 0 6px;
   color:rgba(255,255,255,0.94);
   font-size:22px;
   line-height:1.1;
 }
 
-.finalReflectionPanel p{
+.finalReflectionPanel p,
+.followUpResponsePanel p{
   margin:0 0 12px;
   color:rgba(255,255,255,0.64);
   line-height:1.5;
