@@ -11,6 +11,7 @@ export type CategoryMetadata = {
   slug: string;
   subtitle: string;
   title: string;
+  sourceMaterial?: string[];
 };
 
 export const questionBank = data as QuestionBank;

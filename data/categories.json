@@ -7,7 +7,8 @@
     "slug": "logic-critical-thinking",
     "shortDescription": "Evaluate arguments, assumptions, contradictions, and weak claims.",
     "purpose": "Train users to evaluate arguments.",
-    "coachingLens": "argument structure, assumptions, consistency, fallacies, and missing evidence"
+    "coachingLens": "argument structure, assumptions, consistency, fallacies, and missing evidence",
+    "sourceMaterial": ["advertisements", "political speeches", "sales pitches", "debates", "social media arguments", "courtroom arguments", "company marketing", "public claims"]
   },
   {
     "name": "Epistemology",
@@ -17,7 +18,8 @@
     "slug": "epistemology",
     "shortDescription": "Ask how we know what is true and how much certainty is justified.",
     "purpose": "Train users to ask how they know something is true.",
-    "coachingLens": "source quality, proof, certainty, evidence strength, and what would change the user's mind"
+    "coachingLens": "source quality, proof, certainty, evidence strength, and what would change the user's mind",
+    "sourceMaterial": ["news reports", "expert disagreements", "eyewitness testimony", "rumors", "viral posts", "scientific disagreements"]
   },
   {
     "name": "Ethics & Moral Reasoning",
@@ -27,7 +29,8 @@
     "slug": "ethics-moral-reasoning",
     "shortDescription": "Reason through fairness, duty, harm, responsibility, and consequences.",
     "purpose": "Train users to reason through right, wrong, fairness, duty, responsibility, and consequences.",
-    "coachingLens": "moral tradeoffs, who is helped, who is harmed, principles, consequences, and fairness"
+    "coachingLens": "moral tradeoffs, who is helped, who is harmed, principles, consequences, and fairness",
+    "sourceMaterial": ["schools", "hospitals", "families", "workplaces", "businesses", "sports", "government"]
   },
   {
     "name": "Strategic Thinking",
@@ -37,7 +40,8 @@
     "slug": "strategic-thinking",
     "shortDescription": "Think several moves ahead before choosing.",
     "purpose": "Train users to think several moves ahead.",
-    "coachingLens": "second-order effects, unintended consequences, leverage, timing, tradeoffs, and incentives"
+    "coachingLens": "second-order effects, unintended consequences, leverage, timing, tradeoffs, and incentives",
+    "sourceMaterial": ["military history", "business decisions", "sports strategy", "negotiations", "investing", "politics", "career decisions"]
   },
   {
     "name": "Street Lessons",
@@ -47,7 +51,8 @@
     "slug": "street-lessons",
     "shortDescription": "Practical wisdom about people, power, incentives, risk, respect, trust, manipulation, and the real-world consequences of poor decisions.",
     "purpose": "Train practical judgment when people, pressure, reputation, trust, and consequences matter.",
-    "coachingLens": "trust, leverage, motives, pressure, practical risk, reputation, and real-world consequences"
+    "coachingLens": "trust, leverage, motives, pressure, practical risk, reputation, and real-world consequences",
+    "sourceMaterial": ["workplaces", "neighborhoods", "friendships", "family", "business", "negotiations", "trust", "reputation", "everyday consequences"]
   },
   {
     "name": "Financial Judgment",
@@ -57,7 +62,8 @@
     "slug": "financial-judgment",
     "shortDescription": "Make better decisions about money, risk, debt, and time.",
     "purpose": "Train money-related decision-making.",
-    "coachingLens": "risk, return, liquidity, opportunity cost, incentives, cash flow, and time horizon"
+    "coachingLens": "risk, return, liquidity, opportunity cost, incentives, cash flow, and time horizon",
+    "sourceMaterial": ["mortgages", "buying cars", "investing", "credit cards", "retirement", "business", "budgeting", "Warren Buffett", "Charlie Munger"]
   },
   {
     "name": "Leadership & Influence",
@@ -67,7 +73,8 @@
     "slug": "leadership-influence",
     "shortDescription": "Lead, communicate, persuade, and build trust responsibly.",
     "purpose": "Train users to lead, communicate, and influence responsibly.",
-    "coachingLens": "trust, clarity, accountability, morale, influence, and consequences for the team"
+    "coachingLens": "trust, clarity, accountability, morale, influence, and consequences for the team",
+    "sourceMaterial": ["principals", "coaches", "CEOs", "military leaders", "parents", "teachers", "managers"]
   },
   {
     "name": "Media & Information Literacy",
@@ -77,7 +84,8 @@
     "slug": "media-information-literacy",
     "shortDescription": "Evaluate headlines, framing, sources, bias, and missing context.",
     "purpose": "Train users to evaluate information.",
-    "coachingLens": "framing, missing context, source incentives, bias, evidence, fact versus opinion, and persuasion"
+    "coachingLens": "framing, missing context, source incentives, bias, evidence, fact versus opinion, and persuasion",
+    "sourceMaterial": ["YouTube", "TikTok", "X", "Facebook", "podcasts", "television news", "headlines", "AI-generated images"]
   },
   {
     "name": "Science & Evidence",
@@ -87,7 +95,8 @@
     "slug": "science-evidence",
     "shortDescription": "Understand studies, uncertainty, causation, and evidence quality.",
     "purpose": "Train users to understand studies, claims, and evidence.",
-    "coachingLens": "study design, controls, correlation, causation, uncertainty, sample size, and evidence quality"
+    "coachingLens": "study design, controls, correlation, causation, uncertainty, sample size, and evidence quality",
+    "sourceMaterial": ["medical studies", "nutrition claims", "exercise", "weather", "vaccines", "climate", "experiments", "statistics"]
   },
   {
     "name": "History & Civilization",
@@ -97,7 +106,8 @@
     "slug": "history-civilization",
     "shortDescription": "Learn from historical events, leaders, institutions, and consequences.",
     "purpose": "Train users to learn from historical patterns.",
-    "coachingLens": "historical context, patterns, parallels, what changed, what repeats, and leadership decisions"
+    "coachingLens": "historical context, patterns, parallels, what changed, what repeats, and leadership decisions",
+    "sourceMaterial": ["Roman Empire", "American Revolution", "Apollo 13", "Challenger", "Civil Rights Movement", "Cuban Missile Crisis", "Industrial Revolution", "World War II", "Marshall Plan"]
   },
   {
     "name": "Technology & AI",
@@ -107,7 +117,8 @@
     "slug": "technology-ai",
     "shortDescription": "Think clearly about AI, privacy, automation, algorithms, and tradeoffs.",
     "purpose": "Train users to think clearly about technology's impact.",
-    "coachingLens": "tradeoffs, incentives, risks, benefits, future consequences, and human behavior around technology"
+    "coachingLens": "tradeoffs, incentives, risks, benefits, future consequences, and human behavior around technology",
+    "sourceMaterial": ["ChatGPT", "autonomous vehicles", "deepfakes", "privacy", "cybersecurity", "algorithms", "social media"]
   },
   {
     "name": "Creativity & Innovation",
@@ -117,7 +128,8 @@
     "slug": "creativity-innovation",
     "shortDescription": "Reframe problems, test ideas, and create practical alternatives.",
     "purpose": "Train users to reframe problems and generate better ideas.",
-    "coachingLens": "reframing, constraints, experiments, alternatives, practical creativity, and testing ideas"
+    "coachingLens": "reframing, constraints, experiments, alternatives, practical creativity, and testing ideas",
+    "sourceMaterial": ["Apple", "LEGO", "Dyson", "Airbnb", "SpaceX", "restaurants", "inventors", "entrepreneurs"]
   },
   {
     "name": "Work, Purpose & Ambition",
@@ -127,7 +139,8 @@
     "slug": "work-purpose-ambition",
     "shortDescription": "Think clearly about career, discipline, sacrifice, purpose, and success.",
     "purpose": "Train users to think clearly about career, effort, discipline, goals, sacrifice, and success.",
-    "coachingLens": "tradeoffs, timing, discipline, long-term goals, risk, purpose, and ambition"
+    "coachingLens": "tradeoffs, timing, discipline, long-term goals, risk, purpose, and ambition",
+    "sourceMaterial": ["promotions", "career changes", "entrepreneurship", "burnout", "overtime", "interviews", "military", "apprenticeships"]
   },
   {
     "name": "Identity & Human Behavior",
@@ -137,7 +150,8 @@
     "slug": "identity-human-behavior",
     "shortDescription": "Build self-awareness around emotions, habits, bias, and behavior patterns.",
     "purpose": "Train self-awareness.",
-    "coachingLens": "emotions, habits, self-awareness, bias, identity, defensiveness, and behavior patterns"
+    "coachingLens": "emotions, habits, self-awareness, bias, identity, defensiveness, and behavior patterns",
+    "sourceMaterial": ["friendships", "parenting", "relationships", "habits", "social pressure", "feedback", "confidence", "failure"]
   },
   {
     "name": "Literature & Timeless Wisdom",
@@ -147,6 +161,7 @@
     "slug": "literature-timeless-wisdom",
     "shortDescription": "Use stories, books, proverbs, and classic ideas to understand life.",
     "purpose": "Train users to pull practical lessons from stories, quotes, books, and classic ideas.",
-    "coachingLens": "human nature, timeless lessons, character choices, wisdom, story patterns, and practical application"
+    "coachingLens": "human nature, timeless lessons, character choices, wisdom, story patterns, and practical application",
+    "sourceMaterial": ["The Odyssey", "Shakespeare", "Aesop", "The Great Gatsby", "To Kill a Mockingbird", "The Prince", "The Art of War"]
   }
 ]
