@@ -1,74 +1,152 @@
 [
   {
-    "slug": "epistemology",
-    "name": "Epistemology",
-    "subtitle": "Foundation Category",
-    "description": "How we know what we know; evidence, belief, certainty, and doubt."
-  },
-  {
-    "slug": "logic-and-critical-thinking",
     "name": "Logic & Critical Thinking",
-    "subtitle": "Core Skill",
-    "description": "Reasoning clearly, spotting fallacies, assumptions, and weak arguments."
+    "subtitle": "Argument Quality",
+    "description": "Evaluate arguments, assumptions, contradictions, and weak claims.",
+    "title": "Logic & Critical Thinking",
+    "slug": "logic-critical-thinking",
+    "shortDescription": "Evaluate arguments, assumptions, contradictions, and weak claims.",
+    "purpose": "Train users to evaluate arguments.",
+    "coachingLens": "argument structure, assumptions, consistency, fallacies, and missing evidence"
   },
   {
-    "slug": "mind-and-self",
-    "name": "Mind & Self",
-    "subtitle": "Inner Systems",
-    "description": "Biases, emotions, habits, identity, and how the mind shapes decisions."
+    "name": "Epistemology",
+    "subtitle": "Truth & Evidence",
+    "description": "Ask how we know what is true and how much certainty is justified.",
+    "title": "Epistemology",
+    "slug": "epistemology",
+    "shortDescription": "Ask how we know what is true and how much certainty is justified.",
+    "purpose": "Train users to ask how they know something is true.",
+    "coachingLens": "source quality, proof, certainty, evidence strength, and what would change the user's mind"
   },
   {
-    "slug": "literature-and-wisdom",
-    "name": "Literature & Wisdom",
-    "subtitle": "Patterns & Insight",
-    "description": "Timeless stories and ideas that reveal human patterns and insight."
+    "name": "Ethics & Moral Reasoning",
+    "subtitle": "Fairness & Duty",
+    "description": "Reason through fairness, duty, harm, responsibility, and consequences.",
+    "title": "Ethics & Moral Reasoning",
+    "slug": "ethics-moral-reasoning",
+    "shortDescription": "Reason through fairness, duty, harm, responsibility, and consequences.",
+    "purpose": "Train users to reason through right, wrong, fairness, duty, responsibility, and consequences.",
+    "coachingLens": "moral tradeoffs, who is helped, who is harmed, principles, consequences, and fairness"
   },
   {
-    "slug": "philosophy-of-history",
-    "name": "Philosophy of History",
-    "subtitle": "Big Narratives",
-    "description": "How narratives shape our understanding of the past and progress."
-  },
-  {
-    "slug": "worldview-and-cultures",
-    "name": "Worldview & Cultures",
-    "subtitle": "Perspective",
-    "description": "Different cultural lenses and why intelligent people disagree."
-  },
-  {
-    "slug": "applied-ethics",
-    "name": "Applied Ethics",
-    "subtitle": "Tradeoffs",
-    "description": "Moral reasoning through tradeoffs, consequences, and principles."
-  },
-  {
-    "slug": "modern-questions",
-    "name": "Modern Questions",
-    "subtitle": "Now",
-    "description": "Contemporary issues explored without telling users what to believe."
-  },
-  {
-    "slug": "pop-culture-and-media-literacy",
-    "name": "Pop Culture & Media Literacy",
-    "subtitle": "Signals",
-    "description": "Persuasion, media narratives, algorithms, and attention economics."
-  },
-  {
-    "slug": "street-lessons",
-    "name": "Street Lessons",
-    "subtitle": "Practical Wisdom",
-    "description": "Practical wisdom about power, incentives, risk, and human behavior."
-  },
-  {
-    "slug": "creative-thinking",
-    "name": "Creative Thinking",
-    "subtitle": "Reframing",
-    "description": "Reframing problems, generating ideas, and breaking mental ruts."
-  },
-  {
-    "slug": "work-and-hustle",
-    "name": "Work & Hustle",
+    "name": "Strategic Thinking",
     "subtitle": "Long Game",
-    "description": "Thinking clearly about success, effort, tradeoffs, and long-term value."
+    "description": "Think several moves ahead before choosing.",
+    "title": "Strategic Thinking",
+    "slug": "strategic-thinking",
+    "shortDescription": "Think several moves ahead before choosing.",
+    "purpose": "Train users to think several moves ahead.",
+    "coachingLens": "second-order effects, unintended consequences, leverage, timing, tradeoffs, and incentives"
+  },
+  {
+    "name": "Street Lessons",
+    "subtitle": "Hard-Earned Judgment",
+    "description": "Practical wisdom about people, power, incentives, risk, respect, trust, manipulation, and the real-world consequences of poor decisions.",
+    "title": "Street Lessons",
+    "slug": "street-lessons",
+    "shortDescription": "Practical wisdom about people, power, incentives, risk, respect, trust, manipulation, and the real-world consequences of poor decisions.",
+    "purpose": "Train practical judgment when people, pressure, reputation, trust, and consequences matter.",
+    "coachingLens": "trust, leverage, motives, pressure, practical risk, reputation, and real-world consequences"
+  },
+  {
+    "name": "Financial Judgment",
+    "subtitle": "Money Decisions",
+    "description": "Make better decisions about money, risk, debt, and time.",
+    "title": "Financial Judgment",
+    "slug": "financial-judgment",
+    "shortDescription": "Make better decisions about money, risk, debt, and time.",
+    "purpose": "Train money-related decision-making.",
+    "coachingLens": "risk, return, liquidity, opportunity cost, incentives, cash flow, and time horizon"
+  },
+  {
+    "name": "Leadership & Influence",
+    "subtitle": "Trust & Accountability",
+    "description": "Lead, communicate, persuade, and build trust responsibly.",
+    "title": "Leadership & Influence",
+    "slug": "leadership-influence",
+    "shortDescription": "Lead, communicate, persuade, and build trust responsibly.",
+    "purpose": "Train users to lead, communicate, and influence responsibly.",
+    "coachingLens": "trust, clarity, accountability, morale, influence, and consequences for the team"
+  },
+  {
+    "name": "Media & Information Literacy",
+    "subtitle": "Signals & Framing",
+    "description": "Evaluate headlines, framing, sources, bias, and missing context.",
+    "title": "Media & Information Literacy",
+    "slug": "media-information-literacy",
+    "shortDescription": "Evaluate headlines, framing, sources, bias, and missing context.",
+    "purpose": "Train users to evaluate information.",
+    "coachingLens": "framing, missing context, source incentives, bias, evidence, fact versus opinion, and persuasion"
+  },
+  {
+    "name": "Science & Evidence",
+    "subtitle": "Causation & Proof",
+    "description": "Understand studies, uncertainty, causation, and evidence quality.",
+    "title": "Science & Evidence",
+    "slug": "science-evidence",
+    "shortDescription": "Understand studies, uncertainty, causation, and evidence quality.",
+    "purpose": "Train users to understand studies, claims, and evidence.",
+    "coachingLens": "study design, controls, correlation, causation, uncertainty, sample size, and evidence quality"
+  },
+  {
+    "name": "History & Civilization",
+    "subtitle": "Patterns Over Time",
+    "description": "Learn from historical events, leaders, institutions, and consequences.",
+    "title": "History & Civilization",
+    "slug": "history-civilization",
+    "shortDescription": "Learn from historical events, leaders, institutions, and consequences.",
+    "purpose": "Train users to learn from historical patterns.",
+    "coachingLens": "historical context, patterns, parallels, what changed, what repeats, and leadership decisions"
+  },
+  {
+    "name": "Technology & AI",
+    "subtitle": "Future Tradeoffs",
+    "description": "Think clearly about AI, privacy, automation, algorithms, and tradeoffs.",
+    "title": "Technology & AI",
+    "slug": "technology-ai",
+    "shortDescription": "Think clearly about AI, privacy, automation, algorithms, and tradeoffs.",
+    "purpose": "Train users to think clearly about technology's impact.",
+    "coachingLens": "tradeoffs, incentives, risks, benefits, future consequences, and human behavior around technology"
+  },
+  {
+    "name": "Creativity & Innovation",
+    "subtitle": "Useful Reframing",
+    "description": "Reframe problems, test ideas, and create practical alternatives.",
+    "title": "Creativity & Innovation",
+    "slug": "creativity-innovation",
+    "shortDescription": "Reframe problems, test ideas, and create practical alternatives.",
+    "purpose": "Train users to reframe problems and generate better ideas.",
+    "coachingLens": "reframing, constraints, experiments, alternatives, practical creativity, and testing ideas"
+  },
+  {
+    "name": "Work, Purpose & Ambition",
+    "subtitle": "Career & Discipline",
+    "description": "Think clearly about career, discipline, sacrifice, purpose, and success.",
+    "title": "Work, Purpose & Ambition",
+    "slug": "work-purpose-ambition",
+    "shortDescription": "Think clearly about career, discipline, sacrifice, purpose, and success.",
+    "purpose": "Train users to think clearly about career, effort, discipline, goals, sacrifice, and success.",
+    "coachingLens": "tradeoffs, timing, discipline, long-term goals, risk, purpose, and ambition"
+  },
+  {
+    "name": "Identity & Human Behavior",
+    "subtitle": "Self-Awareness",
+    "description": "Build self-awareness around emotions, habits, bias, and behavior patterns.",
+    "title": "Identity & Human Behavior",
+    "slug": "identity-human-behavior",
+    "shortDescription": "Build self-awareness around emotions, habits, bias, and behavior patterns.",
+    "purpose": "Train self-awareness.",
+    "coachingLens": "emotions, habits, self-awareness, bias, identity, defensiveness, and behavior patterns"
+  },
+  {
+    "name": "Literature & Timeless Wisdom",
+    "subtitle": "Story & Human Nature",
+    "description": "Use stories, books, proverbs, and classic ideas to understand life.",
+    "title": "Literature & Timeless Wisdom",
+    "slug": "literature-timeless-wisdom",
+    "shortDescription": "Use stories, books, proverbs, and classic ideas to understand life.",
+    "purpose": "Train users to pull practical lessons from stories, quotes, books, and classic ideas.",
+    "coachingLens": "human nature, timeless lessons, character choices, wisdom, story patterns, and practical application"
   }
 ]

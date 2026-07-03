@@ -32,12 +32,21 @@ type ReasoningRequest = {
 };
 
 type ReasoningCategory =
-  | "debate"
-  | "decisions"
-  | "ethics"
-  | "creative"
-  | "relationships"
-  | "general";
+  | "logic-critical-thinking"
+  | "epistemology"
+  | "ethics-moral-reasoning"
+  | "strategic-thinking"
+  | "street-lessons"
+  | "financial-judgment"
+  | "leadership-influence"
+  | "media-information-literacy"
+  | "science-evidence"
+  | "history-civilization"
+  | "technology-ai"
+  | "creativity-innovation"
+  | "work-purpose-ambition"
+  | "identity-human-behavior"
+  | "literature-timeless-wisdom";
 
 type BehavioralScores = {
   evidence: number;
@@ -76,59 +85,140 @@ type CategoryPrompt = {
 };
 
 const categoryPromptMap: Record<ReasoningCategory, CategoryPrompt> = {
-  debate: {
-    category: "debate",
+  "logic-critical-thinking": {
+    category: "logic-critical-thinking",
     evaluatorRole: "argument quality verifier",
     reasoningLens: ["claim precision", "evidence", "warrant strength", "counterargument handling"],
     followUpDirective:
-      "Generate a new follow-up that attacks the weakest warrant, missing evidence, or strongest opposing view.",
+      "Challenge the weakest claim, hidden assumption, contradiction, fallacy, or missing evidence in plain language.",
     traitOptions: ["Evidence Discipline", "Intellectual Flexibility", "Argument Mapping"],
     temperature: 0.58,
   },
-  decisions: {
-    category: "decisions",
+  epistemology: {
+    category: "epistemology",
+    evaluatorRole: "truth and evidence verifier",
+    reasoningLens: ["source quality", "certainty", "belief versus knowledge", "trust", "what would change the user's mind"],
+    followUpDirective:
+      "Ask what evidence, source quality, or uncertainty should change the user's confidence.",
+    traitOptions: ["Evidence Discipline", "Intellectual Humility", "Source Calibration"],
+    temperature: 0.48,
+  },
+  "ethics-moral-reasoning": {
+    category: "ethics-moral-reasoning",
+    evaluatorRole: "moral reasoning verifier",
+    reasoningLens: ["fairness", "responsibility", "harm", "duty", "competing values", "consequences"],
+    followUpDirective:
+      "Test the user's answer against who is helped, who is harmed, and which principle should hold under pressure.",
+    traitOptions: ["Moral Reasoning", "Perspective Taking", "Principled Judgment"],
+    temperature: 0.52,
+  },
+  "strategic-thinking": {
+    category: "strategic-thinking",
     evaluatorRole: "decision strategy verifier",
     reasoningLens: ["tradeoffs", "incentives", "reversibility", "second-order effects"],
     followUpDirective:
-      "Generate a new follow-up that forces a choice under uncertainty, with a concrete trigger for changing course.",
+      "Push the user to think several moves ahead: what happens next, who adapts, and what problem appears later.",
     traitOptions: ["Strategic Restraint", "Risk Calibration", "Incentive Awareness"],
     temperature: 0.46,
   },
-  ethics: {
-    category: "ethics",
-    evaluatorRole: "principled reasoning verifier",
-    reasoningLens: ["stakeholders", "principles", "harm analysis", "role reversal"],
+  "street-lessons": {
+    category: "street-lessons",
+    evaluatorRole: "practical consequence verifier",
+    reasoningLens: ["trust", "leverage", "motives", "pressure", "reputation", "risk", "consequences"],
     followUpDirective:
-      "Generate a new follow-up that tests whether the user's principle survives a hard edge case.",
-    traitOptions: ["Principled Reasoning", "Perspective Taking", "Moral Consistency"],
+      "Sound like an experienced mentor who has seen expensive mistakes. Focus on the price of getting this wrong without glorifying cynicism, crime, violence, or manipulation.",
+    traitOptions: ["Practical Judgment", "Boundary Awareness", "Incentive Awareness"],
+    temperature: 0.5,
+  },
+  "financial-judgment": {
+    category: "financial-judgment",
+    evaluatorRole: "financial judgment verifier",
+    reasoningLens: ["risk", "return", "cash flow", "debt", "liquidity", "opportunity cost", "time horizon"],
+    followUpDirective:
+      "Challenge the user to consider opportunity cost, downside risk, incentives, cash flow, and time horizon.",
+    traitOptions: ["Opportunity Cost", "Risk Calibration", "Long-Term Discipline"],
+    temperature: 0.44,
+  },
+  "leadership-influence": {
+    category: "leadership-influence",
+    evaluatorRole: "leadership and influence verifier",
+    reasoningLens: ["trust", "accountability", "motivation", "conflict", "communication", "team consequences"],
+    followUpDirective:
+      "Ask how the user's response affects trust, clarity, accountability, morale, and the team's future behavior.",
+    traitOptions: ["Social Calibration", "Accountability", "Trust Building"],
     temperature: 0.52,
   },
-  creative: {
-    category: "creative",
-    evaluatorRole: "creative reasoning verifier",
-    reasoningLens: ["specificity", "constraint use", "originality", "useful reframing"],
+  "media-information-literacy": {
+    category: "media-information-literacy",
+    evaluatorRole: "media literacy verifier",
+    reasoningLens: ["framing", "missing context", "source incentives", "bias", "fact versus opinion", "persuasion"],
     followUpDirective:
-      "Generate a new follow-up that changes the constraint, angle, or frame instead of asking a generic next question.",
+      "Push the user to check framing, missing context, source incentives, and whether emotion is outrunning evidence.",
+    traitOptions: ["Bias Detection", "Source Calibration", "Independent Verification"],
+    temperature: 0.5,
+  },
+  "science-evidence": {
+    category: "science-evidence",
+    evaluatorRole: "scientific evidence verifier",
+    reasoningLens: ["study design", "controls", "correlation", "causation", "sample size", "uncertainty"],
+    followUpDirective:
+      "Challenge the user on causation, controls, sample size, uncertainty, and what evidence would actually prove the claim.",
+    traitOptions: ["Scientific Reasoning", "Evidence Discipline", "Uncertainty Calibration"],
+    temperature: 0.42,
+  },
+  "history-civilization": {
+    category: "history-civilization",
+    evaluatorRole: "historical pattern verifier",
+    reasoningLens: ["historical context", "institutions", "leaders", "wars", "reforms", "patterns", "consequences"],
+    followUpDirective:
+      "Ask what historical context, institutional pressure, or repeating pattern the user may be missing.",
+    traitOptions: ["Historical Reasoning", "Pattern Recognition", "Context Awareness"],
+    temperature: 0.5,
+  },
+  "technology-ai": {
+    category: "technology-ai",
+    evaluatorRole: "technology impact verifier",
+    reasoningLens: ["AI", "privacy", "automation", "algorithms", "tradeoffs", "human behavior", "future consequences"],
+    followUpDirective:
+      "Challenge the user to weigh technology's benefits against incentives, privacy, dependency, and human behavior changes.",
+    traitOptions: ["Systems Awareness", "Future Consequence Mapping", "Tradeoff Thinking"],
+    temperature: 0.5,
+  },
+  "creativity-innovation": {
+    category: "creativity-innovation",
+    evaluatorRole: "creative reasoning verifier",
+    reasoningLens: ["constraints", "invention", "reframing", "experiments", "alternatives", "practical creativity"],
+    followUpDirective:
+      "Change the frame, constraint, or experiment so the user generates a more practical alternative.",
     traitOptions: ["Creative Reframing", "Adaptive Thinking", "Constraint Fluency"],
     temperature: 0.72,
   },
-  relationships: {
-    category: "relationships",
-    evaluatorRole: "social reasoning verifier",
-    reasoningLens: ["emotional control", "incentives", "timing", "perspective taking"],
+  "work-purpose-ambition": {
+    category: "work-purpose-ambition",
+    evaluatorRole: "career and ambition verifier",
+    reasoningLens: ["career choices", "discipline", "sacrifice", "purpose", "productivity", "tradeoffs", "timing"],
     followUpDirective:
-      "Generate a new follow-up that tests tone, timing, and the other person's likely interpretation.",
-    traitOptions: ["Emotional Control", "Social Calibration", "Perspective Taking"],
+      "Ask what the user is trading for ambition, what timing matters, and what discipline or risk the situation requires.",
+    traitOptions: ["Tactical Thinking", "Long-Term Discipline", "Ambition Calibration"],
+    temperature: 0.5,
+  },
+  "identity-human-behavior": {
+    category: "identity-human-behavior",
+    evaluatorRole: "self-awareness verifier",
+    reasoningLens: ["emotions", "habits", "bias", "defensiveness", "self-image", "behavior patterns"],
+    followUpDirective:
+      "Ask what emotion, habit, self-image, or hidden payoff may be shaping the behavior.",
+    traitOptions: ["Self-Reflection", "Emotional Awareness", "Behavior Pattern Recognition"],
     temperature: 0.54,
   },
-  general: {
-    category: "general",
-    evaluatorRole: "adaptive reasoning verifier",
-    reasoningLens: ["clarity", "evidence", "alternatives", "next test"],
+  "literature-timeless-wisdom": {
+    category: "literature-timeless-wisdom",
+    evaluatorRole: "wisdom pattern verifier",
+    reasoningLens: ["stories", "characters", "proverbs", "classic books", "human nature", "practical application"],
     followUpDirective:
-      "Generate a new follow-up that targets the single most important missing reasoning move.",
-    traitOptions: ["Analytical Discipline", "Adaptive Thinking", "Tactical Thinking"],
-    temperature: 0.5,
+      "Connect the user's answer to a timeless pattern in character, desire, pride, patience, or consequence.",
+    traitOptions: ["Wisdom Pattern Recognition", "Practical Wisdom", "Character Reading"],
+    temperature: 0.58,
   },
 };
 
@@ -144,13 +234,23 @@ const randomizedResponseModes = [
 function normalizeCategory(category?: string, challenge?: string): ReasoningCategory {
   const source = `${category || ""} ${challenge || ""}`.toLowerCase();
 
-  if (/debate|argument|persuad|claim|rebuttal|steelman/.test(source)) return "debate";
-  if (/ethic|moral|fair|harm|justice|stakeholder|principle/.test(source)) return "ethics";
-  if (/creative|invent|story|imagine|reframe|design|idea/.test(source)) return "creative";
-  if (/relationship|friend|family|trust|conflict|social|reputation/.test(source)) return "relationships";
-  if (/decision|choose|risk|tradeoff|career|money|plan|strategy|option/.test(source)) return "decisions";
+  if (/logic-critical-thinking|logic|critical|debate|argument|fallacy|claim|contradiction/.test(source)) return "logic-critical-thinking";
+  if (/epistemology|source|truth|know|certainty|belief|trust|proof/.test(source)) return "epistemology";
+  if (/ethics-moral|ethic|moral|fair|harm|duty|responsibility|principle/.test(source)) return "ethics-moral-reasoning";
+  if (/strategic-thinking|strategy|second-order|long-term|tradeoff|leverage|timing/.test(source)) return "strategic-thinking";
+  if (/street-lessons|street|reputation|respect|loyalty|boundary|walk away|pressure/.test(source)) return "street-lessons";
+  if (/financial|money|debt|invest|cash|budget|mortgage|retire|bonus/.test(source)) return "financial-judgment";
+  if (/leadership|influence|leader|manager|team|accountability|morale/.test(source)) return "leadership-influence";
+  if (/media|information|headline|viral|outlet|framing|misinformation|algorithm/.test(source)) return "media-information-literacy";
+  if (/science|evidence|study|trial|sample|causation|correlation|experiment/.test(source)) return "science-evidence";
+  if (/history|civilization|rome|war|crisis|revolution|empire|industrial/.test(source)) return "history-civilization";
+  if (/technology|ai|automation|privacy|deepfake|app|chatbot|driverless/.test(source)) return "technology-ai";
+  if (/creativity|innovation|creative|invent|reframe|experiment|idea|prototype/.test(source)) return "creativity-innovation";
+  if (/work|purpose|ambition|career|job|raise|promotion|discipline|success/.test(source)) return "work-purpose-ambition";
+  if (/identity|human behavior|emotion|habit|defensive|self-image|procrastinat/.test(source)) return "identity-human-behavior";
+  if (/literature|wisdom|story|gatsby|aesop|odyssey|shakespeare|proverb|book/.test(source)) return "literature-timeless-wisdom";
 
-  return "general";
+  return "logic-critical-thinking";
 }
 
 function hashText(value: string) {
@@ -209,12 +309,21 @@ function verifierEngine(response: string, category: ReasoningCategory): Verifier
     incentives: clamp((signals.incentives ? 74 : 42) + (signals.tradeoff ? 10 : 0)),
   };
   const categoryWeights: Record<ReasoningCategory, (keyof BehavioralScores)[]> = {
-    debate: ["evidence", "adaptability"],
-    decisions: ["incentives", "adaptability"],
-    ethics: ["emotionalControl", "adaptability"],
-    creative: ["adaptability", "evidence"],
-    relationships: ["emotionalControl", "incentives"],
-    general: ["evidence", "adaptability", "incentives"],
+    "logic-critical-thinking": ["evidence", "adaptability"],
+    epistemology: ["evidence", "adaptability"],
+    "ethics-moral-reasoning": ["emotionalControl", "adaptability"],
+    "strategic-thinking": ["incentives", "adaptability"],
+    "street-lessons": ["incentives", "emotionalControl"],
+    "financial-judgment": ["incentives", "adaptability"],
+    "leadership-influence": ["emotionalControl", "incentives"],
+    "media-information-literacy": ["evidence", "adaptability"],
+    "science-evidence": ["evidence", "adaptability"],
+    "history-civilization": ["adaptability", "evidence"],
+    "technology-ai": ["adaptability", "incentives"],
+    "creativity-innovation": ["adaptability", "evidence"],
+    "work-purpose-ambition": ["incentives", "adaptability"],
+    "identity-human-behavior": ["emotionalControl", "adaptability"],
+    "literature-timeless-wisdom": ["adaptability", "emotionalControl"],
   };
   const weightedKeys = categoryWeights[category];
   const weighted = weightedKeys.reduce((sum, key) => sum + behavioral[key], 0) / weightedKeys.length;
@@ -334,6 +443,11 @@ function buildAdaptiveSystemPrompt({
     `Reasoning lens: ${categoryPrompt.reasoningLens.join(", ")}.`,
     `Follow-up directive: ${categoryPrompt.followUpDirective}`,
     `Available trait labels: ${categoryPrompt.traitOptions.join(", ")}.`,
+    "Category discipline: respond through this selected category lens. Do not drift into a generic coach response.",
+    "Tone: use plain everyday language. Sound like a smart mentor, not a professor, therapist, worksheet, or motivational speaker.",
+    categoryPrompt.category === "street-lessons"
+      ? "Street Lessons tone: practical, direct, consequence-focused, and grounded in trust, pressure, incentives, reputation, and risk. Never glorify crime, violence, manipulation, or cynicism. The user should feel the price of getting the situation wrong."
+      : "",
     `User age band: ${ageBand}. Coaching style: ${style}.`,
     `Age adaptation rule: ${ageDirective}`,
     `Persistent memory: ${JSON.stringify(memory || null)}.`,

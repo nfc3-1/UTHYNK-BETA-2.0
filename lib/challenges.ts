@@ -10,23 +10,21 @@ export type Challenge = {
 };
 
 const traitByCategory: Record<string, string> = {
-  "Work & Ambition": "Tactical Thinking",
-  "Financial Judgment": "Opportunity Cost",
-  "Media Literacy": "Bias Detection",
-  "Logic & Debate": "Argument Mapping",
-  "People & Leadership": "Social Calibration",
+  "Logic & Critical Thinking": "Argument Mapping",
+  "Epistemology": "Evidence Discipline",
+  "Ethics & Moral Reasoning": "Moral Reasoning",
   "Strategic Thinking": "Strategic Judgment",
-  "Philosophy of History": "Historical Reasoning",
-  "Worldview & Cultures": "Perspective Taking",
-  "Ethics & Values": "Moral Reasoning",
-  "Creative Thinking": "Creative Reframing",
-  "Literature & Wisdom": "Wisdom Pattern Recognition",
+  "Street Lessons": "Practical Judgment",
+  "Financial Judgment": "Opportunity Cost",
+  "Leadership & Influence": "Social Calibration",
+  "Media & Information Literacy": "Bias Detection",
   "Science & Evidence": "Evidence Discipline",
+  "History & Civilization": "Historical Reasoning",
   "Technology & AI": "Systems Awareness",
-  "Health & Habits": "Habit Reasoning",
-  "Civic Thinking": "Civic Reasoning",
-  "Personal Identity": "Self-Reflection",
-  Epistemology: "Evidence Discipline",
+  "Creativity & Innovation": "Creative Reframing",
+  "Work, Purpose & Ambition": "Tactical Thinking",
+  "Identity & Human Behavior": "Self-Reflection",
+  "Literature & Timeless Wisdom": "Wisdom Pattern Recognition",
 };
 
 function difficultyForIndex(index: number): Challenge["difficulty"] {

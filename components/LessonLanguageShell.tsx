@@ -196,18 +196,18 @@ function getRecommendedCategories(categories: LessonCategory[], profile: any) {
     .toLowerCase();
 
   const preferred = [
-    ...(profileText.includes('strateg') ? ['Strategic Thinking', 'Work & Ambition'] : []),
+    ...(profileText.includes('strateg') ? ['Strategic Thinking', 'Work, Purpose & Ambition'] : []),
     ...(profileText.includes('evidence') || profileText.includes('analyt')
-      ? ['Science & Evidence', 'Epistemology', 'Logic & Debate']
+      ? ['Science & Evidence', 'Epistemology', 'Logic & Critical Thinking']
       : []),
     ...(profileText.includes('financial') || profileText.includes('money')
       ? ['Financial Judgment']
       : []),
     ...(profileText.includes('ethic') || profileText.includes('value')
-      ? ['Ethics & Values']
+      ? ['Ethics & Moral Reasoning']
       : []),
-    'Work & Ambition',
-    'Logic & Debate',
+    'Work, Purpose & Ambition',
+    'Logic & Critical Thinking',
     'Financial Judgment',
     'Epistemology',
     'Strategic Thinking',

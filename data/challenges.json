@@ -1,650 +1,1352 @@
 [
   {
-    "id": "epistemology-1",
+    "id": "logic-critical-thinking-01",
+    "category": "logic-critical-thinking",
+    "title": "company says its product is best because it is the ...",
+    "prompt": "A company says its product is best because it is the market leader. Is that real evidence or a weak argument?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "logic-critical-thinking-02",
+    "category": "logic-critical-thinking",
+    "title": "friend says one bad teacher proves the whole school...",
+    "prompt": "A friend says one bad teacher proves the whole school is failing. What is the weak leap?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "logic-critical-thinking-03",
+    "category": "logic-critical-thinking",
+    "title": "coworker attacks a person's attitude instead of ans...",
+    "prompt": "A coworker attacks a person's attitude instead of answering their point. How would you refocus the argument?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "logic-critical-thinking-04",
+    "category": "logic-critical-thinking",
+    "title": "review says a restaurant is terrible after one slow...",
+    "prompt": "A review says a restaurant is terrible after one slow night. What assumption should be questioned?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "logic-critical-thinking-05",
+    "category": "logic-critical-thinking",
+    "title": "politician says a plan worked because crime dropped...",
+    "prompt": "A politician says a plan worked because crime dropped afterward. What else would you check?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "logic-critical-thinking-06",
+    "category": "logic-critical-thinking",
+    "title": "Someone says you must support their idea or you hat...",
+    "prompt": "Someone says you must support their idea or you hate progress. What false choice is being used?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "logic-critical-thinking-07",
+    "category": "logic-critical-thinking",
+    "title": "student says homework is useless because one assign...",
+    "prompt": "A student says homework is useless because one assignment was pointless. What evidence is missing?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "logic-critical-thinking-08",
+    "category": "logic-critical-thinking",
+    "title": "ad says thousands of people bought the product, so ...",
+    "prompt": "An ad says thousands of people bought the product, so it must be good. What does popularity fail to prove?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "logic-critical-thinking-09",
+    "category": "logic-critical-thinking",
+    "title": "manager says a worker is unreliable because they we...",
+    "prompt": "A manager says a worker is unreliable because they were late once. What would make that conclusion fair or unfair?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "logic-critical-thinking-10",
+    "category": "logic-critical-thinking",
+    "title": "friend says, 'It happened after I warned you, so I ...",
+    "prompt": "A friend says, 'It happened after I warned you, so I caused it.' What reasoning mistake might be happening?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
+  },
+  {
+    "id": "epistemology-01",
     "category": "epistemology",
-    "title": "What counts as evidence?",
-    "prompt": "What would you accept as good evidence, and why?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "title": "Two doctors give different advice based on differen...",
+    "prompt": "Two doctors give different advice based on different studies. What would help you decide which opinion to trust?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "epistemology-2",
+    "id": "epistemology-02",
     "category": "epistemology",
-    "title": "Belief vs knowledge",
-    "prompt": "How do you tell the difference between believing and knowing?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "title": "friend sends a viral video with no source. What wou...",
+    "prompt": "A friend sends a viral video with no source. What would you check before believing it?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "epistemology-3",
+    "id": "epistemology-03",
     "category": "epistemology",
-    "title": "Certainty and doubt",
-    "prompt": "When is doubt a strength\u2014and when is it avoidance?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "title": "family story has been repeated for years. What evid...",
+    "prompt": "A family story has been repeated for years. What evidence would help you know if it is accurate?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "epistemology-4",
+    "id": "epistemology-04",
     "category": "epistemology",
-    "title": "Authority check",
-    "prompt": "When should you trust experts, and when should you question them?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "title": "podcast guest says they did their own research. Wha...",
+    "prompt": "A podcast guest says they did their own research. What would make their conclusion trustworthy?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "epistemology-5",
+    "id": "epistemology-05",
     "category": "epistemology",
-    "title": "A claim you heard",
-    "prompt": "Pick a claim you\u2019ve heard recently. What would verify it?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "title": "photo seems to prove a claim, but you do not know w...",
+    "prompt": "A photo seems to prove a claim, but you do not know when it was taken. What should you verify?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "epistemology-6",
+    "id": "epistemology-06",
     "category": "epistemology",
-    "title": "Changing your mind",
-    "prompt": "What would have to happen for you to change your mind on something important?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "title": "Someone says they saw it with their own eyes. When ...",
+    "prompt": "Someone says they saw it with their own eyes. When can eyewitness evidence still be wrong?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "logic-and-critical-thinking-1",
-    "category": "logic-and-critical-thinking",
-    "title": "Is confidence a signal of truth?",
-    "prompt": "Is confidence a reliable signal of truth? Why or why not?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "epistemology-07",
+    "category": "epistemology",
+    "title": "poll says most people agree. What does that prove, ...",
+    "prompt": "A poll says most people agree. What does that prove, and what does it not prove?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "logic-and-critical-thinking-2",
-    "category": "logic-and-critical-thinking",
-    "title": "Spot the assumption",
-    "prompt": "Identify one assumption in your first reaction to a topic.",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "epistemology-08",
+    "category": "epistemology",
+    "title": "expert changes their recommendation after new data....",
+    "prompt": "An expert changes their recommendation after new data. When should that increase your trust?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "logic-and-critical-thinking-3",
-    "category": "logic-and-critical-thinking",
-    "title": "Steelman first",
-    "prompt": "Can you state the strongest version of the opposing view?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "epistemology-09",
+    "category": "epistemology",
+    "title": "website looks professional but lists no author. How...",
+    "prompt": "A website looks professional but lists no author. How much should design affect your trust?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "logic-and-critical-thinking-4",
-    "category": "logic-and-critical-thinking",
-    "title": "Correlation vs causation",
-    "prompt": "When do we confuse correlation with causation?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "epistemology-10",
+    "category": "epistemology",
+    "title": "belief has helped you for years. What kind of evide...",
+    "prompt": "A belief has helped you for years. What kind of evidence would justify questioning it?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
   },
   {
-    "id": "logic-and-critical-thinking-5",
-    "category": "logic-and-critical-thinking",
-    "title": "Why arguments feel true",
-    "prompt": "Why do some arguments feel convincing even when they\u2019re wrong?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "ethics-moral-reasoning-01",
+    "category": "ethics-moral-reasoning",
+    "title": "manager can save money by cutting hours for part-ti...",
+    "prompt": "A manager can save money by cutting hours for part-time workers. What should they consider before deciding?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "logic-and-critical-thinking-6",
-    "category": "logic-and-critical-thinking",
-    "title": "Second-order effects",
-    "prompt": "What might happen after the thing you want happens?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "ethics-moral-reasoning-02",
+    "category": "ethics-moral-reasoning",
+    "title": "student finds answers to tomorrow's test online. Wh...",
+    "prompt": "A student finds answers to tomorrow's test online. What makes using them wrong, risky, or defensible?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "mind-and-self-1",
-    "category": "mind-and-self",
-    "title": "Emotions and reasoning",
-    "prompt": "When do emotions improve thinking, and when do they distort it?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "ethics-moral-reasoning-03",
+    "category": "ethics-moral-reasoning",
+    "title": "company can use cheaper materials that are legal bu...",
+    "prompt": "A company can use cheaper materials that are legal but less safe. What should guide the decision?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "mind-and-self-2",
-    "category": "mind-and-self",
-    "title": "Identity attachment",
-    "prompt": "What belief feels like part of who you are\u2014and why?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "ethics-moral-reasoning-04",
+    "category": "ethics-moral-reasoning",
+    "title": "Your friend asks you to lie so they avoid consequen...",
+    "prompt": "Your friend asks you to lie so they avoid consequences. What does loyalty require here?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "mind-and-self-3",
-    "category": "mind-and-self",
-    "title": "Overthinking vs planning",
-    "prompt": "How do you tell overthinking from careful planning?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "ethics-moral-reasoning-05",
+    "category": "ethics-moral-reasoning",
+    "title": "city can help thousands but will damage one small n...",
+    "prompt": "A city can help thousands but will damage one small neighborhood. What should be weighed before approving it?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "mind-and-self-4",
-    "category": "mind-and-self",
-    "title": "Self-deception",
-    "prompt": "How can you tell when you\u2019re rationalizing?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "ethics-moral-reasoning-06",
+    "category": "ethics-moral-reasoning",
+    "title": "nurse has limited time and two patients need help. ...",
+    "prompt": "A nurse has limited time and two patients need help. What is the fairest way to decide who comes first?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "mind-and-self-5",
-    "category": "mind-and-self",
-    "title": "Confidence calibration",
-    "prompt": "Where are you overconfident or underconfident?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "ethics-moral-reasoning-07",
+    "category": "ethics-moral-reasoning",
+    "title": "business owner discovers a pricing mistake that ben...",
+    "prompt": "A business owner discovers a pricing mistake that benefits them. What should they do before keeping the money?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "mind-and-self-6",
-    "category": "mind-and-self",
-    "title": "Habit loop",
-    "prompt": "What small habit would most improve your thinking?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "ethics-moral-reasoning-08",
+    "category": "ethics-moral-reasoning",
+    "title": "school punishes a whole class because no one admits...",
+    "prompt": "A school punishes a whole class because no one admits who broke the rule. Is that fair?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "literature-and-wisdom-1",
-    "category": "literature-and-wisdom",
-    "title": "Quick lens check",
-    "prompt": "What does Literature & Wisdom help you notice that others miss?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "ethics-moral-reasoning-09",
+    "category": "ethics-moral-reasoning",
+    "title": "family member needs money, but helping them may hur...",
+    "prompt": "A family member needs money, but helping them may hurt your own household. What responsibility comes first?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "literature-and-wisdom-2",
-    "category": "literature-and-wisdom",
-    "title": "Tradeoff practice",
-    "prompt": "Name one tradeoff in a decision you\u2019re facing.",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "ethics-moral-reasoning-10",
+    "category": "ethics-moral-reasoning",
+    "title": "leader hides bad news to prevent panic. When does p...",
+    "prompt": "A leader hides bad news to prevent panic. When does protecting people become misleading them?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
   },
   {
-    "id": "literature-and-wisdom-3",
-    "category": "literature-and-wisdom",
-    "title": "Strongest opposite view",
-    "prompt": "What\u2019s the strongest opposing perspective\u2014and what makes it strong?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "strategic-thinking-01",
+    "category": "strategic-thinking",
+    "title": "company cuts employee training to improve quarterly...",
+    "prompt": "A company cuts employee training to improve quarterly profit. What might happen over the next three years?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "literature-and-wisdom-4",
-    "category": "literature-and-wisdom",
-    "title": "Context shift",
-    "prompt": "How might this look different in another context or culture?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "strategic-thinking-02",
+    "category": "strategic-thinking",
+    "title": "student takes an easy class to protect their GPA. W...",
+    "prompt": "A student takes an easy class to protect their GPA. What could that choice cost later?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "literature-and-wisdom-5",
-    "category": "literature-and-wisdom",
-    "title": "Evidence vs values",
-    "prompt": "What parts are facts, and what parts are values?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "strategic-thinking-03",
+    "category": "strategic-thinking",
+    "title": "business lowers prices to beat a competitor. What c...",
+    "prompt": "A business lowers prices to beat a competitor. What could happen if customers expect discounts forever?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "literature-and-wisdom-6",
-    "category": "literature-and-wisdom",
-    "title": "One good question",
-    "prompt": "What\u2019s one question that would clarify this the most?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "strategic-thinking-04",
+    "category": "strategic-thinking",
+    "title": "leader wins an argument publicly but embarrasses a ...",
+    "prompt": "A leader wins an argument publicly but embarrasses a teammate. What problem might appear next?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "philosophy-of-history-1",
-    "category": "philosophy-of-history",
-    "title": "Quick lens check",
-    "prompt": "What does Philosophy of History help you notice that others miss?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "strategic-thinking-05",
+    "category": "strategic-thinking",
+    "title": "family buys a bigger house because rates are low. W...",
+    "prompt": "A family buys a bigger house because rates are low. What risks should they think through first?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "philosophy-of-history-2",
-    "category": "philosophy-of-history",
-    "title": "Tradeoff practice",
-    "prompt": "Name one tradeoff in a decision you\u2019re facing.",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "strategic-thinking-06",
+    "category": "strategic-thinking",
+    "title": "startup hires fast to impress investors. What could...",
+    "prompt": "A startup hires fast to impress investors. What could go wrong if the culture is not ready?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "philosophy-of-history-3",
-    "category": "philosophy-of-history",
-    "title": "Strongest opposite view",
-    "prompt": "What\u2019s the strongest opposing perspective\u2014and what makes it strong?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "strategic-thinking-07",
+    "category": "strategic-thinking",
+    "title": "city delays road repairs to save money this year. W...",
+    "prompt": "A city delays road repairs to save money this year. What future costs might grow?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "philosophy-of-history-4",
-    "category": "philosophy-of-history",
-    "title": "Context shift",
-    "prompt": "How might this look different in another context or culture?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "strategic-thinking-08",
+    "category": "strategic-thinking",
+    "title": "manager avoids a hard conversation to keep peace. W...",
+    "prompt": "A manager avoids a hard conversation to keep peace. What could that silence cost the team later?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "philosophy-of-history-5",
-    "category": "philosophy-of-history",
-    "title": "Evidence vs values",
-    "prompt": "What parts are facts, and what parts are values?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "strategic-thinking-09",
+    "category": "strategic-thinking",
+    "title": "teenager posts a harsh joke to get attention. What ...",
+    "prompt": "A teenager posts a harsh joke to get attention. What second-order effects could follow?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "philosophy-of-history-6",
-    "category": "philosophy-of-history",
-    "title": "One good question",
-    "prompt": "What\u2019s one question that would clarify this the most?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "strategic-thinking-10",
+    "category": "strategic-thinking",
+    "title": "store sells a popular product at a loss to bring pe...",
+    "prompt": "A store sells a popular product at a loss to bring people in. What must be true for that strategy to work?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
   },
   {
-    "id": "worldview-and-cultures-1",
-    "category": "worldview-and-cultures",
-    "title": "Quick lens check",
-    "prompt": "What does Worldview & Cultures help you notice that others miss?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "worldview-and-cultures-2",
-    "category": "worldview-and-cultures",
-    "title": "Tradeoff practice",
-    "prompt": "Name one tradeoff in a decision you\u2019re facing.",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "worldview-and-cultures-3",
-    "category": "worldview-and-cultures",
-    "title": "Strongest opposite view",
-    "prompt": "What\u2019s the strongest opposing perspective\u2014and what makes it strong?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "worldview-and-cultures-4",
-    "category": "worldview-and-cultures",
-    "title": "Context shift",
-    "prompt": "How might this look different in another context or culture?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "worldview-and-cultures-5",
-    "category": "worldview-and-cultures",
-    "title": "Evidence vs values",
-    "prompt": "What parts are facts, and what parts are values?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
-  },
-  {
-    "id": "worldview-and-cultures-6",
-    "category": "worldview-and-cultures",
-    "title": "One good question",
-    "prompt": "What\u2019s one question that would clarify this the most?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
-  },
-  {
-    "id": "applied-ethics-1",
-    "category": "applied-ethics",
-    "title": "Quick lens check",
-    "prompt": "What does Applied Ethics help you notice that others miss?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "applied-ethics-2",
-    "category": "applied-ethics",
-    "title": "Tradeoff practice",
-    "prompt": "Name one tradeoff in a decision you\u2019re facing.",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "applied-ethics-3",
-    "category": "applied-ethics",
-    "title": "Strongest opposite view",
-    "prompt": "What\u2019s the strongest opposing perspective\u2014and what makes it strong?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "applied-ethics-4",
-    "category": "applied-ethics",
-    "title": "Context shift",
-    "prompt": "How might this look different in another context or culture?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "applied-ethics-5",
-    "category": "applied-ethics",
-    "title": "Evidence vs values",
-    "prompt": "What parts are facts, and what parts are values?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
-  },
-  {
-    "id": "applied-ethics-6",
-    "category": "applied-ethics",
-    "title": "One good question",
-    "prompt": "What\u2019s one question that would clarify this the most?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
-  },
-  {
-    "id": "modern-questions-1",
-    "category": "modern-questions",
-    "title": "Quick lens check",
-    "prompt": "What does Modern Questions help you notice that others miss?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "modern-questions-2",
-    "category": "modern-questions",
-    "title": "Tradeoff practice",
-    "prompt": "Name one tradeoff in a decision you\u2019re facing.",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "modern-questions-3",
-    "category": "modern-questions",
-    "title": "Strongest opposite view",
-    "prompt": "What\u2019s the strongest opposing perspective\u2014and what makes it strong?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "modern-questions-4",
-    "category": "modern-questions",
-    "title": "Context shift",
-    "prompt": "How might this look different in another context or culture?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "modern-questions-5",
-    "category": "modern-questions",
-    "title": "Evidence vs values",
-    "prompt": "What parts are facts, and what parts are values?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
-  },
-  {
-    "id": "modern-questions-6",
-    "category": "modern-questions",
-    "title": "One good question",
-    "prompt": "What\u2019s one question that would clarify this the most?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
-  },
-  {
-    "id": "pop-culture-and-media-literacy-1",
-    "category": "pop-culture-and-media-literacy",
-    "title": "Quick lens check",
-    "prompt": "What does Pop Culture & Media Literacy help you notice that others miss?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "pop-culture-and-media-literacy-2",
-    "category": "pop-culture-and-media-literacy",
-    "title": "Tradeoff practice",
-    "prompt": "Name one tradeoff in a decision you\u2019re facing.",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "pop-culture-and-media-literacy-3",
-    "category": "pop-culture-and-media-literacy",
-    "title": "Strongest opposite view",
-    "prompt": "What\u2019s the strongest opposing perspective\u2014and what makes it strong?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "pop-culture-and-media-literacy-4",
-    "category": "pop-culture-and-media-literacy",
-    "title": "Context shift",
-    "prompt": "How might this look different in another context or culture?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
-  },
-  {
-    "id": "pop-culture-and-media-literacy-5",
-    "category": "pop-culture-and-media-literacy",
-    "title": "Evidence vs values",
-    "prompt": "What parts are facts, and what parts are values?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
-  },
-  {
-    "id": "pop-culture-and-media-literacy-6",
-    "category": "pop-culture-and-media-literacy",
-    "title": "One good question",
-    "prompt": "What\u2019s one question that would clarify this the most?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
-  },
-  {
-    "id": "street-lessons-1",
+    "id": "street-lessons-01",
     "category": "street-lessons",
-    "title": "Quick lens check",
-    "prompt": "What does Street Lessons help you notice that others miss?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "title": "If someone only calls when they need something, are...",
+    "prompt": "If someone only calls when they need something, are they a friend or are you a resource?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "street-lessons-2",
+    "id": "street-lessons-02",
     "category": "street-lessons",
-    "title": "Tradeoff practice",
-    "prompt": "Name one tradeoff in a decision you\u2019re facing.",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "title": "coworker asks you to sign off on work you did not d...",
+    "prompt": "A coworker asks you to sign off on work you did not do because everyone does it. What should you consider before saying yes?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "street-lessons-3",
+    "id": "street-lessons-03",
     "category": "street-lessons",
-    "title": "Strongest opposite view",
-    "prompt": "What\u2019s the strongest opposing perspective\u2014and what makes it strong?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "title": "Someone keeps complimenting you before asking for a...",
+    "prompt": "Someone keeps complimenting you before asking for a big favor. What possibilities should you consider?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "street-lessons-4",
+    "id": "street-lessons-04",
     "category": "street-lessons",
-    "title": "Context shift",
-    "prompt": "How might this look different in another context or culture?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "title": "friend asks to borrow money but has not paid back o...",
+    "prompt": "A friend asks to borrow money but has not paid back others. What should you think through before saying yes?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "street-lessons-5",
+    "id": "street-lessons-05",
     "category": "street-lessons",
-    "title": "Evidence vs values",
-    "prompt": "What parts are facts, and what parts are values?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "title": "person gets angry when you set a boundary. What mig...",
+    "prompt": "A person gets angry when you set a boundary. What might that reveal about the relationship?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "street-lessons-6",
+    "id": "street-lessons-06",
     "category": "street-lessons",
-    "title": "One good question",
-    "prompt": "What\u2019s one question that would clarify this the most?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "title": "Someone offers you a quick way to make money but av...",
+    "prompt": "Someone offers you a quick way to make money but avoids details. What should you watch for?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "creative-thinking-1",
-    "category": "creative-thinking",
-    "title": "Quick lens check",
-    "prompt": "What does Creative Thinking help you notice that others miss?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "street-lessons-07",
+    "category": "street-lessons",
+    "title": "group pressures you to react publicly to an insult....",
+    "prompt": "A group pressures you to react publicly to an insult. When is silence the stronger move?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "creative-thinking-2",
-    "category": "creative-thinking",
-    "title": "Tradeoff practice",
-    "prompt": "Name one tradeoff in a decision you\u2019re facing.",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "street-lessons-08",
+    "category": "street-lessons",
+    "title": "new friend shares private gossip about others. What...",
+    "prompt": "A new friend shares private gossip about others. What does that suggest they may do with your business later?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "creative-thinking-3",
-    "category": "creative-thinking",
-    "title": "Strongest opposite view",
-    "prompt": "What\u2019s the strongest opposing perspective\u2014and what makes it strong?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "street-lessons-09",
+    "category": "street-lessons",
+    "title": "boss says, 'Trust me,' but will not put the agreeme...",
+    "prompt": "A boss says, 'Trust me,' but will not put the agreement in writing. What is the risk?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "creative-thinking-4",
-    "category": "creative-thinking",
-    "title": "Context shift",
-    "prompt": "How might this look different in another context or culture?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "street-lessons-10",
+    "category": "street-lessons",
+    "title": "Someone wants your loyalty before they have shown c...",
+    "prompt": "Someone wants your loyalty before they have shown character. What would you need to see first?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
   },
   {
-    "id": "creative-thinking-5",
-    "category": "creative-thinking",
-    "title": "Evidence vs values",
-    "prompt": "What parts are facts, and what parts are values?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "financial-judgment-01",
+    "category": "financial-judgment",
+    "title": "You receive a $10,000 bonus. What would help you de...",
+    "prompt": "You receive a $10,000 bonus. What would help you decide whether to pay debt, invest, or keep cash?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "creative-thinking-6",
-    "category": "creative-thinking",
-    "title": "One good question",
-    "prompt": "What\u2019s one question that would clarify this the most?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "financial-judgment-02",
+    "category": "financial-judgment",
+    "title": "store offers zero-interest financing if you buy tod...",
+    "prompt": "A store offers zero-interest financing if you buy today. What should you check before agreeing?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "work-and-hustle-1",
-    "category": "work-and-hustle",
-    "title": "Quick lens check",
-    "prompt": "What does Work & Hustle help you notice that others miss?",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "financial-judgment-03",
+    "category": "financial-judgment",
+    "title": "friend says a stock is guaranteed to go up. What qu...",
+    "prompt": "A friend says a stock is guaranteed to go up. What questions should you ask before investing?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
   },
   {
-    "id": "work-and-hustle-2",
-    "category": "work-and-hustle",
-    "title": "Tradeoff practice",
-    "prompt": "Name one tradeoff in a decision you\u2019re facing.",
-    "difficulty": "Foundations",
-    "xp": 10,
-    "minutes": 2
+    "id": "financial-judgment-04",
+    "category": "financial-judgment",
+    "title": "family wants a bigger car payment because the month...",
+    "prompt": "A family wants a bigger car payment because the monthly cost seems manageable. What else matters?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "work-and-hustle-3",
-    "category": "work-and-hustle",
-    "title": "Strongest opposite view",
-    "prompt": "What\u2019s the strongest opposing perspective\u2014and what makes it strong?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "financial-judgment-05",
+    "category": "financial-judgment",
+    "title": "Someone wants to use a credit card for a vacation t...",
+    "prompt": "Someone wants to use a credit card for a vacation they cannot afford now. What is the real cost?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "work-and-hustle-4",
-    "category": "work-and-hustle",
-    "title": "Context shift",
-    "prompt": "How might this look different in another context or culture?",
-    "difficulty": "Practice",
-    "xp": 10,
-    "minutes": 2
+    "id": "financial-judgment-06",
+    "category": "financial-judgment",
+    "title": "worker gets a raise and immediately upgrades their ...",
+    "prompt": "A worker gets a raise and immediately upgrades their lifestyle. What risk does that create?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
   },
   {
-    "id": "work-and-hustle-5",
-    "category": "work-and-hustle",
-    "title": "Evidence vs values",
-    "prompt": "What parts are facts, and what parts are values?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "financial-judgment-07",
+    "category": "financial-judgment",
+    "title": "couple has no emergency fund but wants to invest ag...",
+    "prompt": "A couple has no emergency fund but wants to invest aggressively. What tradeoff should they consider?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
   },
   {
-    "id": "work-and-hustle-6",
-    "category": "work-and-hustle",
-    "title": "One good question",
-    "prompt": "What\u2019s one question that would clarify this the most?",
-    "difficulty": "Stretch Thinking",
-    "xp": 15,
-    "minutes": 2
+    "id": "financial-judgment-08",
+    "category": "financial-judgment",
+    "title": "person chooses the cheapest insurance plan. What co...",
+    "prompt": "A person chooses the cheapest insurance plan. What could make that choice expensive later?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "financial-judgment-09",
+    "category": "financial-judgment",
+    "title": "small business owner discounts heavily to get custo...",
+    "prompt": "A small business owner discounts heavily to get customers. What should they know about margins?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "financial-judgment-10",
+    "category": "financial-judgment",
+    "title": "retiree considers helping an adult child financiall...",
+    "prompt": "A retiree considers helping an adult child financially. What should they protect before saying yes?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
+  },
+  {
+    "id": "leadership-influence-01",
+    "category": "leadership-influence",
+    "title": "team member keeps missing deadlines but is well-lik...",
+    "prompt": "A team member keeps missing deadlines but is well-liked. How should a leader handle it without damaging trust?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "leadership-influence-02",
+    "category": "leadership-influence",
+    "title": "manager takes credit for a team's work in front of ...",
+    "prompt": "A manager takes credit for a team's work in front of executives. What does that do to influence?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "leadership-influence-03",
+    "category": "leadership-influence",
+    "title": "coach yells to motivate players, but some shut down...",
+    "prompt": "A coach yells to motivate players, but some shut down. What should the coach consider?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "leadership-influence-04",
+    "category": "leadership-influence",
+    "title": "leader promises change but never follows up. What h...",
+    "prompt": "A leader promises change but never follows up. What happens to trust over time?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "leadership-influence-05",
+    "category": "leadership-influence",
+    "title": "employee makes a serious mistake and admits it quic...",
+    "prompt": "An employee makes a serious mistake and admits it quickly. How should a leader respond?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "leadership-influence-06",
+    "category": "leadership-influence",
+    "title": "team is confused because priorities keep changing. ...",
+    "prompt": "A team is confused because priorities keep changing. What should the leader clarify first?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "leadership-influence-07",
+    "category": "leadership-influence",
+    "title": "popular employee breaks a rule that others follow. ...",
+    "prompt": "A popular employee breaks a rule that others follow. What should accountability look like?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "leadership-influence-08",
+    "category": "leadership-influence",
+    "title": "leader wants buy-in for a hard decision. What shoul...",
+    "prompt": "A leader wants buy-in for a hard decision. What should they explain before asking people to commit?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "leadership-influence-09",
+    "category": "leadership-influence",
+    "title": "supervisor avoids feedback because they want to be ...",
+    "prompt": "A supervisor avoids feedback because they want to be liked. What does that cost the team?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "leadership-influence-10",
+    "category": "leadership-influence",
+    "title": "new leader inherits a team that distrusts managemen...",
+    "prompt": "A new leader inherits a team that distrusts management. What first move could rebuild credibility?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
+  },
+  {
+    "id": "media-information-literacy-01",
+    "category": "media-information-literacy",
+    "title": "Two news outlets cover the same protest but show di...",
+    "prompt": "Two news outlets cover the same protest but show different footage. What should you ask before deciding what happened?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "media-information-literacy-02",
+    "category": "media-information-literacy",
+    "title": "headline says a celebrity destroyed a company, but ...",
+    "prompt": "A headline says a celebrity destroyed a company, but the article is mostly opinion. What should you separate?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "media-information-literacy-03",
+    "category": "media-information-literacy",
+    "title": "viral post uses one shocking statistic with no sour...",
+    "prompt": "A viral post uses one shocking statistic with no source. What should you check before sharing it?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "media-information-literacy-04",
+    "category": "media-information-literacy",
+    "title": "video clip starts after an argument already began. ...",
+    "prompt": "A video clip starts after an argument already began. What context might be missing?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "media-information-literacy-05",
+    "category": "media-information-literacy",
+    "title": "influencer reviews a product but may be paid by the...",
+    "prompt": "An influencer reviews a product but may be paid by the brand. What should viewers know?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "media-information-literacy-06",
+    "category": "media-information-literacy",
+    "title": "news story quotes only people who agree. What would...",
+    "prompt": "A news story quotes only people who agree. What would make the coverage stronger?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "media-information-literacy-07",
+    "category": "media-information-literacy",
+    "title": "chart looks dramatic because the scale starts at 90...",
+    "prompt": "A chart looks dramatic because the scale starts at 90. What is the visual trying to do?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "media-information-literacy-08",
+    "category": "media-information-literacy",
+    "title": "politician's speech is summarized by a hostile acco...",
+    "prompt": "A politician's speech is summarized by a hostile account. What should you watch or read before reacting?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "media-information-literacy-09",
+    "category": "media-information-literacy",
+    "title": "social media trend says everyone is angry about an ...",
+    "prompt": "A social media trend says everyone is angry about an issue. What might the algorithm be amplifying?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "media-information-literacy-10",
+    "category": "media-information-literacy",
+    "title": "documentary tells a powerful story but leaves out o...",
+    "prompt": "A documentary tells a powerful story but leaves out opposing evidence. What should you look for next?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
+  },
+  {
+    "id": "science-evidence-01",
+    "category": "science-evidence",
+    "title": "headline says people who drink coffee live longer. ...",
+    "prompt": "A headline says people who drink coffee live longer. What would you ask before assuming coffee caused it?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "science-evidence-02",
+    "category": "science-evidence",
+    "title": "supplement company cites one small study. What woul...",
+    "prompt": "A supplement company cites one small study. What would make the evidence stronger?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "science-evidence-03",
+    "category": "science-evidence",
+    "title": "school says test scores improved after a new progra...",
+    "prompt": "A school says test scores improved after a new program. What else could explain the change?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "science-evidence-04",
+    "category": "science-evidence",
+    "title": "weather forecast says there is a 70% chance of rain...",
+    "prompt": "A weather forecast says there is a 70% chance of rain. What does that actually mean for your plans?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "science-evidence-05",
+    "category": "science-evidence",
+    "title": "study uses only 20 people. What limits does that cr...",
+    "prompt": "A study uses only 20 people. What limits does that create?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "science-evidence-06",
+    "category": "science-evidence",
+    "title": "medical trial shows benefits but also side effects....",
+    "prompt": "A medical trial shows benefits but also side effects. What should patients compare?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "science-evidence-07",
+    "category": "science-evidence",
+    "title": "nutrition video says one food causes weight gain. W...",
+    "prompt": "A nutrition video says one food causes weight gain. What evidence would you need?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "science-evidence-08",
+    "category": "science-evidence",
+    "title": "company tests its own product and reports great res...",
+    "prompt": "A company tests its own product and reports great results. What bias should you consider?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "science-evidence-09",
+    "category": "science-evidence",
+    "title": "lab result changes after a second test. Why can rep...",
+    "prompt": "A lab result changes after a second test. Why can repeating a test matter?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "science-evidence-10",
+    "category": "science-evidence",
+    "title": "study finds a link between screen time and anxiety....",
+    "prompt": "A study finds a link between screen time and anxiety. What would show whether one causes the other?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
+  },
+  {
+    "id": "history-civilization-01",
+    "category": "history-civilization",
+    "title": "During the Cuban Missile Crisis, both sides could h...",
+    "prompt": "During the Cuban Missile Crisis, both sides could have escalated. What choices helped avoid disaster?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "history-civilization-02",
+    "category": "history-civilization",
+    "title": "Kodak invented digital photography but stayed attac...",
+    "prompt": "Kodak invented digital photography but stayed attached to film. What historical pattern does that show?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "history-civilization-03",
+    "category": "history-civilization",
+    "title": "After Rome weakened, some blamed leaders while othe...",
+    "prompt": "After Rome weakened, some blamed leaders while others blamed institutions. What evidence would you compare?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "history-civilization-04",
+    "category": "history-civilization",
+    "title": "Berlin Airlift avoided direct war while resisting p...",
+    "prompt": "The Berlin Airlift avoided direct war while resisting pressure. What can leaders learn from that?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "history-civilization-05",
+    "category": "history-civilization",
+    "title": "Challenger disaster followed ignored warnings. What...",
+    "prompt": "The Challenger disaster followed ignored warnings. What does it teach about institutions under pressure?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "history-civilization-06",
+    "category": "history-civilization",
+    "title": "Marshall Plan rebuilt economies after war. Why migh...",
+    "prompt": "The Marshall Plan rebuilt economies after war. Why might helping former enemies be strategic?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "history-civilization-07",
+    "category": "history-civilization",
+    "title": "Civil Rights leaders used disciplined protest again...",
+    "prompt": "Civil Rights leaders used disciplined protest against unfair laws. What made that strategy powerful?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "history-civilization-08",
+    "category": "history-civilization",
+    "title": "Industrial Revolution created wealth and hardship. ...",
+    "prompt": "The Industrial Revolution created wealth and hardship. What should be judged from both sides?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "history-civilization-09",
+    "category": "history-civilization",
+    "title": "country writes history after winning a war. What vo...",
+    "prompt": "A country writes history after winning a war. What voices might be missing?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "history-civilization-10",
+    "category": "history-civilization",
+    "title": "Apollo 13 survived because teams adapted under pres...",
+    "prompt": "Apollo 13 survived because teams adapted under pressure. What does that reveal about preparation?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
+  },
+  {
+    "id": "technology-ai-01",
+    "category": "technology-ai",
+    "title": "school allows AI for homework but not tests. What p...",
+    "prompt": "A school allows AI for homework but not tests. What problems could that solve and create?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "technology-ai-02",
+    "category": "technology-ai",
+    "title": "company uses AI to screen resumes. What risks shoul...",
+    "prompt": "A company uses AI to screen resumes. What risks should applicants and managers consider?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "technology-ai-03",
+    "category": "technology-ai",
+    "title": "teenager trusts a chatbot for mental health advice....",
+    "prompt": "A teenager trusts a chatbot for mental health advice. What boundaries should exist?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "technology-ai-04",
+    "category": "technology-ai",
+    "title": "deepfake video of a public figure spreads online. W...",
+    "prompt": "A deepfake video of a public figure spreads online. What should people verify before reacting?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "technology-ai-05",
+    "category": "technology-ai",
+    "title": "app offers convenience in exchange for location dat...",
+    "prompt": "An app offers convenience in exchange for location data. What should users weigh?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "technology-ai-06",
+    "category": "technology-ai",
+    "title": "warehouse automates jobs to lower costs. What respo...",
+    "prompt": "A warehouse automates jobs to lower costs. What responsibilities does the company have to workers?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "technology-ai-07",
+    "category": "technology-ai",
+    "title": "social media feed learns what keeps you watching. W...",
+    "prompt": "A social media feed learns what keeps you watching. What incentive does the algorithm have?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "technology-ai-08",
+    "category": "technology-ai",
+    "title": "hospital uses AI to flag high-risk patients. What s...",
+    "prompt": "A hospital uses AI to flag high-risk patients. What should humans still review?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "technology-ai-09",
+    "category": "technology-ai",
+    "title": "driverless car must choose between safety risks. Wh...",
+    "prompt": "A driverless car must choose between safety risks. Who should set the rules?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "technology-ai-10",
+    "category": "technology-ai",
+    "title": "student uses AI to write an essay but learns little...",
+    "prompt": "A student uses AI to write an essay but learns little. What is the hidden cost?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
+  },
+  {
+    "id": "creativity-innovation-01",
+    "category": "creativity-innovation",
+    "title": "restaurant is losing lunch customers. Instead of lo...",
+    "prompt": "A restaurant is losing lunch customers. Instead of lowering prices, what creative change could it test?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "creativity-innovation-02",
+    "category": "creativity-innovation",
+    "title": "teacher has bored students and no extra budget. Wha...",
+    "prompt": "A teacher has bored students and no extra budget. What could they change about the experience?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "creativity-innovation-03",
+    "category": "creativity-innovation",
+    "title": "small store cannot compete with Amazon on price. Wh...",
+    "prompt": "A small store cannot compete with Amazon on price. What could it offer that Amazon cannot?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "creativity-innovation-04",
+    "category": "creativity-innovation",
+    "title": "city park is underused. What low-cost experiment co...",
+    "prompt": "A city park is underused. What low-cost experiment could bring people back?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "creativity-innovation-05",
+    "category": "creativity-innovation",
+    "title": "startup's first product fails. What should the team...",
+    "prompt": "A startup's first product fails. What should the team learn before building the next version?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "creativity-innovation-06",
+    "category": "creativity-innovation",
+    "title": "family wants to save money but hates strict budgets...",
+    "prompt": "A family wants to save money but hates strict budgets. What creative system could they try?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "creativity-innovation-07",
+    "category": "creativity-innovation",
+    "title": "musician cannot get attention online. What constrai...",
+    "prompt": "A musician cannot get attention online. What constraint could force a more original approach?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "creativity-innovation-08",
+    "category": "creativity-innovation",
+    "title": "company gets the same customer complaint every week...",
+    "prompt": "A company gets the same customer complaint every week. How could it turn the complaint into an idea?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "creativity-innovation-09",
+    "category": "creativity-innovation",
+    "title": "student struggles to study with long notes. What di...",
+    "prompt": "A student struggles to study with long notes. What different format could they test?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "creativity-innovation-10",
+    "category": "creativity-innovation",
+    "title": "nonprofit has few volunteers. What could make helpi...",
+    "prompt": "A nonprofit has few volunteers. What could make helping easier or more rewarding?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
+  },
+  {
+    "id": "work-purpose-ambition-01",
+    "category": "work-purpose-ambition",
+    "title": "Someone hates their job but has no savings. What sh...",
+    "prompt": "Someone hates their job but has no savings. What should they think through before quitting?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "work-purpose-ambition-02",
+    "category": "work-purpose-ambition",
+    "title": "student picks a major only because it sounds presti...",
+    "prompt": "A student picks a major only because it sounds prestigious. What should they consider?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "work-purpose-ambition-03",
+    "category": "work-purpose-ambition",
+    "title": "worker wants a raise but has not tracked results. W...",
+    "prompt": "A worker wants a raise but has not tracked results. What should they prepare first?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "work-purpose-ambition-04",
+    "category": "work-purpose-ambition",
+    "title": "person starts a side business while exhausted from ...",
+    "prompt": "A person starts a side business while exhausted from work. What tradeoff should they watch?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "work-purpose-ambition-05",
+    "category": "work-purpose-ambition",
+    "title": "teenager wants success but avoids boring practice. ...",
+    "prompt": "A teenager wants success but avoids boring practice. What does ambition require here?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "work-purpose-ambition-06",
+    "category": "work-purpose-ambition",
+    "title": "manager offers a promotion with more stress and lit...",
+    "prompt": "A manager offers a promotion with more stress and little pay increase. What should be weighed?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "work-purpose-ambition-07",
+    "category": "work-purpose-ambition",
+    "title": "person changes careers after one bad month. What wo...",
+    "prompt": "A person changes careers after one bad month. What would show whether it is a pattern or a rough season?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "work-purpose-ambition-08",
+    "category": "work-purpose-ambition",
+    "title": "business owner works nonstop but ignores family and...",
+    "prompt": "A business owner works nonstop but ignores family and health. What could success cost?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "work-purpose-ambition-09",
+    "category": "work-purpose-ambition",
+    "title": "college graduate compares their progress to friends...",
+    "prompt": "A college graduate compares their progress to friends online. What should they measure instead?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "work-purpose-ambition-10",
+    "category": "work-purpose-ambition",
+    "title": "skilled worker refuses to learn new tools. What ris...",
+    "prompt": "A skilled worker refuses to learn new tools. What risk does that create over time?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
+  },
+  {
+    "id": "identity-human-behavior-01",
+    "category": "identity-human-behavior",
+    "title": "Someone gets defensive every time they receive feed...",
+    "prompt": "Someone gets defensive every time they receive feedback. What might be happening beneath that reaction?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "identity-human-behavior-02",
+    "category": "identity-human-behavior",
+    "title": "person keeps choosing the same unhealthy relationsh...",
+    "prompt": "A person keeps choosing the same unhealthy relationship pattern. What should they notice?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "identity-human-behavior-03",
+    "category": "identity-human-behavior",
+    "title": "student says they are bad at math after one failed ...",
+    "prompt": "A student says they are bad at math after one failed test. How can identity trap them?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "identity-human-behavior-04",
+    "category": "identity-human-behavior",
+    "title": "parent loses patience after work and regrets it lat...",
+    "prompt": "A parent loses patience after work and regrets it later. What pattern should they study?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "identity-human-behavior-05",
+    "category": "identity-human-behavior",
+    "title": "person buys things to feel successful. What need mi...",
+    "prompt": "A person buys things to feel successful. What need might the habit be serving?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "identity-human-behavior-06",
+    "category": "identity-human-behavior",
+    "title": "friend always assumes criticism is disrespect. What...",
+    "prompt": "A friend always assumes criticism is disrespect. What belief could be shaping that response?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "identity-human-behavior-07",
+    "category": "identity-human-behavior",
+    "title": "Someone avoids trying because failure would hurt th...",
+    "prompt": "Someone avoids trying because failure would hurt their self-image. What is the hidden cost?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "identity-human-behavior-08",
+    "category": "identity-human-behavior",
+    "title": "person changes their opinion to fit every group. Wh...",
+    "prompt": "A person changes their opinion to fit every group. What might they be protecting?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "identity-human-behavior-09",
+    "category": "identity-human-behavior",
+    "title": "worker procrastinates only on important tasks. What...",
+    "prompt": "A worker procrastinates only on important tasks. What fear might be involved?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "identity-human-behavior-10",
+    "category": "identity-human-behavior",
+    "title": "person apologizes quickly but repeats the behavior....",
+    "prompt": "A person apologizes quickly but repeats the behavior. What should change besides the words?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
+  },
+  {
+    "id": "literature-timeless-wisdom-01",
+    "category": "literature-timeless-wisdom",
+    "title": "many stories, a character gets what they want but l...",
+    "prompt": "In many stories, a character gets what they want but loses what matters. What real-life warning does that reveal?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "literature-timeless-wisdom-02",
+    "category": "literature-timeless-wisdom",
+    "title": "The Great Gatsby, status does not bring peace. What...",
+    "prompt": "In The Great Gatsby, status does not bring peace. What modern ambition can fall into the same trap?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "literature-timeless-wisdom-03",
+    "category": "literature-timeless-wisdom",
+    "title": "Aesop's tortoise beats the hare through consistency...",
+    "prompt": "Aesop's tortoise beats the hare through consistency. Where does slow discipline beat talent in real life?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "everyday"
+  },
+  {
+    "id": "literature-timeless-wisdom-04",
+    "category": "literature-timeless-wisdom",
+    "title": "The Odyssey, distractions delay the journey home. W...",
+    "prompt": "In The Odyssey, distractions delay the journey home. What pulls people away from their real goals today?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "literature-timeless-wisdom-05",
+    "category": "literature-timeless-wisdom",
+    "title": "Shakespeare often shows pride turning into downfall...",
+    "prompt": "Shakespeare often shows pride turning into downfall. When does confidence become dangerous?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "literature-timeless-wisdom-06",
+    "category": "literature-timeless-wisdom",
+    "title": "Prince focuses on power and perception. What should...",
+    "prompt": "The Prince focuses on power and perception. What should modern leaders learn without becoming cynical?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "practical"
+  },
+  {
+    "id": "literature-timeless-wisdom-07",
+    "category": "literature-timeless-wisdom",
+    "title": "To Kill a Mockingbird shows courage under social pr...",
+    "prompt": "To Kill a Mockingbird shows courage under social pressure. What does quiet courage look like today?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "literature-timeless-wisdom-08",
+    "category": "literature-timeless-wisdom",
+    "title": "Art of War values winning without unnecessary confl...",
+    "prompt": "The Art of War values winning without unnecessary conflict. When is avoiding a fight the smarter victory?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "literature-timeless-wisdom-09",
+    "category": "literature-timeless-wisdom",
+    "title": "Intelligent Investor warns against emotion in marke...",
+    "prompt": "The Intelligent Investor warns against emotion in markets. Where else do feelings distort judgment?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "critical"
+  },
+  {
+    "id": "literature-timeless-wisdom-10",
+    "category": "literature-timeless-wisdom",
+    "title": "proverb says, 'Measure twice, cut once.' What decis...",
+    "prompt": "A proverb says, 'Measure twice, cut once.' What decision in life deserves that kind of patience?",
+    "minutes": 3,
+    "xp": 20,
+    "difficulty": "strategic"
   }
 ]
