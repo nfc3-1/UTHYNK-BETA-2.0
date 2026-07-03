@@ -4,13 +4,14 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import challenges from '@/data/challenges.json';
 import categories from '@/data/categories.json';
+import { challenges } from '@/lib/challenges';
 import { mockThinkingFeedback } from '@/lib/mockAi';
+import { slugifyCategory } from '@/lib/questionBank';
 
 type Challenge = {
   id: string;
-  category: string; // category slug
+  category: string;
   title: string;
   prompt: string;
   minutes?: number;
@@ -33,7 +34,7 @@ export default function ThinkingSession({ params }: { params: { id: string } }) 
 
   const cat = useMemo(() => {
     if (!ch) return null;
-    return (categories as Category[]).find((c) => c.slug === ch.category) || null;
+    return (categories as Category[]).find((c) => c.name === ch.category || c.slug === slugifyCategory(ch.category)) || null;
   }, [ch]);
 
   const [text, setText] = useState('');
@@ -86,11 +87,11 @@ export default function ThinkingSession({ params }: { params: { id: string } }) 
             <span className="badge">+{xp} XP</span>
             <span className="badge">{difficulty}</span>
 
-            <Link className="btn" href={cat ? `/category/${encodeURIComponent(cat.slug)}` : '/'}>
+            <Link className="btn" href={cat ? `/lessons/${encodeURIComponent(cat.slug)}` : '/lessons'}>
               Back to Category
             </Link>
 
-            <Link className="btn" href="/">
+            <Link className="btn" href="/lessons">
               All Categories
             </Link>
           </div>

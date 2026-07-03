@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 
 const questionPath = 'data/questions.json';
-const challengePath = 'data/challenges.json';
 const questionBank = JSON.parse(fs.readFileSync(questionPath, 'utf8'));
 
 const sourceFrames = {
@@ -224,35 +223,6 @@ function lowerFirst(text) {
   return text.charAt(0).toLowerCase() + text.slice(1);
 }
 
-function slugifyCategory(category) {
-  return category
-    .toLowerCase()
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .replace(/\band\b/g, '')
-    .replace(/-+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
-function titleForPrompt(prompt, index) {
-  const firstClause = prompt
-    .split('?')[0]
-    .replace(/^(A|An|The|In)\s+/i, '')
-    .trim();
-
-  if (!firstClause) return `Scenario ${index + 1}`;
-
-  return firstClause.length > 44 ? `${firstClause.slice(0, 41)}...` : firstClause;
-}
-
-function difficultyForIndex(index) {
-  if (index < 8) return 'everyday';
-  if (index < 16) return 'practical';
-  if (index < 24) return 'critical';
-  return 'strategic';
-}
-
 let updated = 0;
 
 for (const [category, questions] of Object.entries(questionBank)) {
@@ -268,19 +238,6 @@ for (const [category, questions] of Object.entries(questionBank)) {
   });
 }
 
-const challenges = Object.entries(questionBank).flatMap(([category, questions]) =>
-  questions.map((prompt, index) => ({
-    id: `${slugifyCategory(category)}-${String(index + 1).padStart(2, '0')}`,
-    category: slugifyCategory(category),
-    title: titleForPrompt(prompt, index),
-    prompt,
-    minutes: 3,
-    xp: 20,
-    difficulty: difficultyForIndex(index),
-  }))
-);
-
 fs.writeFileSync(questionPath, `${JSON.stringify(questionBank, null, 2)}\n`);
-fs.writeFileSync(challengePath, `${JSON.stringify(challenges, null, 2)}\n`);
 
-console.log(`Strengthened ${updated} questions and regenerated ${challenges.length} challenges.`);
+console.log(`Strengthened ${updated} questions.`);

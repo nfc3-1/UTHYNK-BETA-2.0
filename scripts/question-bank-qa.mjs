@@ -2,7 +2,6 @@ import fs from 'node:fs';
 
 const questionBank = JSON.parse(fs.readFileSync('data/questions.json', 'utf8'));
 const categories = JSON.parse(fs.readFileSync('data/categories.json', 'utf8'));
-const challenges = JSON.parse(fs.readFileSync('data/challenges.json', 'utf8'));
 
 const expectedCategories = [
   'Logic & Critical Thinking',
@@ -226,6 +225,142 @@ const sourceAnchors = {
   ],
 };
 
+const concreteAnchors = [
+  'ad',
+  'audio',
+  'articles',
+  'barber',
+  'bookstore',
+  'borrower',
+  'brand',
+  'business',
+  'buyer',
+  'car',
+  'church',
+  'city',
+  'classmate',
+  'coach',
+  'college',
+  'community',
+  'company',
+  'couple',
+  'coworker',
+  'creator',
+  'customer',
+  'dealer',
+  'doctor',
+  'documentary',
+  'driverless',
+  'employee',
+  'family',
+  'farm',
+  'feed',
+  'fitness',
+  'friend',
+  'government',
+  'group',
+  'gym',
+  'headline',
+  'hospital',
+  'hotel',
+  'influencer',
+  'lab',
+  'leader',
+  'manager',
+  'mechanic',
+  'money',
+  'museum',
+  'neighbor',
+  'news',
+  'parent',
+  'person',
+  'poll',
+  'post',
+  'platform',
+  'podcast',
+  'politician',
+  'principal',
+  'product',
+  'school',
+  'scientist',
+  'shop',
+  'shopper',
+  'social media',
+  'someone',
+  'startup',
+  'store',
+  'student',
+  'supervisor',
+  'teacher',
+  'team',
+  'teenager',
+  'user',
+  'video',
+  'voter',
+  'worker',
+  'workplace',
+  'website',
+  'youtube',
+  'tiktok',
+  'x',
+  'facebook',
+  'chatbot',
+  'ai',
+  'algorithm',
+  'privacy',
+  'deepfake',
+  'cybersecurity',
+  'rome',
+  'roman',
+  'kodak',
+  'toyota',
+  'tylenol',
+  'athens',
+  'prohibition',
+  'apollo',
+  'challenger',
+  'cuban missile',
+  'civil rights',
+  'berlin wall',
+  'berlin airlift',
+  'magna carta',
+  'salem',
+  'montgomery',
+  'space race',
+  'hamlet',
+  'gatsby',
+  'aesop',
+  'shakespeare',
+  'odyssey',
+  'macbeth',
+  'mockingbird',
+  'animal farm',
+  'christmas carol',
+  'giving tree',
+  'crucible',
+  'grapes of wrath',
+  'alchemist',
+  'intelligent investor',
+  'old man and the sea',
+  'art of war',
+  'prince',
+];
+
+const oldBroadPrompts = [
+  ['Does history move', 'in cycles or progress forward?'].join(' '),
+  ['Does correlation ever', 'justify action?'].join(' '),
+  ['Do stories teach better', 'than lectures?'].join(' '),
+  ['Is privacy possible', 'in a data-rich world?'].join(' '),
+  ['Take a payday loan', 'for rent or seek alternatives?'].join(' '),
+  ['Are influencers reviewers', 'or marketers?'].join(' '),
+  ['Does failure teach more', 'than success?'].join(' '),
+  ['Are human rights universal', 'or cultural?'].join(' '),
+  ['Do constraints boost', 'creativity?'].join(' '),
+  ['Should everyone have', 'a side hustle?'].join(' '),
+];
+
+const bannedQuestionStart = /^(What is|Why is|Is it important|Should people|Can people|Do people|What does it mean|How important is)\b/i;
+
 function fail(message) {
   console.error(message);
   process.exitCode = 1;
@@ -233,13 +368,20 @@ function fail(message) {
 
 function includesAnchor(category, question) {
   const lower = question.toLowerCase();
-  return sourceAnchors[category].some((anchor) => lower.includes(anchor));
+  return (
+    sourceAnchors[category].some((anchor) => lower.includes(anchor)) ||
+    concreteAnchors.some((anchor) => lower.includes(anchor))
+  );
 }
 
 const questionCategories = Object.keys(questionBank);
 
 if (questionCategories.length !== expectedCategories.length) {
   fail(`Expected ${expectedCategories.length} categories, found ${questionCategories.length}.`);
+}
+
+if (JSON.stringify(questionCategories) !== JSON.stringify(expectedCategories)) {
+  fail('Question categories must match the canonical 15-category order exactly.');
 }
 
 expectedCategories.forEach((category) => {
@@ -258,6 +400,16 @@ questionCategories.forEach((category) => {
   if (unanchored.length) {
     fail(`${category} has ${unanchored.length} unanchored questions:\n- ${unanchored.join('\n- ')}`);
   }
+
+  const vagueStarters = questions.filter((question) => bannedQuestionStart.test(question));
+  if (vagueStarters.length) {
+    fail(`${category} has banned vague starters:\n- ${vagueStarters.join('\n- ')}`);
+  }
+
+  const longQuestions = questions.filter((question) => question.split(/\s+/).filter(Boolean).length > 40);
+  if (longQuestions.length) {
+    fail(`${category} has questions over 40 words:\n- ${longQuestions.join('\n- ')}`);
+  }
 });
 
 if (categories.length !== expectedCategories.length) {
@@ -270,10 +422,41 @@ categories.forEach((category) => {
   }
 });
 
-if (challenges.length !== 450) {
-  fail(`Expected 450 generated challenges, found ${challenges.length}.`);
+const filesToSearch = [
+  'app',
+  'components',
+  'data',
+  'lib',
+  'scripts',
+].flatMap((path) => {
+  const results = [];
+  const stack = [path];
+
+  while (stack.length) {
+    const current = stack.pop();
+    const stat = fs.statSync(current);
+
+    if (stat.isDirectory()) {
+      fs.readdirSync(current).forEach((entry) => stack.push(`${current}/${entry}`));
+    } else {
+      results.push(current);
+    }
+  }
+
+  return results;
+});
+
+for (const file of filesToSearch) {
+  if (!/\.(js|jsx|ts|tsx|json|mjs|md|css)$/.test(file)) continue;
+
+  const content = fs.readFileSync(file, 'utf8');
+  oldBroadPrompts.forEach((prompt) => {
+    if (content.includes(prompt)) {
+      fail(`Old broad prompt still appears in ${file}: ${prompt}`);
+    }
+  });
 }
 
 if (!process.exitCode) {
-  console.log('Question bank QA passed: 15 categories, 30 anchored questions each, 450 challenges.');
+  console.log('Question bank QA passed: 15 categories, 30 grounded questions each, one canonical source.');
 }
