@@ -1082,8 +1082,8 @@
   {
     "id": "street-lessons-01",
     "category": "street-lessons",
-    "title": "If someone only calls when they need something, are...",
-    "prompt": "If someone only calls when they need something, are they a friend or are you a resource?",
+    "title": "friend only calls when they need money, rides, or f...",
+    "prompt": "A friend only calls when they need money, rides, or favors. What should you consider before calling that loyalty?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "everyday"
@@ -2486,8 +2486,8 @@
   {
     "id": "history-civilization-07",
     "category": "history-civilization",
-    "title": "Civil Rights leaders used disciplined protest again...",
-    "prompt": "Civil Rights leaders used disciplined protest against unfair laws. What made that strategy powerful?",
+    "title": "Civil Rights marchers stayed disciplined while came...",
+    "prompt": "Civil Rights marchers stayed disciplined while cameras showed unfair treatment. What made that strategy powerful?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "everyday"
@@ -2513,8 +2513,8 @@
   {
     "id": "history-civilization-10",
     "category": "history-civilization",
-    "title": "Apollo 13 survived because teams adapted under pres...",
-    "prompt": "Apollo 13 survived because teams adapted under pressure. What does that reveal about preparation?",
+    "title": "Apollo 13 crew survived because ground teams adapte...",
+    "prompt": "The Apollo 13 crew survived because ground teams adapted under pressure. What does that reveal about preparation?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "practical"
@@ -3800,8 +3800,8 @@
   {
     "id": "literature-timeless-wisdom-03",
     "category": "literature-timeless-wisdom",
-    "title": "Aesop's tortoise beats the hare through consistency...",
-    "prompt": "Aesop's tortoise beats the hare through consistency. Where does slow discipline beat talent in real life?",
+    "title": "student with average talent practices daily while a...",
+    "prompt": "A student with average talent practices daily while a gifted classmate coasts. Where does slow discipline beat talent?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "everyday"
@@ -3818,8 +3818,8 @@
   {
     "id": "literature-timeless-wisdom-05",
     "category": "literature-timeless-wisdom",
-    "title": "Shakespeare often shows pride turning into downfall...",
-    "prompt": "Shakespeare often shows pride turning into downfall. When does confidence become dangerous?",
+    "title": "Shakespeare character ignores warnings because admi...",
+    "prompt": "A Shakespeare character ignores warnings because admitting doubt would feel weak. When does confidence become dangerous?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "everyday"
@@ -3836,8 +3836,8 @@
   {
     "id": "literature-timeless-wisdom-07",
     "category": "literature-timeless-wisdom",
-    "title": "To Kill a Mockingbird shows courage under social pr...",
-    "prompt": "To Kill a Mockingbird shows courage under social pressure. What does quiet courage look like today?",
+    "title": "To Kill a Mockingbird, a lawyer defends an unpopula...",
+    "prompt": "In To Kill a Mockingbird, a lawyer defends an unpopular client while the town judges him. What does quiet courage look like today?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "everyday"
@@ -3881,8 +3881,8 @@
   {
     "id": "literature-timeless-wisdom-12",
     "category": "literature-timeless-wisdom",
-    "title": "Macbeth gains power but loses peace. What ambition ...",
-    "prompt": "Macbeth gains power but loses peace. What ambition today can create the same tradeoff?",
+    "title": "Macbeth gains power by betraying his conscience and...",
+    "prompt": "Macbeth gains power by betraying his conscience and then cannot feel safe. What modern ambition can create the same tradeoff?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "practical"
@@ -3908,8 +3908,8 @@
   {
     "id": "literature-timeless-wisdom-15",
     "category": "literature-timeless-wisdom",
-    "title": "To Kill a Mockingbird shows courage without applaus...",
-    "prompt": "To Kill a Mockingbird shows courage without applause. Where does quiet courage matter today?",
+    "title": "student tells the truth about bullying even though ...",
+    "prompt": "A student tells the truth about bullying even though friends may turn on them. What does quiet courage require?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "practical"
@@ -3953,8 +3953,8 @@
   {
     "id": "literature-timeless-wisdom-20",
     "category": "literature-timeless-wisdom",
-    "title": "Shakespeare's tragedies often begin with a flaw peo...",
-    "prompt": "Shakespeare's tragedies often begin with a flaw people refuse to see. What flaw ruins decisions today?",
+    "title": "respected leader keeps making angry decisions but c...",
+    "prompt": "A respected leader keeps making angry decisions but calls it strength. What flaw could ruin their judgment?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "critical"
@@ -3998,8 +3998,8 @@
   {
     "id": "literature-timeless-wisdom-25",
     "category": "literature-timeless-wisdom",
-    "title": "Many stories show a bargain that looks cheap but co...",
-    "prompt": "Many stories show a bargain that looks cheap but costs the soul. What modern bargain works like that?",
+    "title": "worker accepts a high-paying job that rewards lying...",
+    "prompt": "A worker accepts a high-paying job that rewards lying to customers. What modern bargain looks cheap but costs character?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "strategic"
@@ -4025,8 +4025,8 @@
   {
     "id": "literature-timeless-wisdom-28",
     "category": "literature-timeless-wisdom",
-    "title": "Stories often punish greed with isolation. Where do...",
-    "prompt": "Stories often punish greed with isolation. Where does chasing more reduce what matters?",
+    "title": "business owner keeps expanding for status but stops...",
+    "prompt": "A business owner keeps expanding for status but stops seeing family or trusted friends. Where does chasing more reduce what matters?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "strategic"
@@ -4043,8 +4043,8 @@
   {
     "id": "literature-timeless-wisdom-30",
     "category": "literature-timeless-wisdom",
-    "title": "Classic stories often show that character is reveal...",
-    "prompt": "Classic stories often show that character is revealed under pressure. What pressure reveals character in daily life?",
+    "title": "manager is kind when sales are strong but cruel whe...",
+    "prompt": "A manager is kind when sales are strong but cruel when numbers drop. What does pressure reveal about character?",
     "minutes": 3,
     "xp": 20,
     "difficulty": "strategic"
