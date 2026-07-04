@@ -266,11 +266,11 @@ export default function LessonQuestionClient({ category, questions }: Props) {
         <div className="topControls">
           <nav className="appNav">
             <a href="/">{copy.home}</a>
-            <a href="/lessons">Lessons</a>
-            <a href="/teacher">Teacher</a>
-            <a href="/profile">Profile</a>
-            <a href="/feedback">Feedback</a>
-            <a href="/store">Store</a>
+            <a href="/lessons">{copy.lessonsNav}</a>
+            <a href="/teacher">{copy.teacherNav}</a>
+            <a href="/profile">{copy.profileNav}</a>
+            <a href="/feedback">{copy.feedbackNav}</a>
+            <a href="/store">{copy.storeNav}</a>
           </nav>
 
           <label className="languageSelectLabel topLanguageSelect">
@@ -379,12 +379,18 @@ export default function LessonQuestionClient({ category, questions }: Props) {
                 </p>
               </div>
               <div className="thinkingLabelLayer">
-                <span>{localizeText(feedback.trait, language) || 'Reasoning pattern'}</span>
+                <span>{localizeText(feedback.trait, language) || copy.rewardPattern}</span>
                 <span>{localizeText(feedback.strengths?.[0] || 'Independent Verification', language)}</span>
                 <span>{localizeText(feedback.weaknesses?.[0] || 'Evidence +1', language)}</span>
               </div>
               <details className="advancedExplanationLayer">
-                <summary>Why UThynk said this</summary>
+                <summary>
+                  {language === 'es'
+                    ? 'Por que UThynk dijo esto'
+                    : language === 'fr'
+                      ? 'Pourquoi UThynk a dit cela'
+                      : 'Why UThynk said this'}
+                </summary>
                 <div>
                   <p>{localizeText(feedback.analysis, language)}</p>
                   <p>{localizeText(feedback.contrarian, language)}</p>

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import TeacherDashboard from '@/components/TeacherDashboard';
+import LocalizedNavLinks from '@/components/LocalizedNavLinks';
 import { getCategories, getQuestionsForCategory } from '@/lib/questionBank';
 
 export default function TeacherPage() {
@@ -18,15 +19,7 @@ export default function TeacherPage() {
           </span>
         </Link>
 
-        <nav className="appNav">
-          <Link href="/">Home</Link>
-          <Link href="/daily">Daily</Link>
-          <Link href="/lessons">Lessons</Link>
-          <Link href="/teacher">Teacher</Link>
-          <Link href="/profile">Profile</Link>
-          <Link href="/feedback">Feedback</Link>
-          <Link href="/store">Store</Link>
-        </nav>
+        <LocalizedNavLinks />
       </header>
 
       <section className="appHero card" style={{ marginTop: 18 }}>

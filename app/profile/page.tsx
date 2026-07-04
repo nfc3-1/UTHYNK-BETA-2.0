@@ -6,6 +6,7 @@ import {
   getAdaptiveChallenges,
   getCoachingIntensity,
 } from '@/lib/adaptive';
+import { type Language, localizeText, uiCopy } from '@/lib/reasoningI18n';
 import { createTelemetryEvent, trackEvent } from '@/lib/telemetry';
 
 const STORAGE_KEY = 'uthynk-profile';
@@ -13,9 +14,15 @@ const STORAGE_KEY = 'uthynk-profile';
 export default function Profile() {
   const [style, setStyle] = useState('balanced');
   const [data, setData] = useState<any>(null);
+  const [language, setLanguage] = useState<Language>('en');
   const [snapshotStatus, setSnapshotStatus] = useState('');
 
   useEffect(() => {
+    const storedLanguage = localStorage.getItem('uthynk-language');
+    if (storedLanguage === 'es' || storedLanguage === 'fr') {
+      setLanguage(storedLanguage);
+    }
+
     async function loadProfile() {
       const stored = localStorage.getItem(STORAGE_KEY);
       const profile = stored ? JSON.parse(stored) : null;
@@ -39,6 +46,7 @@ export default function Profile() {
     loadProfile();
   }, []);
 
+  const copy = uiCopy[language];
   const profile = data?.profile || {};
   const sessions = data?.sessions || [];
   const traits = useMemo(() => {
@@ -153,24 +161,27 @@ export default function Profile() {
         </Link>
 
         <nav className="appNav">
-          <Link href="/">Home</Link>
-          <Link href="/daily">Daily</Link>
-          <Link href="/lessons">Lessons</Link>
-          <Link href="/teacher">Teacher</Link>
-          <Link href="/reasoning">Reasoning</Link>
-          <Link href="/profile">Profile</Link>
-          <Link href="/feedback">Feedback</Link>
-          <Link href="/store">Store</Link>
+          <Link href="/">{copy.home}</Link>
+          <Link href="/daily">{copy.dailyNav}</Link>
+          <Link href="/lessons">{copy.lessonsNav}</Link>
+          <Link href="/teacher">{copy.teacherNav}</Link>
+          <Link href="/reasoning">{copy.reasoningNav}</Link>
+          <Link href="/profile">{copy.profileNav}</Link>
+          <Link href="/feedback">{copy.feedbackNav}</Link>
+          <Link href="/store">{copy.storeNav}</Link>
         </nav>
       </header>
 
       <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
-          <div className="eyebrow">Profile</div>
-          <h1>{profile.rank || 'Observer'}</h1>
+          <div className="eyebrow">{copy.profileNav}</div>
+          <h1>{localizeText(profile.rank || 'Observer', language)}</h1>
           <p>
-            Your identity, progress, traits, and session history now live in one place.
-            UThynk tracks who your thinking is becoming, not just what you scored.
+            {language === 'es'
+              ? 'Tu identidad, progreso, rasgos e historial de sesiones viven en un solo lugar. UThynk sigue en quien se esta convirtiendo tu pensamiento.'
+              : language === 'fr'
+                ? 'Ton identite, tes progres, tes traits et ton historique de sessions vivent au meme endroit. UThynk suit ce que ton raisonnement devient.'
+                : 'Your identity, progress, traits, and session history now live in one place. UThynk tracks who your thinking is becoming, not just what you scored.'}
           </p>
           <div className="profileIdentityTags">
             {identityLabels.map((label) => (
@@ -180,11 +191,16 @@ export default function Profile() {
         </div>
 
         <div className="challengePreview">
-          <div className="panelLabel">Growth Snapshot</div>
-          <h2>{profile.primary_trait || 'Analytical Thinker'}</h2>
+          <div className="panelLabel">
+            {language === 'es' ? 'Resumen de crecimiento' : language === 'fr' ? 'Apercu de progression' : 'Growth Snapshot'}
+          </div>
+          <h2>{localizeText(profile.primary_trait || 'Analytical Thinker', language)}</h2>
           <p>
-            Coaching mode: {coachingIntensity}. Your next sessions should strengthen
-            evidence, adaptability, and strategic restraint.
+            {language === 'es'
+              ? `Modo de entrenamiento: ${coachingIntensity}. Tus proximas sesiones deben fortalecer evidencia, adaptabilidad y restriccion estrategica.`
+              : language === 'fr'
+                ? `Mode d'accompagnement : ${coachingIntensity}. Tes prochaines sessions devraient renforcer les preuves, l'adaptabilite et la retenue strategique.`
+                : `Coaching mode: ${coachingIntensity}. Your next sessions should strengthen evidence, adaptability, and strategic restraint.`}
           </p>
           <div className="profileMetricStrip">
             <div>

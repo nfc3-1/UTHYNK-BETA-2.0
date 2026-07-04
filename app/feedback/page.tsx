@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import FeedbackForm from '@/components/FeedbackForm';
+import LocalizedNavLinks from '@/components/LocalizedNavLinks';
 
 export default function FeedbackPage() {
   return (
@@ -13,14 +14,16 @@ export default function FeedbackPage() {
           </span>
         </Link>
 
-        <nav className="appNav">
-          <Link href="/">Home</Link>
-          <Link href="/lessons">Lessons</Link>
-          <Link href="/teacher">Teacher</Link>
-          <Link href="/reasoning">Reasoning</Link>
-          <Link href="/profile">Profile</Link>
-          <Link href="/feedback">Feedback</Link>
-        </nav>
+        <LocalizedNavLinks
+          items={[
+            { href: '/', key: 'home' },
+            { href: '/lessons', key: 'lessonsNav' },
+            { href: '/teacher', key: 'teacherNav' },
+            { href: '/reasoning', key: 'reasoningNav' },
+            { href: '/profile', key: 'profileNav' },
+            { href: '/feedback', key: 'feedbackNav' },
+          ]}
+        />
       </header>
 
       <FeedbackForm />

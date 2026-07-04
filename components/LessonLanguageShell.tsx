@@ -110,11 +110,11 @@ export default function LessonLanguageShell({ categories }: Props) {
         <div className="topControls">
           <nav className="appNav">
             <Link href="/">{copy.home}</Link>
-            <Link href="/lessons">Lessons</Link>
-            <Link href="/teacher">Teacher</Link>
-            <Link href="/profile">Profile</Link>
-            <Link href="/feedback">Feedback</Link>
-            <Link href="/store">Store</Link>
+            <Link href="/lessons">{copy.lessonsNav}</Link>
+            <Link href="/teacher">{copy.teacherNav}</Link>
+            <Link href="/profile">{copy.profileNav}</Link>
+            <Link href="/feedback">{copy.feedbackNav}</Link>
+            <Link href="/store">{copy.storeNav}</Link>
           </nav>
 
           <label className="languageSelectLabel topLanguageSelect">
@@ -137,7 +137,7 @@ export default function LessonLanguageShell({ categories }: Props) {
 
       <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
-          <div className="eyebrow">Lessons</div>
+          <div className="eyebrow">{copy.lessonsNav}</div>
           <div className="panelLabel">Question Bank: Real-World Micro-Cases v4</div>
           <h1>{language === 'es' ? 'Elige una categoria de pensamiento.' : language === 'fr' ? 'Choisis une categorie de pensee.' : 'Choose a thinking category.'}</h1>
           <p>
