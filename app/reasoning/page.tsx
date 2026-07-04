@@ -66,6 +66,96 @@ const thinkingLenses = [
   { id: "strategy", labelKey: "lensStrategy", descriptionKey: "lensDescriptionStrategy" },
 ] as const;
 
+type ReasoningLensId = (typeof thinkingLenses)[number]["id"];
+
+const categoryLensMap: Record<string, { id: ReasoningLensId; label: string; questionType: string }> = {
+  "Logic & Critical Thinking": {
+    id: "logic",
+    label: "Logic",
+    questionType: "Argument structure",
+  },
+  Epistemology: {
+    id: "logic",
+    label: "Evidence / Certainty",
+    questionType: "Evidence and certainty",
+  },
+  "Ethics & Moral Reasoning": {
+    id: "ethics",
+    label: "Ethics",
+    questionType: "Fairness and values",
+  },
+  "Strategic Thinking": {
+    id: "strategy",
+    label: "Strategy",
+    questionType: "Second-order consequences",
+  },
+  "Street Lessons": {
+    id: "incentives",
+    label: "Incentives / Consequences / Trust",
+    questionType: "Trust and consequences",
+  },
+  "Financial Judgment": {
+    id: "incentives",
+    label: "Risk / Incentives / Opportunity Cost",
+    questionType: "Risk and opportunity cost",
+  },
+  "Leadership & Influence": {
+    id: "incentives",
+    label: "Trust / Accountability",
+    questionType: "Trust and accountability",
+  },
+  "Media & Information Literacy": {
+    id: "logic",
+    label: "Framing / Source Quality",
+    questionType: "Framing and sources",
+  },
+  "Science & Evidence": {
+    id: "logic",
+    label: "Evidence / Causation",
+    questionType: "Evidence and causation",
+  },
+  "History & Civilization": {
+    id: "history",
+    label: "Historical Patterns",
+    questionType: "Historical patterns",
+  },
+  "Technology & AI": {
+    id: "strategy",
+    label: "Tradeoffs / Future Consequences",
+    questionType: "Future tradeoffs",
+  },
+  "Creativity & Innovation": {
+    id: "strategy",
+    label: "Reframing / Experimentation",
+    questionType: "Reframing and testing",
+  },
+  "Work, Purpose & Ambition": {
+    id: "strategy",
+    label: "Discipline / Tradeoffs",
+    questionType: "Discipline and tradeoffs",
+  },
+  "Identity & Human Behavior": {
+    id: "logic",
+    label: "Self-awareness / Patterns",
+    questionType: "Self-awareness patterns",
+  },
+  "Literature & Timeless Wisdom": {
+    id: "history",
+    label: "Human Nature / Wisdom",
+    questionType: "Human nature and wisdom",
+  },
+};
+
+function getReasoningLensForCategory(category: string) {
+  return (
+    categoryLensMap[category] || {
+      id: "logic" as ReasoningLensId,
+      label: "Logic",
+      questionType: "Evidence test",
+    }
+  );
+}
+
 const onboardingCopy = {
   en: {
     title: "How to use UThynk",
@@ -73,8 +163,8 @@ const onboardingCopy = {
       "UThynk is a reasoning workout. Answer the prompt, test one new perspective, then finish with a quick reflection.",
     steps: [
       {
-        title: "Choose a thinking lens",
-        text: "Logic checks whether the argument makes sense. Incentives looks at motivations and hidden interests. Ethics looks at fairness and values. History looks at patterns from the past. Strategy looks at long-term consequences.",
+        title: "Answer the challenge",
+        text: "UThynk automatically applies the best reasoning lens for the category, so you can focus on your answer instead of choosing a framework.",
       },
       {
         title: "Answer in your own words",
@@ -98,8 +188,8 @@ const onboardingCopy = {
       "UThynk es un entrenamiento de razonamiento. Responde la pregunta, prueba una nueva perspectiva y termina con una reflexion breve.",
     steps: [
       {
-        title: "Elige un enfoque",
-        text: "Logica revisa si el argumento tiene sentido. Incentivos mira motivaciones ocultas. Etica mira valores. Historia mira patrones. Estrategia mira consecuencias a largo plazo.",
+        title: "Responde el desafio",
+        text: "UThynk aplica automaticamente el mejor enfoque de razonamiento para la categoria, para que puedas concentrarte en tu respuesta.",
       },
       {
         title: "Responde con tus palabras",
@@ -123,8 +213,8 @@ const onboardingCopy = {
       "UThynk est un exercice de raisonnement. Reponds au prompt, teste une nouvelle perspective, puis termine par une courte reflexion.",
     steps: [
       {
-        title: "Choisis une lentille",
-        text: "Logique verifie si l'argument tient. Incitations regarde les motivations cachees. Ethique regarde les valeurs. Histoire regarde les schemas. Strategie regarde les consequences a long terme.",
+        title: "Reponds au defi",
+        text: "UThynk applique automatiquement la meilleure lentille de raisonnement pour la categorie, afin que tu puisses te concentrer sur ta reponse.",
       },
       {
         title: "Reponds avec tes mots",
@@ -486,7 +576,6 @@ function ReasoningExperience({
   const [rightTab, setRightTab] = useState<"categories" | "insights" | "analysis">("insights");
   const [thinkingToolTab, setThinkingToolTab] = useState<"followUp" | "lab" | "timeline">("followUp");
   const [leftSignalTab, setLeftSignalTab] = useState<"patterns" | "metrics">("patterns");
-  const [thinkingLens, setThinkingLens] = useState<(typeof thinkingLenses)[number]["id"]>("logic");
   const [evaluatedClaim, setEvaluatedClaim] = useState("");
   const [workoutStage, setWorkoutStage] = useState<"answer" | "challenge" | "followUp" | "synthesis" | "reflection" | "complete">("answer");
   const [followUpResponse, setFollowUpResponse] = useState("");
@@ -514,6 +603,7 @@ function ReasoningExperience({
   const ageBand = normalizeAgeBand(profile?.age_band);
   const ageAdjustedChallenge = adaptChallengeForAge(challenge, ageBand);
   const visibleChallenge = localizeChallenge(ageAdjustedChallenge, language);
+  const inferredLens = getReasoningLensForCategory(challenge.category);
   const visibleFeedback = {
     ...feedback,
     analysis: localizeText(feedback.analysis, language),
@@ -862,7 +952,7 @@ function ReasoningExperience({
           challengeId: challenge.id,
           language,
           responseLength: response.length,
-          thinkingLens,
+          thinkingLens: inferredLens.label,
         })
       );
 
@@ -876,13 +966,14 @@ function ReasoningExperience({
           challengeId: challenge.id,
           ageBand,
           category: challenge.category,
-          challenge: `${visibleChallenge.prompt}\nThinking lens: ${thinkingLens}`,
+          challenge: `${visibleChallenge.prompt}\nReasoning lens automatically applied for this category: ${inferredLens.label}`,
           language,
           phase: "follow_up",
           response,
           conversationId: conversationIdRef.current,
           sessionId: sessionIdRef.current,
-          thinkingLens,
+          thinkingLens: inferredLens.id,
+          thinkingLensLabel: inferredLens.label,
           userId: activeProfile?.id,
           stream: true,
         }),
@@ -1039,7 +1130,7 @@ function ReasoningExperience({
           followUpLength: followUpResponse.length,
           initialResponseLength: response.length,
           language,
-          thinkingLens,
+          thinkingLens: inferredLens.label,
         })
       );
 
@@ -1053,13 +1144,14 @@ function ReasoningExperience({
           challengeId: challenge.id,
           ageBand,
           category: challenge.category,
-          challenge: `${visibleChallenge.prompt}\nThinking lens: ${thinkingLens}\nSynthesize the user's initial answer and follow-up answer into one overarching UThynk response.`,
+          challenge: `${visibleChallenge.prompt}\nReasoning lens automatically applied for this category: ${inferredLens.label}\nSynthesize the user's initial answer and follow-up answer into one overarching UThynk response.`,
           language,
           phase: "synthesis",
           response: combinedResponse,
           conversationId: conversationIdRef.current,
           sessionId: sessionIdRef.current,
-          thinkingLens,
+          thinkingLens: inferredLens.id,
+          thinkingLensLabel: inferredLens.label,
           userId: activeProfile?.id,
           stream: true,
         }),
@@ -1257,20 +1349,8 @@ function ReasoningExperience({
       : (100 - (feedback.verifier?.behavioral?.emotionalControl || 50)) > 35
         ? "Emotional rigidity"
         : "Overconfidence";
-  const selectedLens =
-    thinkingLenses.find((lens) => lens.id === thinkingLens) || thinkingLenses[0];
-  const activeLens = selectedLens.labelKey;
-  const activeLensDescription = copy[selectedLens.descriptionKey];
-  const questionType =
-    thinkingLens === "incentives"
-      ? copy.incentiveMap
-      : thinkingLens === "ethics"
-        ? copy.valueConflict
-        : thinkingLens === "history"
-          ? copy.patternTest
-          : thinkingLens === "strategy"
-            ? copy.tradeoffMove
-            : copy.evidenceTest;
+  const activeLensLabel = inferredLens.label;
+  const questionType = inferredLens.questionType;
   const workoutSteps = [
     { id: "answer", label: text.stepAnswer },
     { id: "followUp", label: text.stepFollowUp },
@@ -1340,7 +1420,7 @@ function ReasoningExperience({
           <section className="leftRailSection sessionSignalCard">
           <div className="panelLabel">{copy.currentSession}</div>
           <div className="profileRows">
-            <div><span>{copy.lens}</span><strong>{copy[activeLens]}</strong></div>
+            <div><span>{copy.lens}</span><strong>{activeLensLabel}</strong></div>
             <div><span>{copy.progress}</span><strong>{visibleDifficulty}</strong></div>
             <div><span>{copy.intensity}</span><strong>{visiblePressure}</strong></div>
             <div><span>{copy.questionType}</span><strong>{questionType}</strong></div>
@@ -1472,25 +1552,6 @@ function ReasoningExperience({
 
         <details className="advancedThinkingDetails">
           <summary>{text.advancedThinkingTools}</summary>
-
-          <section className="thinkingLensPanel">
-            <div className="panelLabel">{copy.chooseThinkingLens}</div>
-            <div className="thinkingLensOptions" role="radiogroup" aria-label={copy.chooseThinkingLens}>
-              {thinkingLenses.map((lens) => (
-                <button
-                  key={lens.id}
-                  type="button"
-                  role="radio"
-                  aria-checked={thinkingLens === lens.id}
-                  className={thinkingLens === lens.id ? "active" : ""}
-                  onClick={() => setThinkingLens(lens.id)}
-                >
-                  {copy[lens.labelKey]}
-                </button>
-              ))}
-            </div>
-            <p className="thinkingLensDescription">{activeLensDescription}</p>
-          </section>
 
           <section className="thinkingToolsPanel">
             <div className="thinkingToolsHeader">
