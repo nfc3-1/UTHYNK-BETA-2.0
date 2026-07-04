@@ -94,7 +94,7 @@ export default function LessonLanguageShell({ categories }: Props) {
       <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
           <div className="eyebrow">Lessons</div>
-          <div className="panelLabel">Question Bank: Real-World v2</div>
+          <div className="panelLabel">Question Bank: Real-World Micro-Cases v4</div>
           <h1>{language === 'es' ? 'Elige una categoria de pensamiento.' : language === 'fr' ? 'Choisis une categorie de pensee.' : 'Choose a thinking category.'}</h1>
           <p>
             {language === 'es'

@@ -227,6 +227,8 @@ const sourceAnchors = {
 
 const concreteAnchors = [
   'ad',
+  'app',
+  'attorney',
   'audio',
   'articles',
   'barber',
@@ -256,7 +258,9 @@ const concreteAnchors = [
   'farm',
   'feed',
   'fitness',
+  'founder',
   'friend',
+  'gambler',
   'government',
   'group',
   'gym',
@@ -272,6 +276,8 @@ const concreteAnchors = [
   'museum',
   'neighbor',
   'news',
+  'nick saban',
+  'nintendo',
   'parent',
   'person',
   'poll',
@@ -281,13 +287,17 @@ const concreteAnchors = [
   'politician',
   'principal',
   'product',
+  'researcher',
+  'roommate',
   'school',
   'scientist',
   'shop',
   'shopper',
+  'sibling',
   'social media',
   'someone',
   'startup',
+  'studies',
   'store',
   'student',
   'supervisor',
@@ -296,10 +306,13 @@ const concreteAnchors = [
   'teenager',
   'user',
   'video',
+  'volunteer',
   'voter',
   'worker',
   'workplace',
   'website',
+  'young professional',
+  'smoker',
   'youtube',
   'tiktok',
   'x',
@@ -328,6 +341,7 @@ const concreteAnchors = [
   'montgomery',
   'space race',
   'hamlet',
+  'julius caesar',
   'gatsby',
   'aesop',
   'shakespeare',
@@ -360,6 +374,7 @@ const oldBroadPrompts = [
 ];
 
 const bannedQuestionStart = /^(What is|Why is|Is it important|Should people|Can people|Do people|What does it mean|How important is)\b/i;
+const genericMicroCaseStart = /^(A company|A coach|A person|Someone|A friend|A student|A headline)\b/i;
 
 function fail(message) {
   console.error(message);
@@ -404,6 +419,13 @@ questionCategories.forEach((category) => {
   const vagueStarters = questions.filter((question) => bannedQuestionStart.test(question));
   if (vagueStarters.length) {
     fail(`${category} has banned vague starters:\n- ${vagueStarters.join('\n- ')}`);
+  }
+
+  if (category !== 'Street Lessons') {
+    const genericStarters = questions.filter((question) => genericMicroCaseStart.test(question));
+    if (genericStarters.length) {
+      fail(`${category} has generic worksheet-style starters:\n- ${genericStarters.join('\n- ')}`);
+    }
   }
 
   const longQuestions = questions.filter((question) => question.split(/\s+/).filter(Boolean).length > 40);

@@ -1,4 +1,6 @@
-{
+import fs from 'node:fs';
+
+const questionBank = {
   "Logic & Critical Thinking": [
     "A Colgate-style toothpaste ad says nine out of ten dentists recommend it but does not explain the survey. What question would test the strength of that claim?",
     "A campaign mailer says crime dropped one month after a new policy passed. What else would you need before accepting cause and effect?",
@@ -479,4 +481,7 @@
     "In Animal Farm, leaders rewrite the rules while claiming nothing changed. How can people protect shared memory?",
     "In The Odyssey, loyalty is tested over time. What reveals whether loyalty is real?"
   ]
-}
+};
+
+fs.writeFileSync('data/questions.json', `${JSON.stringify(questionBank, null, 2)}\n`);
+console.log('Rewrote question bank as real-world micro-cases:', Object.keys(questionBank).length, 'categories');
