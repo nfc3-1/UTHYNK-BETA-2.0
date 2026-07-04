@@ -68,6 +68,7 @@ export default function LessonLanguageShell({ categories }: Props) {
           <nav className="appNav">
             <Link href="/">{copy.home}</Link>
             <Link href="/lessons">Lessons</Link>
+            <Link href="/teacher">Teacher</Link>
             <Link href="/profile">Profile</Link>
             <Link href="/feedback">Feedback</Link>
             <Link href="/store">Store</Link>

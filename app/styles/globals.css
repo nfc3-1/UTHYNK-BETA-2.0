@@ -36,6 +36,292 @@ body{
   z-index:0;
 }
 
+.teacherPage .appHero h1{
+  max-width:920px;
+}
+
+.teacherShell{
+  margin-top:18px;
+}
+
+.teacherGrid{
+  display:grid;
+  grid-template-columns:minmax(260px,0.32fr) minmax(0,1fr);
+  gap:18px;
+  align-items:start;
+}
+
+.teacherStack{
+  display:grid;
+  gap:18px;
+}
+
+.teacherPanel{
+  padding:22px;
+  background:rgba(18,25,54,0.78);
+}
+
+.teacherPanel h2,
+.teacherSubPanel h3{
+  margin:8px 0 12px;
+  line-height:1.05;
+}
+
+.teacherMuted{
+  margin:8px 0 0;
+  color:rgba(255,255,255,0.68);
+  line-height:1.55;
+}
+
+.teacherField{
+  display:grid;
+  gap:8px;
+  margin:14px 0;
+}
+
+.teacherField span{
+  color:rgba(255,255,255,0.64);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+}
+
+.teacherField input,
+.teacherField select,
+.teacherField textarea{
+  width:100%;
+  min-height:48px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.14);
+  background:rgba(0,0,0,0.22);
+  color:var(--text);
+  font:inherit;
+  padding:12px 14px;
+  outline:none;
+}
+
+.teacherField textarea{
+  min-height:118px;
+  resize:vertical;
+  line-height:1.5;
+}
+
+.teacherField select option{
+  color:#111936;
+}
+
+.teacherField input:focus,
+.teacherField select:focus,
+.teacherField textarea:focus{
+  border-color:rgba(99,231,209,0.62);
+  box-shadow:0 0 0 3px rgba(99,231,209,0.12);
+}
+
+.teacherClassList,
+.teacherAssignmentList,
+.teacherCommentList{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+
+.teacherClassList button,
+.teacherAssignmentList button{
+  text-align:left;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.06);
+  color:var(--text);
+  padding:14px;
+  display:grid;
+  gap:5px;
+  cursor:pointer;
+}
+
+.teacherClassList button.active,
+.teacherAssignmentList button.active{
+  border-color:rgba(246,198,79,0.62);
+  background:rgba(246,198,79,0.14);
+}
+
+.teacherClassList span,
+.teacherAssignmentList span,
+.teacherAssignmentList small{
+  color:rgba(255,255,255,0.64);
+  font-size:12px;
+  font-weight:800;
+}
+
+.teacherDetailPanel{
+  min-height:680px;
+}
+
+.teacherDetailHeader{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+}
+
+.teacherCodeBox{
+  min-width:220px;
+  display:grid;
+  gap:8px;
+  padding:16px;
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(99,231,209,0.14),rgba(246,198,79,0.12));
+  border:1px solid rgba(99,231,209,0.26);
+}
+
+.teacherCodeBox span{
+  color:rgba(255,255,255,0.66);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+}
+
+.teacherCodeBox strong{
+  color:#63e7d1;
+  font-size:28px;
+  letter-spacing:0.08em;
+}
+
+.teacherInvite{
+  margin:18px 0;
+  padding:16px;
+  border-radius:18px;
+  border:1px solid rgba(246,198,79,0.22);
+  background:rgba(246,198,79,0.08);
+  display:grid;
+  gap:6px;
+}
+
+.teacherInvite p{
+  margin:0;
+  font-weight:850;
+}
+
+.teacherInvite span,
+.teacherInvite small{
+  color:rgba(255,255,255,0.68);
+}
+
+.teacherTwoColumn{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin:18px 0;
+}
+
+.teacherSubPanel{
+  padding:18px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.055);
+  border:1px solid rgba(255,255,255,0.10);
+}
+
+.teacherSectionHeader{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  align-items:flex-start;
+  margin-bottom:14px;
+}
+
+.teacherSectionHeader span{
+  color:#63e7d1;
+  font-size:13px;
+  font-weight:900;
+}
+
+.teacherProgressTable{
+  display:grid;
+  gap:8px;
+  overflow-x:auto;
+}
+
+.teacherProgressHead,
+.teacherProgressRow{
+  min-width:880px;
+  display:grid;
+  grid-template-columns:1.05fr 0.9fr 0.9fr 0.85fr 1fr 1fr;
+  gap:10px;
+  align-items:center;
+  padding:12px 14px;
+  border-radius:14px;
+}
+
+.teacherProgressHead{
+  color:rgba(255,255,255,0.58);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  background:rgba(255,255,255,0.055);
+}
+
+.teacherProgressRow{
+  background:rgba(0,0,0,0.16);
+  border:1px solid rgba(255,255,255,0.07);
+}
+
+.teacherProgressRow span{
+  color:rgba(255,255,255,0.76);
+  font-size:13px;
+}
+
+.teacherCommentGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.teacherCommentList article{
+  padding:13px 14px;
+  border-radius:14px;
+  background:rgba(0,0,0,0.18);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.teacherCommentList article span{
+  display:block;
+  color:#63e7d1;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:5px;
+}
+
+.teacherCommentList article p{
+  margin:0;
+  color:rgba(255,255,255,0.82);
+  line-height:1.5;
+}
+
+.teacherEmptyState{
+  min-height:420px;
+  display:grid;
+  align-content:center;
+  justify-items:start;
+}
+
+@media (max-width: 980px){
+  .teacherGrid,
+  .teacherTwoColumn,
+  .teacherCommentGrid{
+    grid-template-columns:1fr;
+  }
+
+  .teacherDetailHeader{
+    display:grid;
+  }
+
+  .teacherCodeBox{
+    min-width:0;
+  }
+}
+
 .betaBrowserNotice{
   position:relative;
   z-index:2;

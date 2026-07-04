@@ -156,6 +156,7 @@ export default function Profile() {
           <Link href="/">Home</Link>
           <Link href="/daily">Daily</Link>
           <Link href="/lessons">Lessons</Link>
+          <Link href="/teacher">Teacher</Link>
           <Link href="/reasoning">Reasoning</Link>
           <Link href="/profile">Profile</Link>
           <Link href="/feedback">Feedback</Link>

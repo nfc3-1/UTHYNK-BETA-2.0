@@ -1985,6 +1985,7 @@ export default function ReasoningPage() {
             <Link href="/">{copy.home}</Link>
             <Link href="/daily">{pageText[language].daily}</Link>
             <Link href="/lessons">{pageText[language].lessons}</Link>
+            <Link href="/teacher">Teacher</Link>
             <Link href="/profile">{pageText[language].profileNav}</Link>
             <Link href="/feedback">{pageText[language].feedbackNav}</Link>
             <Link href="/login?mode=login&force=1">{pageText[language].signIn}</Link>

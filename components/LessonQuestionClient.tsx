@@ -267,6 +267,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
           <nav className="appNav">
             <a href="/">{copy.home}</a>
             <a href="/lessons">Lessons</a>
+            <a href="/teacher">Teacher</a>
             <a href="/profile">Profile</a>
             <a href="/feedback">Feedback</a>
             <a href="/store">Store</a>
