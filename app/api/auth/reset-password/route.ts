@@ -8,12 +8,27 @@ type ResetBody = {
 
 function getSiteOrigin(request: Request) {
   const requestUrl = new URL(request.url);
+  const requestOrigin = `${requestUrl.protocol}//${requestUrl.host}`.replace(/\/$/, '');
+  const configuredOrigin = (process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL || '').replace(/\/$/, '');
+  const allowedProductionOrigins = [
+    'https://uthynk.com',
+    'https://www.uthynk.com',
+    'https://uthynk-beta-2-0.vercel.app',
+  ];
 
-  return (
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    process.env.SITE_URL ||
-    `${requestUrl.protocol}//${requestUrl.host}`
-  ).replace(/\/$/, '');
+  if (allowedProductionOrigins.includes(requestOrigin)) {
+    return requestOrigin;
+  }
+
+  if (allowedProductionOrigins.includes(configuredOrigin)) {
+    return configuredOrigin;
+  }
+
+  if (requestUrl.hostname === 'localhost' || requestUrl.hostname === '127.0.0.1') {
+    return requestOrigin;
+  }
+
+  return 'https://uthynk.com';
 }
 
 export async function POST(request: Request) {
