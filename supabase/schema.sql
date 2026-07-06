@@ -306,3 +306,110 @@ and event_type in (
   'soft_launch_survey_dismissed',
   'soft_launch_survey_completed'
 );
+
+alter table public.user_profiles
+add column if not exists is_studio_admin boolean not null default false;
+
+alter table public.user_profiles
+add column if not exists studio_role text;
+
+create table if not exists public.studio_campaigns (
+  id uuid primary key default uuid_generate_v4(),
+  created_by uuid references public.user_profiles(id) on delete set null,
+  name text not null,
+  objective text not null,
+  audience text,
+  channel text,
+  status text not null default 'draft',
+  campaign_brief jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists public.studio_posts (
+  id uuid primary key default uuid_generate_v4(),
+  campaign_id uuid references public.studio_campaigns(id) on delete cascade,
+  created_by uuid references public.user_profiles(id) on delete set null,
+  platform text not null,
+  hook text not null,
+  body text,
+  asset_prompt text,
+  status text not null default 'idea',
+  scheduled_for timestamptz,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists public.studio_media_assets (
+  id uuid primary key default uuid_generate_v4(),
+  campaign_id uuid references public.studio_campaigns(id) on delete set null,
+  created_by uuid references public.user_profiles(id) on delete set null,
+  asset_type text not null,
+  title text not null,
+  storage_path text,
+  generation_prompt text,
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+create table if not exists public.studio_platform_connections (
+  id uuid primary key default uuid_generate_v4(),
+  created_by uuid references public.user_profiles(id) on delete set null,
+  platform text not null,
+  account_label text,
+  token_secret_ref text,
+  connection_status text not null default 'not_connected',
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists public.studio_analytics_events (
+  id uuid primary key default uuid_generate_v4(),
+  campaign_id uuid references public.studio_campaigns(id) on delete set null,
+  post_id uuid references public.studio_posts(id) on delete set null,
+  platform text,
+  event_type text not null,
+  event_value numeric,
+  metadata jsonb default '{}'::jsonb,
+  occurred_at timestamptz default now()
+);
+
+create table if not exists public.studio_weekly_approvals (
+  id uuid primary key default uuid_generate_v4(),
+  campaign_id uuid references public.studio_campaigns(id) on delete cascade,
+  week_start date not null,
+  status text not null default 'draft',
+  approval_notes text,
+  reviewed_by uuid references public.user_profiles(id) on delete set null,
+  reviewed_at timestamptz,
+  created_at timestamptz default now()
+);
+
+comment on table public.studio_platform_connections is
+'Private Studio platform settings. Store token material in a secrets manager; token_secret_ref stores only a secure reference.';
+
+alter table public.studio_campaigns enable row level security;
+alter table public.studio_posts enable row level security;
+alter table public.studio_media_assets enable row level security;
+alter table public.studio_platform_connections enable row level security;
+alter table public.studio_analytics_events enable row level security;
+alter table public.studio_weekly_approvals enable row level security;
+
+create index if not exists studio_campaigns_created_idx
+on public.studio_campaigns(created_at desc);
+
+create index if not exists studio_posts_campaign_idx
+on public.studio_posts(campaign_id, created_at desc);
+
+create index if not exists studio_media_assets_campaign_idx
+on public.studio_media_assets(campaign_id, created_at desc);
+
+create index if not exists studio_platform_connections_platform_idx
+on public.studio_platform_connections(platform);
+
+create index if not exists studio_analytics_events_campaign_idx
+on public.studio_analytics_events(campaign_id, occurred_at desc);
+
+create index if not exists studio_weekly_approvals_campaign_week_idx
+on public.studio_weekly_approvals(campaign_id, week_start desc);

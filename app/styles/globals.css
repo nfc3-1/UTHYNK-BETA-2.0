@@ -2884,3 +2884,271 @@ a{
     grid-template-columns:1fr;
   }
 }
+
+.studioPage{
+  min-height:100vh;
+  padding:36px;
+  color:#f7f8ff;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(94,234,212,0.12), transparent 30%),
+    linear-gradient(135deg,#080d22 0%,#111936 48%,#09101f 100%);
+}
+
+.studioHero{
+  max-width:1320px;
+  margin:0 auto 22px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 320px;
+  gap:18px;
+  align-items:stretch;
+}
+
+.studioHero > div,
+.studioHero > aside,
+.studioPanel,
+.studioUnauthorized{
+  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(18,25,54,0.78);
+  box-shadow:0 24px 70px rgba(0,0,0,0.24);
+  backdrop-filter:blur(16px);
+}
+
+.studioHero > div,
+.studioHero > aside{
+  border-radius:22px;
+  padding:24px;
+}
+
+.studioHero p,
+.studioPanelHeader span,
+.studioField span,
+.studioCampaignList span,
+.studioPostList span,
+.studioHero aside span,
+.studioMuted{
+  margin:0;
+  color:rgba(255,255,255,0.58);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:0.09em;
+  text-transform:uppercase;
+}
+
+.studioHero h1{
+  margin:8px 0 10px;
+  max-width:760px;
+  color:#fff;
+  font-size:clamp(42px,6vw,84px);
+  line-height:0.92;
+}
+
+.studioHero > div > span,
+.studioApprovalBox p{
+  display:block;
+  max-width:820px;
+  color:rgba(255,255,255,0.72);
+  font-size:17px;
+  line-height:1.6;
+}
+
+.studioHero aside{
+  display:grid;
+  align-content:center;
+  gap:8px;
+  border-color:rgba(94,234,212,0.22);
+}
+
+.studioHero aside strong{
+  color:#5eead4;
+  font-size:22px;
+}
+
+.studioGrid{
+  max-width:1320px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+
+.studioPanel{
+  border-radius:20px;
+  padding:20px;
+}
+
+.studioWidePanel{
+  grid-column:span 2;
+}
+
+.studioPanelHeader{
+  display:grid;
+  gap:6px;
+  margin-bottom:16px;
+}
+
+.studioPanelHeader strong{
+  color:#fff;
+  font-size:18px;
+  line-height:1.25;
+}
+
+.studioField{
+  display:grid;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.studioField input,
+.studioField select,
+.studioField textarea{
+  width:100%;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:14px;
+  padding:13px 14px;
+  color:#fff;
+  background:rgba(4,8,22,0.55);
+  font:inherit;
+}
+
+.studioField textarea{
+  min-height:108px;
+  resize:vertical;
+}
+
+.studioCampaignList,
+.studioPostList,
+.studioModuleGrid,
+.studioAnalyticsGrid{
+  display:grid;
+  gap:12px;
+}
+
+.studioCampaignList button,
+.studioPostList article,
+.studioModuleGrid article,
+.studioAnalyticsGrid div,
+.studioApprovalBox{
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:16px;
+  padding:14px;
+  background:rgba(255,255,255,0.045);
+}
+
+.studioCampaignList button{
+  display:grid;
+  gap:6px;
+  width:100%;
+  color:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+
+.studioCampaignList button.active{
+  border-color:rgba(246,198,79,0.58);
+  background:rgba(246,198,79,0.10);
+}
+
+.studioCampaignList strong,
+.studioPostList p,
+.studioModuleGrid p{
+  margin:0;
+  color:rgba(255,255,255,0.86);
+  line-height:1.45;
+}
+
+.studioCampaignList small{
+  color:rgba(255,255,255,0.62);
+  line-height:1.45;
+}
+
+.studioModuleGrid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.studioModuleGrid span{
+  display:block;
+  margin-bottom:8px;
+  color:#f6c64f;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.studioAnalyticsGrid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.studioAnalyticsGrid strong{
+  display:block;
+  color:#5eead4;
+  font-size:34px;
+}
+
+.studioAnalyticsGrid span{
+  color:rgba(255,255,255,0.64);
+  font-size:12px;
+  font-weight:850;
+}
+
+.studioApprovalBox{
+  display:grid;
+  gap:14px;
+}
+
+.studioUnauthorized{
+  width:min(620px,calc(100vw - 32px));
+  margin:16vh auto 0;
+  border-radius:24px;
+  padding:34px;
+  text-align:center;
+}
+
+.studioMark{
+  width:54px;
+  height:54px;
+  margin:0 auto 16px;
+  display:grid;
+  place-items:center;
+  border-radius:18px;
+  color:#111936;
+  background:#f6c64f;
+  font-size:26px;
+  font-weight:950;
+}
+
+.studioUnauthorized h1{
+  margin:8px 0;
+  font-size:42px;
+}
+
+.studioUnauthorized span{
+  color:rgba(255,255,255,0.66);
+  line-height:1.55;
+}
+
+@media (max-width: 1000px){
+  .studioHero,
+  .studioGrid{
+    grid-template-columns:1fr;
+  }
+
+  .studioWidePanel{
+    grid-column:auto;
+  }
+
+  .studioModuleGrid,
+  .studioAnalyticsGrid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width: 640px){
+  .studioPage{
+    padding:18px;
+  }
+
+  .studioHero h1{
+    font-size:42px;
+  }
+}

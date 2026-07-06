@@ -10,6 +10,7 @@ const protectedRoutes = [
   '/enterprise',
   '/stats',
   '/store',
+  '/studio',
 ];
 
 function isProtectedRoute(pathname: string) {
@@ -34,7 +35,13 @@ export function middleware(request: NextRequest) {
   }
 
   if (!isProtectedRoute(pathname) || hasSession) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+
+    if (pathname.startsWith('/studio')) {
+      response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+    }
+
+    return response;
   }
 
   const loginUrl = new URL('/login', request.url);
@@ -52,6 +59,7 @@ export const config = {
     '/enterprise/:path*',
     '/stats/:path*',
     '/store/:path*',
+    '/studio/:path*',
     '/login',
   ],
 };
