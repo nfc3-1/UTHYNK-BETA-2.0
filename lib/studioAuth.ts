@@ -4,6 +4,8 @@ type StudioAccessResult =
   | { allowed: true; user: SessionUser; source: 'env' | 'profile' }
   | { allowed: false; reason: 'unauthenticated' | 'not_admin'; user?: SessionUser | null };
 
+const DEFAULT_STUDIO_ADMIN_EMAILS = ['nick.catrambone@yahoo.com'];
+
 function parseAllowlist(value?: string) {
   return (value || '')
     .split(',')
@@ -12,7 +14,12 @@ function parseAllowlist(value?: string) {
 }
 
 function getStudioAdminEmails() {
-  return parseAllowlist(process.env.STUDIO_ADMIN_EMAILS || process.env.UTHYNK_STUDIO_ADMIN_EMAILS);
+  return Array.from(
+    new Set([
+      ...DEFAULT_STUDIO_ADMIN_EMAILS,
+      ...parseAllowlist(process.env.STUDIO_ADMIN_EMAILS || process.env.UTHYNK_STUDIO_ADMIN_EMAILS),
+    ])
+  );
 }
 
 function getStudioAdminIds() {
