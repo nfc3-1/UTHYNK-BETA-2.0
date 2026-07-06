@@ -6,29 +6,15 @@ type ResetBody = {
   email?: string;
 };
 
-function getSiteOrigin(request: Request) {
+function getResetOrigin(request: Request) {
   const requestUrl = new URL(request.url);
   const requestOrigin = `${requestUrl.protocol}//${requestUrl.host}`.replace(/\/$/, '');
-  const configuredOrigin = (process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL || '').replace(/\/$/, '');
-  const allowedProductionOrigins = [
-    'https://uthynk.com',
-    'https://www.uthynk.com',
-    'https://uthynk-beta-2-0.vercel.app',
-  ];
-
-  if (allowedProductionOrigins.includes(requestOrigin)) {
-    return requestOrigin;
-  }
-
-  if (allowedProductionOrigins.includes(configuredOrigin)) {
-    return configuredOrigin;
-  }
 
   if (requestUrl.hostname === 'localhost' || requestUrl.hostname === '127.0.0.1') {
     return requestOrigin;
   }
 
-  return 'https://uthynk.com';
+  return 'https://uthynk-beta-2-0.vercel.app';
 }
 
 export async function POST(request: Request) {
@@ -54,13 +40,16 @@ export async function POST(request: Request) {
       },
     });
 
+    const resetOrigin = getResetOrigin(request);
+
     await authClient.auth.resetPasswordForEmail(email, {
-      redirectTo: `${getSiteOrigin(request)}/reset-password`,
+      redirectTo: `${resetOrigin}/reset-password`,
     });
 
     return NextResponse.json({
       ok: true,
       message: 'If an account exists for that email, a password reset link has been sent.',
+      resetOrigin,
     });
   } catch {
     return NextResponse.json({ error: 'Password reset request failed.' }, { status: 500 });
