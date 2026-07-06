@@ -22,6 +22,7 @@ function LoginForm() {
   const [onboardingGoal, setOnboardingGoal] = useState("sharpen_reasoning");
   const [onboardingStyle, setOnboardingStyle] = useState("balanced");
   const [password, setPassword] = useState("");
+  const [resetStatus, setResetStatus] = useState("");
   const [username, setUsername] = useState("");
 
   useEffect(() => {
@@ -55,6 +56,7 @@ function LoginForm() {
 
   async function handleSubmit() {
     setError("");
+    setResetStatus("");
     setLoading(true);
 
     try {
@@ -73,7 +75,12 @@ function LoginForm() {
       const payload = await response.json().catch(() => ({}));
 
       if (!response.ok || !payload.profile) {
-        throw new Error(payload.error || "Authentication failed.");
+        throw new Error(
+          payload.error ||
+            (mode === "login"
+              ? "Sign in failed. If this is your first time, create an account first."
+              : "Authentication failed.")
+        );
       }
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload.profile));
@@ -81,6 +88,36 @@ function LoginForm() {
       router.refresh();
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Authentication failed.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function requestPasswordReset() {
+    setError("");
+    setResetStatus("");
+
+    if (!email) {
+      setError("Enter your email first, then request a reset link.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await fetch("/api/auth/reset-password", {
+        body: JSON.stringify({ email }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      });
+      const payload = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(payload.error || "Password reset request failed.");
+      }
+
+      setResetStatus(payload.message || "If an account exists, a reset link has been sent.");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Password reset request failed.");
     } finally {
       setLoading(false);
     }
@@ -201,6 +238,7 @@ function LoginForm() {
           ) : null}
 
           {error ? <p className="authError">{error}</p> : null}
+          {resetStatus ? <p className="authStatus">{resetStatus}</p> : null}
 
           <button
             className="btn btnPrimary"
@@ -210,6 +248,12 @@ function LoginForm() {
           >
             {loading ? "Checking..." : mode === "signup" ? "Start UThynk" : "Sign in"}
           </button>
+
+          {mode === "login" ? (
+            <button className="btn" disabled={!email || loading} type="button" onClick={requestPasswordReset}>
+              Forgot or reset password
+            </button>
+          ) : null}
         </div>
 
         <p className="authFinePrint">
