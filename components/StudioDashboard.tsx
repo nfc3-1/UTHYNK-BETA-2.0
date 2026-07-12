@@ -166,6 +166,131 @@ const platformTone: Record<StudioChannelId, string> = {
   threads: 'short, conversational, and discussion-ready',
 };
 
+
+function isStudioChannelId(value: unknown): value is StudioChannelId {
+  return value === 'linkedin' || value === 'facebook' || value === 'instagram' || value === 'threads';
+}
+
+function normalizePlatform(value: unknown): StudioChannelId {
+  const normalized = String(value || '').trim().toLowerCase();
+
+  if (isStudioChannelId(normalized)) {
+    return normalized;
+  }
+
+  if (normalized.includes('facebook')) return 'facebook';
+  if (normalized.includes('instagram')) return 'instagram';
+  if (normalized.includes('thread')) return 'threads';
+
+  return 'linkedin';
+}
+
+function normalizeStatus(value: unknown): StudioStatus {
+  const normalized = String(value || '').trim().toLowerCase();
+
+  if (normalized === 'approval') return 'review';
+  if (
+    normalized === 'draft' ||
+    normalized === 'review' ||
+    normalized === 'approved' ||
+    normalized === 'scheduled' ||
+    normalized === 'published'
+  ) {
+    return normalized;
+  }
+
+  return 'draft';
+}
+
+function normalizeText(value: unknown, fallback: string) {
+  const text = String(value || '').trim();
+
+  return text || fallback;
+}
+
+function normalizeHashtags(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item || '').trim()).filter(Boolean);
+  }
+
+  const text = String(value || '').trim();
+
+  return text ? text.split(/\s+/).filter(Boolean) : ['#UThynk'];
+}
+
+function normalizeCampaign(value: any, index: number): StudioCampaign {
+  return {
+    id: normalizeText(value?.id, `campaign-${index}`),
+    name: normalizeText(value?.name, starterCampaigns[0].name),
+    objective: normalizeText(value?.objective, starterCampaigns[0].objective),
+    audience: normalizeText(value?.audience, starterCampaigns[0].audience),
+    offer: normalizeText(value?.offer, starterCampaigns[0].offer),
+    coreMessage: normalizeText(value?.coreMessage, value?.campaign_brief?.coreMessage || starterCampaigns[0].coreMessage),
+    brandPillar: normalizeText(value?.brandPillar, starterCampaigns[0].brandPillar),
+    campaignType: normalizeText(value?.campaignType, starterCampaigns[0].campaignType),
+    landingPage: normalizeText(value?.landingPage, starterCampaigns[0].landingPage),
+    startDate: String(value?.startDate || ''),
+    endDate: String(value?.endDate || ''),
+    enabledChannels: Array.isArray(value?.enabledChannels)
+      ? value.enabledChannels.map(normalizePlatform)
+      : defaultChannels.filter((channel) => channel.enabled).map((channel) => channel.id),
+    status: normalizeStatus(value?.status),
+    createdAt: normalizeText(value?.createdAt, new Date().toISOString()),
+  };
+}
+
+function normalizePost(value: any, index: number, fallbackCampaignId: string): StudioPost {
+  const platform = normalizePlatform(value?.platform);
+
+  return {
+    id: normalizeText(value?.id, `post-${index}`),
+    campaignId: normalizeText(value?.campaignId, fallbackCampaignId),
+    platform,
+    hook: normalizeText(value?.hook, starterPosts[0].hook),
+    body: normalizeText(value?.body, `Draft ${channelLabels[platform]} body for UThynk.`),
+    cta: normalizeText(value?.cta, 'Try a free UThynk reasoning challenge.'),
+    hashtags: normalizeHashtags(value?.hashtags),
+    caption: normalizeText(value?.caption, `${channelLabels[platform]} content idea.`),
+    assetPrompt: normalizeText(value?.assetPrompt, 'Create a premium UThynk social graphic with a question, missed perspective, and growth signal.'),
+    graphicFormat: value?.graphicFormat === 'portrait' || value?.graphicFormat === 'landscape' ? value.graphicFormat : 'square',
+    status: normalizeStatus(value?.status),
+    scheduledFor: String(value?.scheduledFor || ''),
+    approvalDecision: value?.approvalDecision === 'approved' || value?.approvalDecision === 'revision' ? value.approvalDecision : 'needs_review',
+    approvalNote: String(value?.approvalNote || ''),
+    createdAt: normalizeText(value?.createdAt, new Date().toISOString()),
+  };
+}
+
+function normalizeAsset(value: any, index: number, fallbackCampaignId: string): StudioMediaAsset {
+  return {
+    id: normalizeText(value?.id, `asset-${index}`),
+    campaignId: normalizeText(value?.campaignId, fallbackCampaignId),
+    title: normalizeText(value?.title, 'UThynk media prompt'),
+    assetType:
+      value?.assetType === 'video' || value?.assetType === 'screenshot' || value?.assetType === 'template'
+        ? value.assetType
+        : 'graphic',
+    prompt: normalizeText(value?.prompt, value?.generation_prompt || starterAssets[0].prompt),
+    format: value?.format === 'portrait' || value?.format === 'landscape' ? value.format : 'square',
+    status:
+      value?.status === 'needed' || value?.status === 'in_progress' || value?.status === 'ready'
+        ? value.status
+        : 'prompt_ready',
+    createdAt: normalizeText(value?.createdAt, new Date().toISOString()),
+  };
+}
+
+function normalizeChannel(value: any): StudioChannel {
+  const id = normalizePlatform(value?.id || value?.platform || value?.label);
+  const fallback = defaultChannels.find((channel) => channel.id === id) || defaultChannels[0];
+
+  return {
+    ...fallback,
+    enabled: typeof value?.enabled === 'boolean' ? value.enabled : fallback.enabled,
+    cadence: normalizeText(value?.cadence, fallback.cadence),
+    note: normalizeText(value?.note || value?.notes, fallback.note),
+  };
+}
 function makeId(prefix: string) {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }
@@ -223,11 +348,22 @@ function buildVideoAsset(campaign: StudioCampaign): StudioMediaAsset {
 }
 
 function normalizeState(parsed: Partial<StudioState>): StudioState {
+  const campaigns = Array.isArray(parsed.campaigns) && parsed.campaigns.length
+    ? parsed.campaigns.map(normalizeCampaign)
+    : starterCampaigns;
+  const fallbackCampaignId = campaigns[0]?.id || starterCampaigns[0].id;
+
   return {
-    campaigns: parsed.campaigns?.length ? parsed.campaigns : starterCampaigns,
-    posts: parsed.posts?.length ? parsed.posts : starterPosts,
-    assets: parsed.assets?.length ? parsed.assets : starterAssets,
-    channels: parsed.channels?.length ? parsed.channels : defaultChannels,
+    campaigns,
+    posts: Array.isArray(parsed.posts) && parsed.posts.length
+      ? parsed.posts.map((post, index) => normalizePost(post, index, fallbackCampaignId))
+      : starterPosts,
+    assets: Array.isArray(parsed.assets) && parsed.assets.length
+      ? parsed.assets.map((asset, index) => normalizeAsset(asset, index, fallbackCampaignId))
+      : starterAssets,
+    channels: Array.isArray(parsed.channels) && parsed.channels.length
+      ? parsed.channels.map(normalizeChannel)
+      : defaultChannels,
   };
 }
 
@@ -589,4 +725,5 @@ export default function StudioDashboard() {
     </div>
   );
 }
+
 
