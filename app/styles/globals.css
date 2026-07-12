@@ -48,7 +48,7 @@ body{
   display:grid;
   grid-template-columns:minmax(260px,0.32fr) minmax(0,1fr);
   gap:18px;
-  align-items:start;
+  align-items:flex-start;
 }
 
 .teacherStack{
@@ -1215,7 +1215,7 @@ a{
   display:grid;
   grid-template-columns:minmax(260px,0.9fr) minmax(420px,1.4fr);
   gap:18px;
-  align-items:start;
+  align-items:flex-start;
 }
 
 .lessonQuestionList{
@@ -1445,7 +1445,7 @@ a{
   display:grid;
   grid-template-columns:minmax(220px,0.72fr) minmax(520px,1.9fr) minmax(280px,0.9fr);
   gap:18px;
-  align-items:start;
+  align-items:flex-start;
 }
 
 .uthynkSidePanel,
@@ -1476,7 +1476,7 @@ a{
   display:grid;
   grid-template-columns:1fr auto;
   gap:16px;
-  align-items:start;
+  align-items:flex-start;
   padding-bottom:16px;
   border-bottom:1px solid rgba(255,255,255,0.08);
 }
@@ -1666,7 +1666,7 @@ a{
   display:grid;
   grid-template-columns:1fr auto;
   gap:18px;
-  align-items:start;
+  align-items:flex-start;
   padding-bottom:20px;
   border-bottom:1px solid rgba(255,255,255,0.10);
 }
@@ -3152,3 +3152,143 @@ a{
     font-size:42px;
   }
 }
+
+.studioGridExpanded{
+  align-items:flex-start;
+}
+
+.studioChannelList,
+.studioTabs,
+.studioFormGrid,
+.studioApprovalActions{
+  display:grid;
+  gap:12px;
+}
+
+.studioChannelList button{
+  display:grid;
+  gap:6px;
+  width:100%;
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:16px;
+  padding:14px;
+  color:inherit;
+  text-align:left;
+  background:rgba(255,255,255,0.045);
+  cursor:pointer;
+}
+
+.studioChannelList button.enabled{
+  border-color:rgba(94,234,212,0.32);
+  background:rgba(94,234,212,0.08);
+}
+
+.studioChannelList strong,
+.studioPostList strong{
+  color:#fff;
+  line-height:1.25;
+}
+
+.studioChannelList small,
+.studioAnalyticsGrid small,
+.studioPostList small{
+  color:rgba(255,255,255,0.62);
+  line-height:1.45;
+}
+
+.studioInlineNote{
+  margin-top:14px;
+  line-height:1.45;
+  text-transform:none;
+  letter-spacing:0;
+  font-weight:750;
+}
+
+.studioFormGrid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.studioFullField{
+  grid-column:1 / -1;
+}
+
+.studioToolbarHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.studioTabs{
+  grid-auto-flow:column;
+  grid-auto-columns:max-content;
+  align-items:center;
+  overflow-x:auto;
+}
+
+.studioTabs button{
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:999px;
+  padding:9px 12px;
+  color:rgba(255,255,255,0.78);
+  background:rgba(255,255,255,0.055);
+  font-size:12px;
+  font-weight:900;
+  text-transform:capitalize;
+  cursor:pointer;
+}
+
+.studioTabs button.active{
+  border-color:rgba(246,198,79,0.64);
+  color:#10162c;
+  background:#f6c64f;
+}
+
+.studioModuleGridTwo{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.studioApprovalActions{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  margin:12px 0;
+}
+
+.compactField{
+  margin-bottom:0;
+}
+
+.compactField textarea{
+  min-height:76px;
+}
+
+.studioAnalyticsGridFour{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.studioAnalyticsGrid small{
+  display:block;
+  margin-top:8px;
+}
+
+.studioPostList b{
+  color:#f6c64f;
+}
+
+@media (max-width: 1000px){
+  .studioFormGrid,
+  .studioModuleGridTwo,
+  .studioAnalyticsGridFour,
+  .studioApprovalActions{
+    grid-template-columns:1fr;
+  }
+
+  .studioToolbarHeader{
+    display:grid;
+  }
+
+  .studioTabs{
+    grid-auto-flow:row;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+

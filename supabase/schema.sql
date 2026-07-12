@@ -413,3 +413,183 @@ on public.studio_analytics_events(campaign_id, occurred_at desc);
 
 create index if not exists studio_weekly_approvals_campaign_week_idx
 on public.studio_weekly_approvals(campaign_id, week_start desc);
+
+alter table public.studio_campaigns
+add column if not exists enabled_platforms text[] not null default array['LinkedIn','Facebook','Instagram','Threads'],
+add column if not exists offer text,
+add column if not exists core_message text,
+add column if not exists brand_pillar text,
+add column if not exists campaign_type text,
+add column if not exists landing_page_url text,
+add column if not exists start_date date,
+add column if not exists end_date date,
+add column if not exists utm_source text;
+
+alter table public.studio_posts
+add column if not exists caption text,
+add column if not exists cta text,
+add column if not exists hashtags text[] not null default '{}',
+add column if not exists content_package jsonb not null default '{}'::jsonb,
+add column if not exists approval_decision text not null default 'needs_review',
+add column if not exists approval_notes text,
+add column if not exists graphic_format text,
+add column if not exists scheduled_timezone text default 'America/Chicago';
+
+create table if not exists public.studio_channel_settings (
+  id uuid primary key default uuid_generate_v4(),
+  created_by uuid references public.user_profiles(id) on delete set null,
+  platform text not null unique,
+  enabled boolean not null default true,
+  cadence text,
+  notes text,
+  status text not null default 'active',
+  metadata jsonb not null default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+alter table public.studio_channel_settings enable row level security;
+
+create index if not exists studio_channel_settings_platform_idx
+on public.studio_channel_settings(platform);
+
+drop policy if exists "Studio admins can manage campaigns" on public.studio_campaigns;
+drop policy if exists "Studio admins can manage posts" on public.studio_posts;
+drop policy if exists "Studio admins can manage media assets" on public.studio_media_assets;
+drop policy if exists "Studio admins can manage platform connections" on public.studio_platform_connections;
+drop policy if exists "Studio admins can manage analytics events" on public.studio_analytics_events;
+drop policy if exists "Studio admins can manage weekly approvals" on public.studio_weekly_approvals;
+drop policy if exists "Studio admins can manage channel settings" on public.studio_channel_settings;
+
+create policy "Studio admins can manage campaigns"
+on public.studio_campaigns
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+create policy "Studio admins can manage posts"
+on public.studio_posts
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+create policy "Studio admins can manage media assets"
+on public.studio_media_assets
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+create policy "Studio admins can manage platform connections"
+on public.studio_platform_connections
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+create policy "Studio admins can manage analytics events"
+on public.studio_analytics_events
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+create policy "Studio admins can manage weekly approvals"
+on public.studio_weekly_approvals
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+create policy "Studio admins can manage channel settings"
+on public.studio_channel_settings
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);

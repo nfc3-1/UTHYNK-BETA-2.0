@@ -2,37 +2,118 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
+type StudioChannelId = 'linkedin' | 'facebook' | 'instagram' | 'threads';
+type StudioStatus = 'draft' | 'review' | 'approved' | 'scheduled' | 'published';
+type ApprovalDecision = 'needs_review' | 'approved' | 'revision';
+
+type StudioChannel = {
+  id: StudioChannelId;
+  label: string;
+  enabled: boolean;
+  cadence: string;
+  note: string;
+};
+
 type StudioCampaign = {
   id: string;
   name: string;
   objective: string;
-  channel: string;
-  status: 'draft' | 'approval' | 'ready';
+  audience: string;
+  offer: string;
+  coreMessage: string;
+  brandPillar: string;
+  campaignType: string;
+  landingPage: string;
+  startDate: string;
+  endDate: string;
+  enabledChannels: StudioChannelId[];
+  status: StudioStatus;
   createdAt: string;
 };
 
 type StudioPost = {
   id: string;
   campaignId: string;
-  platform: string;
+  platform: StudioChannelId;
   hook: string;
-  status: 'idea' | 'draft' | 'approval';
+  body: string;
+  cta: string;
+  hashtags: string[];
+  caption: string;
+  assetPrompt: string;
+  graphicFormat: 'square' | 'portrait' | 'landscape';
+  status: StudioStatus;
+  scheduledFor: string;
+  approvalDecision: ApprovalDecision;
+  approvalNote: string;
+  createdAt: string;
+};
+
+type StudioMediaAsset = {
+  id: string;
+  campaignId: string;
+  title: string;
+  assetType: 'graphic' | 'video' | 'screenshot' | 'template';
+  prompt: string;
+  format: 'square' | 'portrait' | 'landscape';
+  status: 'needed' | 'prompt_ready' | 'in_progress' | 'ready';
   createdAt: string;
 };
 
 type StudioState = {
   campaigns: StudioCampaign[];
   posts: StudioPost[];
+  assets: StudioMediaAsset[];
+  channels: StudioChannel[];
 };
 
-const STORAGE_KEY = 'uthynk-studio-v1';
+const STORAGE_KEY = 'uthynk-studio-v2';
+
+const defaultChannels: StudioChannel[] = [
+  {
+    id: 'linkedin',
+    label: 'LinkedIn',
+    enabled: true,
+    cadence: 'Founder insight + beta proof',
+    note: 'Best for founder narrative, investor credibility, and thoughtful product updates.',
+  },
+  {
+    id: 'facebook',
+    label: 'Facebook',
+    enabled: true,
+    cadence: 'Practical explanation + community question',
+    note: 'Best for approachable everyday reasoning examples and local/community shares.',
+  },
+  {
+    id: 'instagram',
+    label: 'Instagram',
+    enabled: true,
+    cadence: 'Carousel, quote graphic, or reel prompt',
+    note: 'Best for visual snapshots, simple before/after thinking moments, and short clips.',
+  },
+  {
+    id: 'threads',
+    label: 'Threads',
+    enabled: true,
+    cadence: 'Short thought + question loop',
+    note: 'Best for quick hooks, debate prompts, and lightweight conversation starters.',
+  },
+];
 
 const starterCampaigns: StudioCampaign[] = [
   {
     id: 'campaign-soft-launch',
     name: 'Soft Launch Perspective Campaign',
-    objective: 'Show that UThynk helps people see what they had not considered.',
-    channel: 'LinkedIn / X / Short video',
+    objective: 'Make people understand that UThynk helps them see the perspective they missed.',
+    audience: 'Curious adults, parents, students, and professionals who want sharper judgment.',
+    offer: 'Try three free reasoning challenges.',
+    coreMessage: 'Better thinking starts when you notice what you had not considered.',
+    brandPillar: 'Perspective expansion',
+    campaignType: 'Founder-led beta launch',
+    landingPage: 'https://uthynk.com',
+    startDate: '',
+    endDate: '',
+    enabledChannels: ['linkedin', 'facebook', 'instagram', 'threads'],
     status: 'draft',
     createdAt: new Date().toISOString(),
   },
@@ -42,39 +123,151 @@ const starterPosts: StudioPost[] = [
   {
     id: 'post-founder-note',
     campaignId: 'campaign-soft-launch',
-    platform: 'LinkedIn',
+    platform: 'linkedin',
     hook: 'Most people do not need another answer. They need a better way to notice what they missed.',
-    status: 'idea',
+    body: 'UThynk is built around a simple loop: answer a real question, face a useful new perspective, then reflect on whether your thinking changed. The goal is not to tell people what to think. It is to help them catch the angle they would have skipped.',
+    cta: 'Try a free UThynk reasoning challenge.',
+    hashtags: ['#BetterThinking', '#CriticalThinking', '#UThynk'],
+    caption: 'Founder note for soft launch.',
+    assetPrompt: 'Premium dark-mode UThynk graphic showing a question transforming into a new perspective, with subtle gold and teal accents.',
+    graphicFormat: 'landscape',
+    status: 'draft',
+    scheduledFor: '',
+    approvalDecision: 'needs_review',
+    approvalNote: '',
     createdAt: new Date().toISOString(),
   },
 ];
+
+const starterAssets: StudioMediaAsset[] = [
+  {
+    id: 'asset-beta-snapshot',
+    campaignId: 'campaign-soft-launch',
+    title: 'Perspective Shift Snapshot',
+    assetType: 'graphic',
+    prompt: 'Create a premium UThynk social graphic: question, answer, perspective you may not have considered, and +20 insight XP. Dark navy interface, gold CTA, teal highlight.',
+    format: 'square',
+    status: 'prompt_ready',
+    createdAt: new Date().toISOString(),
+  },
+];
+
+const channelLabels: Record<StudioChannelId, string> = {
+  linkedin: 'LinkedIn',
+  facebook: 'Facebook',
+  instagram: 'Instagram',
+  threads: 'Threads',
+};
+
+const platformTone: Record<StudioChannelId, string> = {
+  linkedin: 'professional and founder-led',
+  facebook: 'plain-spoken and community-centered',
+  instagram: 'visual, concise, and emotionally clear',
+  threads: 'short, conversational, and discussion-ready',
+};
 
 function makeId(prefix: string) {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
+function todayOffset(days: number) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+function buildPost(campaign: StudioCampaign, platform: StudioChannelId, index: number): StudioPost {
+  const label = channelLabels[platform];
+  const tone = platformTone[platform];
+  const hookOptions = [
+    `The strongest answer is usually hiding one question you did not ask.`,
+    `What if better thinking is less about being right and more about noticing what you missed?`,
+    `A good reasoning challenge should make you pause, not perform.`,
+    `Before you defend your answer, UThynk asks you to test the angle you skipped.`,
+  ];
+  const hook = hookOptions[index % hookOptions.length];
+
+  return {
+    id: makeId('post'),
+    campaignId: campaign.id,
+    platform,
+    hook,
+    body:
+      `${campaign.coreMessage}\n\nFor ${label}, keep the message ${tone}. Start with a real-life decision, show the missing perspective, then invite the audience to try one challenge instead of promising instant wisdom.\n\nCampaign objective: ${campaign.objective}`,
+    cta: campaign.offer || 'Try a free UThynk reasoning challenge.',
+    hashtags: platform === 'threads' ? ['#UThynk'] : ['#UThynk', '#BetterThinking', '#Reasoning'],
+    caption: `${label} variant for ${campaign.name}`,
+    assetPrompt:
+      `Create a ${platform === 'instagram' ? 'portrait carousel cover' : 'premium social graphic'} for UThynk. Theme: ${campaign.brandPillar}. Show a simple question, a missed perspective, and a small growth signal. Use dark navy, restrained gold, and teal accent. No clutter.`,
+    graphicFormat: platform === 'instagram' ? 'portrait' : platform === 'linkedin' ? 'landscape' : 'square',
+    status: 'draft',
+    scheduledFor: todayOffset(index + 1),
+    approvalDecision: 'needs_review',
+    approvalNote: '',
+    createdAt: new Date().toISOString(),
+  };
+}
+
+function buildVideoAsset(campaign: StudioCampaign): StudioMediaAsset {
+  return {
+    id: makeId('asset-video'),
+    campaignId: campaign.id,
+    title: '30-second beta explainer storyboard',
+    assetType: 'video',
+    prompt:
+      `Brand video plan for ${campaign.name}: Scene 1, show someone answering a real question. Scene 2, UThynk reveals a perspective they missed. Scene 3, show insight XP and a thinking snapshot. Scene 4, CTA: ${campaign.offer}. Tone should be premium, calm, and practical.`,
+    format: 'portrait',
+    status: 'prompt_ready',
+    createdAt: new Date().toISOString(),
+  };
+}
+
+function normalizeState(parsed: Partial<StudioState>): StudioState {
+  return {
+    campaigns: parsed.campaigns?.length ? parsed.campaigns : starterCampaigns,
+    posts: parsed.posts?.length ? parsed.posts : starterPosts,
+    assets: parsed.assets?.length ? parsed.assets : starterAssets,
+    channels: parsed.channels?.length ? parsed.channels : defaultChannels,
+  };
+}
+
 export default function StudioDashboard() {
   const [campaigns, setCampaigns] = useState<StudioCampaign[]>(starterCampaigns);
   const [posts, setPosts] = useState<StudioPost[]>(starterPosts);
+  const [assets, setAssets] = useState<StudioMediaAsset[]>(starterAssets);
+  const [channels, setChannels] = useState<StudioChannel[]>(defaultChannels);
   const [selectedCampaignId, setSelectedCampaignId] = useState(starterCampaigns[0]?.id || '');
-  const [campaignName, setCampaignName] = useState('');
-  const [campaignObjective, setCampaignObjective] = useState('');
-  const [postHook, setPostHook] = useState('');
-  const [platform, setPlatform] = useState('LinkedIn');
+  const [activeModule, setActiveModule] = useState<'brief' | 'content' | 'media' | 'calendar' | 'approval' | 'analytics'>('brief');
+  const [campaignDraft, setCampaignDraft] = useState({
+    name: '',
+    objective: '',
+    audience: '',
+    offer: '',
+    coreMessage: '',
+    brandPillar: 'Perspective expansion',
+    campaignType: 'Soft launch',
+    landingPage: 'https://uthynk.com',
+    startDate: '',
+    endDate: '',
+  });
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('uthynk-studio-v1');
 
     if (stored) {
       try {
-        const parsed = JSON.parse(stored) as StudioState;
-        setCampaigns(parsed.campaigns?.length ? parsed.campaigns : starterCampaigns);
-        setPosts(parsed.posts?.length ? parsed.posts : starterPosts);
-        setSelectedCampaignId(parsed.campaigns?.[0]?.id || starterCampaigns[0]?.id || '');
+        const nextState = normalizeState(JSON.parse(stored));
+        setCampaigns(nextState.campaigns);
+        setPosts(nextState.posts);
+        setAssets(nextState.assets);
+        setChannels(nextState.channels);
+        setSelectedCampaignId(nextState.campaigns[0]?.id || starterCampaigns[0]?.id || '');
       } catch {
         setCampaigns(starterCampaigns);
         setPosts(starterPosts);
+        setAssets(starterAssets);
+        setChannels(defaultChannels);
       }
     }
 
@@ -89,94 +282,174 @@ export default function StudioDashboard() {
       JSON.stringify({
         campaigns,
         posts,
+        assets,
+        channels,
       })
     );
-  }, [campaigns, hydrated, posts]);
+  }, [assets, campaigns, channels, hydrated, posts]);
 
   const selectedCampaign = campaigns.find((campaign) => campaign.id === selectedCampaignId) || campaigns[0];
   const selectedPosts = posts.filter((post) => post.campaignId === selectedCampaign?.id);
+  const selectedAssets = assets.filter((asset) => asset.campaignId === selectedCampaign?.id);
+  const activeChannels = channels.filter((channel) => channel.enabled);
+  const enabledPlatforms = selectedCampaign?.enabledChannels?.length
+    ? selectedCampaign.enabledChannels
+    : activeChannels.map((channel) => channel.id);
+
   const analytics = useMemo(
     () => [
-      { label: 'Draft campaigns', value: campaigns.filter((item) => item.status === 'draft').length },
-      { label: 'Posts in approval', value: posts.filter((item) => item.status === 'approval').length },
-      { label: 'Ready assets', value: campaigns.filter((item) => item.status === 'ready').length },
+      { label: 'Active channels', value: activeChannels.length, detail: 'LinkedIn, Facebook, Instagram, Threads registry' },
+      { label: 'Posts generated', value: posts.length, detail: 'Drafts, review items, and scheduled packets' },
+      { label: 'Review queue', value: posts.filter((item) => item.status === 'review' || item.approvalDecision === 'needs_review').length, detail: 'Items waiting for Nick approval' },
+      { label: 'Ready assets', value: assets.filter((item) => item.status === 'ready' || item.status === 'prompt_ready').length, detail: 'Graphic, video, and template prompts' },
     ],
-    [campaigns, posts]
+    [activeChannels.length, assets, posts]
   );
 
+  function updateCampaignDraft(key: keyof typeof campaignDraft, value: string) {
+    setCampaignDraft((current) => ({ ...current, [key]: value }));
+  }
+
   function createCampaign() {
-    if (!campaignName.trim()) return;
+    if (!campaignDraft.name.trim()) return;
 
     const nextCampaign: StudioCampaign = {
       id: makeId('campaign'),
-      name: campaignName.trim(),
-      objective: campaignObjective.trim() || 'Clarify the UThynk story and move the audience toward one action.',
-      channel: 'Multi-channel',
+      name: campaignDraft.name.trim(),
+      objective: campaignDraft.objective.trim() || 'Clarify the UThynk story and move the audience toward one action.',
+      audience: campaignDraft.audience.trim() || 'People who want better judgment without academic friction.',
+      offer: campaignDraft.offer.trim() || 'Try three free reasoning challenges.',
+      coreMessage: campaignDraft.coreMessage.trim() || 'UThynk helps you notice the perspective you had not considered.',
+      brandPillar: campaignDraft.brandPillar.trim() || 'Perspective expansion',
+      campaignType: campaignDraft.campaignType.trim() || 'Soft launch',
+      landingPage: campaignDraft.landingPage.trim() || 'https://uthynk.com',
+      startDate: campaignDraft.startDate,
+      endDate: campaignDraft.endDate,
+      enabledChannels: activeChannels.map((channel) => channel.id),
       status: 'draft',
       createdAt: new Date().toISOString(),
     };
 
     setCampaigns((current) => [nextCampaign, ...current]);
+    setAssets((current) => [buildVideoAsset(nextCampaign), ...current]);
     setSelectedCampaignId(nextCampaign.id);
-    setCampaignName('');
-    setCampaignObjective('');
+    setCampaignDraft({
+      name: '',
+      objective: '',
+      audience: '',
+      offer: '',
+      coreMessage: '',
+      brandPillar: 'Perspective expansion',
+      campaignType: 'Soft launch',
+      landingPage: 'https://uthynk.com',
+      startDate: '',
+      endDate: '',
+    });
   }
 
-  function createPost() {
-    if (!selectedCampaign || !postHook.trim()) return;
-
-    const nextPost: StudioPost = {
-      id: makeId('post'),
-      campaignId: selectedCampaign.id,
-      platform,
-      hook: postHook.trim(),
-      status: 'idea',
-      createdAt: new Date().toISOString(),
-    };
-
-    setPosts((current) => [nextPost, ...current]);
-    setPostHook('');
+  function toggleChannel(id: StudioChannelId) {
+    setChannels((current) =>
+      current.map((channel) =>
+        channel.id === id ? { ...channel, enabled: !channel.enabled } : channel
+      )
+    );
   }
 
-  function moveCampaignToApproval() {
+  function generateContentPackage() {
+    if (!selectedCampaign) return;
+
+    const platforms: StudioChannelId[] = enabledPlatforms.length ? enabledPlatforms : ['linkedin'];
+    const newPosts = platforms.map((platform, index) => buildPost(selectedCampaign, platform, index));
+    const newAssets = [
+      buildVideoAsset(selectedCampaign),
+      {
+        id: makeId('asset-graphic'),
+        campaignId: selectedCampaign.id,
+        title: 'Multi-platform UThynk graphic prompt',
+        assetType: 'graphic' as const,
+        prompt:
+          `Generate square, portrait, and landscape variants for ${selectedCampaign.name}. Core message: ${selectedCampaign.coreMessage}. CTA: ${selectedCampaign.offer}. Include UThynk logo space and avoid busy classroom imagery.`,
+        format: 'square' as const,
+        status: 'prompt_ready' as const,
+        createdAt: new Date().toISOString(),
+      },
+    ];
+
+    setPosts((current) => [...newPosts, ...current]);
+    setAssets((current) => [...newAssets, ...current]);
+    setActiveModule('approval');
+  }
+
+  function updatePost(id: string, patch: Partial<StudioPost>) {
+    setPosts((current) => current.map((post) => (post.id === id ? { ...post, ...patch } : post)));
+  }
+
+  function moveCampaignStatus(status: StudioStatus) {
     if (!selectedCampaign) return;
 
     setCampaigns((current) =>
       current.map((campaign) =>
-        campaign.id === selectedCampaign.id ? { ...campaign, status: 'approval' } : campaign
+        campaign.id === selectedCampaign.id ? { ...campaign, status } : campaign
       )
     );
   }
 
   return (
-    <div className="studioGrid">
+    <div className="studioGrid studioGridExpanded">
       <section className="studioPanel studioControlPanel">
         <div className="studioPanelHeader">
-          <span>Campaign Planning</span>
-          <strong>Create and organize launch narratives.</strong>
+          <span>Channel Registry</span>
+          <strong>Active launch destinations.</strong>
         </div>
+        <div className="studioChannelList">
+          {channels.map((channel) => (
+            <button
+              key={channel.id}
+              className={channel.enabled ? 'enabled' : ''}
+              type="button"
+              onClick={() => toggleChannel(channel.id)}
+            >
+              <span>{channel.enabled ? 'Enabled' : 'Paused'}</span>
+              <strong>{channel.label}</strong>
+              <small>{channel.cadence}</small>
+            </button>
+          ))}
+        </div>
+        <p className="studioMuted studioInlineNote">Later channels stay out of the active workflow until Nick turns them on.</p>
+      </section>
 
-        <label className="studioField">
-          <span>Campaign name</span>
-          <input
-            value={campaignName}
-            onChange={(event) => setCampaignName(event.target.value)}
-            placeholder="Founder-led beta launch"
-          />
-        </label>
-
-        <label className="studioField">
-          <span>Objective</span>
-          <textarea
-            value={campaignObjective}
-            onChange={(event) => setCampaignObjective(event.target.value)}
-            placeholder="What should this campaign make people understand, feel, or do?"
-          />
-        </label>
-
-        <button className="btn btnPrimary" type="button" onClick={createCampaign}>
-          Save Campaign
-        </button>
+      <section className="studioPanel studioWidePanel">
+        <div className="studioPanelHeader">
+          <span>Campaign Brief</span>
+          <strong>Generate from a real launch goal, not a blank post box.</strong>
+        </div>
+        <div className="studioFormGrid">
+          <label className="studioField">
+            <span>Campaign name</span>
+            <input value={campaignDraft.name} onChange={(event) => updateCampaignDraft('name', event.target.value)} placeholder="Weekend beta launch" />
+          </label>
+          <label className="studioField">
+            <span>Audience</span>
+            <input value={campaignDraft.audience} onChange={(event) => updateCampaignDraft('audience', event.target.value)} placeholder="Parents, students, curious professionals" />
+          </label>
+          <label className="studioField studioFullField">
+            <span>Objective</span>
+            <textarea value={campaignDraft.objective} onChange={(event) => updateCampaignDraft('objective', event.target.value)} placeholder="What should this campaign make people understand, feel, or do?" />
+          </label>
+          <label className="studioField">
+            <span>Offer / CTA</span>
+            <input value={campaignDraft.offer} onChange={(event) => updateCampaignDraft('offer', event.target.value)} placeholder="Try three free reasoning challenges" />
+          </label>
+          <label className="studioField">
+            <span>Brand pillar</span>
+            <input value={campaignDraft.brandPillar} onChange={(event) => updateCampaignDraft('brandPillar', event.target.value)} placeholder="Perspective expansion" />
+          </label>
+          <label className="studioField studioFullField">
+            <span>Core message</span>
+            <textarea value={campaignDraft.coreMessage} onChange={(event) => updateCampaignDraft('coreMessage', event.target.value)} placeholder="The single idea every channel should repeat." />
+          </label>
+        </div>
+        <button className="btn btnPrimary" type="button" onClick={createCampaign}>Save Campaign Brief</button>
       </section>
 
       <section className="studioPanel">
@@ -184,15 +457,9 @@ export default function StudioDashboard() {
           <span>Saved Campaigns</span>
           <strong>Private planning workspace.</strong>
         </div>
-
         <div className="studioCampaignList">
           {campaigns.map((campaign) => (
-            <button
-              key={campaign.id}
-              className={selectedCampaign?.id === campaign.id ? 'active' : ''}
-              type="button"
-              onClick={() => setSelectedCampaignId(campaign.id)}
-            >
+            <button key={campaign.id} className={selectedCampaign?.id === campaign.id ? 'active' : ''} type="button" onClick={() => setSelectedCampaignId(campaign.id)}>
               <span>{campaign.status}</span>
               <strong>{campaign.name}</strong>
               <small>{campaign.objective}</small>
@@ -202,104 +469,124 @@ export default function StudioDashboard() {
       </section>
 
       <section className="studioPanel studioWidePanel">
-        <div className="studioPanelHeader">
-          <span>Brand Video Module</span>
-          <strong>Plan the story before generating assets.</strong>
-        </div>
-        <div className="studioModuleGrid">
-          <article>
-            <span>Core message</span>
-            <p>UThynk helps users notice the perspective they had not considered.</p>
-          </article>
-          <article>
-            <span>Founder angle</span>
-            <p>Nick as builder/operator, turning reasoning training into a practical daily habit.</p>
-          </article>
-          <article>
-            <span>Next asset</span>
-            <p>30-45 second beta explainer: question, answer, perspective shift, growth snapshot.</p>
-          </article>
-        </div>
-      </section>
-
-      <section className="studioPanel">
-        <div className="studioPanelHeader">
-          <span>Content Generation</span>
-          <strong>Draft hooks tied to the selected campaign.</strong>
+        <div className="studioPanelHeader studioToolbarHeader">
+          <div>
+            <span>Studio Modules</span>
+            <strong>{selectedCampaign?.name || 'Select a campaign'}</strong>
+          </div>
+          <div className="studioTabs">
+            {(['brief', 'content', 'media', 'calendar', 'approval', 'analytics'] as const).map((item) => (
+              <button key={item} className={activeModule === item ? 'active' : ''} type="button" onClick={() => setActiveModule(item)}>{item}</button>
+            ))}
+          </div>
         </div>
 
-        <label className="studioField">
-          <span>Platform</span>
-          <select value={platform} onChange={(event) => setPlatform(event.target.value)}>
-            <option>LinkedIn</option>
-            <option>X</option>
-            <option>TikTok</option>
-            <option>YouTube Shorts</option>
-            <option>Email</option>
-          </select>
-        </label>
+        {activeModule === 'brief' && selectedCampaign && (
+          <div className="studioModuleGrid studioModuleGridTwo">
+            <article><span>Audience</span><p>{selectedCampaign.audience}</p></article>
+            <article><span>Offer</span><p>{selectedCampaign.offer}</p></article>
+            <article><span>Core message</span><p>{selectedCampaign.coreMessage}</p></article>
+            <article><span>Brand pillar</span><p>{selectedCampaign.brandPillar}</p></article>
+          </div>
+        )}
 
-        <label className="studioField">
-          <span>Post hook</span>
-          <textarea
-            value={postHook}
-            onChange={(event) => setPostHook(event.target.value)}
-            placeholder="Write the first line or campaign idea."
-          />
-        </label>
+        {activeModule === 'content' && (
+          <div className="studioApprovalBox">
+            <p>Generate LinkedIn, Facebook, Instagram, and Threads variants from the selected campaign brief. This creates hooks, body copy, CTA, hashtags, captions, and image prompts.</p>
+            <button className="btn btnPrimary" type="button" onClick={generateContentPackage}>Generate Content Package</button>
+          </div>
+        )}
 
-        <button className="btn btnPrimary" type="button" onClick={createPost}>
-          Save Post Idea
-        </button>
-      </section>
+        {activeModule === 'media' && (
+          <div className="studioPostList">
+            {selectedAssets.map((asset) => (
+              <article key={asset.id}>
+                <span>{asset.assetType} / {asset.status} / {asset.format}</span>
+                <strong>{asset.title}</strong>
+                <p>{asset.prompt}</p>
+              </article>
+            ))}
+          </div>
+        )}
 
-      <section className="studioPanel">
-        <div className="studioPanelHeader">
-          <span>Saved Posts</span>
-          <strong>{selectedCampaign?.name || 'Select a campaign'}</strong>
-        </div>
-
-        <div className="studioPostList">
-          {selectedPosts.length ? (
-            selectedPosts.map((post) => (
+        {activeModule === 'calendar' && (
+          <div className="studioPostList">
+            {selectedPosts.map((post) => (
               <article key={post.id}>
-                <span>{post.platform} / {post.status}</span>
+                <span>{channelLabels[post.platform]} / {post.status}</span>
+                <label className="studioField compactField">
+                  <span>Scheduled date</span>
+                  <input type="date" value={post.scheduledFor} onChange={(event) => updatePost(post.id, { scheduledFor: event.target.value, status: event.target.value ? 'scheduled' : post.status })} />
+                </label>
                 <p>{post.hook}</p>
               </article>
-            ))
-          ) : (
-            <p className="studioMuted">No posts saved for this campaign yet.</p>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
+
+        {activeModule === 'approval' && (
+          <div className="studioPostList">
+            {selectedPosts.map((post) => (
+              <article key={post.id}>
+                <span>{channelLabels[post.platform]} / {post.approvalDecision}</span>
+                <strong>{post.hook}</strong>
+                <p>{post.body}</p>
+                <p><b>CTA:</b> {post.cta}</p>
+                <p><b>Asset prompt:</b> {post.assetPrompt}</p>
+                <div className="studioApprovalActions">
+                  <button className="btn" type="button" onClick={() => updatePost(post.id, { approvalDecision: 'approved', status: 'approved' })}>Approve</button>
+                  <button className="btn" type="button" onClick={() => updatePost(post.id, { approvalDecision: 'revision', status: 'review' })}>Needs Revision</button>
+                </div>
+                <label className="studioField compactField">
+                  <span>Revision notes</span>
+                  <textarea value={post.approvalNote} onChange={(event) => updatePost(post.id, { approvalNote: event.target.value })} placeholder="What should change before this goes out?" />
+                </label>
+              </article>
+            ))}
+          </div>
+        )}
+
+        {activeModule === 'analytics' && (
+          <div className="studioAnalyticsGrid studioAnalyticsGridFour">
+            {analytics.map((item) => (
+              <div key={item.label}>
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
+                <small>{item.detail}</small>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="studioPanel">
         <div className="studioPanelHeader">
-          <span>Analytics</span>
-          <strong>Basic operating signals.</strong>
+          <span>Saved Content</span>
+          <strong>{selectedPosts.length} campaign assets.</strong>
         </div>
-        <div className="studioAnalyticsGrid">
-          {analytics.map((item) => (
-            <div key={item.label}>
-              <strong>{item.value}</strong>
-              <span>{item.label}</span>
-            </div>
-          ))}
+        <div className="studioPostList">
+          {selectedPosts.length ? selectedPosts.map((post) => (
+            <article key={post.id}>
+              <span>{channelLabels[post.platform]} / {post.status}</span>
+              <p>{post.hook}</p>
+              <small>{post.hashtags.join(' ')}</small>
+            </article>
+          )) : <p className="studioMuted">No posts saved for this campaign yet.</p>}
         </div>
       </section>
 
       <section className="studioPanel">
         <div className="studioPanelHeader">
           <span>Weekly Approval Workflow</span>
-          <strong>Placeholder for Nick's review loop.</strong>
+          <strong>Review the week before anything is published.</strong>
         </div>
         <div className="studioApprovalBox">
-          <p>Review campaign plan, approve content queue, confirm media assets, then schedule distribution.</p>
-          <button className="btn" type="button" onClick={moveCampaignToApproval}>
-            Move Selected Campaign To Approval
-          </button>
+          <p>Approve copy, confirm graphic prompts, set schedule dates, then mark the campaign ready. No platform tokens are stored here.</p>
+          <button className="btn" type="button" onClick={() => moveCampaignStatus('review')}>Move Campaign To Review</button>
+          <button className="btn btnPrimary" type="button" onClick={() => moveCampaignStatus('approved')}>Mark Campaign Approved</button>
         </div>
       </section>
     </div>
   );
 }
+
