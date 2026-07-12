@@ -42,7 +42,10 @@ function getCookieSecret() {
     process.env.AUTH_COOKIE_SECRET ||
     process.env.COOKIE_SIGNING_SECRET ||
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    (process.env.NODE_ENV === "production" ? "" : "uthynk-local-dev-cookie-secret")
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    (process.env.NODE_ENV === "production"
+      ? "uthynk-production-session-cookie-fallback"
+      : "uthynk-local-dev-cookie-secret")
   );
 }
 
