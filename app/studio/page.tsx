@@ -42,16 +42,16 @@ export default async function StudioPage() {
     <main className="studioPage">
       <header className="studioHero">
         <div>
-          <p>Private backend / Nick only</p>
-          <h1>UThynk Studio</h1>
+          <p>Private Studio / Weekly operating system</p>
+          <h1>This Week at UThynk</h1>
           <span>
-            Campaign planning, brand video direction, content generation, saved assets,
-            analytics, and weekly approvals for the UThynk operating system.
+            Build next week's campaign, review the strongest posts, schedule the week,
+            and learn what should be repeated next.
           </span>
         </div>
         <aside>
-          <strong>No public access</strong>
-          <span>No public links. No indexing. Admin role required.</span>
+          <strong>Nick only</strong>
+          <span>Private admin route. No public links or indexing.</span>
         </aside>
       </header>
 
@@ -59,3 +59,4 @@ export default async function StudioPage() {
     </main>
   );
 }
+

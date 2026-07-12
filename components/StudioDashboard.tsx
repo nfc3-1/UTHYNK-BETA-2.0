@@ -44,6 +44,7 @@ type StudioPost = {
   graphicFormat: 'square' | 'portrait' | 'landscape';
   status: StudioStatus;
   scheduledFor: string;
+  scheduledTime?: string;
   approvalDecision: ApprovalDecision;
   approvalNote: string;
   createdAt: string;
@@ -255,6 +256,7 @@ function normalizePost(value: any, index: number, fallbackCampaignId: string): S
     graphicFormat: value?.graphicFormat === 'portrait' || value?.graphicFormat === 'landscape' ? value.graphicFormat : 'square',
     status: normalizeStatus(value?.status),
     scheduledFor: String(value?.scheduledFor || ''),
+    scheduledTime: normalizeText(value?.scheduledTime, '8:00 AM'),
     approvalDecision: value?.approvalDecision === 'approved' || value?.approvalDecision === 'revision' ? value.approvalDecision : 'needs_review',
     approvalNote: String(value?.approvalNote || ''),
     createdAt: normalizeText(value?.createdAt, new Date().toISOString()),
@@ -327,6 +329,7 @@ function buildPost(campaign: StudioCampaign, platform: StudioChannelId, index: n
     graphicFormat: platform === 'instagram' ? 'portrait' : platform === 'linkedin' ? 'landscape' : 'square',
     status: 'draft',
     scheduledFor: todayOffset(index + 1),
+    scheduledTime: ['8:00 AM', '11:30 AM', '5:00 PM', '7:30 PM'][index % 4],
     approvalDecision: 'needs_review',
     approvalNote: '',
     createdAt: new Date().toISOString(),
@@ -387,6 +390,8 @@ export default function StudioDashboard() {
     endDate: '',
   });
   const [hydrated, setHydrated] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationSource, setGenerationSource] = useState<'openai' | 'fallback' | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('uthynk-studio-v1');
@@ -431,6 +436,12 @@ export default function StudioDashboard() {
   const enabledPlatforms = selectedCampaign?.enabledChannels?.length
     ? selectedCampaign.enabledChannels
     : activeChannels.map((channel) => channel.id);
+  const reviewPosts = posts.filter((post) => post.approvalDecision !== 'approved' || post.status === 'review');
+  const missingAssets = assets.filter((asset) => asset.status === 'needed' || asset.status === 'prompt_ready');
+  const scheduledPosts = posts.filter((post) => post.status === 'scheduled' || post.scheduledFor);
+  const firstScheduled = scheduledPosts
+    .slice()
+    .sort((a, b) => `${a.scheduledFor} ${a.scheduledTime || ''}`.localeCompare(`${b.scheduledFor} ${b.scheduledTime || ''}`))[0];
 
   const analytics = useMemo(
     () => [
@@ -491,29 +502,75 @@ export default function StudioDashboard() {
     );
   }
 
-  function generateContentPackage() {
+  async function generateContentPackage() {
     if (!selectedCampaign) return;
 
     const platforms: StudioChannelId[] = enabledPlatforms.length ? enabledPlatforms : ['linkedin'];
-    const newPosts = platforms.map((platform, index) => buildPost(selectedCampaign, platform, index));
-    const newAssets = [
-      buildVideoAsset(selectedCampaign),
-      {
-        id: makeId('asset-graphic'),
-        campaignId: selectedCampaign.id,
-        title: 'Multi-platform UThynk graphic prompt',
-        assetType: 'graphic' as const,
-        prompt:
-          `Generate square, portrait, and landscape variants for ${selectedCampaign.name}. Core message: ${selectedCampaign.coreMessage}. CTA: ${selectedCampaign.offer}. Include UThynk logo space and avoid busy classroom imagery.`,
-        format: 'square' as const,
-        status: 'prompt_ready' as const,
-        createdAt: new Date().toISOString(),
-      },
-    ];
+    setIsGenerating(true);
 
-    setPosts((current) => [...newPosts, ...current]);
-    setAssets((current) => [...newAssets, ...current]);
-    setActiveModule('approval');
+    try {
+      const response = await fetch('/api/studio/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          goal: selectedCampaign.objective,
+          audience: selectedCampaign.audience,
+          source: selectedCampaign.coreMessage,
+          duration: 'one week',
+          channels: platforms,
+          campaignName: selectedCampaign.name,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Studio generation failed');
+
+      const generated = await response.json();
+      const now = new Date().toISOString();
+      const newPosts: StudioPost[] = Array.isArray(generated.posts)
+        ? generated.posts.map((post: any, index: number) => ({
+            id: makeId('post'),
+            campaignId: selectedCampaign.id,
+            platform: normalizePlatform(post.platform),
+            hook: normalizeText(post.hook, 'A better answer starts with a better question.'),
+            body: normalizeText(post.body, 'UThynk helps people see the perspective they had not considered.'),
+            cta: normalizeText(post.cta, selectedCampaign.offer),
+            hashtags: normalizeHashtags(post.hashtags),
+            caption: normalizeText(post.caption, 'UThynk campaign draft.'),
+            assetPrompt: normalizeText(post.assetPrompt, 'Create a premium UThynk visual for this post.'),
+            graphicFormat: normalizePlatform(post.platform) === 'instagram' ? 'portrait' : normalizePlatform(post.platform) === 'linkedin' ? 'landscape' : 'square',
+            status: 'review',
+            scheduledFor: todayOffset(index + 1),
+            scheduledTime: normalizeText(post.suggestedTime, '8:00 AM'),
+            approvalDecision: 'needs_review',
+            approvalNote: '',
+            createdAt: now,
+          }))
+        : platforms.map((platform, index) => buildPost(selectedCampaign, platform, index));
+      const newAssets: StudioMediaAsset[] = Array.isArray(generated.assets)
+        ? generated.assets.map((asset: any, index: number) => ({
+            id: makeId('asset'),
+            campaignId: selectedCampaign.id,
+            title: normalizeText(asset.title, `Campaign asset ${index + 1}`),
+            assetType: asset.assetType === 'video' ? 'video' : 'graphic',
+            prompt: normalizeText(asset.prompt, 'Create a premium UThynk campaign visual.'),
+            format: asset.format === 'portrait' || asset.format === 'landscape' ? asset.format : 'square',
+            status: 'prompt_ready',
+            createdAt: now,
+          }))
+        : [buildVideoAsset(selectedCampaign)];
+
+      setPosts((current) => [...newPosts, ...current]);
+      setAssets((current) => [...newAssets, ...current]);
+      setGenerationSource(generated.source === 'openai' ? 'openai' : 'fallback');
+    } catch {
+      const newPosts = platforms.map((platform, index) => buildPost(selectedCampaign, platform, index));
+      setPosts((current) => [...newPosts, ...current]);
+      setAssets((current) => [buildVideoAsset(selectedCampaign), ...current]);
+      setGenerationSource('fallback');
+    } finally {
+      setIsGenerating(false);
+      setActiveModule('approval');
+    }
   }
 
   function updatePost(id: string, patch: Partial<StudioPost>) {
@@ -531,6 +588,23 @@ export default function StudioDashboard() {
   }
 
   return (
+    <>
+    <section className="studioCommandCenter">
+      <div>
+        <p className="studioEyebrow">This Week at UThynk</p>
+        <h2>{selectedCampaign?.name || 'Weekly campaign workspace'}</h2>
+        <span>{firstScheduled ? `First post scheduled ${firstScheduled.scheduledFor} at ${firstScheduled.scheduledTime || '8:00 AM'}.` : 'Build next week, review the queue, approve the strongest pieces, then schedule.'}</span>
+      </div>
+      <button className="btn btnPrimary" type="button" onClick={generateContentPackage} disabled={isGenerating}>
+        {isGenerating ? 'Building Campaign...' : "Build Next Week's Campaign"}
+      </button>
+    </section>
+    <section className="studioWeekStats">
+      <article><strong>{posts.length}</strong><span>Posts prepared</span><small>Across active campaigns</small></article>
+      <article><strong>{activeChannels.length}</strong><span>Platforms active</span><small>{activeChannels.map((channel) => channel.label).join(', ')}</small></article>
+      <article><strong>{reviewPosts.length}</strong><span>Need approval</span><small>Copy or visuals waiting on Nick</small></article>
+      <article><strong>{missingAssets.length}</strong><span>Assets missing</span><small>Prompts ready or files needed</small></article>
+    </section>
     <div className="studioGrid studioGridExpanded">
       <section className="studioPanel studioControlPanel">
         <div className="studioPanelHeader">
@@ -557,7 +631,7 @@ export default function StudioDashboard() {
       <section className="studioPanel studioWidePanel">
         <div className="studioPanelHeader">
           <span>Campaign Brief</span>
-          <strong>Generate from a real launch goal, not a blank post box.</strong>
+          <strong>Advanced brief details. Start with the weekly builder, then refine here.</strong>
         </div>
         <div className="studioFormGrid">
           <label className="studioField">
@@ -591,7 +665,7 @@ export default function StudioDashboard() {
       <section className="studioPanel">
         <div className="studioPanelHeader">
           <span>Saved Campaigns</span>
-          <strong>Private planning workspace.</strong>
+          <strong>Campaigns created from weekly goals.</strong>
         </div>
         <div className="studioCampaignList">
           {campaigns.map((campaign) => (
@@ -607,7 +681,7 @@ export default function StudioDashboard() {
       <section className="studioPanel studioWidePanel">
         <div className="studioPanelHeader studioToolbarHeader">
           <div>
-            <span>Studio Modules</span>
+            <span>Review Workspace</span>
             <strong>{selectedCampaign?.name || 'Select a campaign'}</strong>
           </div>
           <div className="studioTabs">
@@ -628,8 +702,9 @@ export default function StudioDashboard() {
 
         {activeModule === 'content' && (
           <div className="studioApprovalBox">
-            <p>Generate LinkedIn, Facebook, Instagram, and Threads variants from the selected campaign brief. This creates hooks, body copy, CTA, hashtags, captions, and image prompts.</p>
-            <button className="btn btnPrimary" type="button" onClick={generateContentPackage}>Generate Content Package</button>
+            <p>Build a full week from the selected campaign goal. Studio will call the generation route, then place the drafts directly into review.</p>
+            <button className="btn btnPrimary" type="button" onClick={generateContentPackage} disabled={isGenerating}>{isGenerating ? 'Building Campaign...' : 'Generate The Week'}</button>
+            {generationSource && <p className="studioMuted studioInlineNote">Last generation source: {generationSource === 'openai' ? 'AI generation route' : 'local backup draft'}.</p>}
           </div>
         )}
 
@@ -667,6 +742,10 @@ export default function StudioDashboard() {
                 <span>{channelLabels[post.platform]} / {post.approvalDecision}</span>
                 <strong>{post.hook}</strong>
                 <p>{post.body}</p>
+                <div className="studioPreviewMock">
+                  <span>{channelLabels[post.platform]} preview</span>
+                  <strong>{post.assetPrompt}</strong>
+                </div>
                 <p><b>CTA:</b> {post.cta}</p>
                 <p><b>Asset prompt:</b> {post.assetPrompt}</p>
                 <div className="studioApprovalActions">
@@ -723,7 +802,11 @@ export default function StudioDashboard() {
         </div>
       </section>
     </div>
+    </>
   );
 }
+
+
+
 
 

@@ -3292,3 +3292,112 @@ a{
   }
 }
 
+
+.studioCommandCenter{
+  max-width:1320px;
+  margin:0 auto 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  border:1px solid rgba(246,198,79,0.22);
+  border-radius:22px;
+  padding:22px;
+  background:linear-gradient(135deg,rgba(246,198,79,0.12),rgba(94,234,212,0.06)),rgba(18,25,54,0.78);
+  box-shadow:0 22px 60px rgba(0,0,0,0.20);
+}
+
+.studioCommandCenter h2{
+  margin:4px 0 6px;
+  color:#fff;
+  font-size:clamp(28px,4vw,54px);
+  line-height:1;
+}
+
+.studioCommandCenter span{
+  color:rgba(255,255,255,0.72);
+  line-height:1.5;
+}
+
+.studioEyebrow{
+  margin:0;
+  color:#f6c64f;
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+}
+
+.studioWeekStats{
+  max-width:1320px;
+  margin:0 auto 18px;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+
+.studioWeekStats article{
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:18px;
+  padding:16px;
+  background:rgba(255,255,255,0.045);
+}
+
+.studioWeekStats strong{
+  display:block;
+  color:#5eead4;
+  font-size:32px;
+}
+
+.studioWeekStats span{
+  display:block;
+  color:#fff;
+  font-weight:900;
+}
+
+.studioWeekStats small{
+  display:block;
+  margin-top:6px;
+  color:rgba(255,255,255,0.58);
+  line-height:1.4;
+}
+
+.studioPreviewMock{
+  margin:12px 0;
+  border:1px solid rgba(94,234,212,0.20);
+  border-radius:16px;
+  padding:14px;
+  background:linear-gradient(145deg,rgba(94,234,212,0.10),rgba(246,198,79,0.08));
+}
+
+.studioPreviewMock span{
+  display:block;
+  margin-bottom:8px;
+  color:#5eead4;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.studioPreviewMock strong{
+  display:block;
+  color:#fff;
+  line-height:1.35;
+}
+
+@media (max-width: 1000px){
+  .studioCommandCenter{
+    display:grid;
+  }
+
+  .studioWeekStats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media (max-width: 640px){
+  .studioWeekStats{
+    grid-template-columns:1fr;
+  }
+}
