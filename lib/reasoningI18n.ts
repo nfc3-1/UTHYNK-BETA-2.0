@@ -2,6 +2,24 @@ import type { Challenge } from "@/lib/challenges";
 
 export type Language = "en" | "es" | "fr";
 
+export const UTHYNK_LANGUAGE_EVENT = "uthynk-language-change";
+
+export function isLanguage(value: unknown): value is Language {
+  return value === "en" || value === "es" || value === "fr";
+}
+
+export function getStoredLanguageValue(): Language {
+  if (typeof window === "undefined") return "en";
+  const stored = window.localStorage.getItem("uthynk-language");
+  return isLanguage(stored) ? stored : "en";
+}
+
+export function setStoredLanguageValue(language: Language) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem("uthynk-language", language);
+  window.dispatchEvent(new CustomEvent(UTHYNK_LANGUAGE_EVENT, { detail: language }));
+}
+
 export const languageOptions: Array<{ label: string; value: Language }> = [
   { label: "English", value: "en" },
   { label: "Español", value: "es" },
@@ -407,6 +425,45 @@ const categoryCopy: Partial<Record<Language, Record<string, string>>> = {
 
 const localizedQuestionPools: Partial<Record<Language, Record<string, string[]>>> = {};
 
+const questionFrameCopy = {
+  es: {
+    prefix: "Situacion para practicar",
+    logic: "Que evidencia, suposicion o comparacion revisarias antes de aceptar esta idea?",
+    evidence: "Que fuente, detalle o incertidumbre cambiaria tu nivel de confianza?",
+    ethics: "Quien recibe ayuda, quien puede salir perjudicado y que principio deberia importar mas?",
+    strategy: "Que podria pasar despues y que consecuencia de segundo orden deberias anticipar?",
+    incentives: "Que incentivos, presiones o intereses ocultos podrian estar influyendo?",
+    default: "Que pregunta concreta haria tu razonamiento mas fuerte?",
+  },
+  fr: {
+    prefix: "Situation pour s'entrainer",
+    logic: "Quelle preuve, hypothese ou comparaison verifierais-tu avant d'accepter cette idee ?",
+    evidence: "Quelle source, quel detail ou quelle incertitude changerait ton niveau de confiance ?",
+    ethics: "Qui est aide, qui peut etre lese, et quel principe devrait compter le plus ?",
+    strategy: "Que pourrait-il se passer ensuite, et quelle consequence indirecte faut-il anticiper ?",
+    incentives: "Quelles incitations, pressions ou interets caches pourraient influencer la situation ?",
+    default: "Quelle question concrete rendrait ton raisonnement plus solide ?",
+  },
+} satisfies Record<Exclude<Language, "en">, Record<string, string>>;
+
+function questionLens(category: string) {
+  if (category.includes("Logic")) return "logic";
+  if (category.includes("Epistemology") || category.includes("Science") || category.includes("Media")) return "evidence";
+  if (category.includes("Ethics")) return "ethics";
+  if (category.includes("Strategic") || category.includes("History") || category.includes("Technology") || category.includes("Financial")) return "strategy";
+  if (category.includes("Street") || category.includes("Leadership") || category.includes("Work") || category.includes("Identity")) return "incentives";
+  return "default";
+}
+
+function localizedQuestionFallback(category: string, index: number, fallbackQuestion: string, language: Exclude<Language, "en">) {
+  const copy = questionFrameCopy[language];
+  const localizedCategory = categoryCopy[language]?.[category] || category;
+  const lens = questionLens(category);
+  const prompt = copy[lens] || copy.default;
+
+  return `${copy.prefix} ${index + 1} - ${localizedCategory}: ${prompt}`;
+}
+
 const challengeCopy: Record<string, Partial<Record<Language, Partial<Challenge>>>> = {};
 
 const phraseCopy = {
@@ -429,6 +486,15 @@ const phraseCopy = {
     "long-term awareness": "conciencia de largo plazo",
     "needs incentive analysis": "necesita análisis de incentivos",
     "clarify the next step": "aclara el siguiente paso",
+    "Analytical": "Analitico",
+    "Analytical Thinker": "Pensador analitico",
+    "Civic Reasoning": "Razonamiento civico",
+    "Social Calibration": "Calibracion social",
+    "Overconfidence": "Exceso de confianza",
+    "Evidence test": "Prueba de evidencia",
+    "Evidence strength": "Fuerza de evidencia",
+    "Independent Verification": "Verificacion independiente",
+    "Evidence +1": "Evidencia +1",
     "Observer": "Observador",
     "Moderate": "Moderada",
     "High": "Alta",
@@ -451,6 +517,15 @@ const phraseCopy = {
     "long-term awareness": "conscience à long terme",
     "needs incentive analysis": "nécessite une analyse des incitations",
     "clarify the next step": "clarifie la prochaine étape",
+    "Analytical": "Analytique",
+    "Analytical Thinker": "Penseur analytique",
+    "Civic Reasoning": "Raisonnement civique",
+    "Social Calibration": "Calibration sociale",
+    "Overconfidence": "Exces de confiance",
+    "Evidence test": "Test de preuves",
+    "Evidence strength": "Force des preuves",
+    "Independent Verification": "Verification independante",
+    "Evidence +1": "Preuves +1",
     "Observer": "Observateur",
     "Moderate": "Modérée",
     "High": "Élevée",
@@ -516,3 +591,5 @@ export function localizeText(value: string | undefined, language: Language) {
 
   return phraseCopy[language][value] || value;
 }
+
+

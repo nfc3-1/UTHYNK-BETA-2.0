@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { type Language, uiCopy } from '@/lib/reasoningI18n';
+import { getStoredLanguageValue, type Language, UTHYNK_LANGUAGE_EVENT, uiCopy } from '@/lib/reasoningI18n';
 
 type NavItem = {
   href: string;
@@ -35,28 +35,31 @@ export const primaryNavItems: NavItem[] = [
 ];
 
 export function getStoredLanguage(): Language {
-  if (typeof window === 'undefined') return 'en';
-
-  const storedLanguage = window.localStorage.getItem('uthynk-language');
-
-  return storedLanguage === 'es' || storedLanguage === 'fr' ? storedLanguage : 'en';
+  return getStoredLanguageValue();
 }
 
 export default function LocalizedNavLinks({ className = 'appNav', items = primaryNavItems }: Props) {
   const [language, setLanguage] = useState<Language>('en');
 
   useEffect(() => {
-    setLanguage(getStoredLanguage());
+    function syncLanguage() {
+      setLanguage(getStoredLanguage());
+    }
 
-    function syncLanguage(event: StorageEvent) {
+    function syncStorageLanguage(event: StorageEvent) {
       if (event.key === 'uthynk-language') {
-        setLanguage(getStoredLanguage());
+        syncLanguage();
       }
     }
 
-    window.addEventListener('storage', syncLanguage);
+    syncLanguage();
+    window.addEventListener('storage', syncStorageLanguage);
+    window.addEventListener(UTHYNK_LANGUAGE_EVENT, syncLanguage);
 
-    return () => window.removeEventListener('storage', syncLanguage);
+    return () => {
+      window.removeEventListener('storage', syncStorageLanguage);
+      window.removeEventListener(UTHYNK_LANGUAGE_EVENT, syncLanguage);
+    };
   }, []);
 
   const copy = uiCopy[language];

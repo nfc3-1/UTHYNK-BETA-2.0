@@ -12,6 +12,7 @@ import {
   languageOptions,
   localizeChallenge,
   localizeText,
+  setStoredLanguageValue,
   type Language,
   uiCopy,
 } from "@/lib/reasoningI18n";
@@ -2018,7 +2019,7 @@ export default function ReasoningPage() {
     setLanguage(nextLanguage);
 
     if (typeof window !== "undefined") {
-      localStorage.setItem("uthynk-language", nextLanguage);
+      setStoredLanguageValue(nextLanguage);
     }
   }
 

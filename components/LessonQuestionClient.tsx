@@ -7,6 +7,7 @@ import {
   localizeCategory,
   localizeQuestion,
   localizeText,
+  setStoredLanguageValue,
   type Language,
   uiCopy,
 } from '@/lib/reasoningI18n';
@@ -127,7 +128,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
   function changeLanguage(nextLanguage: Language) {
     setLanguage(nextLanguage);
-    localStorage.setItem('uthynk-language', nextLanguage);
+    setStoredLanguageValue(nextLanguage);
   }
 
   function selectQuestion(index: number) {
@@ -404,3 +405,4 @@ export default function LessonQuestionClient({ category, questions }: Props) {
     </>
   );
 }
+

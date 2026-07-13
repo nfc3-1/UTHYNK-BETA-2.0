@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import {
   languageOptions,
   localizeCategory,
+  setStoredLanguageValue,
   type Language,
   uiCopy,
 } from '@/lib/reasoningI18n';
@@ -77,7 +78,7 @@ export default function LessonLanguageShell({ categories }: Props) {
 
   function changeLanguage(nextLanguage: Language) {
     setLanguage(nextLanguage);
-    localStorage.setItem('uthynk-language', nextLanguage);
+    setStoredLanguageValue(nextLanguage);
   }
 
   function trackCategorySelection(category: string, source: string) {
@@ -169,3 +170,4 @@ export default function LessonLanguageShell({ categories }: Props) {
     </main>
   );
 }
+
