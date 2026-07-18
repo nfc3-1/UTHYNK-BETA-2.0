@@ -21,41 +21,47 @@ export async function POST(request: Request) {
       });
     }
 
-    if (body?.type !== 'provided_feedback') {
+    if (!hasSupabaseAdminEnv() || !supabaseAdmin) {
+      console.warn('[Telemetry Persistence] Supabase admin env is not configured.');
       return NextResponse.json({ success: true, persisted: false });
     }
 
-    const message = getString(metadata.message).slice(0, 4000);
+    const eventType = getString(body?.type);
+    const eventMetadata = {
+      ...metadata,
+      createdAt: body.createdAt ?? null,
+      receivedAt,
+    };
+    const insert =
+      eventType === 'provided_feedback'
+        ? supabaseAdmin.from('feedback_submissions').insert({
+            profile_id: sessionUser?.id || null,
+            event_type: eventType,
+            context: getString(metadata.context) || null,
+            message: getString(metadata.message).slice(0, 4000),
+            page_path: getString(metadata.path) || null,
+            metadata: eventMetadata,
+          })
+        : supabaseAdmin.from('product_events').insert({
+            user_id: sessionUser?.id || null,
+            event_type: eventType || 'unknown_event',
+            metadata: eventMetadata,
+            created_at: body.createdAt || receivedAt,
+          });
 
-    if (!message) {
+    if (eventType === 'provided_feedback' && !getString(metadata.message)) {
       return NextResponse.json(
         { error: 'Feedback message is required.' },
         { status: 400 }
       );
     }
 
-    if (!hasSupabaseAdminEnv() || !supabaseAdmin) {
-      console.warn('[Feedback Persistence] Supabase admin env is not configured.');
-      return NextResponse.json({ success: true, persisted: false });
-    }
-
-    const { error } = await supabaseAdmin.from('feedback_submissions').insert({
-      profile_id: sessionUser?.id || null,
-      event_type: body.type,
-      context: getString(metadata.context) || null,
-      message,
-      page_path: getString(metadata.path) || null,
-      metadata: {
-        ...metadata,
-        createdAt: body.createdAt ?? null,
-        receivedAt,
-      },
-    });
+    const { error } = await insert;
 
     if (error) {
-      console.error('[Feedback Persistence] Supabase insert failed.', error);
+      console.error('[Telemetry Persistence] Supabase insert failed.', error);
       return NextResponse.json(
-        { error: 'Feedback persistence failed.' },
+        { error: 'Telemetry persistence failed.' },
         { status: 500 }
       );
     }

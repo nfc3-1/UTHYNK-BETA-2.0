@@ -229,7 +229,18 @@ create table if not exists public.feedback_submissions (
   created_at timestamptz default now()
 );
 
+create table if not exists public.product_events (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references public.user_profiles(id) on delete set null,
+  event_type text not null,
+  metadata jsonb not null default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
 alter table public.feedback_submissions
+enable row level security;
+
+alter table public.product_events
 enable row level security;
 
 alter table public.user_profiles enable row level security;
@@ -298,6 +309,13 @@ create index if not exists feedback_submissions_profile_created_idx
 on public.feedback_submissions(profile_id, created_at desc)
 where profile_id is not null;
 
+create index if not exists product_events_type_created_idx
+on public.product_events(event_type, created_at desc);
+
+create index if not exists product_events_user_created_idx
+on public.product_events(user_id, created_at desc)
+where user_id is not null;
+
 create unique index if not exists feedback_submissions_one_soft_launch_survey_idx
 on public.feedback_submissions(profile_id)
 where profile_id is not null
@@ -305,6 +323,34 @@ and event_type in (
   'soft_launch_survey_prompted',
   'soft_launch_survey_dismissed',
   'soft_launch_survey_completed'
+);
+
+drop policy if exists "Users can insert product events" on public.product_events;
+drop policy if exists "Users can read their product events" on public.product_events;
+
+create policy "Users can insert product events"
+on public.product_events
+for insert
+to authenticated
+with check (
+  user_id is null
+  or exists (
+    select 1 from public.user_profiles profile
+    where profile.id = product_events.user_id
+    and profile.auth_user_id = (select auth.uid())
+  )
+);
+
+create policy "Users can read their product events"
+on public.product_events
+for select
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.id = product_events.user_id
+    and profile.auth_user_id = (select auth.uid())
+  )
 );
 
 alter table public.user_profiles
@@ -408,6 +454,9 @@ on public.studio_media_assets(campaign_id, created_at desc);
 create index if not exists studio_platform_connections_platform_idx
 on public.studio_platform_connections(platform);
 
+create unique index if not exists studio_platform_connections_platform_uidx
+on public.studio_platform_connections(platform);
+
 create index if not exists studio_analytics_events_campaign_idx
 on public.studio_analytics_events(campaign_id, occurred_at desc);
 
@@ -453,6 +502,26 @@ alter table public.studio_channel_settings enable row level security;
 create index if not exists studio_channel_settings_platform_idx
 on public.studio_channel_settings(platform);
 
+create table if not exists public.studio_channels (
+  id uuid primary key default uuid_generate_v4(),
+  created_by uuid references public.user_profiles(id) on delete set null,
+  platform text not null unique,
+  label text,
+  enabled boolean not null default true,
+  cadence text,
+  notes text,
+  connection_status text not null default 'not_connected',
+  account_label text,
+  metadata jsonb not null default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+alter table public.studio_channels enable row level security;
+
+create index if not exists studio_channels_platform_idx
+on public.studio_channels(platform);
+
 drop policy if exists "Studio admins can manage campaigns" on public.studio_campaigns;
 drop policy if exists "Studio admins can manage posts" on public.studio_posts;
 drop policy if exists "Studio admins can manage media assets" on public.studio_media_assets;
@@ -460,6 +529,7 @@ drop policy if exists "Studio admins can manage platform connections" on public.
 drop policy if exists "Studio admins can manage analytics events" on public.studio_analytics_events;
 drop policy if exists "Studio admins can manage weekly approvals" on public.studio_weekly_approvals;
 drop policy if exists "Studio admins can manage channel settings" on public.studio_channel_settings;
+drop policy if exists "Studio admins can manage channels" on public.studio_channels;
 
 create policy "Studio admins can manage campaigns"
 on public.studio_campaigns
@@ -593,3 +663,265 @@ with check (
     and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
   )
 );
+
+create policy "Studio admins can manage channels"
+on public.studio_channels
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+alter table public.studio_posts
+add column if not exists scheduled_time text,
+add column if not exists published_at timestamptz,
+add column if not exists publishing_error text,
+add column if not exists external_post_id text,
+add column if not exists approved_by uuid references public.user_profiles(id) on delete set null,
+add column if not exists approved_at timestamptz,
+add column if not exists idempotency_key text;
+
+create unique index if not exists studio_posts_idempotency_idx
+on public.studio_posts(idempotency_key)
+where idempotency_key is not null;
+
+alter table public.studio_platform_connections
+add column if not exists account_id text,
+add column if not exists account_name text,
+add column if not exists scopes text[] not null default '{}',
+add column if not exists token_expires_at timestamptz,
+add column if not exists last_refreshed_at timestamptz,
+add column if not exists last_error text;
+
+create table if not exists public.studio_assets (
+  id uuid primary key default uuid_generate_v4(),
+  campaign_id uuid references public.studio_campaigns(id) on delete set null,
+  post_id uuid references public.studio_posts(id) on delete set null,
+  created_by uuid references public.user_profiles(id) on delete set null,
+  asset_type text not null,
+  title text not null,
+  storage_path text,
+  generation_prompt text,
+  status text not null default 'prompt_ready',
+  metadata jsonb not null default '{}'::jsonb,
+  approved_by uuid references public.user_profiles(id) on delete set null,
+  approved_at timestamptz,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists public.studio_approvals (
+  id uuid primary key default uuid_generate_v4(),
+  campaign_id uuid references public.studio_campaigns(id) on delete cascade,
+  post_id uuid references public.studio_posts(id) on delete cascade,
+  asset_id uuid references public.studio_assets(id) on delete set null,
+  decision text not null default 'needs_review',
+  notes text,
+  reviewed_by uuid references public.user_profiles(id) on delete set null,
+  reviewed_at timestamptz,
+  created_at timestamptz default now()
+);
+
+create table if not exists public.studio_schedules (
+  id uuid primary key default uuid_generate_v4(),
+  campaign_id uuid references public.studio_campaigns(id) on delete cascade,
+  post_id uuid references public.studio_posts(id) on delete cascade,
+  platform text not null,
+  scheduled_for timestamptz not null,
+  scheduled_timezone text not null default 'America/Chicago',
+  status text not null default 'scheduled',
+  retry_count integer not null default 0,
+  max_retries integer not null default 3,
+  idempotency_key text not null unique,
+  last_attempt_at timestamptz,
+  published_at timestamptz,
+  failure_reason text,
+  manual_override boolean not null default false,
+  created_by uuid references public.user_profiles(id) on delete set null,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists public.studio_metrics (
+  id uuid primary key default uuid_generate_v4(),
+  campaign_id uuid references public.studio_campaigns(id) on delete set null,
+  post_id uuid references public.studio_posts(id) on delete set null,
+  platform text,
+  metric_type text not null,
+  metric_value numeric not null default 0,
+  external_post_id text,
+  metadata jsonb not null default '{}'::jsonb,
+  occurred_at timestamptz default now(),
+  imported_at timestamptz default now()
+);
+
+create table if not exists public.studio_audit_log (
+  id uuid primary key default uuid_generate_v4(),
+  actor_id uuid references public.user_profiles(id) on delete set null,
+  action text not null,
+  entity_type text not null,
+  entity_id uuid,
+  before_state jsonb,
+  after_state jsonb,
+  metadata jsonb not null default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+alter table public.studio_assets enable row level security;
+alter table public.studio_approvals enable row level security;
+alter table public.studio_schedules enable row level security;
+alter table public.studio_metrics enable row level security;
+alter table public.studio_audit_log enable row level security;
+
+create index if not exists studio_assets_campaign_idx
+on public.studio_assets(campaign_id, created_at desc);
+
+create index if not exists studio_assets_post_idx
+on public.studio_assets(post_id, created_at desc);
+
+create index if not exists studio_approvals_post_idx
+on public.studio_approvals(post_id, created_at desc);
+
+create index if not exists studio_schedules_due_idx
+on public.studio_schedules(status, scheduled_for);
+
+create index if not exists studio_metrics_post_idx
+on public.studio_metrics(post_id, occurred_at desc);
+
+create index if not exists studio_audit_log_entity_idx
+on public.studio_audit_log(entity_type, entity_id, created_at desc);
+
+drop policy if exists "Studio admins can manage assets" on public.studio_assets;
+drop policy if exists "Studio admins can manage approvals" on public.studio_approvals;
+drop policy if exists "Studio admins can manage schedules" on public.studio_schedules;
+drop policy if exists "Studio admins can manage metrics" on public.studio_metrics;
+drop policy if exists "Studio admins can read audit log" on public.studio_audit_log;
+drop policy if exists "Studio admins can insert audit log" on public.studio_audit_log;
+
+create policy "Studio admins can manage assets"
+on public.studio_assets
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+create policy "Studio admins can manage approvals"
+on public.studio_approvals
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+create policy "Studio admins can manage schedules"
+on public.studio_schedules
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+create policy "Studio admins can manage metrics"
+on public.studio_metrics
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+)
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+create policy "Studio admins can read audit log"
+on public.studio_audit_log
+for select
+to authenticated
+using (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+create policy "Studio admins can insert audit log"
+on public.studio_audit_log
+for insert
+to authenticated
+with check (
+  exists (
+    select 1 from public.user_profiles profile
+    where profile.auth_user_id = (select auth.uid())
+    and (profile.is_studio_admin = true or profile.studio_role in ('owner', 'admin'))
+  )
+);
+
+grant select, insert, update, delete on
+  public.studio_campaigns,
+  public.studio_posts,
+  public.studio_assets,
+  public.studio_channels,
+  public.studio_channel_settings,
+  public.studio_approvals,
+  public.studio_schedules,
+  public.studio_platform_connections,
+  public.studio_metrics,
+  public.studio_audit_log
+to authenticated;
+
+insert into storage.buckets (id, name, public)
+values ('studio-assets', 'studio-assets', false)
+on conflict (id) do nothing;

@@ -1,0 +1,574 @@
+.scope{
+  --studio-space-1:6px;
+  --studio-space-2:8px;
+  --studio-space-3:12px;
+  --studio-space-4:14px;
+  --studio-space-5:16px;
+  --studio-space-6:18px;
+  --studio-space-7:20px;
+  --studio-space-8:22px;
+  --studio-space-9:24px;
+  --studio-radius-panel:20px;
+  --studio-radius-card:16px;
+  --studio-radius-pill:999px;
+  --studio-surface:rgba(18,25,54,0.78);
+  --studio-surface-soft:rgba(255,255,255,0.045);
+  --studio-surface-control:rgba(4,8,22,0.55);
+  --studio-border:rgba(255,255,255,0.10);
+  --studio-border-soft:rgba(255,255,255,0.09);
+  --studio-text:#f7f8ff;
+  --studio-text-strong:#fff;
+  --studio-text-muted:rgba(255,255,255,0.62);
+  --studio-text-faint:rgba(255,255,255,0.58);
+  --studio-accent:#5eead4;
+  --studio-accent-soft:rgba(94,234,212,0.10);
+  --studio-warning:#f6c64f;
+  --studio-warning-soft:rgba(246,198,79,0.10);
+  --studio-danger:#fb7185;
+  --studio-shadow:0 24px 70px rgba(0,0,0,0.24);
+  --studio-font-label:12px;
+  --studio-breakpoint-tablet:1000px;
+  --studio-breakpoint-phone:640px;
+}
+
+.scope :global(.studioPage){
+  min-height:100vh;
+  padding:36px;
+  color:var(--studio-text);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(94,234,212,0.12), transparent 30%),
+    linear-gradient(135deg,#080d22 0%,#111936 48%,#09101f 100%);
+}
+
+.scope :global(.studioHero){
+  max-width:1320px;
+  margin:0 auto 22px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 320px;
+  gap:var(--studio-space-6);
+  align-items:stretch;
+}
+
+.scope :global(.studioHero > div),
+.scope :global(.studioHero > aside),
+.scope :global(.studioPanel),
+.scope :global(.studioUnauthorized){
+  border:1px solid var(--studio-border);
+  background:var(--studio-surface);
+  box-shadow:var(--studio-shadow);
+  backdrop-filter:blur(16px);
+}
+
+.scope :global(.studioHero > div),
+.scope :global(.studioHero > aside){
+  border-radius:22px;
+  padding:var(--studio-space-9);
+}
+
+.scope :global(.studioHero p),
+.scope :global(.studioPanelHeader span),
+.scope :global(.studioField span),
+.scope :global(.studioCampaignList span),
+.scope :global(.studioPostList span),
+.scope :global(.studioHero aside span),
+.scope :global(.studioMuted){
+  margin:0;
+  color:var(--studio-text-faint);
+  font-size:var(--studio-font-label);
+  font-weight:900;
+  letter-spacing:0.09em;
+  text-transform:uppercase;
+}
+
+.scope :global(.studioHero h1){
+  margin:8px 0 10px;
+  max-width:760px;
+  color:var(--studio-text-strong);
+  font-size:clamp(42px,6vw,84px);
+  line-height:0.92;
+}
+
+.scope :global(.studioHero > div > span),
+.scope :global(.studioApprovalBox p){
+  display:block;
+  max-width:820px;
+  color:rgba(255,255,255,0.72);
+  font-size:17px;
+  line-height:1.6;
+}
+
+.scope :global(.studioHero aside){
+  display:grid;
+  align-content:center;
+  gap:var(--studio-space-2);
+  border-color:rgba(94,234,212,0.22);
+}
+
+.scope :global(.studioHero aside strong){
+  color:var(--studio-accent);
+  font-size:22px;
+}
+
+.scope :global(.studioGrid){
+  max-width:1320px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--studio-space-6);
+}
+
+.scope :global(.studioPanel){
+  border-radius:var(--studio-radius-panel);
+  padding:var(--studio-space-7);
+}
+
+.scope :global(.studioWidePanel){
+  grid-column:span 2;
+}
+
+.scope :global(.studioPanelHeader){
+  display:grid;
+  gap:var(--studio-space-1);
+  margin-bottom:var(--studio-space-5);
+}
+
+.scope :global(.studioPanelHeader strong){
+  color:var(--studio-text-strong);
+  font-size:18px;
+  line-height:1.25;
+}
+
+.scope :global(.studioField){
+  display:grid;
+  gap:var(--studio-space-2);
+  margin-bottom:var(--studio-space-3);
+}
+
+.scope :global(.studioField input),
+.scope :global(.studioField select),
+.scope :global(.studioField textarea){
+  width:100%;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:14px;
+  padding:13px 14px;
+  color:var(--studio-text-strong);
+  background:var(--studio-surface-control);
+  font:inherit;
+}
+
+.scope :global(.studioField textarea){
+  min-height:108px;
+  resize:vertical;
+}
+
+.scope :global(.studioCampaignList),
+.scope :global(.studioPostList),
+.scope :global(.studioModuleGrid),
+.scope :global(.studioAnalyticsGrid){
+  display:grid;
+  gap:var(--studio-space-3);
+}
+
+.scope :global(.studioCampaignList button),
+.scope :global(.studioPostList article),
+.scope :global(.studioModuleGrid article),
+.scope :global(.studioAnalyticsGrid div),
+.scope :global(.studioApprovalBox){
+  border:1px solid var(--studio-border-soft);
+  border-radius:var(--studio-radius-card);
+  padding:var(--studio-space-4);
+  background:var(--studio-surface-soft);
+}
+
+.scope :global(.studioCampaignList button){
+  display:grid;
+  gap:var(--studio-space-1);
+  width:100%;
+  color:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+
+.scope :global(.studioCampaignList button.active){
+  border-color:rgba(246,198,79,0.58);
+  background:var(--studio-warning-soft);
+}
+
+.scope :global(.studioCampaignList strong),
+.scope :global(.studioPostList p),
+.scope :global(.studioModuleGrid p){
+  margin:0;
+  color:rgba(255,255,255,0.86);
+  line-height:1.45;
+}
+
+.scope :global(.studioCampaignList small){
+  color:var(--studio-text-muted);
+  line-height:1.45;
+}
+
+.scope :global(.studioModuleGrid){
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.scope :global(.studioModuleGrid span){
+  display:block;
+  margin-bottom:8px;
+  color:var(--studio-warning);
+  font-size:var(--studio-font-label);
+  font-weight:900;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.scope :global(.studioAnalyticsGrid){
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.scope :global(.studioAnalyticsGrid strong){
+  display:block;
+  color:var(--studio-accent);
+  font-size:34px;
+}
+
+.scope :global(.studioAnalyticsGrid span){
+  color:rgba(255,255,255,0.64);
+  font-size:var(--studio-font-label);
+  font-weight:850;
+}
+
+.scope :global(.studioApprovalBox){
+  display:grid;
+  gap:var(--studio-space-4);
+}
+
+.scope :global(.studioUnauthorized){
+  width:min(620px,calc(100vw - 32px));
+  margin:16vh auto 0;
+  border-radius:24px;
+  padding:34px;
+  text-align:center;
+}
+
+.scope :global(.studioMark){
+  width:54px;
+  height:54px;
+  margin:0 auto 16px;
+  display:grid;
+  place-items:center;
+  border-radius:18px;
+  color:#111936;
+  background:var(--studio-warning);
+  font-size:26px;
+  font-weight:950;
+}
+
+.scope :global(.studioUnauthorized h1){
+  margin:8px 0;
+  font-size:42px;
+}
+
+.scope :global(.studioUnauthorized span){
+  color:rgba(255,255,255,0.66);
+  line-height:1.55;
+}
+
+.scope :global(.studioGridExpanded){
+  align-items:flex-start;
+}
+
+.scope :global(.studioChannelList),
+.scope :global(.studioTabs),
+.scope :global(.studioFormGrid),
+.scope :global(.studioApprovalActions){
+  display:grid;
+  gap:var(--studio-space-3);
+}
+
+.scope :global(.studioChannelList button){
+  display:grid;
+  gap:var(--studio-space-1);
+  width:100%;
+  border:1px solid var(--studio-border-soft);
+  border-radius:var(--studio-radius-card);
+  padding:var(--studio-space-4);
+  color:inherit;
+  text-align:left;
+  background:var(--studio-surface-soft);
+  cursor:pointer;
+}
+
+.scope :global(.studioChannelList button.enabled){
+  border-color:rgba(94,234,212,0.32);
+  background:rgba(94,234,212,0.08);
+}
+
+.scope :global(.studioSecondaryButton){
+  width:max-content;
+  border:1px solid rgba(255,255,255,0.16);
+  border-radius:12px;
+  padding:9px 12px;
+  color:#f8fafc;
+  background:rgba(255,255,255,0.08);
+  font-weight:800;
+  cursor:pointer;
+}
+
+.scope :global(.studioSecondaryButton:disabled){
+  cursor:not-allowed;
+  opacity:0.55;
+}
+
+.scope :global(.studioChannelList strong),
+.scope :global(.studioPostList strong){
+  color:var(--studio-text-strong);
+  line-height:1.25;
+}
+
+.scope :global(.studioChannelList small),
+.scope :global(.studioAnalyticsGrid small),
+.scope :global(.studioPostList small){
+  color:var(--studio-text-muted);
+  line-height:1.45;
+}
+
+.scope :global(.studioInlineNote){
+  margin-top:14px;
+  line-height:1.45;
+  text-transform:none;
+  letter-spacing:0;
+  font-weight:750;
+}
+
+.scope :global(.studioRecoveryWarning){
+  max-width:1320px;
+  margin:0 auto 16px;
+  border:1px solid rgba(251,113,133,0.36);
+  border-radius:18px;
+  padding:16px;
+  color:#ffe4e6;
+  background:rgba(251,113,133,0.10);
+}
+
+.scope :global(.studioRecoveryWarning strong){
+  display:block;
+  margin-bottom:6px;
+  color:#fff;
+}
+
+.scope :global(.studioRecoveryWarning p){
+  margin:0 0 12px;
+  color:rgba(255,255,255,0.78);
+  line-height:1.5;
+}
+
+.scope :global(.studioFormGrid){
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.scope :global(.studioFullField){
+  grid-column:1 / -1;
+}
+
+.scope :global(.studioToolbarHeader){
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:var(--studio-space-4);
+}
+
+.scope :global(.studioTabs){
+  grid-auto-flow:column;
+  grid-auto-columns:max-content;
+  align-items:center;
+  overflow-x:auto;
+}
+
+.scope :global(.studioTabs button){
+  border:1px solid var(--studio-border);
+  border-radius:var(--studio-radius-pill);
+  padding:9px 12px;
+  color:rgba(255,255,255,0.78);
+  background:rgba(255,255,255,0.055);
+  font-size:var(--studio-font-label);
+  font-weight:900;
+  text-transform:capitalize;
+  cursor:pointer;
+}
+
+.scope :global(.studioTabs button.active){
+  border-color:rgba(246,198,79,0.64);
+  color:#10162c;
+  background:var(--studio-warning);
+}
+
+.scope :global(.studioModuleGridTwo){
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.scope :global(.studioApprovalActions){
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  margin:12px 0;
+}
+
+.scope :global(.compactField){
+  margin-bottom:0;
+}
+
+.scope :global(.compactField textarea){
+  min-height:76px;
+}
+
+.scope :global(.studioAnalyticsGridFour){
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.scope :global(.studioAnalyticsGrid small){
+  display:block;
+  margin-top:8px;
+}
+
+.scope :global(.studioPostList b){
+  color:var(--studio-warning);
+}
+
+.scope :global(.studioCommandCenter){
+  max-width:1320px;
+  margin:0 auto 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--studio-space-6);
+  border:1px solid rgba(246,198,79,0.22);
+  border-radius:22px;
+  padding:var(--studio-space-8);
+  background:linear-gradient(135deg,rgba(246,198,79,0.12),rgba(94,234,212,0.06)),var(--studio-surface);
+  box-shadow:0 22px 60px rgba(0,0,0,0.20);
+}
+
+.scope :global(.studioCommandCenter h2){
+  margin:4px 0 6px;
+  color:var(--studio-text-strong);
+  font-size:clamp(28px,4vw,54px);
+  line-height:1;
+}
+
+.scope :global(.studioCommandCenter span){
+  color:rgba(255,255,255,0.72);
+  line-height:1.5;
+}
+
+.scope :global(.studioEyebrow){
+  margin:0;
+  color:var(--studio-warning);
+  font-size:var(--studio-font-label);
+  font-weight:950;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+}
+
+.scope :global(.studioWeekStats){
+  max-width:1320px;
+  margin:0 auto 18px;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:var(--studio-space-3);
+}
+
+.scope :global(.studioWeekStats article){
+  border:1px solid var(--studio-border-soft);
+  border-radius:18px;
+  padding:var(--studio-space-5);
+  background:var(--studio-surface-soft);
+}
+
+.scope :global(.studioWeekStats strong){
+  display:block;
+  color:var(--studio-accent);
+  font-size:32px;
+}
+
+.scope :global(.studioWeekStats span){
+  display:block;
+  color:var(--studio-text-strong);
+  font-weight:900;
+}
+
+.scope :global(.studioWeekStats small){
+  display:block;
+  margin-top:6px;
+  color:var(--studio-text-faint);
+  line-height:1.4;
+}
+
+.scope :global(.studioPreviewMock){
+  margin:12px 0;
+  border:1px solid rgba(94,234,212,0.20);
+  border-radius:var(--studio-radius-card);
+  padding:var(--studio-space-4);
+  background:linear-gradient(145deg,rgba(94,234,212,0.10),rgba(246,198,79,0.08));
+}
+
+.scope :global(.studioPreviewMock span){
+  display:block;
+  margin-bottom:8px;
+  color:var(--studio-accent);
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.scope :global(.studioPreviewMock strong){
+  display:block;
+  color:var(--studio-text-strong);
+  line-height:1.35;
+}
+
+@media (max-width: 1000px){
+  .scope :global(.studioHero),
+  .scope :global(.studioGrid),
+  .scope :global(.studioFormGrid),
+  .scope :global(.studioModuleGridTwo),
+  .scope :global(.studioAnalyticsGridFour),
+  .scope :global(.studioApprovalActions){
+    grid-template-columns:1fr;
+  }
+
+  .scope :global(.studioWidePanel){
+    grid-column:auto;
+  }
+
+  .scope :global(.studioModuleGrid),
+  .scope :global(.studioAnalyticsGrid){
+    grid-template-columns:1fr;
+  }
+
+  .scope :global(.studioToolbarHeader),
+  .scope :global(.studioCommandCenter){
+    display:grid;
+  }
+
+  .scope :global(.studioTabs){
+    grid-auto-flow:row;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .scope :global(.studioWeekStats){
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media (max-width: 640px){
+  .scope :global(.studioPage){
+    padding:18px;
+  }
+
+  .scope :global(.studioHero h1){
+    font-size:42px;
+  }
+
+  .scope :global(.studioWeekStats){
+    grid-template-columns:1fr;
+  }
+}

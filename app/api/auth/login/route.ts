@@ -1,8 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { publicProfile, setAuthCookies } from "@/lib/authCookies";
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
 import { supabasePublishableKey, supabaseUrl } from "@/lib/supabaseConfig";
+import { trackServerEvent } from "@/lib/telemetry";
 
 type LoginBody = {
   email?: string;
@@ -16,6 +18,13 @@ export async function POST(request: Request) {
     const password = String(body.password || "");
     if (!email || !password) {
       return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
+    }
+
+    const rateLimit = checkRateLimit(`login:${getClientIp(request)}:${email}`, 8, 15 * 60 * 1000);
+
+    if (!rateLimit.allowed) {
+      await trackServerEvent("auth_login_failed", null, { email, reason: "rate_limited" });
+      return NextResponse.json({ error: "Too many login attempts. Try again later." }, { status: 429 });
     }
 
     if (!supabaseUrl || !supabasePublishableKey) {
@@ -35,6 +44,7 @@ export async function POST(request: Request) {
     const authResult = await authClient.auth.signInWithPassword({ email, password });
 
     if (authResult.error || !authResult.data.user) {
+      await trackServerEvent("auth_login_failed", null, { email, reason: authResult.error?.message || "invalid_credentials" });
       return NextResponse.json(
         { error: authResult.error?.message || "Invalid email or password." },
         { status: 401 }
