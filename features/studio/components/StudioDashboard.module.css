@@ -525,6 +525,44 @@
   line-height:1.35;
 }
 
+.scope :global(.studioGraphicPreview){
+  display:block;
+  width:100%;
+  max-height:420px;
+  object-fit:contain;
+  border:1px solid rgba(94,234,212,0.22);
+  border-radius:var(--studio-radius-card);
+  background:#111936;
+}
+
+.scope :global(.studioGraphicThumb){
+  display:block;
+  width:100%;
+  max-height:180px;
+  object-fit:contain;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:12px;
+  background:#111936;
+}
+
+.scope :global(.studioStatus-approved){
+  border-color:rgba(94,234,212,0.46);
+}
+
+.scope :global(.studioStatus-changes_requested),
+.scope :global(.studioStatus-rejected){
+  border-color:rgba(251,113,133,0.42);
+}
+
+.scope :global(select){
+  width:100%;
+  border:1px solid var(--studio-border);
+  border-radius:12px;
+  padding:10px 12px;
+  color:#fff;
+  background:rgba(5,10,26,0.84);
+}
+
 @media (max-width: 1000px){
   .scope :global(.studioHero),
   .scope :global(.studioGrid),

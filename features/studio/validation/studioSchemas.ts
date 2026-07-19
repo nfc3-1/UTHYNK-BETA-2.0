@@ -18,10 +18,11 @@ import type {
   StudioStatus,
 } from '@/features/studio/types/studio';
 
-const decisions = ['needs_review', 'approved', 'revision'] as const;
+const decisions = ['needs_review', 'approved', 'revision', 'rejected'] as const;
 const assetStatuses = ['needed', 'prompt_ready', 'in_progress', 'ready', 'approved'] as const;
 const assetTypes = ['graphic', 'video', 'screenshot', 'template'] as const;
 const formats = ['square', 'portrait', 'landscape'] as const;
+const templates = ['provocative_question', 'have_you_thought', 'spot_the_flaw', 'trust_this_headline', 'street_lesson', 'principle', 'better_decisions'] as const;
 
 function oneOf<T extends readonly string[]>(value: unknown, allowed: T, fallback: T[number]): T[number] {
   const normalized = String(value || '').trim().toLowerCase();
@@ -113,8 +114,12 @@ export function validatePost(value: any, index = 0, fallbackCampaignId = starter
     scheduledTimezone: text(value?.scheduledTimezone || value?.scheduled_timezone, 'America/Chicago'),
     approvalDecision: oneOf(value?.approvalDecision || value?.approval_decision, decisions, 'needs_review') as ApprovalDecision,
     approvalNote: text(value?.approvalNote || value?.approval_notes),
+    approvedAt: text(value?.approvedAt || value?.approved_at),
+    approvedBy: text(value?.approvedBy || value?.approved_by),
     publishingError: text(value?.publishingError || value?.publishing_error),
     publishedAt: text(value?.publishedAt || value?.published_at),
+    livePostUrl: text(value?.livePostUrl || value?.live_post_url || value?.content_package?.livePostUrl),
+    publishingNotes: text(value?.publishingNotes || value?.publishing_notes || value?.content_package?.publishingNotes),
     createdAt: iso(value?.createdAt || value?.created_at),
   };
 }
@@ -140,6 +145,17 @@ export function validateAsset(value: any, index = 0, fallbackCampaignId = starte
     fileSize: metadata.fileSize ? numberValue(metadata.fileSize) : undefined,
     mimeType: text(metadata.mimeType),
     version: numberValue(metadata.version, 1),
+    provider: metadata.provider === 'local_template' ? 'local_template' : undefined,
+    generatedAt: text(metadata.generatedAt),
+    graphicSettings: metadata.graphicSettings ? {
+      template: oneOf(metadata.graphicSettings.template, templates, 'provocative_question'),
+      headline: text(metadata.graphicSettings.headline),
+      question: text(metadata.graphicSettings.question),
+      supportingText: text(metadata.graphicSettings.supportingText),
+      cta: text(metadata.graphicSettings.cta),
+      website: text(metadata.graphicSettings.website, 'uthynk.com'),
+      backgroundImage: text(metadata.graphicSettings.backgroundImage),
+    } : undefined,
     createdAt: iso(value?.createdAt || value?.created_at),
   };
 }

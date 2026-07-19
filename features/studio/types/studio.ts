@@ -2,19 +2,33 @@ export type StudioChannelId = 'linkedin' | 'facebook' | 'instagram' | 'threads' 
 
 export type StudioStatus =
   | 'draft'
+  | 'generated'
   | 'review'
   | 'approved'
   | 'scheduled'
-  | 'publishing'
+  | 'ready_to_publish'
   | 'published'
+  | 'changes_requested'
+  | 'rejected'
+  | 'missed'
+  | 'archived'
+  | 'publishing'
   | 'failed'
   | 'retrying';
 
-export type ApprovalDecision = 'needs_review' | 'approved' | 'revision';
+export type ApprovalDecision = 'needs_review' | 'approved' | 'revision' | 'rejected';
 
 export type StudioAssetStatus = 'needed' | 'prompt_ready' | 'in_progress' | 'ready' | 'approved';
 export type StudioAssetType = 'graphic' | 'video' | 'screenshot' | 'template';
 export type StudioGraphicFormat = 'square' | 'portrait' | 'landscape';
+export type StudioGraphicTemplate =
+  | 'provocative_question'
+  | 'have_you_thought'
+  | 'spot_the_flaw'
+  | 'trust_this_headline'
+  | 'street_lesson'
+  | 'principle'
+  | 'better_decisions';
 
 export type StudioChannel = {
   id: StudioChannelId;
@@ -60,9 +74,23 @@ export type StudioPost = {
   scheduledTimezone?: string;
   approvalDecision: ApprovalDecision;
   approvalNote: string;
+  approvedAt?: string;
+  approvedBy?: string;
   publishingError?: string;
   publishedAt?: string;
+  livePostUrl?: string;
+  publishingNotes?: string;
   createdAt: string;
+};
+
+export type StudioGraphicSettings = {
+  template: StudioGraphicTemplate;
+  headline: string;
+  question: string;
+  supportingText: string;
+  cta: string;
+  website: string;
+  backgroundImage?: string;
 };
 
 export type StudioMediaAsset = {
@@ -83,6 +111,9 @@ export type StudioMediaAsset = {
   fileSize?: number;
   mimeType?: string;
   version?: number;
+  provider?: 'local_template';
+  generatedAt?: string;
+  graphicSettings?: StudioGraphicSettings;
   createdAt: string;
 };
 

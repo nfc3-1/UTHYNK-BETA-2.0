@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { assertStudioStatusTransition } from '@/features/studio/services/workflowService';
+import { assertStudioStatusTransition, platformRequiresMedia } from '@/features/studio/services/workflowService';
 import type { StudioStatus } from '@/features/studio/types/studio';
 import { validatePost, normalizeStatus } from '@/features/studio/validation/studioSchemas';
 import { getStudioAccess } from '@/lib/studioAuth';
@@ -19,6 +19,7 @@ export async function POST(request: Request, context: { params: { id: string } }
 
   const body = await request.json().catch(() => ({}));
   const nextStatus = normalizeStatus(body?.status);
+  const reason = String(body?.reason || '').trim();
   const { data: postRow, error: postError } = await supabaseAdmin
     .from('studio_posts')
     .select('*')
@@ -30,10 +31,19 @@ export async function POST(request: Request, context: { params: { id: string } }
   }
 
   const post = validatePost(postRow);
+  const assetsResult = await supabaseAdmin
+    .from('studio_assets')
+    .select('*')
+    .eq('post_id', context.params.id);
+  const hasApprovedMedia = (assetsResult.data || []).some((asset: any) => (
+    asset.status === 'approved' &&
+    Boolean(asset.storage_path || asset.metadata?.fileUrl || asset.metadata?.graphicSettings)
+  ));
 
   try {
     assertStudioStatusTransition(post.status, nextStatus, {
       approved: post.approvalDecision === 'approved' || post.status === 'approved',
+      hasRequiredMedia: platformRequiresMedia(post.platform) ? hasApprovedMedia : true,
     });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : 'Invalid transition.' }, { status: 400 });
@@ -48,6 +58,29 @@ export async function POST(request: Request, context: { params: { id: string } }
     patch.approval_decision = 'approved';
     patch.approved_by = access.user.id;
     patch.approved_at = new Date().toISOString();
+  }
+
+  if (nextStatus === 'review') {
+    patch.approval_decision = 'needs_review';
+  }
+
+  if (nextStatus === 'changes_requested') {
+    patch.approval_decision = 'revision';
+    patch.approval_notes = reason;
+  }
+
+  if (nextStatus === 'rejected') {
+    patch.approval_decision = 'rejected';
+    patch.approval_notes = reason;
+  }
+
+  if (nextStatus === 'published') {
+    patch.published_at = new Date().toISOString();
+    patch.content_package = {
+      ...(postRow.content_package || {}),
+      livePostUrl: String(body?.livePostUrl || post.livePostUrl || '').trim(),
+      publishingNotes: String(body?.publishingNotes || post.publishingNotes || '').trim(),
+    };
   }
 
   const { data, error } = await supabaseAdmin
@@ -65,6 +98,19 @@ export async function POST(request: Request, context: { params: { id: string } }
     return NextResponse.json({ error: 'Transition failed.' }, { status: 500 });
   }
 
+  if (nextStatus === 'approved' && body?.assetId) {
+    await supabaseAdmin
+      .from('studio_assets')
+      .update({
+        status: 'approved',
+        approved_by: access.user.id,
+        approved_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', String(body.assetId))
+      .eq('post_id', context.params.id);
+  }
+
   await supabaseAdmin.from('studio_audit_log').insert({
     actor_id: access.user.id,
     action: 'studio_post_status_changed',
@@ -72,7 +118,14 @@ export async function POST(request: Request, context: { params: { id: string } }
     entity_id: context.params.id,
     before_state: { status: post.status },
     after_state: { status: nextStatus },
-    metadata: { route: '/api/studio/posts/[id]/transition' },
+    metadata: {
+      route: '/api/studio/posts/[id]/transition',
+      reason,
+      previousStatus: post.status,
+      newStatus: nextStatus,
+      user: access.user.id,
+      timestamp: new Date().toISOString(),
+    },
   });
 
   if (nextStatus === 'approved') {

@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { NextResponse } from 'next/server';
 import { defaultChannels } from '@/features/studio/data/studioDefaults';
+import { hasApprovedMediaForPost, platformRequiresMedia } from '@/features/studio/services/workflowService';
 import type { StudioCampaign, StudioChannel, StudioMediaAsset, StudioPost, StudioState } from '@/features/studio/types/studio';
 import { validateStudioState } from '@/features/studio/validation/studioSchemas';
 import { getStudioAccess } from '@/lib/studioAuth';
@@ -60,8 +61,12 @@ function mapPostRow(row: any): StudioPost {
     scheduledTimezone: row.scheduled_timezone || 'America/Chicago',
     approvalDecision: row.approval_decision || 'needs_review',
     approvalNote: row.approval_notes || '',
+    approvedAt: row.approved_at || '',
+    approvedBy: row.approved_by || '',
     publishingError: row.publishing_error || '',
     publishedAt: row.published_at || '',
+    livePostUrl: row.content_package?.livePostUrl || '',
+    publishingNotes: row.content_package?.publishingNotes || '',
     createdAt: row.created_at || new Date().toISOString(),
   };
 }
@@ -87,6 +92,9 @@ function mapAssetRow(row: any): StudioMediaAsset {
     fileSize: metadata.fileSize,
     mimeType: metadata.mimeType,
     version: metadata.version || 1,
+    provider: metadata.provider,
+    generatedAt: metadata.generatedAt,
+    graphicSettings: metadata.graphicSettings,
     createdAt: row.created_at || new Date().toISOString(),
   };
 }
@@ -148,6 +156,24 @@ export async function PUT(request: Request) {
   }
 
   const incoming = validateStudioState(await request.json().catch(() => ({})));
+  const invalidScheduled = incoming.posts.find((post) => (
+    ['scheduled', 'ready_to_publish', 'published'].includes(post.status) &&
+    !(post.approvalDecision === 'approved' || post.status === 'approved' || post.approvedAt)
+  ));
+
+  if (invalidScheduled) {
+    return NextResponse.json({ error: 'Cannot schedule or publish content before approval.' }, { status: 400 });
+  }
+
+  const missingRequiredMedia = incoming.posts.find((post) => (
+    ['scheduled', 'ready_to_publish', 'published'].includes(post.status) &&
+    platformRequiresMedia(post.platform) &&
+    !hasApprovedMediaForPost(post.id, incoming.assets)
+  ));
+
+  if (missingRequiredMedia) {
+    return NextResponse.json({ error: 'Cannot schedule or publish content until required media is approved.' }, { status: 400 });
+  }
 
   if (!hasSupabaseAdminEnv() || !supabaseAdmin) {
     return NextResponse.json(incoming);
@@ -198,8 +224,14 @@ export async function PUT(request: Request) {
     scheduled_timezone: post.scheduledTimezone || 'America/Chicago',
     approval_decision: post.approvalDecision,
     approval_notes: post.approvalNote,
+    approved_at: post.approvedAt || null,
+    approved_by: post.approvedBy || null,
     graphic_format: post.graphicFormat,
-    content_package: { scheduledTime: post.scheduledTime || '8:00 AM' },
+    content_package: {
+      scheduledTime: post.scheduledTime || '8:00 AM',
+      livePostUrl: post.livePostUrl || '',
+      publishingNotes: post.publishingNotes || '',
+    },
     updated_at: new Date().toISOString(),
   }));
 
@@ -223,6 +255,9 @@ export async function PUT(request: Request) {
       fileSize: asset.fileSize,
       mimeType: asset.mimeType,
       version: asset.version || 1,
+      provider: asset.provider,
+      generatedAt: asset.generatedAt,
+      graphicSettings: asset.graphicSettings,
     },
   }));
 

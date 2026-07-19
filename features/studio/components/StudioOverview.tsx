@@ -12,7 +12,8 @@ import styles from '@/features/studio/components/StudioDashboard.module.css';
 import { channelLabels, defaultChannels, platformTone, starterCampaigns } from '@/features/studio/data/studioDefaults';
 import { useStudioCampaigns } from '@/features/studio/hooks/useStudioCampaigns';
 import { useStudioPosts } from '@/features/studio/hooks/useStudioPosts';
-import { generateStudioPackage } from '@/features/studio/services/generationService';
+import { generateStudioGraphic, transitionStudioPost } from '@/features/studio/services/campaignService';
+import { generateStudioPackage as requestGeneratedPackage } from '@/features/studio/services/generationService';
 import { summarizeStudioMetrics } from '@/features/studio/services/analyticsService';
 import type { StudioCampaign, StudioChannelId, StudioMediaAsset, StudioPost, StudioState, StudioStatus } from '@/features/studio/types/studio';
 import { normalizePlatform } from '@/features/studio/validation/studioSchemas';
@@ -185,7 +186,7 @@ export default function StudioOverview() {
     setIsGenerating(true);
 
     try {
-      const generated = await generateStudioPackage({
+      const generated = await requestGeneratedPackage({
         objective: selectedCampaign.objective,
         audience: selectedCampaign.audience,
         sourceQuestion: selectedCampaign.coreMessage,
@@ -254,9 +255,93 @@ export default function StudioOverview() {
   }
 
   function updatePost(id: string, patch: Partial<StudioPost>) {
+    const currentPost = posts.find((post) => post.id === id);
+    if (patch.scheduledFor && currentPost?.status !== 'approved' && currentPost?.approvalDecision !== 'approved') {
+      patchState({
+        posts: posts.map((post) => (post.id === id ? { ...post, scheduledFor: patch.scheduledFor, scheduledTime: patch.scheduledTime || post.scheduledTime } : post)),
+      });
+      return;
+    }
+
     patchState({
       posts: posts.map((post) => (post.id === id ? { ...post, ...patch } : post)),
     });
+  }
+
+  function updateAsset(id: string, patch: Partial<StudioMediaAsset>) {
+    patchState({
+      assets: assets.map((asset) => (asset.id === id ? { ...asset, ...patch } : asset)),
+    });
+  }
+
+  function removeAsset(id: string) {
+    patchState({
+      assets: assets.filter((asset) => asset.id !== id),
+    });
+  }
+
+  async function generateGraphic(post: StudioPost, settings?: StudioMediaAsset['graphicSettings']) {
+    const asset = await generateStudioGraphic(post, settings);
+    patchState({
+      assets: [asset, ...assets.filter((item) => !(item.postId === post.id && item.assetType === 'graphic'))],
+    });
+  }
+
+  async function approvePost(post: StudioPost, asset?: StudioMediaAsset) {
+    if (!asset?.fileUrl && !asset?.graphicSettings) {
+      throw new Error('Generate or upload a graphic before approving the complete creative.');
+    }
+
+    if (asset.status !== 'approved') {
+      updateAsset(asset.id, { status: 'approved', generatedAt: asset.generatedAt || new Date().toISOString() });
+    }
+
+    const updated = await transitionStudioPost(post.id, { status: 'approved', assetId: asset.id });
+    patchState({
+      posts: posts.map((item) => (item.id === post.id ? updated : item)),
+      assets: assets.map((item) => (item.id === asset.id ? { ...item, status: 'approved' } : item)),
+    });
+  }
+
+  async function requestChanges(post: StudioPost, reason: string) {
+    if (!reason.trim()) {
+      throw new Error('Add a short reason before requesting changes.');
+    }
+
+    const updated = await transitionStudioPost(post.id, { status: 'changes_requested', reason });
+    patchState({
+      posts: posts.map((item) => (item.id === post.id ? updated : item)),
+    });
+  }
+
+  async function rejectPost(post: StudioPost, reason: string) {
+    if (!reason.trim()) {
+      throw new Error('Add a short reason before rejecting this post.');
+    }
+
+    const updated = await transitionStudioPost(post.id, { status: 'rejected', reason });
+    patchState({
+      posts: posts.map((item) => (item.id === post.id ? updated : item)),
+    });
+  }
+
+  async function transitionPost(post: StudioPost, patch: Partial<StudioPost> & { status: StudioPost['status'] }) {
+    const updated = await transitionStudioPost(post.id, {
+      status: patch.status,
+      livePostUrl: patch.livePostUrl,
+      publishingNotes: patch.publishingNotes,
+    });
+    patchState({
+      posts: posts.map((item) => (item.id === post.id ? updated : item)),
+    });
+  }
+
+  async function sendPostForApproval(post: StudioPost) {
+    const updated = await transitionStudioPost(post.id, { status: 'review' });
+    patchState({
+      posts: posts.map((item) => (item.id === post.id ? updated : item)),
+    });
+    setActiveModule('approval');
   }
 
   function moveCampaignStatus(status: StudioStatus) {
@@ -347,11 +432,20 @@ export default function StudioOverview() {
 
           {activeModule === 'content' && <ContentQueue isGenerating={isGenerating} generationSource={generationSource} onGenerate={generateContentPackage} />}
 
-          {activeModule === 'media' && <AssetLibrary assets={selectedAssets} />}
+          {activeModule === 'media' && <AssetLibrary assets={selectedAssets} posts={selectedPosts} onGenerateGraphic={generateGraphic} onUpdateAsset={updateAsset} onRemoveAsset={removeAsset} />}
 
-          {activeModule === 'calendar' && <ContentCalendar posts={selectedPosts} onUpdatePost={updatePost} />}
+          {activeModule === 'calendar' && <ContentCalendar posts={selectedPosts} onUpdatePost={updatePost} onTransitionPost={transitionPost} />}
 
-          {activeModule === 'approval' && <ApprovalQueue posts={selectedPosts} onUpdatePost={updatePost} />}
+          {activeModule === 'approval' && (
+            <ApprovalQueue
+              posts={selectedPosts}
+              assets={selectedAssets}
+              onUpdatePost={updatePost}
+              onApprove={approvePost}
+              onRequestChanges={requestChanges}
+              onReject={rejectPost}
+            />
+          )}
 
           {activeModule === 'analytics' && <AnalyticsPanel analytics={analytics} />}
 
@@ -362,7 +456,14 @@ export default function StudioOverview() {
           <div className="studioPanelHeader"><span>Saved Content</span><strong>{selectedPosts.length} campaign assets.</strong></div>
           <div className="studioPostList">
             {selectedPosts.length ? selectedPosts.map((post) => (
-              <article key={post.id}><span>{channelLabels[post.platform]} / {post.status}</span><p>{post.hook}</p><small>{post.hashtags.join(' ')}</small></article>
+              <article key={post.id}>
+                <span>{channelLabels[post.platform]} / {post.status}</span>
+                <p>{post.hook}</p>
+                <small>{post.hashtags.join(' ')}</small>
+                {(['draft', 'generated', 'changes_requested', 'rejected'] as StudioPost['status'][]).includes(post.status) && (
+                  <button className="btn" type="button" onClick={() => void sendPostForApproval(post)}>Send for Approval</button>
+                )}
+              </article>
             )) : <p className="studioMuted">No posts saved for this campaign yet.</p>}
           </div>
         </section>

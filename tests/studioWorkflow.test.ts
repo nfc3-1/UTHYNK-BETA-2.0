@@ -12,6 +12,29 @@ describe('Studio workflow transitions', () => {
     );
   });
 
+  it('allows rejection and requested-changes paths from review', () => {
+    expect(assertStudioStatusTransition('review', 'changes_requested', { approved: false })).toBe('changes_requested');
+    expect(assertStudioStatusTransition('review', 'rejected', { approved: false })).toBe('rejected');
+  });
+
+  it('blocks publishing states when required media is missing', () => {
+    expect(() => assertStudioStatusTransition('scheduled', 'ready_to_publish', {
+      approved: true,
+      hasRequiredMedia: false,
+    })).toThrow('Cannot schedule or publish content until required media is selected and approved.');
+  });
+
+  it('allows the manual publishing path after approval', () => {
+    expect(assertStudioStatusTransition('scheduled', 'ready_to_publish', {
+      approved: true,
+      hasRequiredMedia: true,
+    })).toBe('ready_to_publish');
+    expect(assertStudioStatusTransition('ready_to_publish', 'published', {
+      approved: true,
+      hasRequiredMedia: true,
+    })).toBe('published');
+  });
+
   it('rejects invalid jumps to published', () => {
     expect(() => assertStudioStatusTransition('draft', 'published', { approved: false })).toThrow(
       'Invalid Studio status transition'

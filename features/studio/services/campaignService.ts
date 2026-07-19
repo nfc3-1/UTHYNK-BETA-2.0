@@ -31,6 +31,27 @@ export async function saveStudioState(state: StudioState): Promise<StudioState> 
   return validateStudioState(data);
 }
 
+export async function transitionStudioPost(
+  id: string,
+  payload: { status: StudioPost['status']; reason?: string; assetId?: string; livePostUrl?: string; publishingNotes?: string }
+): Promise<StudioPost> {
+  const data = await jsonRequest<{ post: StudioPost }>(`/api/studio/posts/${id}/transition`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+
+  return data.post;
+}
+
+export async function generateStudioGraphic(post: StudioPost, settings?: StudioMediaAsset['graphicSettings']): Promise<StudioMediaAsset> {
+  const data = await jsonRequest<{ asset: StudioMediaAsset }>('/api/studio/media/generate', {
+    method: 'POST',
+    body: JSON.stringify({ post, settings }),
+  });
+
+  return data.asset;
+}
+
 export function upsertCampaign(campaigns: StudioCampaign[], campaign: StudioCampaign) {
   return [campaign, ...campaigns.filter((item) => item.id !== campaign.id)];
 }
