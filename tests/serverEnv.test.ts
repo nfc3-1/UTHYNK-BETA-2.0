@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { validateServerEnv } from '../lib/serverEnv';
+import { readServerEnv, validateServerEnv } from '../lib/serverEnv';
 
 describe('server environment validation', () => {
   it('accepts a complete production configuration', () => {
@@ -25,6 +25,14 @@ describe('server environment validation', () => {
     const env = validateServerEnv({ NODE_ENV: 'development' });
 
     expect(env.cookieSigningSecret).toBe('uthynk-local-dev-cookie-secret');
+    expect(env.supabaseUrl).toContain('supabase.co');
+  });
+
+  it('can read production configuration without throwing during build-time imports', () => {
+    const env = readServerEnv({ NODE_ENV: 'production' });
+
+    expect(env.cookieSigningSecret).toBe('');
+    expect(env.openaiApiKey).toBe(undefined);
     expect(env.supabaseUrl).toContain('supabase.co');
   });
 });
