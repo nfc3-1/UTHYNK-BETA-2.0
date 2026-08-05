@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import type { StudioChannelId, StudioMetric, StudioPost } from '@/features/studio/types/studio';
-import { getServerEnv } from '@/lib/serverEnv';
+import { readServerEnv } from '@/lib/serverEnv';
 
 export type PublishResult = {
   provider: StudioChannelId;
@@ -41,7 +41,7 @@ const providerScopes: Record<StudioChannelId, string[]> = {
 };
 
 function oauthCallbackUrl(provider: StudioChannelId) {
-  const env = getServerEnv();
+  const env = readServerEnv();
   return `${env.appPublicUrl.replace(/\/$/, '')}/api/studio/connections/${provider}/callback`;
 }
 
@@ -52,7 +52,7 @@ function appendParams(baseUrl: string, params: Record<string, string>) {
 }
 
 export function createProviderOAuthConfig(provider: StudioChannelId, state = randomUUID()): ProviderOAuthConfig {
-  const env = getServerEnv();
+  const env = readServerEnv();
   const callbackUrl = oauthCallbackUrl(provider);
   const scopes = providerScopes[provider];
 
