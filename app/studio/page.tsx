@@ -30,7 +30,7 @@ export default async function StudioPage() {
           <p>Private backend</p>
           <h1>Unauthorized access</h1>
           <span>
-            UThynk Studio is Nick's private operating system. This area is not part of
+            UThynk Studio is Nick&apos;s private operating system. This area is not part of
             the public UThynk experience.
           </span>
         </section>
@@ -45,7 +45,7 @@ export default async function StudioPage() {
           <p>Private Studio / Weekly operating system</p>
           <h1>This Week at UThynk</h1>
           <span>
-            Build next week's campaign, review the strongest posts, schedule the week,
+            Build next week&apos;s campaign, review the strongest posts, schedule the week,
             and learn what should be repeated next.
           </span>
         </div>
@@ -59,4 +59,3 @@ export default async function StudioPage() {
     </main>
   );
 }
-
