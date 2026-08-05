@@ -1,6 +1,6 @@
-import { validateServerEnv } from '@/lib/serverEnv';
+import { readServerEnv } from '@/lib/serverEnv';
 
-const serverEnv = typeof window === 'undefined' ? validateServerEnv() : null;
+const serverEnv = typeof window === 'undefined' ? readServerEnv() : null;
 
 export const supabaseUrl =
   serverEnv?.supabaseUrl ||
