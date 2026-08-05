@@ -1,31 +1,15 @@
 import { NextResponse } from 'next/server';
+import { activeChannelIds, channelRegistry } from '@/features/studio/data/channelRegistry';
+import type { StudioGenerateRequest } from '@/features/studio/types/studio';
+import { validateGeneratedPackage, validateGenerateRequest } from '@/features/studio/validation/studioSchemas';
 import { getStudioAccess } from '@/lib/studioAuth';
+import { trackServerEvent } from '@/lib/telemetry';
 
-type StudioChannelId = 'linkedin' | 'facebook' | 'instagram' | 'threads';
-
-type GenerateRequest = {
-  goal?: string;
-  audience?: string;
-  source?: string;
-  duration?: string;
-  channels?: StudioChannelId[];
-  campaignName?: string;
-};
-
-const defaultStudioChannels: StudioChannelId[] = ['linkedin', 'facebook', 'instagram', 'threads'];
-
-const channelGuidance: Record<StudioChannelId, string> = {
-  linkedin: 'professional founder post with a strong hook, useful body copy, and credibility without sounding corporate',
-  facebook: 'plain-spoken community post that feels approachable and practical',
-  instagram: 'visual-first caption plus a clear graphic concept for a carousel or post',
-  threads: 'short conversational post that invites a thoughtful reply',
-};
-
-function fallbackPackage(input: GenerateRequest) {
-  const channels: StudioChannelId[] = input.channels?.length ? input.channels : defaultStudioChannels;
-  const objective = input.goal || 'Promote UThynk reasoning challenges';
+function fallbackPackage(input: StudioGenerateRequest) {
+  const channels = input.enabledChannels?.length ? input.enabledChannels : activeChannelIds;
+  const objective = input.objective || 'Promote UThynk reasoning challenges';
   const audience = input.audience || 'curious thinkers';
-  const source = input.source || 'a real UThynk question';
+  const source = input.sourceQuestion || 'a real UThynk question';
 
   return {
     campaign: {
@@ -93,29 +77,33 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: reason === 'unauthenticated' ? 401 : 403 });
   }
 
-  const input = (await request.json().catch(() => ({}))) as GenerateRequest;
-  const channels: StudioChannelId[] = input.channels?.length ? input.channels : defaultStudioChannels;
+  const input = validateGenerateRequest(await request.json().catch(() => ({})));
+  const channels = input.enabledChannels?.length ? input.enabledChannels : activeChannelIds;
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
-    return NextResponse.json({ source: 'fallback', ...fallbackPackage({ ...input, channels }) }, { status: 200 });
+    await trackServerEvent('ai_generation_failed', access.user.id, { reason: 'missing_openai_api_key', route: '/api/studio/generate' });
+    return NextResponse.json(validateGeneratedPackage(fallbackPackage({ ...input, enabledChannels: channels }), 'fallback'), { status: 200 });
   }
 
   const prompt = `You are UThynk Studio, Nick's private weekly marketing assistant. Build a one-week cross-platform campaign.
 
-Goal: ${input.goal || 'Promote UThynk reasoning challenges'}
+Goal: ${input.objective || 'Promote UThynk reasoning challenges'}
 Audience: ${input.audience || 'curious thinkers'}
-Source material: ${input.source || 'a real UThynk question'}
-Duration: ${input.duration || 'one week'}
+Selected UThynk source question: ${input.sourceQuestion || 'a real UThynk question'}
+Cadence: ${input.cadence || 'one week'}
 Channels: ${channels.join(', ')}
+Brand rules: ${input.brandRules.length ? input.brandRules.join('; ') : 'Plain language, premium but practical, no hype.'}
+Previous approved content: ${input.previousApprovedContent.slice(0, 5).map((post) => `${post.platform}: ${post.hook}`).join(' | ') || 'None supplied.'}
+Recent performance signals: ${input.recentPerformanceSignals.slice(0, 8).map((metric) => `${metric.platform || 'unknown'} ${metric.metricType}=${metric.metricValue}`).join(' | ') || 'None supplied.'}
 
 Channel guidance:
-${channels.map((channel) => `- ${channel}: ${channelGuidance[channel]}`).join('\n')}
+${channels.map((channel) => `- ${channel}: ${channelRegistry[channel].tone}; supports ${channelRegistry[channel].capabilities.join(', ')}`).join('\n')}
 
 Return strict JSON only with this shape:
 {
   "campaign": { "name": string, "objective": string, "audience": string, "offer": string, "coreMessage": string, "brandPillar": string, "campaignType": string, "landingPage": string },
-  "posts": [{ "platform": "linkedin"|"facebook"|"instagram"|"threads", "hook": string, "body": string, "cta": string, "hashtags": string[], "caption": string, "assetPrompt": string, "suggestedDay": string, "suggestedTime": string }],
+  "posts": [{ "platform": "linkedin"|"facebook"|"instagram"|"threads"|"x", "hook": string, "body": string, "cta": string, "hashtags": string[], "caption": string, "assetPrompt": string, "suggestedDay": string, "suggestedTime": string }],
   "assets": [{ "title": string, "assetType": "graphic"|"video", "prompt": string, "format": "square"|"portrait"|"landscape" }]
 }
 
@@ -138,16 +126,25 @@ Make each post meaningfully different. Use plain language. Show why UThynk is no
   });
 
   if (!response.ok) {
-    return NextResponse.json({ source: 'fallback', ...fallbackPackage({ ...input, channels }) }, { status: 200 });
+    await trackServerEvent('ai_generation_failed', access.user.id, { status: response.status, route: '/api/studio/generate' });
+    return NextResponse.json(validateGeneratedPackage(fallbackPackage({ ...input, enabledChannels: channels }), 'fallback'), { status: 200 });
   }
 
   const payload = await response.json();
   const content = payload?.choices?.[0]?.message?.content || '';
 
   try {
-    return NextResponse.json({ source: 'openai', ...extractJson(content) });
+    const generated = validateGeneratedPackage(extractJson(content), 'openai');
+    await trackServerEvent('studio_campaign_generated', access.user.id, {
+      source: 'openai',
+      channels,
+      postCount: generated.posts.length,
+      assetCount: generated.assets.length,
+    });
+    return NextResponse.json(generated);
   } catch {
-    return NextResponse.json({ source: 'fallback', ...fallbackPackage({ ...input, channels }) }, { status: 200 });
+    await trackServerEvent('ai_generation_failed', access.user.id, { reason: 'invalid_model_json', route: '/api/studio/generate' });
+    return NextResponse.json(validateGeneratedPackage(fallbackPackage({ ...input, enabledChannels: channels }), 'fallback'), { status: 200 });
   }
 }
 

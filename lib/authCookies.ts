@@ -38,15 +38,18 @@ export function publicProfile(profile: UthynkCookieProfile) {
 }
 
 function getCookieSecret() {
-  return (
+  const secret =
     process.env.AUTH_COOKIE_SECRET ||
     process.env.COOKIE_SIGNING_SECRET ||
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_URL ||
     (process.env.NODE_ENV === "production"
-      ? "uthynk-production-session-cookie-fallback"
-      : "uthynk-local-dev-cookie-secret")
-  );
+      ? ""
+      : "uthynk-local-dev-cookie-secret");
+
+  if (!secret && process.env.NODE_ENV === "production") {
+    throw new Error("AUTH_COOKIE_SECRET or COOKIE_SIGNING_SECRET is required in production.");
+  }
+
+  return secret;
 }
 
 function base64UrlEncode(value: string) {
@@ -123,6 +126,7 @@ export function setAuthCookies(response: NextResponse, profile: UthynkCookieProf
     maxAge: COOKIE_MAX_AGE,
     path: "/",
     sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
   });
 
   response.cookies.set(
@@ -147,12 +151,15 @@ export function clearAuthCookies(response: NextResponse) {
   response.cookies.set(PROFILE_COOKIE, "", {
     maxAge: 0,
     path: "/",
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
   });
 
   response.cookies.set(SESSION_COOKIE, "", {
     httpOnly: true,
     maxAge: 0,
     path: "/",
+    sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
   });
 }

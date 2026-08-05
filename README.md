@@ -1,19 +1,38 @@
-# UThynk — Pass 1.2 (Pixel-matched Home Layout)
+# UThynk 2.0
 
-This build wires all screens together with mock data (no Supabase / AI yet).
+UThynk helps people learn how to think, not what to think. This repository contains the public reasoning experience, teacher surfaces, and the internal UThynk Studio admin system.
 
-## Run locally
-- npm i
-- npm run dev
+## Run Locally
+
+- Copy `.env.example` to `.env.local` and fill local development values.
+- Run `npm ci`.
+- Run `npm run dev`.
+
+## Quality Gates
+
+- `npm run lint`
+- `npm run typecheck`
+- `npm test`
+- `npm run build`
 
 ## Routes
-- / (Home)
-- /category/[slug] (Category Detail)
-- /challenge/[id] (AI Thinking Session - mock feedback)
-- /daily (Daily Challenge -> redirects to a challenge)
-- /stats (Stats & Titles)
-- /profile (Profile & Thinking Style)
-- /login /about /store (placeholders)
 
-Deployment note:
-If you accidentally committed this into a subfolder in GitHub, set Vercel **Root Directory** to that folder.
+- `/`
+- `/category/[slug]`
+- `/challenge/[id]`
+- `/daily`
+- `/stats`
+- `/profile`
+- `/login`
+- `/studio`
+
+## Studio Stabilization
+
+Studio persistence, approvals, schedules, metrics, and audit history are Supabase-backed. Browser storage is only a recovery fallback for unsaved or offline data.
+
+Read:
+
+- `docs/STUDIO_ARCHITECTURE.md`
+- `docs/STUDIO_DATABASE.md`
+- `docs/STUDIO_PROVIDER_SETUP.md`
+- `docs/STUDIO_DEPLOYMENT_CHECKLIST.md`

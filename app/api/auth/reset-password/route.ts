@@ -1,6 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 import { supabasePublishableKey, supabaseUrl } from '@/lib/supabaseConfig';
+import { trackServerEvent } from '@/lib/telemetry';
 
 type ResetBody = {
   email?: string;
@@ -26,6 +28,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Email is required.' }, { status: 400 });
     }
 
+    const rateLimit = checkRateLimit(`password-reset:${getClientIp(request)}:${email}`, 4, 60 * 60 * 1000);
+
+    if (!rateLimit.allowed) {
+      await trackServerEvent('auth_password_reset_requested', null, { email, status: 'rate_limited' });
+      return NextResponse.json({ error: 'Too many password reset requests. Try again later.' }, { status: 429 });
+    }
+
     if (!supabaseUrl || !supabasePublishableKey) {
       return NextResponse.json(
         { error: 'Supabase Auth is not configured for this deployment.' },
@@ -45,6 +54,8 @@ export async function POST(request: Request) {
     await authClient.auth.resetPasswordForEmail(email, {
       redirectTo: `${resetOrigin}/reset-password`,
     });
+
+    await trackServerEvent('auth_password_reset_requested', null, { email, status: 'requested', resetOrigin });
 
     return NextResponse.json({
       ok: true,
