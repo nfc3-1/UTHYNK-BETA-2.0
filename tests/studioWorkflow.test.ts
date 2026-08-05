@@ -35,9 +35,9 @@ describe('Studio workflow transitions', () => {
     })).toBe('published');
   });
 
-  it('rejects invalid jumps to published', () => {
+  it('rejects publishing before approval', () => {
     expect(() => assertStudioStatusTransition('draft', 'published', { approved: false })).toThrow(
-      'Invalid Studio status transition'
+      'Cannot publish content before approval.'
     );
   });
 });
