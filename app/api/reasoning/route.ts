@@ -361,7 +361,9 @@ function ensureList(value: unknown, fallback: string[]) {
 function sanitizeFeedback(
   parsed: any,
   verifier: VerifierResult,
-  categoryPrompt: CategoryPrompt
+  categoryPrompt: CategoryPrompt,
+  language: "en" | "es" | "fr",
+  phase: "follow_up" | "synthesis" = "follow_up"
 ): ReasoningFeedback {
   const aiScore = Number(parsed?.score);
   const score = clamp(
@@ -372,7 +374,7 @@ function sanitizeFeedback(
   return {
     analysis: ensureString(
       parsed?.analysis,
-      "The model returned incomplete analysis. Try again with a more specific response."
+      language === "es" ? "La respuesta quedo incompleta. Intentalo de nuevo con una respuesta mas concreta." : language === "fr" ? "La reponse est incomplete. Reessaie avec une reponse plus precise." : "The response was incomplete. Try again with a more specific response."
     ),
     behavioral: {
       evidence: clamp(Number(parsed?.behavioral?.evidence) || verifier.behavioral.evidence),
@@ -386,11 +388,11 @@ function sanitizeFeedback(
     },
     contrarian: ensureString(
       parsed?.contrarian,
-      "Have you considered that the strongest opposing view may explain the same facts with fewer assumptions?"
+      language === "es" ? "Has considerado que la postura opuesta podria explicar los mismos hechos con menos suposiciones?" : language === "fr" ? "As-tu envisage que le point de vue oppose puisse expliquer les memes faits avec moins d'hypotheses ?" : "Have you considered that the strongest opposing view may explain the same facts with fewer assumptions?"
     ),
     followUp: ensureString(
       parsed?.followUp,
-      "What is the next test that would most quickly expose whether your reasoning is sound?"
+      phase === "synthesis" ? "" : language === "es" ? "Que prueba mostraria mas rapido si tu razonamiento es solido?" : language === "fr" ? "Quel test montrerait le plus vite si ton raisonnement est solide ?" : "What test would most quickly show whether your reasoning is sound?"
     ),
     score,
     strengths: ensureList(parsed?.strengths, categoryPrompt.reasoningLens.slice(0, 2)),
@@ -454,7 +456,7 @@ function buildAdaptiveSystemPrompt({
     `Verifier engine result: ${JSON.stringify(verifier)}.`,
     `Do not repeat these follow-ups: ${JSON.stringify(recentFollowUps)}.`,
     phase === "synthesis"
-      ? "Current workout phase: synthesis. The user has answered the original prompt and your follow-up. The analysis field must be an overarching response to both answers together: name the through-line, what improved, what is still missing, and one plain-language perspective they should carry forward. The followUp field should be a short optional next thought, not a required extra step."
+      ? "Current workout phase: final synthesis. The user has answered the original prompt and the one secondary question. The analysis field must combine both answers: name the through-line, what developed, their strongest reasoning, one remaining blind spot, and one practical takeaway. End the challenge clearly. The followUp field must be an empty string. Do not ask any question."
       : "Current workout phase: follow_up. The user has answered the original prompt. Give one perspective they may not have considered and one conversational follow-up question. Do not treat the workout as complete yet.",
     "Product success test: the user should regularly think, 'I had not considered that.' Your main job is to introduce one meaningful new perspective, not to merely ask them to elaborate.",
     "The contrarian field must be a concrete perspective the user may have missed. Start from their actual response and introduce an alternate explanation, hidden tradeoff, strongest opposing case, incentive, evidence problem, or second-order effect.",
@@ -462,6 +464,7 @@ function buildAdaptiveSystemPrompt({
     "The followUp field must be one practical, conversational question tied to that new perspective. It should sound like a sharp person talking to the user, not a worksheet or essay prompt.",
     "Prefer plain phrasing such as 'Have you thought about...', 'Could someone...', 'What if...', or 'What would change if...'. Avoid abstract academic wording like 'How might the emotional appeal of...' when a simpler sentence works.",
     "Do not use generic prompts like 'explain further', 'give another example', or 'clarify your reasoning'.",
+    "Sensitive-topic rule: if the prompt or answer concerns self-harm, suicide, trauma, abuse, mental health, medical issues, or identity-based harm, switch to supportive, non-adversarial exploration and appropriate safety guidance.",
     "Score by blending your judgment with the verifier result. Penalize generic, unsupported, or evasive reasoning.",
     "Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.",
   ].join(" ");
@@ -896,7 +899,7 @@ function streamingFeedback(args: {
         }
 
         const parsed = JSON.parse(content);
-        const feedback = sanitizeFeedback(parsed, args.verifier, args.categoryPrompt);
+        const feedback = sanitizeFeedback(parsed, args.verifier, args.categoryPrompt, args.language, args.phase || "follow_up");
         const progression =
           args.phase === "follow_up" ? null : await persistSession({ ...args, feedback });
 
@@ -1010,7 +1013,7 @@ export async function POST(request: Request) {
       language,
       memory,
       mode,
-      phase: body.phase || "synthesis",
+      phase: body.phase || "follow_up",
       profile,
       question: body.question,
       response,
@@ -1031,7 +1034,7 @@ export async function POST(request: Request) {
     }
 
     const parsed = await nonStreamingFeedback(openAiArgs);
-    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt);
+    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt, language, body.phase || "follow_up");
     const progression =
       body.phase === "follow_up"
         ? null
