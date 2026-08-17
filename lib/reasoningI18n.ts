@@ -583,7 +583,7 @@ export function localizeQuestion(
 
   const pool = localizedQuestionPools[language]?.[category];
 
-  return pool?.[index % pool.length] || fallbackQuestion;
+  return pool?.[index % pool.length] || localizedQuestionFallback(category, index, fallbackQuestion, language);
 }
 
 export function localizeText(value: string | undefined, language: Language) {
@@ -591,5 +591,4 @@ export function localizeText(value: string | undefined, language: Language) {
 
   return phraseCopy[language][value] || value;
 }
-
 
