@@ -28,7 +28,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
   const safeAgeBand = normalizeAgeBand(ageBand);
   const visibleCategory = localizeCategory(category, language);
   const localizedQuestions = useMemo(() => questions.map((q, i) => localizeQuestion(category, i, q, language)), [category, language, questions]);
-  const adaptedQuestions = useMemo(() => localizedQuestions.map((q, i) => adaptQuestionForAge(q, visibleCategory, safeAgeBand, i)), [localizedQuestions, safeAgeBand, visibleCategory]);
+  const adaptedQuestions = useMemo(() => localizedQuestions.map((q, i) => adaptQuestionForAge(q, category, safeAgeBand, i)), [category, localizedQuestions, safeAgeBand]);
   const selectedQuestion = adaptedQuestions[selectedIndex] || adaptedQuestions[0] || '';
 
   useEffect(() => {
