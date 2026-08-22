@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { challengeSessionKey, createChallengeSession, isChallengeSession } from '../lib/challengeSession';
 import { localizeQuestion } from '../lib/reasoningI18n';
+import { adaptQuestionForAge } from '../lib/ageAdaptivePrompts';
 
 describe('finite challenge session', () => {
   it('creates a refresh-safe main-question session', () => {
@@ -27,6 +28,14 @@ describe('finite challenge session', () => {
     );
     expect(localizeQuestion('Epistemology', 1, 'What evidence would change your mind?', 'es')).toBe(
       'What evidence would change your mind?'
+    );
+  });
+
+  it('uses the canonical category context when adapting non-English youth questions', () => {
+    const question = 'What evidence would change your mind?';
+
+    expect(adaptQuestionForAge(question, 'Epistemology', '13_17', 0)).toContain(
+      'sources, certainty, proof, trust, and changing your mind'
     );
   });
 });
