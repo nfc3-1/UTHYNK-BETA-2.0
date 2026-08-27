@@ -78,12 +78,13 @@ describe("finite challenge session", () => {
       userId: "user-1",
     };
 
-    expect(challengeSessionKey(base)).not.toBe(challengeSessionKey({ ...base, language: "en" }));
-    expect(challengeSessionKey(base)).not.toBe(challengeSessionKey({ ...base, ageBand: "18_plus" }));
-    expect(challengeSessionKey(base)).not.toBe(challengeSessionKey({ ...base, userId: "user-2" }));
-    expect(challengeSessionKey(base)).not.toBe(
-      challengeSessionKey({ ...base, questionId: "science-evidence-02", questionIndex: 1 })
-    );
+    expect(challengeSessionKey(base) === challengeSessionKey({ ...base, language: "en" })).toBe(false);
+    expect(challengeSessionKey(base) === challengeSessionKey({ ...base, ageBand: "18_plus" })).toBe(false);
+    expect(challengeSessionKey(base) === challengeSessionKey({ ...base, userId: "user-2" })).toBe(false);
+    expect(
+      challengeSessionKey(base) ===
+        challengeSessionKey({ ...base, questionId: "science-evidence-02", questionIndex: 1 })
+    ).toBe(false);
   });
 
   it("preserves voice or typed answer drafts across request failure", () => {
