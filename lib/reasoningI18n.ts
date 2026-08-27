@@ -583,9 +583,7 @@ export function localizeQuestion(
 
   const pool = localizedQuestionPools[language]?.[category];
 
-  // Until a category has real translated question content, preserve each distinct
-  // source question instead of repeating a generic translated template.
-  return pool?.[index % pool.length] || fallbackQuestion;
+  return pool?.[index] || fallbackQuestion;
 }
 
 export function localizeText(value: string | undefined, language: Language) {
