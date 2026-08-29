@@ -50,6 +50,29 @@ describe("finite challenge session", () => {
     expect(shouldRenderAnswerInput(complete)).toBe(false);
   });
 
+  it("advances after a first submission with canonical API fields and no final synthesis", () => {
+    const firstAnswer =
+      "I would look at whether the new role builds skills, pays enough, and gives me a better long-term path.";
+    const first = applyPerspectiveExpansion(baseSession(), firstAnswer, {
+      finalSynthesis: "",
+      perspectiveExpansion:
+        "Have you considered the switching cost, the incentives behind the offer, and whether the current frustration is temporary? Another angle is whether the new path compounds into better options or only feels like escape.",
+      score: 76,
+      secondaryQuestion:
+        "What evidence would show that changing careers is a strategic move rather than just a reaction to frustration?",
+      strengths: ["Tradeoff Thinking"],
+      xp: 52,
+    });
+
+    expect(first.step).toBe("secondary_question");
+    expect(first.firstResponse).toBe(firstAnswer);
+    expect(first.activeAnswerDraft).toBe("");
+    expect(first.perspectiveExpansion).toContain("Have you considered");
+    expect(first.secondaryQuestion).toContain("changing careers");
+    expect(first.finalSynthesis).toBe("");
+    expect(shouldRenderAnswerInput(first)).toBe(true);
+  });
+
   it("restores completed sessions without reopening a fifth question", () => {
     const complete = applyFinalSynthesis(
       applyPerspectiveExpansion(baseSession(), "First answer", {
@@ -107,7 +130,7 @@ describe("finite challenge session", () => {
 
     expect(() =>
       applyFinalSynthesis(first, "Second answer", {
-        analysis: "Have you considered incentives?",
+        finalSynthesis: "Have you considered incentives?",
       })
     ).toThrow(/distinct/);
   });
