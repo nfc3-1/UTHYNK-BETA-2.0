@@ -31,8 +31,11 @@ export type ChallengeSession = ChallengeSessionKeyInput & {
 export type ReasoningFeedbackSnapshot = {
   analysis?: string;
   contrarian?: string;
+  finalSynthesis?: string;
   followUp?: string;
+  perspectiveExpansion?: string;
   score?: number;
+  secondaryQuestion?: string;
   strengths?: string[];
   trait?: string;
   weaknesses?: string[];
@@ -135,8 +138,10 @@ export function applyPerspectiveExpansion(
   firstResponse: string,
   feedback: ReasoningFeedbackSnapshot
 ): ChallengeSession {
-  const perspectiveExpansion = cleanText(feedback.contrarian || feedback.analysis);
-  const secondaryQuestion = cleanText(feedback.followUp);
+  const perspectiveExpansion = cleanText(
+    feedback.perspectiveExpansion || feedback.contrarian || feedback.analysis
+  );
+  const secondaryQuestion = cleanText(feedback.secondaryQuestion || feedback.followUp);
 
   if (!perspectiveExpansion || !secondaryQuestion) {
     throw new Error("Perspective expansion and one secondary question are required.");
@@ -159,7 +164,7 @@ export function applyFinalSynthesis(
   secondResponse: string,
   feedback: ReasoningFeedbackSnapshot
 ): ChallengeSession {
-  const finalSynthesis = cleanText(feedback.analysis);
+  const finalSynthesis = cleanText(feedback.finalSynthesis || feedback.analysis);
 
   if (!finalSynthesis || finalSynthesis === session.perspectiveExpansion) {
     throw new Error("Final synthesis must be distinct from the perspective expansion.");
