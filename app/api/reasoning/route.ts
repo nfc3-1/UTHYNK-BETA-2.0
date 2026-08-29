@@ -20,15 +20,29 @@ type ReasoningRequest = {
   challengeId?: string;
   category?: string;
   conversationId?: string;
+  displayedQuestion?: string;
+  firstUserAnswer?: string;
   language?: "en" | "es" | "fr";
+  originalQuestion?: string;
+  perspectiveExpansion?: string;
   phase?: "follow_up" | "synthesis";
   question?: string;
   response?: string;
+  secondUserAnswer?: string;
+  secondaryQuestion?: string;
   section?: string;
   sessionId?: string;
   stream?: boolean;
   thinkingLens?: string;
   userId?: string;
+};
+
+type SynthesisContext = {
+  firstUserAnswer: string;
+  originalQuestion: string;
+  perspectiveExpansion: string;
+  secondUserAnswer: string;
+  secondaryQuestion: string;
 };
 
 type ReasoningCategory =
@@ -66,8 +80,11 @@ type ReasoningFeedback = {
   analysis: string;
   behavioral: BehavioralScores;
   contrarian: string;
+  finalSynthesis: string;
   followUp: string;
+  perspectiveExpansion: string;
   score: number;
+  secondaryQuestion: string;
   strengths: string[];
   trait: string;
   weaknesses: string[];
@@ -358,22 +375,91 @@ function ensureList(value: unknown, fallback: string[]) {
   return Array.from(new Set(items)).slice(0, 4);
 }
 
+function countQuestionMarks(value: string) {
+  return (value.match(/\?/g) || []).length;
+}
+
+function normalizeSingleQuestion(value: unknown, fallback: string) {
+  const text = ensureString(value, fallback);
+
+  if (countQuestionMarks(text) === 1 && text.endsWith("?")) {
+    return text;
+  }
+
+  return fallback;
+}
+
+function stripQuestions(value: unknown) {
+  return String(value || "")
+    .trim()
+    .split(/(?<=[.!?])\s+/)
+    .filter((sentence) => !sentence.includes("?"))
+    .join(" ")
+    .trim();
+}
+
+function validateSynthesisContext(body: ReasoningRequest) {
+  const context: SynthesisContext = {
+    firstUserAnswer: String(body.firstUserAnswer || "").trim(),
+    originalQuestion: String(body.originalQuestion || body.challenge || "").trim(),
+    perspectiveExpansion: String(body.perspectiveExpansion || "").trim(),
+    secondUserAnswer: String(body.secondUserAnswer || body.response || "").trim(),
+    secondaryQuestion: String(body.secondaryQuestion || body.question || "").trim(),
+  };
+  const missing = Object.entries(context)
+    .filter(([, value]) => !value)
+    .map(([key]) => key);
+
+  return { context, missing, ok: missing.length === 0 };
+}
+
 function sanitizeFeedback(
   parsed: any,
   verifier: VerifierResult,
-  categoryPrompt: CategoryPrompt
+  categoryPrompt: CategoryPrompt,
+  language: "en" | "es" | "fr",
+  phase: "follow_up" | "synthesis" = "follow_up"
 ): ReasoningFeedback {
   const aiScore = Number(parsed?.score);
   const score = clamp(
     Number.isFinite(aiScore) ? aiScore * 0.72 + verifier.score * 0.28 : verifier.score
   );
   const trait = ensureString(parsed?.trait, categoryPrompt.traitOptions[0]);
+  const fallbackAnalysis =
+    language === "es"
+      ? "Tu respuesta nombro una idea util. El siguiente paso es separar la evidencia fuerte de la suposicion mas riesgosa."
+      : language === "fr"
+        ? "Ta reponse a nomme une idee utile. La prochaine etape consiste a separer la preuve solide de l'hypothese la plus risquee."
+        : "Your answer named a useful idea. The next step is separating strong evidence from the riskiest assumption.";
+  const fallbackPerspective =
+    language === "es"
+      ? "Has considerado la suposicion central, la evidencia que falta y quien gana si esa explicacion se acepta?"
+      : language === "fr"
+        ? "As-tu considere l'hypothese centrale, les preuves manquantes et qui gagne si cette explication est acceptee ?"
+        : "Have you considered the central assumption, the missing evidence, and who benefits if that explanation is accepted?";
+  const fallbackQuestion =
+    language === "es"
+      ? "Que evidencia cambiaria mas tu nivel de confianza?"
+      : language === "fr"
+        ? "Quelle preuve changerait le plus ton niveau de confiance ?"
+        : "What evidence would most change your level of confidence?";
+  const baseAnalysis = ensureString(parsed?.analysis, fallbackAnalysis);
+  const perspectiveExpansion = ensureString(
+    parsed?.perspectiveExpansion || parsed?.contrarian,
+    fallbackPerspective
+  );
+  const secondaryQuestion =
+    phase === "synthesis"
+      ? ""
+      : normalizeSingleQuestion(parsed?.secondaryQuestion || parsed?.followUp, fallbackQuestion);
+  const finalSynthesis =
+    phase === "synthesis"
+      ? stripQuestions(parsed?.finalSynthesis || baseAnalysis) || fallbackAnalysis
+      : "";
+  const analysis = phase === "synthesis" ? finalSynthesis : baseAnalysis;
 
   return {
-    analysis: ensureString(
-      parsed?.analysis,
-      "The model returned incomplete analysis. Try again with a more specific response."
-    ),
+    analysis,
     behavioral: {
       evidence: clamp(Number(parsed?.behavioral?.evidence) || verifier.behavioral.evidence),
       adaptability: clamp(
@@ -384,15 +470,12 @@ function sanitizeFeedback(
       ),
       incentives: clamp(Number(parsed?.behavioral?.incentives) || verifier.behavioral.incentives),
     },
-    contrarian: ensureString(
-      parsed?.contrarian,
-      "Have you considered that the strongest opposing view may explain the same facts with fewer assumptions?"
-    ),
-    followUp: ensureString(
-      parsed?.followUp,
-      "What is the next test that would most quickly expose whether your reasoning is sound?"
-    ),
+    contrarian: perspectiveExpansion,
+    finalSynthesis,
+    followUp: secondaryQuestion,
+    perspectiveExpansion,
     score,
+    secondaryQuestion,
     strengths: ensureList(parsed?.strengths, categoryPrompt.reasoningLens.slice(0, 2)),
     trait,
     weaknesses: ensureList(parsed?.weaknesses, verifier.missingMoves),
@@ -410,6 +493,7 @@ function buildAdaptiveSystemPrompt({
   phase,
   profile,
   sessionId,
+  synthesisContext,
   verifier,
 }: {
   categoryPrompt: CategoryPrompt;
@@ -420,6 +504,7 @@ function buildAdaptiveSystemPrompt({
   phase?: "follow_up" | "synthesis";
   profile?: any;
   sessionId: string;
+  synthesisContext?: SynthesisContext;
   verifier: VerifierResult;
 }) {
   const ageBand = profile?.age_band || "18_plus";
@@ -453,17 +538,21 @@ function buildAdaptiveSystemPrompt({
     `Persistent memory: ${JSON.stringify(memory || null)}.`,
     `Verifier engine result: ${JSON.stringify(verifier)}.`,
     `Do not repeat these follow-ups: ${JSON.stringify(recentFollowUps)}.`,
+    synthesisContext ? `Synthesis context: ${JSON.stringify(synthesisContext)}.` : "",
     phase === "synthesis"
-      ? "Current workout phase: synthesis. The user has answered the original prompt and your follow-up. The analysis field must be an overarching response to both answers together: name the through-line, what improved, what is still missing, and one plain-language perspective they should carry forward. The followUp field should be a short optional next thought, not a required extra step."
-      : "Current workout phase: follow_up. The user has answered the original prompt. Give one perspective they may not have considered and one conversational follow-up question. Do not treat the workout as complete yet.",
+      ? "Current workout phase: final synthesis. Use originalQuestion, firstUserAnswer, perspectiveExpansion, secondaryQuestion, and secondUserAnswer. The analysis and finalSynthesis fields must explain how the user's thinking developed, identify their strongest reasoning, identify one remaining blind spot, give one practical takeaway, and clearly complete the challenge. The followUp and secondaryQuestion fields must be empty strings. Do not ask any question."
+      : "Current workout phase: perspective expansion. The user has answered the main question. In contrarian and perspectiveExpansion, recognize the user's reasoning and introduce two or three meaningful angles they may not have considered, using approachable phrases such as 'Have you considered...' or 'Another angle is...'. Address assumptions, evidence, incentives, tradeoffs, consequences, or opposing explanations. Then write exactly one secondaryQuestion and matching followUp question based on the original question, the first answer, and those new perspectives.",
     "Product success test: the user should regularly think, 'I had not considered that.' Your main job is to introduce one meaningful new perspective, not to merely ask them to elaborate.",
-    "The contrarian field must be a concrete perspective the user may have missed. Start from their actual response and introduce an alternate explanation, hidden tradeoff, strongest opposing case, incentive, evidence problem, or second-order effect.",
+    "The contrarian and perspectiveExpansion fields must be concrete perspectives the user may have missed. Start from their actual response and introduce an alternate explanation, hidden tradeoff, strongest opposing case, incentive, evidence problem, or second-order effect.",
     "The analysis field should use common language: name what is promising, then name the missing perspective in plain terms. Avoid academic phrasing.",
-    "The followUp field must be one practical, conversational question tied to that new perspective. It should sound like a sharp person talking to the user, not a worksheet or essay prompt.",
+    phase === "synthesis"
+      ? "The followUp and secondaryQuestion fields must be exactly empty strings. The analysis and finalSynthesis fields must contain no question marks."
+      : "The followUp and secondaryQuestion fields must be exactly one practical, conversational question with exactly one question mark. It should sound like a sharp person talking to the user, not a worksheet or essay prompt.",
     "Prefer plain phrasing such as 'Have you thought about...', 'Could someone...', 'What if...', or 'What would change if...'. Avoid abstract academic wording like 'How might the emotional appeal of...' when a simpler sentence works.",
     "Do not use generic prompts like 'explain further', 'give another example', or 'clarify your reasoning'.",
+    "Sensitive-topic rule: if the prompt or answer concerns self-harm, suicide, trauma, abuse, mental health, medical issues, or identity-based harm, switch to supportive, non-adversarial exploration and appropriate safety guidance.",
     "Score by blending your judgment with the verifier result. Penalize generic, unsupported, or evasive reasoning.",
-    "Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.",
+    "Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.",
   ].join(" ");
 }
 
@@ -741,6 +830,7 @@ async function callOpenAi({
   section,
   sessionId,
   stream,
+  synthesisContext,
   thinkingLens,
   verifier,
 }: {
@@ -758,6 +848,7 @@ async function callOpenAi({
   section?: string;
   sessionId: string;
   stream: boolean;
+  synthesisContext?: SynthesisContext;
   thinkingLens?: string;
   verifier: VerifierResult;
 }) {
@@ -784,6 +875,7 @@ async function callOpenAi({
             phase,
             profile,
             sessionId,
+            synthesisContext,
             verifier,
           }),
         },
@@ -797,6 +889,7 @@ async function callOpenAi({
             question,
             response,
             section,
+            synthesisContext,
             thinkingLens,
           }),
         },
@@ -835,6 +928,7 @@ function streamingFeedback(args: {
   profile?: any;
   response: string;
   sessionId: string;
+  synthesisContext?: SynthesisContext;
   thinkingLens?: string;
   userId?: string;
   verifier: VerifierResult;
@@ -896,7 +990,13 @@ function streamingFeedback(args: {
         }
 
         const parsed = JSON.parse(content);
-        const feedback = sanitizeFeedback(parsed, args.verifier, args.categoryPrompt);
+        const feedback = sanitizeFeedback(
+          parsed,
+          args.verifier,
+          args.categoryPrompt,
+          args.language,
+          args.phase || "follow_up"
+        );
         const progression =
           args.phase === "follow_up" ? null : await persistSession({ ...args, feedback });
 
@@ -948,7 +1048,23 @@ export async function POST(request: Request) {
     const challenge = body.challenge?.trim() || "Daily reasoning challenge";
     const language: "en" | "es" | "fr" =
       body.language === "es" || body.language === "fr" ? body.language : "en";
-    const response = body.response?.trim() || "";
+    const phase = body.phase || "follow_up";
+    const synthesisValidation = phase === "synthesis" ? validateSynthesisContext(body) : null;
+    const response =
+      phase === "synthesis"
+        ? synthesisValidation?.context.secondUserAnswer || ""
+        : body.response?.trim() || "";
+
+    if (synthesisValidation && !synthesisValidation.ok) {
+      return NextResponse.json(
+        {
+          code: "missing_context",
+          error: "Final synthesis requires the original question, both answers, the perspective expansion, and the secondary question.",
+          missing: synthesisValidation.missing,
+        },
+        { status: 400 }
+      );
+    }
 
     if (!response) {
       return NextResponse.json(
@@ -1010,13 +1126,14 @@ export async function POST(request: Request) {
       language,
       memory,
       mode,
-      phase: body.phase || "synthesis",
+      phase,
       profile,
       question: body.question,
       response,
       section: body.section,
       sessionId,
       stream: false,
+      synthesisContext: synthesisValidation?.context,
       thinkingLens: body.thinkingLens,
       verifier,
     };
@@ -1031,9 +1148,9 @@ export async function POST(request: Request) {
     }
 
     const parsed = await nonStreamingFeedback(openAiArgs);
-    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt);
+    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt, language, phase);
     const progression =
-      body.phase === "follow_up"
+      phase === "follow_up"
         ? null
         : await persistSession({
             categoryPrompt,

@@ -3,6 +3,18 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { adaptQuestionForAge, ageBandLabel, normalizeAgeBand } from '@/lib/ageAdaptivePrompts';
 import {
+  applyFinalSynthesis,
+  applyPerspectiveExpansion,
+  canSubmitChallengeAnswer,
+  captureAnswerDraft,
+  challengeSessionKey,
+  createChallengeSession,
+  restoreChallengeSession,
+  shouldRenderAnswerInput,
+  type ChallengeSession,
+  type ChallengeSessionKeyInput,
+} from '@/lib/challengeSession';
+import {
   languageOptions,
   localizeCategory,
   localizeQuestion,
@@ -18,20 +30,126 @@ type Props = {
   questions: string[];
 };
 
+type Feedback = {
+  analysis?: string;
+  contrarian?: string;
+  finalSynthesis?: string;
+  followUp?: string;
+  perspectiveExpansion?: string;
+  score?: number;
+  secondaryQuestion?: string;
+  strengths?: string[];
+  trait?: string;
+  weaknesses?: string[];
+  xp?: number;
+};
+
+const flowCopy = {
+  en: {
+    begin: 'Expand my perspective',
+    category: 'Lesson Category',
+    clear: 'Start New Challenge',
+    complete: 'Challenge complete',
+    failure: 'UThynk could not continue this session. Your answer is still here. Please try again.',
+    finish: 'Create final synthesis',
+    firstHint: 'Give your first answer. You can type or use voice to text.',
+    firstPlaceholder: 'Write your first answer.',
+    intro: 'Choose one question and complete a focused thinking session.',
+    perspective: 'Perspective Expansion',
+    required: 'Write or speak your answer first.',
+    restored: 'Your saved session was restored.',
+    secondary: 'Secondary Question',
+    secondHint: 'Use the new angles to deepen or revise your thinking.',
+    secondPlaceholder: 'Write your second answer.',
+    selected: 'Main Question',
+    selectQuestion: 'Start with this',
+    synthesis: 'Final Synthesis',
+    progress: ['Main Question', 'Perspective Expansion', 'Secondary Question', 'Final Synthesis'],
+  },
+  es: {
+    begin: 'Ampliar mi perspectiva',
+    category: 'Categoria de leccion',
+    clear: 'Empezar nuevo desafio',
+    complete: 'Desafio completado',
+    failure: 'UThynk no pudo continuar esta sesion. Tu respuesta sigue aqui. Intentalo de nuevo.',
+    finish: 'Crear sintesis final',
+    firstHint: 'Da tu primera respuesta. Puedes escribir o usar voz a texto.',
+    firstPlaceholder: 'Escribe tu primera respuesta.',
+    intro: 'Elige una pregunta y completa una sesion de pensamiento enfocada.',
+    perspective: 'Expansion de perspectiva',
+    required: 'Escribe o dicta tu respuesta primero.',
+    restored: 'Se restauro tu sesion guardada.',
+    secondary: 'Pregunta secundaria',
+    secondHint: 'Usa los nuevos angulos para profundizar o revisar tu pensamiento.',
+    secondPlaceholder: 'Escribe tu segunda respuesta.',
+    selected: 'Pregunta principal',
+    selectQuestion: 'Empezar con esta',
+    synthesis: 'Sintesis final',
+    progress: ['Pregunta principal', 'Expansion de perspectiva', 'Pregunta secundaria', 'Sintesis final'],
+  },
+  fr: {
+    begin: 'Elargir ma perspective',
+    category: 'Categorie de lecon',
+    clear: 'Commencer un nouveau defi',
+    complete: 'Defi termine',
+    failure: "UThynk n'a pas pu continuer cette session. Ta reponse est toujours ici. Reessaie.",
+    finish: 'Creer la synthese finale',
+    firstHint: 'Donne ta premiere reponse. Tu peux ecrire ou utiliser la dictee vocale.',
+    firstPlaceholder: 'Ecris ta premiere reponse.',
+    intro: 'Choisis une question et termine une session de reflexion ciblee.',
+    perspective: 'Elargissement de perspective',
+    required: "Ecris ou dicte d'abord ta reponse.",
+    restored: 'Ta session sauvegardee a ete restauree.',
+    secondary: 'Question secondaire',
+    secondHint: 'Utilise les nouveaux angles pour approfondir ou revoir ta reflexion.',
+    secondPlaceholder: 'Ecris ta deuxieme reponse.',
+    selected: 'Question principale',
+    selectQuestion: 'Commencer avec celle-ci',
+    synthesis: 'Synthese finale',
+    progress: ['Question principale', 'Elargissement de perspective', 'Question secondaire', 'Synthese finale'],
+  },
+} satisfies Record<Language, Record<string, string | string[]>>;
+
+function readProfile() {
+  try {
+    const storedProfile = localStorage.getItem('uthynk-profile');
+    return storedProfile ? JSON.parse(storedProfile) : null;
+  } catch {
+    return null;
+  }
+}
+
+function getQuestionId(category: string, index: number) {
+  return `${category}-${index}`;
+}
+
+function normalizeFeedback(payload: Feedback, phase: 'follow_up' | 'synthesis'): Feedback {
+  return {
+    ...payload,
+    contrarian: payload.contrarian || payload.perspectiveExpansion,
+    finalSynthesis: phase === 'synthesis' ? payload.finalSynthesis || payload.analysis : '',
+    followUp: phase === 'synthesis' ? '' : payload.followUp || payload.secondaryQuestion,
+    perspectiveExpansion: payload.perspectiveExpansion || payload.contrarian || payload.analysis,
+    secondaryQuestion: phase === 'synthesis' ? '' : payload.secondaryQuestion || payload.followUp,
+  };
+}
+
 export default function LessonQuestionClient({ category, questions }: Props) {
   const [language, setLanguage] = useState<Language>('en');
   const [answer, setAnswer] = useState('');
-  const [feedback, setFeedback] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [ageBand, setAgeBand] = useState('18_plus');
   const [error, setError] = useState('');
+  const [restored, setRestored] = useState(false);
+  const [session, setSession] = useState<ChallengeSession | null>(null);
   const [voiceStatus, setVoiceStatus] = useState('');
   const [voiceSupported, setVoiceSupported] = useState(true);
   const answerRef = useRef<HTMLTextAreaElement | null>(null);
   const recognitionRef = useRef<any>(null);
   const listeningRef = useRef(false);
   const copy = uiCopy[language];
+  const flow = flowCopy[language];
   const visibleCategory = localizeCategory(category, language);
   const safeAgeBand = normalizeAgeBand(ageBand);
   const localizedQuestions = useMemo(
@@ -41,36 +159,73 @@ export default function LessonQuestionClient({ category, questions }: Props) {
   const adaptedQuestions = useMemo(
     () =>
       localizedQuestions.map((question, index) =>
-        adaptQuestionForAge(question, visibleCategory, safeAgeBand, index)
+        adaptQuestionForAge(question, category, safeAgeBand, index)
       ),
-    [localizedQuestions, safeAgeBand, visibleCategory]
+    [category, localizedQuestions, safeAgeBand]
   );
   const selectedQuestion = adaptedQuestions[selectedIndex] || adaptedQuestions[0] || '';
+  const profile = typeof window === 'undefined' ? null : readProfile();
+  const userId = profile?.id || null;
+  const keyInput: ChallengeSessionKeyInput = {
+    ageBand: safeAgeBand,
+    category,
+    language,
+    questionId: getQuestionId(category, selectedIndex),
+    questionIndex: selectedIndex,
+    userId,
+  };
+  const activeStorageKey = challengeSessionKey(keyInput);
 
   useEffect(() => {
     const storedLanguage = localStorage.getItem('uthynk-language');
-    const storedProfile = localStorage.getItem('uthynk-profile');
-    const profile = storedProfile ? JSON.parse(storedProfile) : null;
+    const initialProfile = readProfile();
 
     if (storedLanguage === 'en' || storedLanguage === 'es' || storedLanguage === 'fr') {
       setLanguage(storedLanguage);
     }
 
+    setAgeBand(initialProfile?.age_band || '18_plus');
+
     trackEvent(
-      createTelemetryEvent('lesson_category_arrived', profile?.id, {
+      createTelemetryEvent('lesson_category_arrived', initialProfile?.id, {
         category,
         questions: questions.length,
       })
     );
+  }, [category, questions.length]);
 
-    if (!storedProfile) return;
+  useEffect(() => {
+    const raw = localStorage.getItem(activeStorageKey);
+
+    if (!raw) {
+      setSession(null);
+      setAnswer('');
+      setRestored(false);
+      return;
+    }
 
     try {
-      setAgeBand(profile?.age_band || '18_plus');
+      const parsed = restoreChallengeSession(JSON.parse(raw));
+
+      if (parsed) {
+        setSession(parsed);
+        setAnswer(parsed.activeAnswerDraft);
+        setRestored(true);
+        return;
+      }
     } catch {
-      setAgeBand('18_plus');
+      localStorage.removeItem(activeStorageKey);
     }
-  }, []);
+
+    setSession(null);
+    setAnswer('');
+    setRestored(false);
+  }, [activeStorageKey]);
+
+  useEffect(() => {
+    if (!session) return;
+    localStorage.setItem(challengeSessionKey(session), JSON.stringify(session));
+  }, [session]);
 
   useEffect(() => {
     const SpeechRecognition =
@@ -95,6 +250,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
         .trim();
 
       setAnswer(transcript);
+      setSession((current) => captureAnswerDraft(current, transcript));
     };
 
     recognition.onerror = () => {
@@ -129,17 +285,18 @@ export default function LessonQuestionClient({ category, questions }: Props) {
   function changeLanguage(nextLanguage: Language) {
     setLanguage(nextLanguage);
     setStoredLanguageValue(nextLanguage);
+    setError('');
   }
 
   function selectQuestion(index: number) {
+    if (loading) return;
     setSelectedIndex(index);
-    setFeedback(null);
     setError('');
+    setRestored(false);
 
-    const storedProfile = localStorage.getItem('uthynk-profile');
-    const profile = storedProfile ? JSON.parse(storedProfile) : null;
+    const selectedProfile = readProfile();
     trackEvent(
-      createTelemetryEvent('selected_question', profile?.id, {
+      createTelemetryEvent('selected_question', selectedProfile?.id, {
         category,
         questionIndex: index,
         source: 'lesson',
@@ -186,72 +343,112 @@ export default function LessonQuestionClient({ category, questions }: Props) {
     setVoiceStatus('');
   }
 
-  async function startLesson(question = selectedQuestion) {
-    if (!question) return;
+  function updateAnswer(nextAnswer: string) {
+    setAnswer(nextAnswer);
+    setSession((current) => captureAnswerDraft(current, nextAnswer));
+  }
 
-    if (!answer.trim()) {
-      setError(
-        language === 'es'
-          ? 'Escribe o dicta tu respuesta primero. Una o dos frases bastan.'
-          : language === 'fr'
-            ? "Ecris ou dicte d'abord ta reponse. Une ou deux phrases suffisent."
-            : 'Write or speak your answer first. One or two sentences is enough.'
-      );
-      answerRef.current?.focus();
+  function startNewChallenge() {
+    localStorage.removeItem(activeStorageKey);
+    setSession(null);
+    setAnswer('');
+    setError('');
+    setRestored(false);
+    window.setTimeout(() => answerRef.current?.focus(), 0);
+  }
+
+  async function requestFeedback(phase: 'follow_up' | 'synthesis', active: ChallengeSession, responseText: string) {
+    const response = await fetch('/api/reasoning', {
+      body: JSON.stringify({
+        ageBand: safeAgeBand,
+        category,
+        challenge: active.originalQuestion,
+        conversationId: active.conversationId,
+        displayedQuestion: active.originalQuestion,
+        firstUserAnswer: active.firstResponse,
+        language,
+        originalQuestion: active.originalQuestion,
+        perspectiveExpansion: active.perspectiveExpansion,
+        phase,
+        question: phase === 'synthesis' ? active.secondaryQuestion : active.originalQuestion,
+        response: responseText,
+        secondUserAnswer: phase === 'synthesis' ? responseText : undefined,
+        secondaryQuestion: active.secondaryQuestion,
+        section: `lesson:${category}`,
+        sessionId: active.sessionId,
+        stream: false,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    });
+    const payload = await response.json();
+
+    if (!response.ok) {
+      throw new Error(payload.error || (flow.failure as string));
+    }
+
+    return normalizeFeedback(payload as Feedback, phase);
+  }
+
+  async function submitAnswer() {
+    if (!canSubmitChallengeAnswer(session, answer, loading)) {
+      if (!answer.trim()) {
+        setError(flow.required as string);
+        answerRef.current?.focus();
+      }
       return;
     }
 
+    const submittedAnswer = answer.trim();
+    setLoading(true);
+    setError('');
+
     try {
-      setLoading(true);
-      setError('');
-      setFeedback(null);
-      const storedProfile = localStorage.getItem('uthynk-profile');
-      const profile = storedProfile ? JSON.parse(storedProfile) : null;
-      trackEvent(
-        createTelemetryEvent('submitted_answer', profile?.id, {
-          category,
-          questionIndex: selectedIndex,
-          responseLength: answer.length,
-          source: 'lesson',
-        })
-      );
+      const active =
+        session ||
+        createChallengeSession({
+          ...keyInput,
+          conversationId: crypto.randomUUID(),
+          originalQuestion: selectedQuestion,
+          sessionId: crypto.randomUUID(),
+        });
 
-      const response = await fetch('/api/reasoning', {
-        body: JSON.stringify({
-          category,
-          ageBand: safeAgeBand,
-          challenge: question,
-          language,
-          question,
-          response: answer,
-          section: `lesson:${category}`,
-          stream: false,
-        }),
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-      });
-      const payload = await response.json();
-
-      if (!response.ok) {
-        throw new Error(payload.error || 'Lesson could not start.');
+      if (active.step === 'main_question') {
+        const feedback = await requestFeedback('follow_up', active, submittedAnswer);
+        setSession(applyPerspectiveExpansion(active, submittedAnswer, feedback));
+        setAnswer('');
+        return;
       }
 
-      setFeedback(payload);
-      trackEvent(
-        createTelemetryEvent('completed_reasoning_loop', profile?.id, {
-          category,
-          questionIndex: selectedIndex,
-          score: payload.score,
-          source: 'lesson',
-          xp: payload.xp,
-        })
-      );
+      if (active.step === 'secondary_question') {
+        const feedback = await requestFeedback('synthesis', active, submittedAnswer);
+        const completed = applyFinalSynthesis(active, submittedAnswer, feedback);
+        setSession(completed);
+        setAnswer('');
+        trackEvent(
+          createTelemetryEvent('completed_reasoning_loop', userId, {
+            category,
+            questionIndex: selectedIndex,
+            score: feedback.score,
+            source: 'lesson',
+            xp: feedback.xp,
+          })
+        );
+      }
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Lesson could not start.');
+      setError(caught instanceof Error ? caught.message : (flow.failure as string));
+      setAnswer(submittedAnswer);
+      setSession((current) => captureAnswerDraft(current, submittedAnswer));
     } finally {
       setLoading(false);
     }
   }
+
+  const stepNumber = session?.step === 'secondary_question' ? 3 : session?.step === 'final_synthesis' ? 4 : 1;
+  const progressLabels = flow.progress as string[];
+  const inputVisible =
+    shouldRenderAnswerInput(session) &&
+    (!session || session.step !== 'secondary_question' || Boolean(session.secondaryQuestion));
 
   return (
     <>
@@ -280,6 +477,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
               aria-label={copy.adaptiveLanguage}
               className="languageSelect"
               value={language}
+              disabled={loading}
               onChange={(event) => changeLanguage(event.target.value as Language)}
             >
               {languageOptions.map((option) => (
@@ -294,115 +492,138 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
       <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
-          <div className="eyebrow">{language === 'es' ? 'Categoria de leccion' : language === 'fr' ? 'Categorie de lecon' : 'Lesson Category'}</div>
+          <div className="eyebrow">{flow.category}</div>
           <h1>{visibleCategory}</h1>
-          <p>
-            {language === 'es'
-              ? 'Elige una pregunta. UThynk evaluara tu respuesta con esta categoria como memoria de leccion.'
-              : language === 'fr'
-                ? 'Choisis une question. UThynk evaluera ta reponse avec cette categorie comme memoire de lecon.'
-                : 'Pick one question. UThynk will evaluate your answer with this category attached as lesson memory.'}
-          </p>
+          <p>{flow.intro}</p>
         </div>
       </section>
 
-      <section className="lessonQuestionLayout">
-        <div className="lessonQuestionList">
+      <section className="lessonQuestionLayout" style={{ maxWidth: '100%', minWidth: 0, width: '100%' }}>
+        <div className="lessonQuestionList" style={{ minWidth: 0 }}>
           {adaptedQuestions.map((question, index) => (
             <button
-            className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}
-            key={`${category}-${index}-${question}`}
-            onClick={() => selectQuestion(index)}
-            type="button"
-          >
-              <span>{language === 'es' ? 'Empezar con esta' : language === 'fr' ? 'Commencer avec celle-ci' : 'Start with this'}</span>
+              className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}
+              disabled={loading || Boolean(session)}
+              key={`${category}-${index}-${question}`}
+              onClick={() => selectQuestion(index)}
+              type="button"
+            >
+              <span>{flow.selectQuestion}</span>
               {question}
             </button>
           ))}
         </div>
 
-        <div className="card lessonStartPanel">
-          <div className="panelLabel">
-            {language === 'es' ? 'Pregunta seleccionada' : language === 'fr' ? 'Question selectionnee' : 'Selected Question'}
-          </div>
+        <div className="card lessonStartPanel" style={{ minWidth: 0 }}>
+          <div className="panelLabel">{flow.selected}</div>
           {safeAgeBand !== '18_plus' ? (
             <div className="ageModeBadge">{ageBandLabel(safeAgeBand)}</div>
           ) : null}
-          <h2>{selectedQuestion}</h2>
-          <p className="lessonPromptHint">
-            {language === 'es'
-              ? 'Responde con tu mejor razonamiento. Puedes escribir o usar voz a texto.'
-              : language === 'fr'
-                ? 'Reponds avec ton meilleur raisonnement. Tu peux ecrire ou utiliser la dictee vocale.'
-                : 'Respond with your best reasoning. You can type or use voice to text.'}
-          </p>
-          <textarea
-            ref={answerRef}
-            className="textarea conversationInput"
-            onChange={(event) => setAnswer(event.target.value)}
-            placeholder={copy.placeholder}
-            value={answer}
-          />
-          {error ? <p className="authError">{error}</p> : null}
-          {voiceStatus ? <p className="panelNote">{voiceStatus}</p> : null}
-          <div className="lessonActionRow">
-            <button
-              className="btn btnPrimary"
-              disabled={loading}
-              onClick={() => startLesson()}
-              type="button"
-            >
-              {loading ? copy.sending : language === 'es' ? 'Empezar a pensar' : language === 'fr' ? 'Commencer a penser' : 'Start Thinking'}
-            </button>
-            <button
-              className="btn"
-              disabled={!voiceSupported}
-              onMouseDown={startVoiceInput}
-              onMouseUp={stopVoiceInput}
-              onMouseLeave={stopVoiceInput}
-              onTouchStart={startVoiceInput}
-              onTouchEnd={stopVoiceInput}
-              type="button"
-            >
-              {copy.holdToTalk}
-            </button>
+          <h2>{session?.originalQuestion || selectedQuestion}</h2>
+
+          <div className="thinkingLabelLayer" aria-label="Challenge progress">
+            {progressLabels.map((label, index) => (
+              <span key={label} className={index + 1 <= stepNumber ? 'active' : ''}>
+                {index + 1}. {label}
+              </span>
+            ))}
           </div>
-          {feedback ? (
-            <div className="lessonFeedback">
-              <div className="plainResponseLayer">
-                <span>UThynk</span>
-                <p>
-                  {language === 'es'
-                    ? 'Vas bien, pero necesito una prueba mas clara. Cual es el ejemplo mas fuerte que apoya tu punto?'
-                    : language === 'fr'
-                      ? "Tu vas dans la bonne direction, mais il manque une preuve plus claire. Quel est l'exemple le plus fort?"
-                      : "I like where you're going, but I'm missing proof. What's the strongest example that supports your point?"}
-                </p>
-              </div>
-              <div className="thinkingLabelLayer">
-                <span>{localizeText(feedback.trait, language) || copy.rewardPattern}</span>
-                <span>{localizeText(feedback.strengths?.[0] || 'Independent Verification', language)}</span>
-                <span>{localizeText(feedback.weaknesses?.[0] || 'Evidence +1', language)}</span>
-              </div>
-              <details className="advancedExplanationLayer">
-                <summary>
-                  {language === 'es'
-                    ? 'Por que UThynk dijo esto'
-                    : language === 'fr'
-                      ? 'Pourquoi UThynk a dit cela'
-                      : 'Why UThynk said this'}
-                </summary>
-                <div>
-                  <p>{localizeText(feedback.analysis, language)}</p>
-                  <p>{localizeText(feedback.contrarian, language)}</p>
-                  <p>{localizeText(feedback.followUp, language)}</p>
-                </div>
-              </details>
+
+          {restored ? <p className="panelNote">{flow.restored}</p> : null}
+
+          {session?.firstResponse ? (
+            <div className="advancedExplanationLayer">
+              <strong>{copy.userLabel}</strong>
+              <p>{session.firstResponse}</p>
             </div>
+          ) : null}
+
+          {session?.perspectiveExpansion ? (
+            <div className="plainResponseLayer">
+              <span>{flow.perspective}</span>
+              <p>{session.perspectiveExpansion}</p>
+            </div>
+          ) : null}
+
+          {session?.secondaryQuestion ? (
+            <div className="advancedExplanationLayer">
+              <strong>{flow.secondary}</strong>
+              <p>{session.secondaryQuestion}</p>
+            </div>
+          ) : null}
+
+          {session?.secondResponse ? (
+            <div className="advancedExplanationLayer">
+              <strong>{copy.userLabel}</strong>
+              <p>{session.secondResponse}</p>
+            </div>
+          ) : null}
+
+          {session?.finalSynthesis ? (
+            <div className="plainResponseLayer">
+              <span>{flow.synthesis}</span>
+              <p>{session.finalSynthesis}</p>
+              {session.growthIndicators.length ? (
+                <div className="thinkingLabelLayer">
+                  {session.growthIndicators.map((item) => (
+                    <span key={item}>{localizeText(item, language)}</span>
+                  ))}
+                </div>
+              ) : null}
+              <strong>{flow.complete}</strong>
+            </div>
+          ) : null}
+
+          {inputVisible ? (
+            <>
+              <p className="lessonPromptHint">
+                {session?.step === 'secondary_question' ? flow.secondHint : flow.firstHint}
+              </p>
+              <textarea
+                ref={answerRef}
+                className="textarea conversationInput"
+                onChange={(event) => updateAnswer(event.target.value)}
+                placeholder={
+                  (session?.step === 'secondary_question'
+                    ? flow.secondPlaceholder
+                    : flow.firstPlaceholder) as string
+                }
+                value={answer}
+              />
+              {error ? <p className="authError">{error}</p> : null}
+              {voiceStatus ? <p className="panelNote">{voiceStatus}</p> : null}
+              <div className="lessonActionRow">
+                <button
+                  className="btn btnPrimary"
+                  disabled={loading}
+                  onClick={submitAnswer}
+                  type="button"
+                >
+                  {loading ? copy.sending : session?.step === 'secondary_question' ? flow.finish : flow.begin}
+                </button>
+                <button
+                  className="btn"
+                  disabled={!voiceSupported || loading}
+                  onMouseDown={startVoiceInput}
+                  onMouseUp={stopVoiceInput}
+                  onMouseLeave={stopVoiceInput}
+                  onTouchStart={startVoiceInput}
+                  onTouchEnd={stopVoiceInput}
+                  type="button"
+                >
+                  {copy.holdToTalk}
+                </button>
+              </div>
+            </>
+          ) : null}
+
+          {session ? (
+            <button className="btn" disabled={loading} onClick={startNewChallenge} type="button">
+              {flow.clear}
+            </button>
           ) : null}
         </div>
       </section>
     </>
   );
 }
-
