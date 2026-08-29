@@ -481,7 +481,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
               onChange={(event) => changeLanguage(event.target.value as Language)}
             >
               {languageOptions.map((option) => (
-                <option key={option.value} value={option.label}>
+                <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
               ))}
