@@ -80,8 +80,11 @@ type ReasoningFeedback = {
   analysis: string;
   behavioral: BehavioralScores;
   contrarian: string;
+  finalSynthesis: string;
   followUp: string;
+  perspectiveExpansion: string;
   score: number;
+  secondaryQuestion: string;
   strengths: string[];
   trait: string;
   weaknesses: string[];
@@ -440,10 +443,23 @@ function sanitizeFeedback(
       : language === "fr"
         ? "Quelle preuve changerait le plus ton niveau de confiance ?"
         : "What evidence would most change your level of confidence?";
-  const analysis = ensureString(parsed?.analysis, fallbackAnalysis);
+  const baseAnalysis = ensureString(parsed?.analysis, fallbackAnalysis);
+  const perspectiveExpansion = ensureString(
+    parsed?.perspectiveExpansion || parsed?.contrarian,
+    fallbackPerspective
+  );
+  const secondaryQuestion =
+    phase === "synthesis"
+      ? ""
+      : normalizeSingleQuestion(parsed?.secondaryQuestion || parsed?.followUp, fallbackQuestion);
+  const finalSynthesis =
+    phase === "synthesis"
+      ? stripQuestions(parsed?.finalSynthesis || baseAnalysis) || fallbackAnalysis
+      : "";
+  const analysis = phase === "synthesis" ? finalSynthesis : baseAnalysis;
 
   return {
-    analysis: phase === "synthesis" ? stripQuestions(analysis) || fallbackAnalysis : analysis,
+    analysis,
     behavioral: {
       evidence: clamp(Number(parsed?.behavioral?.evidence) || verifier.behavioral.evidence),
       adaptability: clamp(
@@ -454,9 +470,12 @@ function sanitizeFeedback(
       ),
       incentives: clamp(Number(parsed?.behavioral?.incentives) || verifier.behavioral.incentives),
     },
-    contrarian: ensureString(parsed?.contrarian, fallbackPerspective),
-    followUp: phase === "synthesis" ? "" : normalizeSingleQuestion(parsed?.followUp, fallbackQuestion),
+    contrarian: perspectiveExpansion,
+    finalSynthesis,
+    followUp: secondaryQuestion,
+    perspectiveExpansion,
     score,
+    secondaryQuestion,
     strengths: ensureList(parsed?.strengths, categoryPrompt.reasoningLens.slice(0, 2)),
     trait,
     weaknesses: ensureList(parsed?.weaknesses, verifier.missingMoves),
@@ -521,19 +540,19 @@ function buildAdaptiveSystemPrompt({
     `Do not repeat these follow-ups: ${JSON.stringify(recentFollowUps)}.`,
     synthesisContext ? `Synthesis context: ${JSON.stringify(synthesisContext)}.` : "",
     phase === "synthesis"
-      ? "Current workout phase: final synthesis. Use originalQuestion, firstUserAnswer, perspectiveExpansion, secondaryQuestion, and secondUserAnswer. The analysis field must explain how the user's thinking developed, identify their strongest reasoning, identify one remaining blind spot, give one practical takeaway, and clearly complete the challenge. The followUp field must be an empty string. Do not ask any question."
-      : "Current workout phase: perspective expansion. The user has answered the main question. In contrarian, recognize the user's reasoning and introduce two or three meaningful angles they may not have considered, using approachable phrases such as 'Have you considered...' or 'Another angle is...'. Address assumptions, evidence, incentives, tradeoffs, consequences, or opposing explanations. Then write exactly one secondary followUp question based on the original question, the first answer, and those new perspectives.",
+      ? "Current workout phase: final synthesis. Use originalQuestion, firstUserAnswer, perspectiveExpansion, secondaryQuestion, and secondUserAnswer. The analysis and finalSynthesis fields must explain how the user's thinking developed, identify their strongest reasoning, identify one remaining blind spot, give one practical takeaway, and clearly complete the challenge. The followUp and secondaryQuestion fields must be empty strings. Do not ask any question."
+      : "Current workout phase: perspective expansion. The user has answered the main question. In contrarian and perspectiveExpansion, recognize the user's reasoning and introduce two or three meaningful angles they may not have considered, using approachable phrases such as 'Have you considered...' or 'Another angle is...'. Address assumptions, evidence, incentives, tradeoffs, consequences, or opposing explanations. Then write exactly one secondaryQuestion and matching followUp question based on the original question, the first answer, and those new perspectives.",
     "Product success test: the user should regularly think, 'I had not considered that.' Your main job is to introduce one meaningful new perspective, not to merely ask them to elaborate.",
-    "The contrarian field must be a concrete perspective the user may have missed. Start from their actual response and introduce an alternate explanation, hidden tradeoff, strongest opposing case, incentive, evidence problem, or second-order effect.",
+    "The contrarian and perspectiveExpansion fields must be concrete perspectives the user may have missed. Start from their actual response and introduce an alternate explanation, hidden tradeoff, strongest opposing case, incentive, evidence problem, or second-order effect.",
     "The analysis field should use common language: name what is promising, then name the missing perspective in plain terms. Avoid academic phrasing.",
     phase === "synthesis"
-      ? "The followUp field must be exactly an empty string. The analysis field must contain no question marks."
-      : "The followUp field must be exactly one practical, conversational question with exactly one question mark. It should sound like a sharp person talking to the user, not a worksheet or essay prompt.",
+      ? "The followUp and secondaryQuestion fields must be exactly empty strings. The analysis and finalSynthesis fields must contain no question marks."
+      : "The followUp and secondaryQuestion fields must be exactly one practical, conversational question with exactly one question mark. It should sound like a sharp person talking to the user, not a worksheet or essay prompt.",
     "Prefer plain phrasing such as 'Have you thought about...', 'Could someone...', 'What if...', or 'What would change if...'. Avoid abstract academic wording like 'How might the emotional appeal of...' when a simpler sentence works.",
     "Do not use generic prompts like 'explain further', 'give another example', or 'clarify your reasoning'.",
     "Sensitive-topic rule: if the prompt or answer concerns self-harm, suicide, trauma, abuse, mental health, medical issues, or identity-based harm, switch to supportive, non-adversarial exploration and appropriate safety guidance.",
     "Score by blending your judgment with the verifier result. Penalize generic, unsupported, or evasive reasoning.",
-    "Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.",
+    "Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.",
   ].join(" ");
 }
 
