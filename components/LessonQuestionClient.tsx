@@ -31,10 +31,13 @@ type Props = {
 };
 
 type Feedback = {
-  analysis: string;
-  contrarian: string;
-  followUp: string;
+  analysis?: string;
+  contrarian?: string;
+  finalSynthesis?: string;
+  followUp?: string;
+  perspectiveExpansion?: string;
   score?: number;
+  secondaryQuestion?: string;
   strengths?: string[];
   trait?: string;
   weaknesses?: string[];
@@ -118,6 +121,17 @@ function readProfile() {
 
 function getQuestionId(category: string, index: number) {
   return `${category}-${index}`;
+}
+
+function normalizeFeedback(payload: Feedback, phase: 'follow_up' | 'synthesis'): Feedback {
+  return {
+    ...payload,
+    contrarian: payload.contrarian || payload.perspectiveExpansion,
+    finalSynthesis: phase === 'synthesis' ? payload.finalSynthesis || payload.analysis : '',
+    followUp: phase === 'synthesis' ? '' : payload.followUp || payload.secondaryQuestion,
+    perspectiveExpansion: payload.perspectiveExpansion || payload.contrarian || payload.analysis,
+    secondaryQuestion: phase === 'synthesis' ? '' : payload.secondaryQuestion || payload.followUp,
+  };
 }
 
 export default function LessonQuestionClient({ category, questions }: Props) {
@@ -373,7 +387,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
       throw new Error(payload.error || (flow.failure as string));
     }
 
-    return payload as Feedback;
+    return normalizeFeedback(payload as Feedback, phase);
   }
 
   async function submitAnswer() {
@@ -432,7 +446,9 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
   const stepNumber = session?.step === 'secondary_question' ? 3 : session?.step === 'final_synthesis' ? 4 : 1;
   const progressLabels = flow.progress as string[];
-  const inputVisible = shouldRenderAnswerInput(session);
+  const inputVisible =
+    shouldRenderAnswerInput(session) &&
+    (!session || session.step !== 'secondary_question' || Boolean(session.secondaryQuestion));
 
   return (
     <>
@@ -465,7 +481,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
               onChange={(event) => changeLanguage(event.target.value as Language)}
             >
               {languageOptions.map((option) => (
-                <option key={option.value} value={option.value}>
+                <option key={option.value} value={option.label}>
                   {option.label}
                 </option>
               ))}
@@ -482,8 +498,8 @@ export default function LessonQuestionClient({ category, questions }: Props) {
         </div>
       </section>
 
-      <section className="lessonQuestionLayout">
-        <div className="lessonQuestionList">
+      <section className="lessonQuestionLayout" style={{ maxWidth: '100%', minWidth: 0, width: '100%' }}>
+        <div className="lessonQuestionList" style={{ minWidth: 0 }}>
           {adaptedQuestions.map((question, index) => (
             <button
               className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}
@@ -498,7 +514,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
           ))}
         </div>
 
-        <div className="card lessonStartPanel">
+        <div className="card lessonStartPanel" style={{ minWidth: 0 }}>
           <div className="panelLabel">{flow.selected}</div>
           {safeAgeBand !== '18_plus' ? (
             <div className="ageModeBadge">{ageBandLabel(safeAgeBand)}</div>
