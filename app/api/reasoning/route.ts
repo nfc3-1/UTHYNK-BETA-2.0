@@ -903,7 +903,9 @@ async function nonStreamingFeedback(args: Parameters<typeof callOpenAi>[0]) {
   const aiResponse = await callOpenAi({ ...args, stream: false });
 
   if (!aiResponse.ok) {
-    throw await reasoningProviderError(aiResponse);
+    throw await reasoningProviderError(aiResponse, args.phase || "follow_up", [
+      args.response, args.challenge, ...Object.values(args.synthesisContext || {}),
+    ]);
   }
 
   const data = await aiResponse.json();
@@ -953,7 +955,9 @@ function streamingFeedback(args: {
 
         const aiResponse = await callOpenAi({ ...args, stream: true });
 
-        if (!aiResponse.ok) throw await reasoningProviderError(aiResponse);
+        if (!aiResponse.ok) throw await reasoningProviderError(aiResponse, args.phase || "follow_up", [
+          args.response, args.challenge, ...Object.values(args.synthesisContext || {}),
+        ]);
         if (!aiResponse.body) throw new Error("The reasoning provider returned no response. Your answer is saved; please try again.");
 
         const reader = aiResponse.body.getReader();
