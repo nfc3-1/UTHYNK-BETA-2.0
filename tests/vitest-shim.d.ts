@@ -10,6 +10,9 @@ declare module 'vitest' {
     toThrow: (expected?: string | RegExp) => void;
   };
   export const vi: {
+    mock: (path: string, factory: () => unknown) => void;
+    stubGlobal: (name: string, value: unknown) => void;
+    unstubAllGlobals: () => void;
     stubEnv: (name: string, value: string) => void;
     unstubAllEnvs: () => void;
   };

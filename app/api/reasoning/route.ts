@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { reasoningProviderError } from "@/lib/reasoningProviderError";
 import { getServerSessionUser } from "@/lib/auth";
 import {
   persistCanonicalConversation,
@@ -902,7 +903,7 @@ async function nonStreamingFeedback(args: Parameters<typeof callOpenAi>[0]) {
   const aiResponse = await callOpenAi({ ...args, stream: false });
 
   if (!aiResponse.ok) {
-    throw new Error("OpenAI reasoning request failed.");
+    throw await reasoningProviderError(aiResponse);
   }
 
   const data = await aiResponse.json();
@@ -952,9 +953,8 @@ function streamingFeedback(args: {
 
         const aiResponse = await callOpenAi({ ...args, stream: true });
 
-        if (!aiResponse.ok || !aiResponse.body) {
-          throw new Error("OpenAI streaming request failed.");
-        }
+        if (!aiResponse.ok) throw await reasoningProviderError(aiResponse);
+        if (!aiResponse.body) throw new Error("The reasoning provider returned no response. Your answer is saved; please try again.");
 
         const reader = aiResponse.body.getReader();
         const decoder = new TextDecoder();

@@ -2,6 +2,8 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { normalizeReasoningFeedback, readReasoningResponse } from "@/lib/reasoningResponse";
+import { appendTranscript, createHoldToTalk } from "@/lib/holdToTalk";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { adaptChallengeForAge, ageBandLabel, normalizeAgeBand } from "@/lib/ageAdaptivePrompts";
@@ -557,6 +559,8 @@ function ReasoningExperience({
       return getChallengeById();
     }
 
+    const activeId = localStorage.getItem("uthynk-active-reasoning-challenge");
+    if (activeId) return getChallengeById(activeId);
     const seenIds = JSON.parse(
       localStorage.getItem("uthynk-seen-challenge-ids") || "[]"
     ) as string[];
@@ -640,7 +644,9 @@ function ReasoningExperience({
         (profile?.completed_challenges || 0) > 0)
   );
   const plainFeedback =
-    topWeakness.includes("incentive")
+    workoutStage === "reflection" || workoutStage === "complete"
+      ? visibleFeedback.analysis
+      : topWeakness.includes("incentive")
       ? text.plainFeedbackIncentive
       : topWeakness.includes("evidence") || topWeakness.includes("proof")
         ? text.plainFeedbackEvidence
@@ -648,14 +654,14 @@ function ReasoningExperience({
           ? text.plainFeedbackNext
       : text.plainFeedbackDefault;
 
-  const recognitionRef = useRef<any>(null);
-  const workoutStageRef = useRef(workoutStage);
+  const recognitionRef = useRef<ReturnType<typeof createHoldToTalk> | null>(null);
+  const [listening, setListening] = useState(false);
+  const submittingRef = useRef(false);
+  const completedRef = useRef(false);
+  const restoredKeyRef = useRef("");
+  const [restoredKey, setRestoredKey] = useState("");
   const conversationIdRef = useRef<string>("");
   const sessionIdRef = useRef<string>("");
-
-  useEffect(() => {
-    workoutStageRef.current = workoutStage;
-  }, [workoutStage]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -702,34 +708,66 @@ function ReasoningExperience({
       )
     );
 
-    const SpeechRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
+  }, [challenge.id, challenge.category]);
 
-    if (!SpeechRecognition) return;
+  useEffect(() => {
+    const owner = JSON.parse(localStorage.getItem("uthynk-profile") || "null")?.id || "guest";
+    const key = `uthynk-reasoning:v1:${owner}:${challenge.id}`;
+    restoredKeyRef.current = key;
+    let saved: any = null;
+    try { saved = JSON.parse(localStorage.getItem(key) || "null"); } catch { /* Keep text entry available. */ }
+    const valid = saved?.version === 1 && saved.challengeId === challenge.id;
+    setResponse(valid ? saved.response || "" : "");
+    setFollowUpResponse(valid ? saved.followUpResponse || "" : "");
+    setReflection(valid ? saved.reflection || "" : "");
+    setStandoutPerspective(valid ? saved.standoutPerspective || "" : "");
+    setPerspectiveImpact(valid ? saved.perspectiveImpact || "" : "");
+    const stage = valid ? saved.workoutStage : "answer";
+    setWorkoutStage(stage === "challenge" ? "answer" : stage === "synthesis" ? "followUp" : stage);
+    completedRef.current = stage === "complete";
+    setFeedback(valid ? { ...initialFeedback, ...saved.feedback } : { ...initialFeedback, trait: challenge.trait });
+    setConversation(valid ? saved.conversation : [{ role: "uthynk", content: WELCOME_MESSAGE }]);
+    setEvaluatedClaim(valid ? saved.evaluatedClaim || "" : "");
+    setLatestReward(valid ? saved.latestReward : null);
+    sessionIdRef.current = valid ? saved.sessionId : crypto.randomUUID();
+    conversationIdRef.current = valid ? saved.conversationId : crypto.randomUUID();
+    localStorage.setItem("uthynk-active-reasoning-challenge", challenge.id);
+    setRestoredKey(key);
+  }, [challenge.id, challenge.trait]);
 
-    const recognition = new SpeechRecognition();
+  useEffect(() => {
+    if (!restoredKey || restoredKey !== restoredKeyRef.current) return;
+    try {
+      localStorage.setItem(restoredKey, JSON.stringify({
+        version: 1, challengeId: challenge.id, workoutStage, response, followUpResponse,
+        reflection, standoutPerspective, perspectiveImpact, feedback, conversation,
+        evaluatedClaim, latestReward, sessionId: sessionIdRef.current,
+        conversationId: conversationIdRef.current,
+      }));
+    } catch { setError("Your browser could not save this workout. Keep this page open to finish."); }
+  }, [restoredKey, challenge.id, workoutStage, response, followUpResponse, reflection,
+    standoutPerspective, perspectiveImpact, feedback, conversation, evaluatedClaim, latestReward]);
 
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = language === "es" ? "es-US" : language === "fr" ? "fr-FR" : "en-US";
-
-    recognition.onresult = (event: any) => {
-      const transcript = Array.from(event.results)
-        .map((result: any) => result[0]?.transcript || '')
-        .join(' ');
-
-      if (workoutStageRef.current === "reflection") {
-        setReflection(transcript);
-      } else if (workoutStageRef.current === "followUp") {
-        setFollowUpResponse(transcript);
-      } else {
-        setResponse(transcript);
-      }
-    };
-
-    recognitionRef.current = recognition;
-  }, [challenge.id, language]);
+  useEffect(() => {
+    const voice = createHoldToTalk({
+      create: () => {
+        const Recognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        return Recognition ? new Recognition() : null;
+      },
+      append: (target, transcript) => {
+        if (target === "reflection") {
+          setStandoutPerspective(value => appendTranscript(value, transcript));
+          setReflection(value => appendTranscript(value, transcript));
+        } else if (target === "followUp") setFollowUpResponse(value => appendTranscript(value, transcript));
+        else setResponse(value => appendTranscript(value, transcript));
+      },
+      listening: setListening,
+      error: () => setError(language === "es" ? "No se pudo usar el microfono. Revisa los permisos o escribe tu respuesta." : language === "fr" ? "Microphone indisponible. Verifie les autorisations ou saisis ta reponse." : "Voice input is unavailable. Check microphone permissions or type your answer."),
+    });
+    recognitionRef.current = voice;
+    window.addEventListener("blur", voice.stop);
+    return () => { window.removeEventListener("blur", voice.stop); voice.dispose(); recognitionRef.current = null; };
+  }, [challenge.id, workoutStage, language]);
 
   function selectNextChallenge(currentChallenge: Challenge, score: number) {
     const preferredDifficulty =
@@ -818,7 +856,9 @@ function ReasoningExperience({
   }
 
   function startVoiceInput() {
-    recognitionRef.current?.start();
+    if (loading || !["answer", "followUp", "reflection"].includes(workoutStage)) return;
+    setError("");
+    recognitionRef.current?.start(workoutStage as "answer" | "followUp" | "reflection", language);
   }
 
   function stopVoiceInput() {
@@ -872,7 +912,8 @@ function ReasoningExperience({
   }
 
   function completeWorkout() {
-    if (!perspectiveImpact) return;
+    if (!perspectiveImpact || workoutStage !== "reflection" || completedRef.current) return;
+    completedRef.current = true;
 
     const completedCount =
       typeof window === "undefined"
@@ -922,6 +963,9 @@ function ReasoningExperience({
   }
 
   async function analyzeReasoning() {
+    if (submittingRef.current || workoutStage !== "answer" || !response.trim()) return;
+    submittingRef.current = true;
+    recognitionRef.current?.dispose();
     try {
       setLoading(true);
       setError("");
@@ -935,18 +979,13 @@ function ReasoningExperience({
         const used = Number(localStorage.getItem("uthynk-free-pass-used") || "0");
 
         if (!activeProfile?.id && used >= 3) {
+          setWorkoutStage(workoutStage);
           router.push("/login?reason=free-pass");
           return;
         }
       }
 
-      setConversation((prev) => [
-        ...prev,
-        {
-          role: "user",
-          content: response,
-        },
-      ]);
+
       trackEvent(
         createTelemetryEvent("submitted_answer", activeProfile?.id, {
           category: challenge.category,
@@ -980,72 +1019,8 @@ function ReasoningExperience({
         }),
       });
 
-      if (!res.ok) {
-        const data = await res.json();
-        if (data.code === "auth_required") {
-          router.push("/login?reason=free-pass");
-          return;
-        }
-        setError(data.error || "Reasoning analysis failed.");
-        setWorkoutStage("answer");
-        return;
-      }
-
-      if (!res.body) {
-        setError("Reasoning stream did not start.");
-        setWorkoutStage("answer");
-        return;
-      }
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let data: any = null;
-
-      while (true) {
-        const { done, value } = await reader.read();
-
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const events = buffer.split("\n\n");
-        buffer = events.pop() || "";
-
-        for (const event of events) {
-          const eventType = event
-            .split("\n")
-            .find((line) => line.startsWith("event:"))
-            ?.replace("event:", "")
-            .trim();
-          const eventData = event
-            .split("\n")
-            .find((line) => line.startsWith("data:"))
-            ?.replace("data:", "")
-            .trim();
-
-          if (!eventData) continue;
-
-          const payload = JSON.parse(eventData);
-
-          if (eventType === "token") {
-            setStreamingText((prev) => prev + payload.token);
-          }
-
-          if (eventType === "final") {
-            data = payload;
-          }
-
-          if (eventType === "error") {
-            setError(payload.error || "Reasoning stream failed.");
-          }
-        }
-      }
-
-      if (!data) {
-        setError("Reasoning analysis ended without final feedback.");
-        setWorkoutStage("answer");
-        return;
-      }
+      const payload = await readReasoningResponse(res, token => setStreamingText(prev => prev + token));
+      const data = { ...initialFeedback, ...payload, ...normalizeReasoningFeedback(payload, "follow_up") };
 
       setFeedback({ ...data, trait: data.trait || challenge.trait });
 
@@ -1053,6 +1028,7 @@ function ReasoningExperience({
 
       setConversation((prev) => [
         ...prev,
+        { role: "user", content: response },
         {
           role: "uthynk",
           content: uthynkMessage,
@@ -1083,15 +1059,20 @@ function ReasoningExperience({
           followUpLength: data.followUp?.length || 0,
         })
       );
-    } catch {
-      setError("Unable to analyze reasoning right now.");
+    } catch (failure) {
+      setError(failure instanceof Error ? failure.message : "Unable to analyze reasoning. Your answer is saved; please try again.");
       setWorkoutStage("answer");
     } finally {
+      submittingRef.current = false;
+      setStreamingText("");
       setLoading(false);
     }
   }
 
   async function synthesizeFollowUpResponse() {
+    if (submittingRef.current || workoutStage !== "followUp" || !followUpResponse.trim()) return;
+    submittingRef.current = true;
+    recognitionRef.current?.dispose();
     try {
       setLoading(true);
       setError("");
@@ -1105,6 +1086,7 @@ function ReasoningExperience({
         const used = Number(localStorage.getItem("uthynk-free-pass-used") || "0");
 
         if (!activeProfile?.id && used >= 3) {
+          setWorkoutStage(workoutStage);
           router.push("/login?reason=free-pass");
           return;
         }
@@ -1116,13 +1098,7 @@ function ReasoningExperience({
         `Follow-up answer: ${followUpResponse}`,
       ].join("\n\n");
 
-      setConversation((prev) => [
-        ...prev,
-        {
-          role: "user",
-          content: followUpResponse,
-        },
-      ]);
+
 
       trackEvent(
         createTelemetryEvent("submitted_follow_up_answer", activeProfile?.id, {
@@ -1148,7 +1124,12 @@ function ReasoningExperience({
           challenge: `${visibleChallenge.prompt}\nReasoning lens automatically applied for this category: ${inferredLens.label}\nSynthesize the user's initial answer and follow-up answer into one overarching UThynk response.`,
           language,
           phase: "synthesis",
-          response: combinedResponse,
+          originalQuestion: visibleChallenge.prompt,
+          firstUserAnswer: response,
+          perspectiveExpansion: feedback.contrarian,
+          secondaryQuestion: feedback.followUp,
+          secondUserAnswer: followUpResponse,
+          response: followUpResponse,
           conversationId: conversationIdRef.current,
           sessionId: sessionIdRef.current,
           thinkingLens: inferredLens.id,
@@ -1158,72 +1139,8 @@ function ReasoningExperience({
         }),
       });
 
-      if (!res.ok) {
-        const data = await res.json();
-        if (data.code === "auth_required") {
-          router.push("/login?reason=free-pass");
-          return;
-        }
-        setError(data.error || "Reasoning synthesis failed.");
-        setWorkoutStage("followUp");
-        return;
-      }
-
-      if (!res.body) {
-        setError("Reasoning synthesis stream did not start.");
-        setWorkoutStage("followUp");
-        return;
-      }
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let data: any = null;
-
-      while (true) {
-        const { done, value } = await reader.read();
-
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const events = buffer.split("\n\n");
-        buffer = events.pop() || "";
-
-        for (const event of events) {
-          const eventType = event
-            .split("\n")
-            .find((line) => line.startsWith("event:"))
-            ?.replace("event:", "")
-            .trim();
-          const eventData = event
-            .split("\n")
-            .find((line) => line.startsWith("data:"))
-            ?.replace("data:", "")
-            .trim();
-
-          if (!eventData) continue;
-
-          const payload = JSON.parse(eventData);
-
-          if (eventType === "token") {
-            setStreamingText((prev) => prev + payload.token);
-          }
-
-          if (eventType === "final") {
-            data = payload;
-          }
-
-          if (eventType === "error") {
-            setError(payload.error || "Reasoning synthesis failed.");
-          }
-        }
-      }
-
-      if (!data) {
-        setError("Reasoning synthesis ended without final feedback.");
-        setWorkoutStage("followUp");
-        return;
-      }
+      const payload = await readReasoningResponse(res, token => setStreamingText(prev => prev + token));
+      const data = { ...initialFeedback, ...payload, ...normalizeReasoningFeedback(payload, "synthesis") };
 
       setEvaluatedClaim(combinedResponse);
       trackEvent(
@@ -1289,10 +1206,11 @@ function ReasoningExperience({
         )}; path=/; max-age=2592000; SameSite=Lax`;
       }
 
-      const uthynkMessage = `${data.analysis}\n\n${text.perspectiveLabel}: ${data.contrarian}`;
+      const uthynkMessage = data.analysis;
 
       setConversation((prev) => [
         ...prev,
+        { role: "user", content: followUpResponse },
         {
           role: "uthynk",
           content: uthynkMessage,
@@ -1314,10 +1232,12 @@ function ReasoningExperience({
       }
 
       setWorkoutStage("reflection");
-    } catch {
-      setError("Unable to synthesize both responses right now.");
+    } catch (failure) {
+      setError(failure instanceof Error ? failure.message : "Unable to synthesize both responses. Your answer is saved; please try again.");
       setWorkoutStage("followUp");
     } finally {
+      submittingRef.current = false;
+      setStreamingText("");
       setLoading(false);
     }
   }
@@ -1359,7 +1279,7 @@ function ReasoningExperience({
     { id: "complete", label: text.stepComplete },
   ] as const;
   const perspectiveOptions = [text.yes, text.somewhat, text.no];
-  const displayedWorkoutStage = workoutStage === "challenge" ? "followUp" : workoutStage === "synthesis" ? "reflection" : workoutStage;
+  const displayedWorkoutStage = workoutStage === "challenge" ? "answer" : workoutStage === "synthesis" ? "followUp" : workoutStage;
   const workoutStageIndex = workoutSteps.findIndex((step) => step.id === displayedWorkoutStage);
   const nextWorkoutStep =
     workoutSteps[Math.min(workoutSteps.length - 1, Math.max(0, workoutStageIndex + 1))];
@@ -1714,12 +1634,22 @@ function ReasoningExperience({
             <button
               className="btn"
               type="button"
-              onMouseDown={startVoiceInput}
-              onMouseUp={stopVoiceInput}
-              onTouchStart={startVoiceInput}
-              onTouchEnd={stopVoiceInput}
+              disabled={loading}
+              aria-pressed={listening}
+              style={{ touchAction: "none", background: listening ? "#235c43" : undefined }}
+              onPointerDown={(event) => {
+                if (event.button !== 0) return;
+                event.preventDefault();
+                event.currentTarget.setPointerCapture(event.pointerId);
+                startVoiceInput();
+              }}
+              onPointerUp={stopVoiceInput}
+              onPointerCancel={stopVoiceInput}
+              onLostPointerCapture={stopVoiceInput}
+              onKeyDown={(event) => { if ((event.key === " " || event.key === "Enter") && !event.repeat) { event.preventDefault(); startVoiceInput(); } }}
+              onKeyUp={(event) => { if (event.key === " " || event.key === "Enter") { event.preventDefault(); stopVoiceInput(); } }}
             >
-              {copy.holdToTalk}
+              {listening ? (language === "es" ? "Escuchando..." : language === "fr" ? "Ecoute..." : "Listening...") : copy.holdToTalk}
             </button>
           </div>
         ) : workoutStage === "followUp" || workoutStage === "synthesis" ? (
@@ -1736,12 +1666,22 @@ function ReasoningExperience({
             <button
               className="btn"
               type="button"
-              onMouseDown={startVoiceInput}
-              onMouseUp={stopVoiceInput}
-              onTouchStart={startVoiceInput}
-              onTouchEnd={stopVoiceInput}
+              disabled={loading}
+              aria-pressed={listening}
+              style={{ touchAction: "none", background: listening ? "#235c43" : undefined }}
+              onPointerDown={(event) => {
+                if (event.button !== 0) return;
+                event.preventDefault();
+                event.currentTarget.setPointerCapture(event.pointerId);
+                startVoiceInput();
+              }}
+              onPointerUp={stopVoiceInput}
+              onPointerCancel={stopVoiceInput}
+              onLostPointerCapture={stopVoiceInput}
+              onKeyDown={(event) => { if ((event.key === " " || event.key === "Enter") && !event.repeat) { event.preventDefault(); startVoiceInput(); } }}
+              onKeyUp={(event) => { if (event.key === " " || event.key === "Enter") { event.preventDefault(); stopVoiceInput(); } }}
             >
-              {copy.holdToTalk}
+              {listening ? (language === "es" ? "Escuchando..." : language === "fr" ? "Ecoute..." : "Listening...") : copy.holdToTalk}
             </button>
           </div>
         ) : workoutStage === "complete" ? (
@@ -1837,12 +1777,22 @@ function ReasoningExperience({
             <button
               className="btn"
               type="button"
-              onMouseDown={startVoiceInput}
-              onMouseUp={stopVoiceInput}
-              onTouchStart={startVoiceInput}
-              onTouchEnd={stopVoiceInput}
+              disabled={loading}
+              aria-pressed={listening}
+              style={{ touchAction: "none", background: listening ? "#235c43" : undefined }}
+              onPointerDown={(event) => {
+                if (event.button !== 0) return;
+                event.preventDefault();
+                event.currentTarget.setPointerCapture(event.pointerId);
+                startVoiceInput();
+              }}
+              onPointerUp={stopVoiceInput}
+              onPointerCancel={stopVoiceInput}
+              onLostPointerCapture={stopVoiceInput}
+              onKeyDown={(event) => { if ((event.key === " " || event.key === "Enter") && !event.repeat) { event.preventDefault(); startVoiceInput(); } }}
+              onKeyUp={(event) => { if (event.key === " " || event.key === "Enter") { event.preventDefault(); stopVoiceInput(); } }}
             >
-              {copy.holdToTalk}
+              {listening ? (language === "es" ? "Escuchando..." : language === "fr" ? "Ecoute..." : "Listening...") : copy.holdToTalk}
             </button>
           </div>
         )}
@@ -1930,6 +1880,7 @@ function ReasoningExperience({
                 key={tab.id}
                 type="button"
                 className={rightTab === tab.id ? "active" : ""}
+                role="tab"
                 aria-selected={rightTab === tab.id}
                 onClick={() => setRightTab(tab.id as "categories" | "insights" | "analysis")}
               >
