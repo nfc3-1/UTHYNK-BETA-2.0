@@ -1,5 +1,6 @@
 "use client";
 
+import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import Link from "next/link";
 
 const leaderboard = [
@@ -40,7 +41,7 @@ export default function LeaderboardPage() {
 
         <nav className="appNav">
           <Link href="/">Home</Link>
-          <Link href="/teacher">Teacher</Link>
+          <RestrictedNavLinks />
           <Link href="/profile">Profile</Link>
         </nav>
       </header>

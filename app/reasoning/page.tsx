@@ -1,5 +1,6 @@
 "use client";
 
+import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { normalizeReasoningFeedback, readReasoningResponse } from "@/lib/reasoningResponse";
@@ -243,50 +244,11 @@ const onboardingCopy = {
   reopen: string;
 }>;
 
-const thinkingToolCopy = {
-  en: {
-    section: "Thinking Tools",
-    followUp: "Follow-Up",
-    lab: "Lab",
-    timeline: "Timeline",
-    position: "Your position",
-    support: "What backs it up?",
-    assumptions: "Hidden assumptions",
-  },
-  es: {
-    section: "Herramientas de pensamiento",
-    followUp: "Seguimiento",
-    lab: "Laboratorio",
-    timeline: "Línea",
-    position: "Tu posición",
-    support: "Qué la respalda",
-    assumptions: "Supuestos ocultos",
-  },
-  fr: {
-    section: "Outils de pensée",
-    followUp: "Suivi",
-    lab: "Labo",
-    timeline: "Parcours",
-    position: "Ta position",
-    support: "Ce qui l'appuie",
-    assumptions: "Hypothèses cachées",
-  },
-} satisfies Record<Language, {
-  section: string;
-  followUp: string;
-  lab: string;
-  timeline: string;
-  position: string;
-  support: string;
-  assumptions: string;
-}>;
-
 const pageText = {
   en: {
     active: "Active",
     adaptiveThinkingLabel: "Adaptive thinking:",
     adaptiveThinkingText: "you adjust your reasoning when new evidence appears.",
-    advancedThinkingTools: "Advanced Thinking Tools",
     categoryHelper: "Choose a category to load a new active challenge.",
     continueReflection: "Continue to Reflection",
     createFreeProfile: "Create a free beta profile to continue.",
@@ -365,7 +327,6 @@ const pageText = {
     active: "Activo",
     adaptiveThinkingLabel: "Pensamiento adaptable:",
     adaptiveThinkingText: "ajustas tu razonamiento cuando aparece nueva evidencia.",
-    advancedThinkingTools: "Herramientas avanzadas de pensamiento",
     categoryHelper: "Elige una categoria para cargar un nuevo reto activo.",
     continueReflection: "Continuar a la reflexion",
     createFreeProfile: "Crea un perfil beta gratuito para continuar.",
@@ -444,7 +405,6 @@ const pageText = {
     active: "Actif",
     adaptiveThinkingLabel: "Pensee adaptative :",
     adaptiveThinkingText: "tu ajustes ton raisonnement quand de nouvelles preuves apparaissent.",
-    advancedThinkingTools: "Outils de pensee avances",
     categoryHelper: "Choisis une categorie pour charger un nouveau defi actif.",
     continueReflection: "Continuer vers la reflexion",
     createFreeProfile: "Cree un profil beta gratuit pour continuer.",
@@ -571,6 +531,7 @@ function ReasoningExperience({
   }, [searchParams]);
   const [challenge, setChallenge] = useState<Challenge>(initialChallenge);
 
+  const [originalQuestion, setOriginalQuestion] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [streamingText, setStreamingText] = useState("");
@@ -579,7 +540,6 @@ function ReasoningExperience({
   const [pressure, setPressure] = useState("Moderate");
   const [profile, setProfile] = useState<any>(null);
   const [rightTab, setRightTab] = useState<"categories" | "insights" | "analysis">("insights");
-  const [thinkingToolTab, setThinkingToolTab] = useState<"followUp" | "lab" | "timeline">("followUp");
   const [leftSignalTab, setLeftSignalTab] = useState<"patterns" | "metrics">("patterns");
   const [evaluatedClaim, setEvaluatedClaim] = useState("");
   const [workoutStage, setWorkoutStage] = useState<"answer" | "challenge" | "followUp" | "synthesis" | "reflection" | "complete">("answer");
@@ -603,7 +563,6 @@ function ReasoningExperience({
   ]);
   const copy = uiCopy[language];
   const text = pageText[language];
-  const toolsCopy = thinkingToolCopy[language];
   const isDailyWorkout = searchParams.get("source") === "daily";
   const ageBand = normalizeAgeBand(profile?.age_band);
   const ageAdjustedChallenge = adaptChallengeForAge(challenge, ageBand);
@@ -717,6 +676,7 @@ function ReasoningExperience({
     let saved: any = null;
     try { saved = JSON.parse(localStorage.getItem(key) || "null"); } catch { /* Keep text entry available. */ }
     const valid = saved?.version === 1 && saved.challengeId === challenge.id;
+    setOriginalQuestion(valid ? saved.originalQuestion || localizeChallenge(getChallengeById(challenge.id), saved.language || "en").prompt : "");
     setResponse(valid ? saved.response || "" : "");
     setFollowUpResponse(valid ? saved.followUpResponse || "" : "");
     setReflection(valid ? saved.reflection || "" : "");
@@ -739,13 +699,13 @@ function ReasoningExperience({
     if (!restoredKey || restoredKey !== restoredKeyRef.current) return;
     try {
       localStorage.setItem(restoredKey, JSON.stringify({
-        version: 1, challengeId: challenge.id, workoutStage, response, followUpResponse,
+        version: 1, language, originalQuestion, challengeId: challenge.id, workoutStage, response, followUpResponse,
         reflection, standoutPerspective, perspectiveImpact, feedback, conversation,
         evaluatedClaim, latestReward, sessionId: sessionIdRef.current,
         conversationId: conversationIdRef.current,
       }));
     } catch { setError("Your browser could not save this workout. Keep this page open to finish."); }
-  }, [restoredKey, challenge.id, workoutStage, response, followUpResponse, reflection,
+  }, [restoredKey, language, originalQuestion, challenge.id, workoutStage, response, followUpResponse, reflection,
     standoutPerspective, perspectiveImpact, feedback, conversation, evaluatedClaim, latestReward]);
 
   useEffect(() => {
@@ -1049,6 +1009,7 @@ function ReasoningExperience({
         setPressure('Low');
       }
 
+      setOriginalQuestion(visibleChallenge.prompt);
       setFollowUpResponse("");
       setWorkoutStage("followUp");
       trackEvent(
@@ -1121,10 +1082,10 @@ function ReasoningExperience({
           challengeId: challenge.id,
           ageBand,
           category: challenge.category,
-          challenge: `${visibleChallenge.prompt}\nReasoning lens automatically applied for this category: ${inferredLens.label}\nSynthesize the user's initial answer and follow-up answer into one overarching UThynk response.`,
+          challenge: `${originalQuestion || visibleChallenge.prompt}\nReasoning lens automatically applied for this category: ${inferredLens.label}\nSynthesize the user's initial answer and follow-up answer into one overarching UThynk response.`,
           language,
           phase: "synthesis",
-          originalQuestion: visibleChallenge.prompt,
+          originalQuestion: originalQuestion || visibleChallenge.prompt,
           firstUserAnswer: response,
           perspectiveExpansion: feedback.contrarian,
           secondaryQuestion: feedback.followUp,
@@ -1242,24 +1203,6 @@ function ReasoningExperience({
     }
   }
 
-  const timeline = [
-    {
-      title: copy.sessionContinuity,
-      text: `${conversation.length} ${copy.sessionTurns} ${visiblePressure}.`,
-    },
-    {
-      title: copy.priorContradiction,
-      text: visibleFeedback.contrarian,
-    },
-    {
-      title: copy.evolvingInsight,
-      text: visibleFeedback.analysis,
-    },
-    {
-      title: copy.recursiveFollowUp,
-      text: visibleFeedback.followUp,
-    },
-  ];
   const primaryIdentity = localizeText(profile?.primary_trait, language) || visibleFeedback.trait;
   const traitExplanation = getTraitExplanation(primaryIdentity, text.genericTraitExplanation);
   const secondaryMode = visibleFeedback.strengths[0] || "Strategic restraint";
@@ -1471,78 +1414,6 @@ function ReasoningExperience({
           </div>
         </section>
 
-        <details className="advancedThinkingDetails">
-          <summary>{text.advancedThinkingTools}</summary>
-
-          <section className="thinkingToolsPanel">
-            <div className="thinkingToolsHeader">
-              <div className="panelLabel">{toolsCopy.section}</div>
-              <div className="thinkingToolTabs" role="tablist" aria-label={toolsCopy.section}>
-                {[
-                  { id: "followUp", label: toolsCopy.followUp },
-                  { id: "lab", label: toolsCopy.lab },
-                  { id: "timeline", label: toolsCopy.timeline },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={thinkingToolTab === tab.id}
-                    className={thinkingToolTab === tab.id ? "active" : ""}
-                    onClick={() =>
-                      setThinkingToolTab(tab.id as "followUp" | "lab" | "timeline")
-                    }
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {thinkingToolTab === "followUp" ? (
-              <article className="thinkingToolPane">
-                <span>{copy.recursiveFollowUp}</span>
-                <p>{visibleFeedback.followUp}</p>
-              </article>
-            ) : null}
-
-            {thinkingToolTab === "lab" ? (
-              <div className="reasoningSteps compactReasoningSteps">
-                <article>
-                  <span>{text.stepWord} 1</span>
-                  <strong>{toolsCopy.position}</strong>
-                  <p>{evaluatedClaim || response || copy.stateClaim}</p>
-                </article>
-                <article>
-                  <span>{text.stepWord} 2</span>
-                  <strong>{toolsCopy.support}</strong>
-                  <p>{visibleFeedback.strengths.join(", ") || copy.evidenceEmpty}</p>
-                </article>
-                <article>
-                  <span>{text.stepWord} 3</span>
-                  <strong>{toolsCopy.followUp}</strong>
-                  <p>{visibleFeedback.followUp}</p>
-                </article>
-                <article>
-                  <span>{text.stepWord} 4</span>
-                  <strong>{toolsCopy.assumptions}</strong>
-                  <p>{visibleFeedback.weaknesses.join(", ") || visibleFeedback.analysis}</p>
-                </article>
-              </div>
-            ) : null}
-
-            {thinkingToolTab === "timeline" ? (
-              <div className="timelineRail thinkingTimelineRail">
-                {timeline.map((item) => (
-                  <article key={item.title}>
-                    <strong>{item.title}</strong>
-                    <p>{item.text}</p>
-                  </article>
-                ))}
-              </div>
-            ) : null}
-          </section>
-        </details>
 
         {workoutStage === "reflection" || workoutStage === "complete" ? (
           <section className="finalReflectionPanel">
@@ -1998,7 +1869,7 @@ export default function ReasoningPage() {
             <Link href="/">{copy.home}</Link>
             <Link href="/daily">{pageText[language].daily}</Link>
             <Link href="/lessons">{pageText[language].lessons}</Link>
-            <Link href="/teacher">{copy.teacherNav}</Link>
+            <RestrictedNavLinks />
             <Link href="/profile">{pageText[language].profileNav}</Link>
             <Link href="/feedback">{pageText[language].feedbackNav}</Link>
             <Link href="/login?mode=login&force=1">{pageText[language].signIn}</Link>

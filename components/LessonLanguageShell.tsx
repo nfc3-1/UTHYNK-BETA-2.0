@@ -1,5 +1,6 @@
 'use client';
 
+import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import {
@@ -74,7 +75,7 @@ export default function LessonLanguageShell({ categories }: Props) {
     }
 
     trackEvent(createTelemetryEvent('lessons_arrived', profile?.id, { categories: categories.length }));
-  }, []);
+  }, [categories.length]);
 
   function changeLanguage(nextLanguage: Language) {
     setLanguage(nextLanguage);
@@ -112,7 +113,7 @@ export default function LessonLanguageShell({ categories }: Props) {
           <nav className="appNav">
             <Link href="/">{copy.home}</Link>
             <Link href="/lessons">{copy.lessonsNav}</Link>
-            <Link href="/teacher">{copy.teacherNav}</Link>
+            <RestrictedNavLinks />
             <Link href="/profile">{copy.profileNav}</Link>
             <Link href="/feedback">{copy.feedbackNav}</Link>
             <Link href="/store">{copy.storeNav}</Link>

@@ -213,6 +213,7 @@ export function validateGenerateRequest(value: any): StudioGenerateRequest {
     : ['linkedin'];
 
   return {
+    language: value?.language === 'es' || value?.language === 'fr' ? value.language : 'en',
     objective: text(value?.objective || value?.goal, 'Promote UThynk reasoning challenges'),
     audience: text(value?.audience, 'curious thinkers'),
     sourceQuestion: text(value?.sourceQuestion || value?.source, 'a real UThynk question'),

@@ -1,12 +1,14 @@
 'use client';
 
+import RestrictedNavLinks from '@/components/RestrictedNavLinks';
+import { profileText } from '@/lib/profileI18n';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import {
   getAdaptiveChallenges,
   getCoachingIntensity,
 } from '@/lib/adaptive';
-import { type Language, localizeText, uiCopy } from '@/lib/reasoningI18n';
+import { type Language, localizeText, localizeCategory, localizeChallenge, getStoredLanguageValue, UTHYNK_LANGUAGE_EVENT, uiCopy } from '@/lib/reasoningI18n';
 import { createTelemetryEvent, trackEvent } from '@/lib/telemetry';
 
 const STORAGE_KEY = 'uthynk-profile';
@@ -46,9 +48,16 @@ export default function Profile() {
     loadProfile();
   }, []);
 
+  useEffect(() => {
+    function syncLanguage() { setLanguage(getStoredLanguageValue()); }
+    window.addEventListener(UTHYNK_LANGUAGE_EVENT, syncLanguage);
+    window.addEventListener('storage', syncLanguage);
+    return () => { window.removeEventListener(UTHYNK_LANGUAGE_EVENT, syncLanguage); window.removeEventListener('storage', syncLanguage); };
+  }, []);
+  const t = (value: string) => profileText(value, language);
   const copy = uiCopy[language];
-  const profile = data?.profile || {};
-  const sessions = data?.sessions || [];
+  const profile = useMemo(() => data?.profile || {}, [data?.profile]);
+  const sessions = useMemo(() => data?.sessions || [], [data?.sessions]);
   const traits = useMemo(() => {
     const counts = new Map<string, number>();
 
@@ -80,12 +89,12 @@ export default function Profile() {
     averageReasoning >= 80 ? 'Strategic Pattern Spotter' : 'Growth in Progress',
   ];
   const snapshotText = [
-    'UThynk Thinking Snapshot',
-    `Logic: ${averageReasoning}`,
-    `Strategy: ${Math.min(99, Math.max(0, averageReasoning + (sessions.length >= 3 ? 4 : 0)))}`,
-    `Evidence: ${traits[0]?.value || averageReasoning}`,
-    `Current Trait: ${profile.primary_trait || 'Analytical Thinker'}`,
-    `Rank: ${profile.rank || 'Observer'}`,
+    t('UThynk Thinking Snapshot'),
+    `${t('Logic')}: ${averageReasoning}`,
+    `${t('Strategy')}: ${Math.min(99, Math.max(0, averageReasoning + (sessions.length >= 3 ? 4 : 0)))}`,
+    `${t('Evidence')}: ${traits[0]?.value || averageReasoning}`,
+    `${t('Current trait')}: ${t(profile.primary_trait || 'Analytical Thinker')}`,
+    `${t('Rank')}: ${t(profile.rank || 'Observer')}`,
     'https://uthynk-beta-2-0.vercel.app',
   ].join('\n');
 
@@ -112,7 +121,7 @@ export default function Profile() {
   async function copySnapshot() {
     const copied = await writeSnapshotToClipboard();
 
-    setSnapshotStatus(copied ? 'Snapshot copied' : 'Snapshot ready to share');
+    setSnapshotStatus(copied ? t('Snapshot copied') : t('Snapshot ready to share'));
     trackEvent(createTelemetryEvent('shared_thinking_snapshot', profile?.id, { method: copied ? 'copy' : 'copy_attempt' }));
   }
 
@@ -125,7 +134,7 @@ export default function Profile() {
     link.download = 'uthynk-thinking-snapshot.txt';
     link.click();
     URL.revokeObjectURL(url);
-    setSnapshotStatus('Snapshot downloaded');
+    setSnapshotStatus(t('Snapshot downloaded'));
     trackEvent(createTelemetryEvent('shared_thinking_snapshot', profile?.id, { method: 'download' }));
   }
 
@@ -134,15 +143,15 @@ export default function Profile() {
       if (navigator.share) {
         await navigator.share({
           text: snapshotText,
-          title: 'UThynk Thinking Snapshot',
+          title: t('UThynk Thinking Snapshot'),
           url: 'https://uthynk-beta-2-0.vercel.app',
         });
-        setSnapshotStatus('Snapshot shared');
+        setSnapshotStatus(t('Snapshot shared'));
         trackEvent(createTelemetryEvent('shared_thinking_snapshot', profile?.id, { method: 'native_share' }));
         return;
       }
     } catch {
-      setSnapshotStatus('Share canceled');
+      setSnapshotStatus(t('Share canceled'));
       return;
     }
 
@@ -164,7 +173,7 @@ export default function Profile() {
           <Link href="/">{copy.home}</Link>
           <Link href="/daily">{copy.dailyNav}</Link>
           <Link href="/lessons">{copy.lessonsNav}</Link>
-          <Link href="/teacher">{copy.teacherNav}</Link>
+          <RestrictedNavLinks />
           <Link href="/reasoning">{copy.reasoningNav}</Link>
           <Link href="/profile">{copy.profileNav}</Link>
           <Link href="/feedback">{copy.feedbackNav}</Link>
@@ -185,7 +194,7 @@ export default function Profile() {
           </p>
           <div className="profileIdentityTags">
             {identityLabels.map((label) => (
-              <span key={label}>{label}</span>
+              <span key={label}>{t(label)}</span>
             ))}
           </div>
         </div>
@@ -197,9 +206,9 @@ export default function Profile() {
           <h2>{localizeText(profile.primary_trait || 'Analytical Thinker', language)}</h2>
           <p>
             {language === 'es'
-              ? `Modo de entrenamiento: ${coachingIntensity}. Tus proximas sesiones deben fortalecer evidencia, adaptabilidad y restriccion estrategica.`
+              ? `Modo de entrenamiento: ${t(coachingIntensity)}. Tus proximas sesiones deben fortalecer evidencia, adaptabilidad y restriccion estrategica.`
               : language === 'fr'
-                ? `Mode d'accompagnement : ${coachingIntensity}. Tes prochaines sessions devraient renforcer les preuves, l'adaptabilite et la retenue strategique.`
+                ? `Mode d'accompagnement : ${t(coachingIntensity)}. Tes prochaines sessions devraient renforcer les preuves, l'adaptabilite et la retenue strategique.`
                 : `Coaching mode: ${coachingIntensity}. Your next sessions should strengthen evidence, adaptability, and strategic restraint.`}
           </p>
           <div className="profileMetricStrip">
@@ -209,11 +218,11 @@ export default function Profile() {
             </div>
             <div>
               <strong>{profile.streak || 0}</strong>
-              <span>day streak</span>
+              <span>{t('day streak')}</span>
             </div>
             <div>
               <strong>{profile.reasoning_score || 70}</strong>
-              <span>score</span>
+              <span>{t('score')}</span>
             </div>
           </div>
         </div>
@@ -221,73 +230,73 @@ export default function Profile() {
 
       <section className="appGrid">
         <aside className="card statPanel">
-          <div className="panelLabel">Overview</div>
+          <div className="panelLabel">{t('Overview')}</div>
 
           <div className="statList">
             <div className="statItem">
-              <span>Current identity</span>
-              <strong>{profile.primary_trait || 'Analytical'}</strong>
+              <span>{t('Current identity')}</span>
+              <strong>{t(profile.primary_trait || 'Analytical')}</strong>
             </div>
 
             <div className="statItem">
-              <span>Completed</span>
+              <span>{t('Completed')}</span>
               <strong>{sessions.length}</strong>
             </div>
 
             <div className="statItem">
-              <span>Average Reasoning</span>
+              <span>{t('Average Reasoning')}</span>
               <strong>{averageReasoning}</strong>
             </div>
 
             <div className="statItem">
-              <span>Growth Trend</span>
-              <strong>{sessions.length > 1 ? 'Active' : 'Starting'}</strong>
+              <span>{t('Growth Trend')}</span>
+              <strong>{t(sessions.length > 1 ? 'Active' : 'Starting')}</strong>
             </div>
           </div>
         </aside>
 
         <section className="card methodPanel">
-          <div className="panelLabel">Traits</div>
+          <div className="panelLabel">{t('Traits')}</div>
 
           <div className="methodSteps">
             {traits.map((trait) => (
               <div key={trait.label}>
                 <strong>{trait.value}</strong>
-                <span>{trait.label}</span>
+                <span>{t(trait.label)}</span>
               </div>
             ))}
           </div>
         </section>
 
         <section className="card snapshotPanel">
-          <div className="panelLabel">Thinking Snapshot</div>
+          <div className="panelLabel">{t('Thinking Snapshot')}</div>
           <div className="snapshotScoreGrid">
             <div>
               <strong>{averageReasoning}</strong>
-              <span>Logic</span>
+              <span>{t('Logic')}</span>
             </div>
             <div>
               <strong>{Math.min(99, Math.max(0, averageReasoning + (sessions.length >= 3 ? 4 : 0)))}</strong>
-              <span>Strategy</span>
+              <span>{t('Strategy')}</span>
             </div>
             <div>
               <strong>{traits[0]?.value || averageReasoning}</strong>
-              <span>Evidence</span>
+              <span>{t('Evidence')}</span>
             </div>
           </div>
           <p>
-            Current trait: <strong>{profile.primary_trait || 'Analytical Thinker'}</strong>
+            {t('Current trait')}: <strong>{t(profile.primary_trait || 'Analytical Thinker')}</strong>
           </p>
           <div className="snapshotActions">
-            <button className="btn btnPrimary" type="button" onClick={shareSnapshot}>Share</button>
-            <button className="btn" type="button" onClick={copySnapshot}>Copy</button>
-            <button className="btn" type="button" onClick={downloadSnapshot}>Download</button>
+            <button className="btn btnPrimary" type="button" onClick={shareSnapshot}>{t('Share')}</button>
+            <button className="btn" type="button" onClick={copySnapshot}>{t('Copy')}</button>
+            <button className="btn" type="button" onClick={downloadSnapshot}>{t('Download')}</button>
           </div>
           {snapshotStatus ? <span className="snapshotStatus">{snapshotStatus}</span> : null}
         </section>
 
         <section className="card focusPanel">
-          <div className="panelLabel">Recommended Next</div>
+          <div className="panelLabel">{t('Recommended Next')}</div>
 
           <div className="focusGrid" style={{ gridTemplateColumns: '1fr' }}>
             {recommendations.slice(0, 4).map((challenge) => (
@@ -296,8 +305,8 @@ export default function Profile() {
                 className="focusCard"
                 key={challenge.id}
               >
-                <strong>{challenge.title}</strong>
-                <span>{challenge.category} - {challenge.difficulty}</span>
+                <strong>{localizeChallenge(challenge, language).title}</strong>
+                <span>{localizeCategory(challenge.category, language)} - {localizeText(challenge.difficulty, language)}</span>
               </Link>
             ))}
           </div>
@@ -306,28 +315,28 @@ export default function Profile() {
 
       <section className="appGrid profileLowerGrid">
         <section className="card focusPanel">
-          <div className="panelLabel">Session History</div>
+          <div className="panelLabel">{t('Session History')}</div>
 
           <div className="focusGrid" style={{ gridTemplateColumns: '1fr' }}>
             {sessions.slice(0, 6).map((session: any) => (
               <div className="focusCard" key={session.id}>
-                <strong>{session.trait_detected || 'Trait evolving'}</strong>
+                <strong>{t(session.trait_detected || 'Trait evolving')}</strong>
                 <span>
-                  {session.challenge_category || 'Reasoning Session'} - {session.reasoning_score || 0}
+                  {localizeCategory(session.challenge_category, language) || t('Reasoning Session')} - {session.reasoning_score || 0}
                 </span>
               </div>
             ))}
             {!sessions.length ? (
               <div className="focusCard">
-                <strong>No completed sessions yet</strong>
-                <span>Complete a reasoning challenge to start building history.</span>
+                <strong>{t('No completed sessions yet')}</strong>
+                <span>{t('Complete a reasoning challenge to start building history.')}</span>
               </div>
             ) : null}
           </div>
         </section>
 
         <section className="card methodPanel">
-          <div className="panelLabel">Challenge Intensity</div>
+          <div className="panelLabel">{t('Challenge Intensity')}</div>
 
           <div className="methodSteps">
             {[
@@ -341,7 +350,7 @@ export default function Profile() {
                   checked={style === value}
                   onChange={() => setStyle(value)}
                 />{' '}
-                {label}
+                {t(label)}
               </label>
             ))}
           </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getStoredLanguageValue, type Language, UTHYNK_LANGUAGE_EVENT, uiCopy } from '@/lib/reasoningI18n';
@@ -66,11 +67,12 @@ export default function LocalizedNavLinks({ className = 'appNav', items = primar
 
   return (
     <nav className={className}>
-      {items.map((item) => (
+      {items.filter(item => item.href !== '/teacher').map((item) => (
         <Link href={item.href} key={`${item.href}-${item.key}`}>
           {copy[item.key]}
         </Link>
       ))}
+      <RestrictedNavLinks />
     </nav>
   );
 }

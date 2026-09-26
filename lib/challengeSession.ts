@@ -54,7 +54,7 @@ function cleanText(value: unknown) {
   return String(value || "").trim();
 }
 
-export function challengeSessionKey(input: ChallengeSessionKeyInput) {
+export function legacyChallengeSessionKey(input: ChallengeSessionKeyInput) {
   return [
     "uthynk-challenge",
     "v2",
@@ -64,6 +64,13 @@ export function challengeSessionKey(input: ChallengeSessionKeyInput) {
     cleanPart(input.language),
     cleanPart(input.ageBand),
   ].join(":");
+}
+
+// Language is a presentation preference, not challenge identity. Preserve v2 records on upgrade.
+export function challengeSessionKey(input: ChallengeSessionKeyInput) {
+  return ['uthynk-challenge', 'v3', cleanPart(input.userId || 'guest'),
+    cleanPart(input.category), cleanPart(input.questionId || String(input.questionIndex)),
+    cleanPart(input.ageBand)].join(':');
 }
 
 export function createChallengeSession(input: Omit<ChallengeSession, "activeAnswerDraft" | "completed" | "finalSynthesis" | "firstResponse" | "growthIndicators" | "perspectiveExpansion" | "secondResponse" | "secondaryQuestion" | "step" | "updatedAt" | "version">): ChallengeSession {
@@ -93,7 +100,7 @@ export function isChallengeSession(value: unknown): value is ChallengeSession {
     typeof session.originalQuestion === "string" &&
     typeof session.sessionId === "string" &&
     typeof session.conversationId === "string" &&
-    typeof session.language === "string" &&
+    ["en", "es", "fr"].includes(String(session.language)) &&
     typeof session.ageBand === "string" &&
     Array.isArray(session.growthIndicators) &&
     ["main_question", "secondary_question", "final_synthesis"].includes(String(session.step))

@@ -101,7 +101,7 @@ describe("finite challenge session", () => {
       userId: "user-1",
     };
 
-    expect(challengeSessionKey(base) === challengeSessionKey({ ...base, language: "en" })).toBe(false);
+    expect(challengeSessionKey(base) === challengeSessionKey({ ...base, language: "en" })).toBe(true);
     expect(challengeSessionKey(base) === challengeSessionKey({ ...base, ageBand: "18_plus" })).toBe(false);
     expect(challengeSessionKey(base) === challengeSessionKey({ ...base, userId: "user-2" })).toBe(false);
     expect(

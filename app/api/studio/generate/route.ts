@@ -78,11 +78,15 @@ export async function POST(request: Request) {
   }
 
   const input = validateGenerateRequest(await request.json().catch(() => ({})));
+  const responseLanguage = input.language === 'es' ? 'Spanish' : input.language === 'fr' ? 'French' : 'English';
+  const localizedUnavailable = input.language === 'es' ? 'No se pudo generar el contenido. Inténtalo de nuevo.' : input.language === 'fr' ? 'La génération a échoué. Réessaie.' : 'Content generation unavailable. Please try again.';
+
   const channels = input.enabledChannels?.length ? input.enabledChannels : activeChannelIds;
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
     await trackServerEvent('ai_generation_failed', access.user.id, { reason: 'missing_openai_api_key', route: '/api/studio/generate' });
+    if (input.language !== 'en') return NextResponse.json({ error: localizedUnavailable }, { status: 503 });
     return NextResponse.json(validateGeneratedPackage(fallbackPackage({ ...input, enabledChannels: channels }), 'fallback'), { status: 200 });
   }
 
@@ -119,7 +123,7 @@ Make each post meaningfully different. Use plain language. Show why UThynk is no
       model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
       temperature: 0.78,
       messages: [
-        { role: 'system', content: 'Return only valid JSON. No markdown, no commentary.' },
+        { role: 'system', content: `Return only valid JSON. No markdown, no commentary. Write all user-facing campaign, post and asset text entirely in ${responseLanguage}, even when source material uses another language. Keep JSON keys, platform identifiers and enum values unchanged.` },
         { role: 'user', content: prompt },
       ],
     }),
@@ -127,6 +131,7 @@ Make each post meaningfully different. Use plain language. Show why UThynk is no
 
   if (!response.ok) {
     await trackServerEvent('ai_generation_failed', access.user.id, { status: response.status, route: '/api/studio/generate' });
+    if (input.language !== 'en') return NextResponse.json({ error: localizedUnavailable }, { status: 503 });
     return NextResponse.json(validateGeneratedPackage(fallbackPackage({ ...input, enabledChannels: channels }), 'fallback'), { status: 200 });
   }
 
@@ -144,6 +149,7 @@ Make each post meaningfully different. Use plain language. Show why UThynk is no
     return NextResponse.json(generated);
   } catch {
     await trackServerEvent('ai_generation_failed', access.user.id, { reason: 'invalid_model_json', route: '/api/studio/generate' });
+    if (input.language !== 'en') return NextResponse.json({ error: localizedUnavailable }, { status: 503 });
     return NextResponse.json(validateGeneratedPackage(fallbackPackage({ ...input, enabledChannels: channels }), 'fallback'), { status: 200 });
   }
 }

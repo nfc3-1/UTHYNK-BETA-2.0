@@ -1,5 +1,6 @@
 'use client';
 
+import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { adaptQuestionForAge, ageBandLabel, normalizeAgeBand } from '@/lib/ageAdaptivePrompts';
 import {
@@ -8,6 +9,7 @@ import {
   canSubmitChallengeAnswer,
   captureAnswerDraft,
   challengeSessionKey,
+  legacyChallengeSessionKey,
   createChallengeSession,
   restoreChallengeSession,
   shouldRenderAnswerInput,
@@ -195,7 +197,12 @@ export default function LessonQuestionClient({ category, questions }: Props) {
   }, [category, questions.length]);
 
   useEffect(() => {
-    const raw = localStorage.getItem(activeStorageKey);
+    // Migrate the most recently active legacy language slot without deleting history.
+    const legacy = (['en','es','fr'] as const).map(language => {
+      try { return restoreChallengeSession(JSON.parse(localStorage.getItem(legacyChallengeSessionKey({ ...keyInput, language })) || 'null')); }
+      catch { return null; }
+    }).filter(Boolean).sort((a,b) => (b?.updatedAt || '').localeCompare(a?.updatedAt || ''))[0];
+    const raw = localStorage.getItem(activeStorageKey) || (legacy ? JSON.stringify(legacy) : null);
 
     if (!raw) {
       setSession(null);
@@ -220,7 +227,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
     setSession(null);
     setAnswer('');
     setRestored(false);
-  }, [activeStorageKey]);
+  }, [activeStorageKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!session) return;
@@ -284,6 +291,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
   function changeLanguage(nextLanguage: Language) {
     setLanguage(nextLanguage);
+    setSession(current => current ? { ...current, language: nextLanguage } : current);
     setStoredLanguageValue(nextLanguage);
     setError('');
   }
@@ -345,11 +353,12 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
   function updateAnswer(nextAnswer: string) {
     setAnswer(nextAnswer);
-    setSession((current) => captureAnswerDraft(current, nextAnswer));
+    setSession((current) => captureAnswerDraft(current || createChallengeSession({ ...keyInput, conversationId: crypto.randomUUID(), originalQuestion: selectedQuestion, sessionId: crypto.randomUUID() }), nextAnswer));
   }
 
   function startNewChallenge() {
-    localStorage.removeItem(activeStorageKey);
+    // A tombstone prevents older v2 language slots from reappearing after a deliberate reset.
+    localStorage.setItem(activeStorageKey, 'null');
     setSession(null);
     setAnswer('');
     setError('');
@@ -405,7 +414,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
     try {
       const active =
-        session ||
+        (session ? { ...session, language } : null) ||
         createChallengeSession({
           ...keyInput,
           conversationId: crypto.randomUUID(),
@@ -465,7 +474,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
           <nav className="appNav">
             <a href="/">{copy.home}</a>
             <a href="/lessons">{copy.lessonsNav}</a>
-            <a href="/teacher">{copy.teacherNav}</a>
+            <RestrictedNavLinks />
             <a href="/profile">{copy.profileNav}</a>
             <a href="/feedback">{copy.feedbackNav}</a>
             <a href="/store">{copy.storeNav}</a>

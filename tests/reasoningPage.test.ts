@@ -13,8 +13,9 @@ let requests: any[];
 let reply: (body: any) => Promise<Response>;
 const first = { perspectiveExpansion: "Consider the other person's incentives.", secondaryQuestion: "What evidence would change your mind?" };
 function mount() { act(() => { page = create(createElement(ReasoningPage)); }); }
-function setup() {
+function setup(language = 'en') {
   storage = new Map([["uthynk-onboarding-dismissed", "true"]]); requests = [];
+  storage.set('uthynk-language', language);
   vi.stubGlobal("localStorage", { getItem: (key: string) => storage.get(key) || null, setItem: (key: string, value: string) => storage.set(key, value) });
   vi.stubGlobal("window", { localStorage, dispatchEvent() {}, location: { pathname: "/reasoning" }, history: { replaceState() {} }, addEventListener() {}, removeEventListener() {} });
   vi.stubGlobal("document", { cookie: "" });
@@ -33,6 +34,28 @@ async function submit() { await act(async () => { await submitButton().props.onC
 afterEach(() => { if (page) act(() => page.unmount()); vi.unstubAllGlobals(); });
 
 describe("reasoning page finite workout", () => {
+  for (const language of ['en','es','fr']) it(`completes and restores the ${language} finite flow`, async () => {
+    setup(language);
+    const perspective = language === 'es' ? 'Considera quién se beneficia.' : language === 'fr' ? 'Considère qui en profite.' : 'Consider who benefits.';
+    const question = language === 'es' ? '¿Qué evidencia falta?' : language === 'fr' ? 'Quelle preuve manque ?' : 'What evidence is missing?';
+    const synthesis = language === 'es' ? 'Primero propusiste una prueba. Después mantuviste tu postura. Falta medir el coste. Distingue evidencia de suposiciones.' : language === 'fr' ? 'Tu proposais un test. Ensuite tu as maintenu ta position. Le coût reste inconnu. Distingue les preuves des hypothèses.' : 'You proposed a test and then maintained that position. Its cost is unknown. Distinguish evidence from assumptions.';
+    expect(page.root.findAllByProps({ className: 'advancedThinkingDetails' }).length).toBe(0);
+    type('response','First answer'); reply = async () => Response.json({ perspectiveExpansion: perspective, secondaryQuestion: question }); await submit();
+    type('follow-up-response','Second answer'); reply = async () => Response.json({ finalSynthesis: synthesis }); await submit();
+    expect(requests.map(request => request.language)).toEqual([language,language]);
+    expect(requests[1].firstUserAnswer).toBe('First answer'); expect(requests[1].secondUserAnswer).toBe('Second answer');
+    act(() => page.root.findAllByProps({ role: 'radio' })[0].props.onClick());
+    const completion = page.root.findAllByType('button').find(node => node.props.onClick?.name === 'completeWorkout')!;
+    act(() => completion.props.onClick());
+    expect(storage.get('uthynk-completed-workouts')).toBe('1');
+    act(() => page.unmount()); mount();
+    expect(page.root.findByType('select').props.value).toBe(language);
+    expect(page.root.findAllByProps({ id: 'response' }).length).toBe(0);
+    expect(page.root.findAllByProps({ id: 'follow-up-response' }).length).toBe(0);
+    expect(requests.length).toBe(2);
+    const saved = JSON.parse([...storage.entries()].find(([key]) => key.startsWith('uthynk-reasoning:v1:'))![1]);
+    expect(saved.feedback.analysis).toBe(synthesis); expect(saved.workoutStage).toBe('complete');
+  });
   it("dictates into each visible draft and keeps previous challenge storage when starting another", async () => {
     setup();
     let recognizer: any;

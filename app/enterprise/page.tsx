@@ -1,5 +1,6 @@
 "use client";
 
+import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import Link from "next/link";
 
 const teams = [
@@ -36,7 +37,7 @@ export default function EnterprisePage() {
         </Link>
 
         <nav className="appNav">
-          <Link href="/teacher">Teacher</Link>
+          <RestrictedNavLinks />
           <Link href="/profile">Profile</Link>
           <Link href="/leaderboard">Leaderboard</Link>
           <Link href="/debate">Debate</Link>

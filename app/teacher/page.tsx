@@ -1,9 +1,14 @@
+import { redirect } from 'next/navigation';
+import { getAccountAccess, permits } from '@/lib/accessControl';
 import Link from 'next/link';
 import TeacherDashboard from '@/components/TeacherDashboard';
 import LocalizedNavLinks from '@/components/LocalizedNavLinks';
 import { getCategories, getQuestionsForCategory } from '@/lib/questionBank';
 
-export default function TeacherPage() {
+export const dynamic = 'force-dynamic';
+export default async function TeacherPage() {
+  const access = await getAccountAccess();
+  if (!permits(access, 'teacher')) redirect(access.userId ? '/profile' : '/login?next=/teacher');
   const questionBank = Object.fromEntries(
     getCategories().map((category) => [category, getQuestionsForCategory(category)])
   );

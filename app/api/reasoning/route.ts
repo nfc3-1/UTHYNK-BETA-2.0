@@ -419,13 +419,14 @@ function sanitizeFeedback(
   verifier: VerifierResult,
   categoryPrompt: CategoryPrompt,
   language: "en" | "es" | "fr",
-  phase: "follow_up" | "synthesis" = "follow_up"
+  phase: "follow_up" | "synthesis" = "follow_up",
+  synthesisContext?: SynthesisContext
 ): ReasoningFeedback {
   const aiScore = Number(parsed?.score);
   const score = clamp(
     Number.isFinite(aiScore) ? aiScore * 0.72 + verifier.score * 0.28 : verifier.score
   );
-  const trait = ensureString(parsed?.trait, categoryPrompt.traitOptions[0]);
+  const trait = ensureString(parsed?.trait, language === 'es' ? 'Razonamiento' : language === 'fr' ? 'Raisonnement' : categoryPrompt.traitOptions[0]);
   const fallbackAnalysis =
     language === "es"
       ? "Tu respuesta nombro una idea util. El siguiente paso es separar la evidencia fuerte de la suposicion mas riesgosa."
@@ -445,7 +446,7 @@ function sanitizeFeedback(
         ? "Quelle preuve changerait le plus ton niveau de confiance ?"
         : "What evidence would most change your level of confidence?";
   const baseAnalysis = ensureString(parsed?.analysis, fallbackAnalysis);
-  const perspectiveExpansion = ensureString(
+  const perspectiveExpansion = phase === 'synthesis' ? '' : ensureString(
     parsed?.perspectiveExpansion || parsed?.contrarian,
     fallbackPerspective
   );
@@ -455,8 +456,11 @@ function sanitizeFeedback(
       : normalizeSingleQuestion(parsed?.secondaryQuestion || parsed?.followUp, fallbackQuestion);
   const finalSynthesis =
     phase === "synthesis"
-      ? stripQuestions(parsed?.finalSynthesis || baseAnalysis) || fallbackAnalysis
+      ? stripQuestions(parsed?.finalSynthesis || parsed?.analysis)
       : "";
+  if (phase === 'synthesis' && (!finalSynthesis || finalSynthesis === stripQuestions(synthesisContext?.perspectiveExpansion))) {
+    throw new Error(language === 'es' ? 'No se pudo completar la síntesis. Tu respuesta está guardada; inténtalo de nuevo.' : language === 'fr' ? 'La synthèse n’a pas pu être terminée. Ta réponse est conservée ; réessaie.' : 'The synthesis could not be completed. Your answer is saved; please try again.');
+  }
   const analysis = phase === "synthesis" ? finalSynthesis : baseAnalysis;
 
   return {
@@ -477,9 +481,9 @@ function sanitizeFeedback(
     perspectiveExpansion,
     score,
     secondaryQuestion,
-    strengths: ensureList(parsed?.strengths, categoryPrompt.reasoningLens.slice(0, 2)),
+    strengths: ensureList(parsed?.strengths, language === 'en' ? categoryPrompt.reasoningLens.slice(0, 2) : []),
     trait,
-    weaknesses: ensureList(parsed?.weaknesses, verifier.missingMoves),
+    weaknesses: ensureList(parsed?.weaknesses, language === 'en' ? verifier.missingMoves : []),
     xp: clamp(Number(parsed?.xp) || (score >= 85 ? 70 : score >= 70 ? 52 : 35), 20, 95),
     verifier,
   };
@@ -522,12 +526,12 @@ function buildAdaptiveSystemPrompt({
 
   return [
     "You are UThynk, an adaptive reasoning coach. You must produce specific, non-repetitive feedback.",
-    `Write every user-facing response field in ${responseLanguage}. Keep JSON keys in English.`,
+    `Write every user-facing response field, including trait, strengths and weaknesses, entirely in ${responseLanguage}. Translate or paraphrase earlier turns into this language even if the user or history uses another language. Never mix languages within a generated response. Keep JSON keys in English.`,
     `Session identity: sessionId=${sessionId}, conversationId=${conversationId}.`,
     `Category: ${categoryPrompt.category}. Role: ${categoryPrompt.evaluatorRole}.`,
     `Response mode: ${mode}. Do not reuse the same opening, cadence, or follow-up shape from prior turns.`,
     `Reasoning lens: ${categoryPrompt.reasoningLens.join(", ")}.`,
-    `Follow-up directive: ${categoryPrompt.followUpDirective}`,
+    phase === "synthesis" ? "" : `Follow-up directive: ${categoryPrompt.followUpDirective}`,
     `Available trait labels: ${categoryPrompt.traitOptions.join(", ")}.`,
     "Category discipline: respond through this selected category lens. Do not drift into a generic coach response.",
     "Tone: use plain everyday language. Sound like a smart mentor, not a professor, therapist, worksheet, or motivational speaker.",
@@ -541,15 +545,15 @@ function buildAdaptiveSystemPrompt({
     `Do not repeat these follow-ups: ${JSON.stringify(recentFollowUps)}.`,
     synthesisContext ? `Synthesis context: ${JSON.stringify(synthesisContext)}.` : "",
     phase === "synthesis"
-      ? "Current workout phase: final synthesis. Use originalQuestion, firstUserAnswer, perspectiveExpansion, secondaryQuestion, and secondUserAnswer. The analysis and finalSynthesis fields must explain how the user's thinking developed, identify their strongest reasoning, identify one remaining blind spot, give one practical takeaway, and clearly complete the challenge. The followUp and secondaryQuestion fields must be empty strings. Do not ask any question."
+      ? "Current workout phase: final synthesis. Use originalQuestion, firstUserAnswer, perspectiveExpansion, secondaryQuestion, and secondUserAnswer. The analysis and finalSynthesis fields must be the same overarching conclusion to the complete reasoning journey, not a restatement of the perspective expansion. In natural prose without rigid headings: summarize the starting position in firstUserAnswer and identify something specifically useful in it, without generic praise; explain the meaningful perspective introduced in perspectiveExpansion and secondaryQuestion, and how secondUserAnswer accepted, rejected, modified, combined, or introduced another idea. Do not assume the user changed their mind. Identify the strongest reasoning move across both answers and one remaining blind spot, assumption, tradeoff, missing evidence, or unresolved tension grounded in what the user actually said. End with a transferable reasoning principle applicable to another problem, rather than repeating the specific solution. Target 120–220 words for adults, 80–140 for teens, and 50–90 short concrete words for children. Clearly complete the challenge without a fifth step. The followUp and secondaryQuestion fields must be empty strings. Do not ask any question."
       : "Current workout phase: perspective expansion. The user has answered the main question. In contrarian and perspectiveExpansion, recognize the user's reasoning and introduce two or three meaningful angles they may not have considered, using approachable phrases such as 'Have you considered...' or 'Another angle is...'. Address assumptions, evidence, incentives, tradeoffs, consequences, or opposing explanations. Then write exactly one secondaryQuestion and matching followUp question based on the original question, the first answer, and those new perspectives.",
-    "Product success test: the user should regularly think, 'I had not considered that.' Your main job is to introduce one meaningful new perspective, not to merely ask them to elaborate.",
-    "The contrarian and perspectiveExpansion fields must be concrete perspectives the user may have missed. Start from their actual response and introduce an alternate explanation, hidden tradeoff, strongest opposing case, incentive, evidence problem, or second-order effect.",
-    "The analysis field should use common language: name what is promising, then name the missing perspective in plain terms. Avoid academic phrasing.",
+    phase === "synthesis" ? "" : "Product success test: the user should regularly think, 'I had not considered that.' Your main job is to introduce one meaningful new perspective, not to merely ask them to elaborate.",
+    phase === "synthesis" ? "The contrarian and perspectiveExpansion fields must be empty strings; do not introduce another perspective at completion." : "The contrarian and perspectiveExpansion fields must be concrete perspectives the user may have missed. Start from their actual response and introduce an alternate explanation, hidden tradeoff, strongest opposing case, incentive, evidence problem, or second-order effect.",
+    phase === "synthesis" ? "" : "The analysis field should use common language: name what is promising, then name the missing perspective in plain terms. Avoid academic phrasing.",
     phase === "synthesis"
       ? "The followUp and secondaryQuestion fields must be exactly empty strings. The analysis and finalSynthesis fields must contain no question marks."
       : "The followUp and secondaryQuestion fields must be exactly one practical, conversational question with exactly one question mark. It should sound like a sharp person talking to the user, not a worksheet or essay prompt.",
-    "Prefer plain phrasing such as 'Have you thought about...', 'Could someone...', 'What if...', or 'What would change if...'. Avoid abstract academic wording like 'How might the emotional appeal of...' when a simpler sentence works.",
+    phase === "synthesis" ? "" : "Prefer plain phrasing such as 'Have you thought about...', 'Could someone...', 'What if...', or 'What would change if...'. Avoid abstract academic wording like 'How might the emotional appeal of...' when a simpler sentence works.",
     "Do not use generic prompts like 'explain further', 'give another example', or 'clarify your reasoning'.",
     "Sensitive-topic rule: if the prompt or answer concerns self-harm, suicide, trauma, abuse, mental health, medical issues, or identity-based harm, switch to supportive, non-adversarial exploration and appropriate safety guidance.",
     "Score by blending your judgment with the verifier result. Penalize generic, unsupported, or evasive reasoning.",
@@ -995,7 +999,8 @@ function streamingFeedback(args: {
           args.verifier,
           args.categoryPrompt,
           args.language,
-          args.phase || "follow_up"
+          args.phase || "follow_up",
+          args.synthesisContext
         );
         const progression =
           args.phase === "follow_up" ? null : await persistSession({ ...args, feedback });
@@ -1148,7 +1153,7 @@ export async function POST(request: Request) {
     }
 
     const parsed = await nonStreamingFeedback(openAiArgs);
-    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt, language, phase);
+    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt, language, phase, synthesisValidation?.context);
     const progression =
       phase === "follow_up"
         ? null

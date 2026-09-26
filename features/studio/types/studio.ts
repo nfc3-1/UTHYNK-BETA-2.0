@@ -136,6 +136,7 @@ export type StudioState = {
 };
 
 export type StudioGenerateRequest = {
+  language?: 'en' | 'es' | 'fr';
   objective: string;
   audience: string;
   sourceQuestion: string;

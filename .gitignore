@@ -1,3 +1,6 @@
 .tmp-*/
 node_modules/
 .next/
+
+supabase/.temp/
+tsconfig.tsbuildinfo

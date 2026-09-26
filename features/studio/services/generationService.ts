@@ -1,8 +1,9 @@
+import { getStoredLanguageValue } from '@/lib/reasoningI18n';
 import type { StudioGeneratedPackage, StudioGenerateRequest } from '@/features/studio/types/studio';
 import { validateGeneratedPackage, validateGenerateRequest } from '@/features/studio/validation/studioSchemas';
 
 export async function generateStudioPackage(request: StudioGenerateRequest): Promise<StudioGeneratedPackage> {
-  const input = validateGenerateRequest(request);
+  const input = validateGenerateRequest({ ...request, language: getStoredLanguageValue() });
   const response = await fetch('/api/studio/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -10,7 +11,8 @@ export async function generateStudioPackage(request: StudioGenerateRequest): Pro
   });
 
   if (!response.ok) {
-    throw new Error('Studio generation failed');
+    const failure = await response.json().catch(() => ({}));
+    throw new Error(failure.error || 'Studio generation failed');
   }
 
   const payload = await response.json();
