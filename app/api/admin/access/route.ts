@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const search = (url.searchParams.get('q') || '').replace(/[^\p{L}\p{N}@._ +\-]/gu, '').slice(0, 100);
   const page = Math.max(0, Math.min(10000, Number(url.searchParams.get('page')) || 0));
-  let query = supabaseAdmin.from('user_profiles').select('id,auth_user_id,email,username,account_access(role,section_grants,updated_at)').not('auth_user_id', 'is', null).order('id').range(page * 25, page * 25 + 24);
+  let query = supabaseAdmin.from('user_profiles').select('id,auth_user_id,email,username,account_access:account_access!account_access_profile_id_fkey(role,section_grants,updated_at)').not('auth_user_id', 'is', null).order('id').range(page * 25, page * 25 + 24);
   if (search) query = query.or(`email.ilike.%${search}%,username.ilike.%${search}%`);
   const [users, sections] = await Promise.all([query, supabaseAdmin.from('restricted_sections').select('id,label').order('id')]);
   if (users.error || sections.error) return NextResponse.json({ error: 'Access records unavailable.' }, { status: 503 });

@@ -61,6 +61,6 @@ describe('reasoning API language and complete synthesis contract', () => {
     result = { finalSynthesis: 'You proposed a test. Its cost is unknown. Check assumptions.' };
     await request({ ageBand, phase: 'synthesis', originalQuestion: 'Act or test?', firstUserAnswer: 'Test.', perspectiveExpansion: 'Consider the cost.', secondaryQuestion: 'What is the cost?', secondUserAnswer: 'Unknown.' });
     expect(sent[0].messages[0].content).toContain(`User age band: ${ageBand}`);
-    expect(sent[0].messages[0].content).toContain('50–90 short concrete words for children');
+    expect(sent[0].messages[0].content).toContain(ageBand === 'under_13' ? '50–90 short concrete words for children' : '80–140 words for teens');
   });
 });
