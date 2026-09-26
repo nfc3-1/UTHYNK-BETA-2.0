@@ -36,6 +36,7 @@ describe('reasoning API language and complete synthesis contract', () => {
     const system = sent[1].messages[0].content;
     expect(system).toContain({ en: 'English', es: 'Spanish', fr: 'French' }[language]);
     expect(system).toContain('Do not assume the user changed their mind');
+    expect(system).toContain('Both answers come from the SAME person');
     expect(system).toContain('120–220 words');
     expect(system).toContain('transferable reasoning principle');
     expect(system).toContain('remaining blind spot');
