@@ -100,6 +100,8 @@ describe('synthesis perspective integration and diagnostic contract', () => {
     expect(prompt).toContain('Do not label an idea missing if either user answer actually explored it');
     expect(prompt).toContain('explicitly attribute that gap to their answers');
     expect(prompt).toContain('they did NOT accept, recognize, or integrate the constraints-creativity mechanism');
+    expect(prompt).toContain('If they reject the lens, the principle must preserve that uncertainty');
+    expect(prompt).toContain('If the person already discusses creative reuse and insufficient funding, credit both');
     const body = await response.json();
     expect(body.analysis).toBe(body.finalSynthesis);
     expect(body.finalSynthesis).not.toContain('?');
