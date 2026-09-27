@@ -37,9 +37,9 @@ describe('reasoning API language and complete synthesis contract', () => {
     expect(system).toContain({ en: 'English', es: 'Spanish', fr: 'French' }[language]);
     expect(system).toContain('Do not assume the user changed their mind');
     expect(system).toContain('Both answers come from the SAME person');
-    expect(system).toContain('120–220 words');
+    expect(system).toContain('120–200 words');
     expect(system).toContain('transferable reasoning principle');
-    expect(system).toContain('remaining blind spot');
+    expect(system).toContain('ONE remaining user reasoning gap');
     expect(JSON.parse(sent[1].messages[1].content).synthesisContext).toEqual(context);
   });
   it('falls back to English for arbitrary language input', async () => {
@@ -63,5 +63,59 @@ describe('reasoning API language and complete synthesis contract', () => {
     await request({ ageBand, phase: 'synthesis', originalQuestion: 'Act or test?', firstUserAnswer: 'Test.', perspectiveExpansion: 'Consider the cost.', secondaryQuestion: 'What is the cost?', secondUserAnswer: 'Unknown.' });
     expect(sent[0].messages[0].content).toContain(`User age band: ${ageBand}`);
     expect(sent[0].messages[0].content).toContain(ageBand === 'under_13' ? '50–90 short concrete words for children' : '80–140 words for teens');
+  });
+});
+
+const apolloContext = {
+  originalQuestion: 'Apollo 13 survived with limited materials. What does that teach about preparation and adaptability?',
+  firstUserAnswer: 'Even with extensive preparation, unexpected events happen and adaptability is necessary.',
+  perspectiveExpansion: 'Constraints can drive creativity: limited resources forced engineers to innovate, while too many options can hinder problem-solving.',
+  secondaryQuestion: 'Could these lessons apply outside space exploration?',
+};
+
+describe('synthesis perspective integration and diagnostic contract', () => {
+  // Provider mocks test the prompt and API contract, not the model’s semantic judgment.
+  for (const [engagement, secondUserAnswer] of [
+    ['engaged', 'In business a small budget can force creative reuse, although too little funding can stop useful experiments.'],
+    ['not engaged', 'Yes, these lessons also apply in business and other areas.'],
+    ['challenged', 'I disagree that fewer options improve creativity; limited materials may simply prevent a workable solution.'],
+  ]) it(`sends the complete journey and requires honest ${engagement} interpretation`, async () => {
+    result = { finalSynthesis: 'You balanced preparation with adaptation. Constraints add a creative mechanism. Evaluate how limits shape the options before transferring a solution.' };
+    const context = { ...apolloContext, secondUserAnswer };
+    const response = await request({ ...context, phase: 'synthesis' });
+    expect(response.status).toBe(200);
+    expect(JSON.parse(sent[0].messages[1].content).synthesisContext).toEqual(context);
+    const prompt = sent[0].messages[0].content;
+    for (const value of Object.values(context)) expect(prompt).toContain(value);
+    expect(prompt).toContain('Ground the starting idea in firstUserAnswer');
+    expect(prompt).toContain('CENTRAL IDEA of perspectiveExpansion');
+    expect(prompt).toContain('reinforces, complicates, challenges, expands, or introduces a useful tension');
+    expect(prompt).toContain('secondaryQuestion provides context but must not replace');
+    expect(prompt).toContain('accepts, expands, partially engages, challenges, ignores, or takes another direction');
+    expect(prompt).toContain('agreement that a lesson applies elsewhere does not establish engagement');
+    expect(prompt).toContain('arising from BOTH the user reasoning and the central idea');
+    expect(prompt).toContain('never an omission by the coach or synthesis');
+    expect(prompt).toContain('Do not label an idea missing if either user answer actually explored it');
+    expect(prompt).toContain('explicitly attribute that gap to their answers');
+    const body = await response.json();
+    expect(body.analysis).toBe(body.finalSynthesis);
+    expect(body.finalSynthesis).not.toContain('?');
+    expect(body.perspectiveExpansion).toBe('');
+    expect(body.secondaryQuestion).toBe('');
+    expect(body.followUp).toBe('');
+  });
+
+  it('does not invent whole-journey weaknesses from the latest-answer verifier', async () => {
+    const firstUserAnswer = 'Evidence from a small business trial would test whether limited options encourage reuse. Compare alternatives and account for the risk of too few resources.';
+    result = { finalSynthesis: 'You proposed evidence and alternatives. You kept that approach. Test how constraints affect adaptation before applying a lesson elsewhere.' };
+    const body = await (await request({ ...apolloContext, firstUserAnswer, secondUserAnswer: 'I still agree.', phase: 'synthesis' })).json();
+    expect(body.weaknesses).toEqual([]);
+  });
+
+  it('preserves a supported user gap even when the synthesis incorporates the coach idea', async () => {
+    const weakness = 'You did not yet explore how limited resources could change a specific business decision.';
+    result = { finalSynthesis: 'You connected preparation and adaptation. Limited resources can make adaptation creative. You transferred the lesson to business without exploring that mechanism. Examine how constraints shape choices when applying lessons elsewhere.', weaknesses: [weakness] };
+    const body = await (await request({ ...apolloContext, secondUserAnswer: 'Yes, in business too.', phase: 'synthesis' })).json();
+    expect(body.weaknesses).toEqual([weakness]);
   });
 });
