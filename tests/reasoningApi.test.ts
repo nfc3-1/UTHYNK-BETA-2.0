@@ -40,6 +40,8 @@ describe('reasoning API language and complete synthesis contract', () => {
     expect(system).toContain('120–200 words');
     expect(system).toContain('transferable reasoning principle');
     expect(system).toContain('ONE remaining user reasoning gap');
+    expect(system).toContain('Never credit the person with an idea found only in perspectiveExpansion');
+    expect(system).toContain('This evidence rule applies equally in English, Spanish, and French');
     expect(JSON.parse(sent[1].messages[1].content).synthesisContext).toEqual(context);
   });
   it('falls back to English for arbitrary language input', async () => {
@@ -97,6 +99,7 @@ describe('synthesis perspective integration and diagnostic contract', () => {
     expect(prompt).toContain('never an omission by the coach or synthesis');
     expect(prompt).toContain('Do not label an idea missing if either user answer actually explored it');
     expect(prompt).toContain('explicitly attribute that gap to their answers');
+    expect(prompt).toContain('they did NOT accept, recognize, or integrate the constraints-creativity mechanism');
     const body = await response.json();
     expect(body.analysis).toBe(body.finalSynthesis);
     expect(body.finalSynthesis).not.toContain('?');
