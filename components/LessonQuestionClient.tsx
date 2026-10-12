@@ -1,5 +1,6 @@
 'use client';
 
+import ThinkingWalkthrough, { ThinkingStepHint } from '@/components/ThinkingWalkthrough';
 import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ageBandLabel, normalizeAgeBand } from '@/lib/ageAdaptivePrompts';
@@ -517,6 +518,8 @@ export default function LessonQuestionClient({ category, questions }: Props) {
         </div>
       </section>
 
+      <ThinkingWalkthrough language={language} />
+
       <section className="lessonQuestionLayout" style={{ maxWidth: '100%', minWidth: 0, width: '100%' }}>
         <div className="lessonQuestionList" style={{ minWidth: 0 }}>
           {localizedQuestions.map((question, index) => (
@@ -595,6 +598,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
           {inputVisible ? (
             <>
+              <ThinkingStepHint language={language} step={session?.step === 'secondary_question' ? 2 : 0} />
               <p className="lessonPromptHint">
                 {session?.step === 'secondary_question' ? flow.secondHint : flow.firstHint}
               </p>

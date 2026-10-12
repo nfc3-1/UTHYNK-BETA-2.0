@@ -1,5 +1,6 @@
 "use client";
 
+import ThinkingWalkthrough, { ThinkingStepHint, VISUAL_GUIDE_DISMISSED } from "@/components/ThinkingWalkthrough";
 import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -159,90 +160,6 @@ function getReasoningLensForCategory(category: string) {
     }
   );
 }
-
-const onboardingCopy = {
-  en: {
-    title: "How to use UThynk",
-    intro:
-      "UThynk is a reasoning workout. Answer the prompt, test one new perspective, then finish with a quick reflection.",
-    steps: [
-      {
-        title: "Answer the challenge",
-        text: "UThynk automatically applies the best reasoning lens for the category, so you can focus on your answer instead of choosing a framework.",
-      },
-      {
-        title: "Answer in your own words",
-        text: "Write a few clear sentences. Add an example, a reason, or a tradeoff when you can.",
-      },
-      {
-        title: "Consider one new perspective",
-        text: "UThynk should show an angle you may not have considered, then move you into a short reflection.",
-      },
-      {
-        title: "Complete the workout",
-        text: "Finish the reflection, earn XP, save progress, and keep building your thinking profile across sessions.",
-      },
-    ],
-    close: "Start thinking",
-    reopen: "How to use",
-  },
-  es: {
-    title: "Como usar UThynk",
-    intro:
-      "UThynk es un entrenamiento de razonamiento. Responde la pregunta, prueba una nueva perspectiva y termina con una reflexion breve.",
-    steps: [
-      {
-        title: "Responde el desafio",
-        text: "UThynk aplica automaticamente el mejor enfoque de razonamiento para la categoria, para que puedas concentrarte en tu respuesta.",
-      },
-      {
-        title: "Responde con tus palabras",
-        text: "Escribe unas frases claras. Agrega un ejemplo, una razon o un intercambio cuando puedas.",
-      },
-      {
-        title: "Considera una nueva perspectiva",
-        text: "UThynk debe mostrar un angulo que quizas no habias considerado y luego llevarte a una reflexion breve.",
-      },
-      {
-        title: "Completa el entrenamiento",
-        text: "Termina la reflexion, gana XP, guarda tu progreso y sigue construyendo tu perfil de pensamiento entre sesiones.",
-      },
-    ],
-    close: "Empezar",
-    reopen: "Como usar",
-  },
-  fr: {
-    title: "Comment utiliser UThynk",
-    intro:
-      "UThynk est un exercice de raisonnement. Reponds au prompt, teste une nouvelle perspective, puis termine par une courte reflexion.",
-    steps: [
-      {
-        title: "Reponds au defi",
-        text: "UThynk applique automatiquement la meilleure lentille de raisonnement pour la categorie, afin que tu puisses te concentrer sur ta reponse.",
-      },
-      {
-        title: "Reponds avec tes mots",
-        text: "Ecris quelques phrases claires. Ajoute un exemple, une raison ou un compromis quand tu peux.",
-      },
-      {
-        title: "Considere une nouvelle perspective",
-        text: "UThynk doit montrer un angle que tu n'avais peut-etre pas considere, puis passer a une courte reflexion.",
-      },
-      {
-        title: "Termine l'exercice",
-        text: "Finis la reflexion, gagne de l'XP, sauvegarde ta progression et continue a construire ton profil de pensee entre les sessions.",
-      },
-    ],
-    close: "Commencer",
-    reopen: "Mode d'emploi",
-  },
-} satisfies Record<Language, {
-  title: string;
-  intro: string;
-  steps: Array<{ title: string; text: string }>;
-  close: string;
-  reopen: string;
-}>;
 
 const pageText = {
   en: {
@@ -1481,6 +1398,8 @@ function ReasoningExperience({
           </>
         )}
 
+        <ThinkingStepHint language={language} step={workoutStage === "followUp" || workoutStage === "synthesis" ? 2 : workoutStage === "reflection" || workoutStage === "complete" ? 3 : 0} />
+
         {error ? <p className="panelNote">{error}</p> : null}
         {!profile?.id && freePassUsed >= 3 ? (
           <div className="freePassGate">
@@ -1821,7 +1740,6 @@ export default function ReasoningPage() {
   const [language, setLanguage] = useState<Language>("en");
   const [showOnboarding, setShowOnboarding] = useState(false);
   const copy = uiCopy[language];
-  const helpCopy = onboardingCopy[language];
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -1832,7 +1750,7 @@ export default function ReasoningPage() {
       setLanguage(storedLanguage);
     }
 
-    if (localStorage.getItem("uthynk-onboarding-dismissed") !== "true") {
+    if (localStorage.getItem(VISUAL_GUIDE_DISMISSED) !== "true") {
       setShowOnboarding(true);
     }
   }, []);
@@ -1845,13 +1763,6 @@ export default function ReasoningPage() {
     }
   }
 
-  function closeOnboarding() {
-    setShowOnboarding(false);
-
-    if (typeof window !== "undefined") {
-      localStorage.setItem("uthynk-onboarding-dismissed", "true");
-    }
-  }
 
   return (
     <main className="appShell reasoningShell">
@@ -1880,7 +1791,7 @@ export default function ReasoningPage() {
             type="button"
             onClick={() => setShowOnboarding(true)}
           >
-            {helpCopy.reopen}
+            {copy.howToUseNav}
           </button>
 
           <label className="languageSelectLabel topLanguageSelect">
@@ -1901,6 +1812,8 @@ export default function ReasoningPage() {
         </div>
       </header>
 
+      <ThinkingWalkthrough language={language} open={showOnboarding} onOpenChange={setShowOnboarding} />
+
       <Suspense
         fallback={
           <section className="card reasoningMain" style={{ marginTop: 18 }}>
@@ -1912,48 +1825,7 @@ export default function ReasoningPage() {
         <ReasoningExperience language={language} />
       </Suspense>
 
-      {showOnboarding ? (
-        <div className="onboardingOverlay" role="presentation">
-          <section
-            className="onboardingModal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="uthynk-onboarding-title"
-          >
-            <div className="onboardingHero">
-              <div>
-                <span className="panelLabel">UThynk</span>
-                <h2 id="uthynk-onboarding-title">{helpCopy.title}</h2>
-                <p>{helpCopy.intro}</p>
-              </div>
-              <button
-                className="modalCloseButton"
-                type="button"
-                aria-label="Close"
-                onClick={closeOnboarding}
-              >
-                ×
-              </button>
-            </div>
 
-            <div className="onboardingSteps">
-              {helpCopy.steps.map((step, index) => (
-                <article key={step.title}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <strong>{step.title}</strong>
-                  <p>{step.text}</p>
-                </article>
-              ))}
-            </div>
-
-            <div className="onboardingFooter">
-              <button className="btn btnPrimary" type="button" onClick={closeOnboarding}>
-                {helpCopy.close}
-              </button>
-            </div>
-          </section>
-        </div>
-      ) : null}
     </main>
   );
 }

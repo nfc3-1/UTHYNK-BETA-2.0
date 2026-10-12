@@ -166,6 +166,16 @@ describe('lesson language persistence', () => {
     expect(page.root.findByType('textarea').props.value).toBe('Answer to retry');
     expect(savedSession()).toMatchObject({ sessionId: before.sessionId, conversationId: before.conversationId, step: 'main_question' });
   });
+  it('can watch, dismiss and reopen the guide without changing a challenge draft', () => {
+    setup(); mount(); type('My own answer'); const before = savedSession();
+    const next = page.root.findAllByType('button').find(button => button.children.join('') === 'Next step')!;
+    act(() => next.props.onClick());
+    const toggle = () => page.root.findAllByType('button').find(button => typeof button.props['aria-expanded'] === 'boolean')!;
+    act(() => toggle().props.onClick()); act(() => toggle().props.onClick());
+    expect(page.root.findByType('textarea').props.value).toBe('My own answer');
+    expect(savedSession()).toEqual(before);
+    expect(requests).toHaveLength(0);
+  });
   it('does not expose one user or age band\'s answers to another', () => {
     setup(); storage.set('uthynk-profile', JSON.stringify({ id: 'user-a', age_band: '13_17' })); mount(); type('Private draft');
     act(() => page.unmount()); storage.set('uthynk-profile', JSON.stringify({ id: 'user-b', age_band: '13_17' })); mount();
