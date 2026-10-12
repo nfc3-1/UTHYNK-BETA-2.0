@@ -41,14 +41,20 @@ describe('illustrated thinking walkthrough', () => {
     for (const expected of [1, 2, 3]) { click('Next step'); expect(step()).toBe(expected); }
   });
   it.each([
-    ['en', 'Give your answer', 'Should phones be allowed during class?'],
-    ['es', 'Da tu respuesta', '¿Se deberían permitir los teléfonos durante la clase?'],
-    ['fr', 'Donne ta réponse', 'Devrait-on autoriser les téléphones pendant les cours ?'],
-  ] as const)('uses %s for the instructions and illustrated example', (language, heading, question) => {
+    ['en', 'Give your answer', 'Should phones be allowed during class?', 'Skip to home'],
+    ['es', 'Da tu respuesta', '¿Se deberían permitir los teléfonos durante la clase?', 'Saltar e ir al inicio'],
+    ['fr', 'Donne ta réponse', 'Devrait-on autoriser les téléphones pendant les cours ?', 'Passer à l’accueil'],
+  ] as const)('uses %s for the instructions and illustrated example', (language, heading, question, skip) => {
     setup(); mount(language);
     expect(page.root.findByType('h3').children.join('')).toBe(heading);
     expect(JSON.stringify(page.toJSON())).toContain(question);
     expect(page.root.findAllByType('svg')).toHaveLength(1);
     expect(page.root.findByType('svg').props['aria-hidden']).toBe('true');
+    const link = page.root.findByType('a');
+    expect(link.children.join('')).toBe(skip);
+    expect(link.props.href).toBe('/');
+    act(() => link.props.onClick());
+    expect(storage.get(VISUAL_GUIDE_DISMISSED)).toBe('true');
+    expect(page.root.findAllByType('a')).toHaveLength(0);
   });
 });
