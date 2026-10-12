@@ -1,4 +1,5 @@
 import type { Challenge } from "@/lib/challenges";
+import { translateLessonQuestion } from "@/lib/lessonQuestions";
 
 export type Language = "en" | "es" | "fr";
 
@@ -423,49 +424,6 @@ const categoryCopy: Partial<Record<Language, Record<string, string>>> = {
   },
 };
 
-const localizedQuestionPools: Partial<Record<Language, Record<string, string[]>>> = {};
-
-const questionFrameCopy = {
-  es: {
-    prefix: "Situacion para practicar",
-    logic: "Que evidencia, suposicion o comparacion revisarias antes de aceptar esta idea?",
-    evidence: "Que fuente, detalle o incertidumbre cambiaria tu nivel de confianza?",
-    ethics: "Quien recibe ayuda, quien puede salir perjudicado y que principio deberia importar mas?",
-    strategy: "Que podria pasar despues y que consecuencia de segundo orden deberias anticipar?",
-    incentives: "Que incentivos, presiones o intereses ocultos podrian estar influyendo?",
-    default: "Que pregunta concreta haria tu razonamiento mas fuerte?",
-  },
-  fr: {
-    prefix: "Situation pour s'entrainer",
-    logic: "Quelle preuve, hypothese ou comparaison verifierais-tu avant d'accepter cette idee ?",
-    evidence: "Quelle source, quel detail ou quelle incertitude changerait ton niveau de confiance ?",
-    ethics: "Qui est aide, qui peut etre lese, et quel principe devrait compter le plus ?",
-    strategy: "Que pourrait-il se passer ensuite, et quelle consequence indirecte faut-il anticiper ?",
-    incentives: "Quelles incitations, pressions ou interets caches pourraient influencer la situation ?",
-    default: "Quelle question concrete rendrait ton raisonnement plus solide ?",
-  },
-} satisfies Record<Exclude<Language, "en">, Record<string, string>>;
-
-function questionLens(category: string) {
-  if (category.includes("Logic")) return "logic";
-  if (category.includes("Epistemology") || category.includes("Science") || category.includes("Media")) return "evidence";
-  if (category.includes("Ethics")) return "ethics";
-  if (category.includes("Strategic") || category.includes("History") || category.includes("Technology") || category.includes("Financial")) return "strategy";
-  if (category.includes("Street") || category.includes("Leadership") || category.includes("Work") || category.includes("Identity")) return "incentives";
-  return "default";
-}
-
-function localizedQuestionFallback(category: string, index: number, fallbackQuestion: string, language: Exclude<Language, "en">) {
-  const copy = questionFrameCopy[language];
-  const localizedCategory = categoryCopy[language]?.[category] || category;
-  const lens = questionLens(category);
-  const prompt = copy[lens] || copy.default;
-
-  return `${copy.prefix} ${index + 1} - ${localizedCategory}: ${prompt}`;
-}
-
-const challengeCopy: Record<string, Partial<Record<Language, Partial<Challenge>>>> = {};
-
 const phraseCopy = {
   en: {
     "everyday": "Everyday Thinking",
@@ -538,34 +496,12 @@ const phraseCopy = {
 } satisfies Record<Language, Record<string, string>>;
 
 export function localizeChallenge(challenge: Challenge, language: Language): Challenge {
-  const directCopy = challengeCopy[challenge.id]?.[language];
-
-  if (directCopy) {
-    return {
-      ...challenge,
-      ...directCopy,
-    };
-  }
-
-  if (language !== "en") {
-    const pool = localizedQuestionPools[language]?.[challenge.category];
-    const questionNumber = Number(challenge.id.match(/-(\d+)$/)?.[1] || "1");
-    const prompt = pool?.[(Math.max(1, questionNumber) - 1) % pool.length];
-    const category = categoryCopy[language]?.[challenge.category] || challenge.category;
-
-    if (prompt) {
-      return {
-        ...challenge,
-        category,
-        prompt,
-        title: prompt.split("?")[0].slice(0, 48),
-      };
-    }
-  }
-
+  const prompt = translateLessonQuestion(challenge.category, challenge.prompt, language);
   return {
     ...challenge,
-    category: categoryCopy[language]?.[challenge.category] || challenge.category,
+    category: localizeCategory(challenge.category, language),
+    prompt,
+    title: prompt === challenge.prompt ? challenge.title : prompt.split("?")[0].slice(0, 48),
   };
 }
 
@@ -579,11 +515,8 @@ export function localizeQuestion(
   fallbackQuestion: string,
   language: Language
 ) {
-  if (language === "en") return fallbackQuestion;
-
-  const pool = localizedQuestionPools[language]?.[category];
-
-  return pool?.[index] || fallbackQuestion;
+  // Index remains in the public signature for existing callers, never as identity.
+  return translateLessonQuestion(category, fallbackQuestion, language);
 }
 
 export function localizeText(value: string | undefined, language: Language) {

@@ -1,3 +1,4 @@
+import { getLessonQuestion } from "@/lib/lessonQuestions";
 import { getCategories, getQuestionsForCategory, slugifyCategory } from "@/lib/questionBank";
 
 export type Challenge = {
@@ -48,7 +49,7 @@ function titleForPrompt(prompt: string, index: number) {
 
 export const challenges: Challenge[] = getCategories().flatMap((category) =>
   getQuestionsForCategory(category).map((prompt, index) => ({
-    id: `${slugifyCategory(category)}-${String(index + 1).padStart(2, "0")}`,
+    id: getLessonQuestion(category, prompt)?.id ?? `${slugifyCategory(category)}-${String(index + 1).padStart(2, "0")}`,
     category,
     title: titleForPrompt(prompt, index),
     prompt,

@@ -2,16 +2,16 @@
 
 import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { adaptQuestionForAge, ageBandLabel, normalizeAgeBand } from '@/lib/ageAdaptivePrompts';
+import { ageBandLabel, normalizeAgeBand } from '@/lib/ageAdaptivePrompts';
+import { getLessonQuestion } from '@/lib/lessonQuestions';
+import { lessonSelectionKey, readLessonSelection, readLessonSession } from '@/lib/lessonSessionStorage';
 import {
   applyFinalSynthesis,
   applyPerspectiveExpansion,
   canSubmitChallengeAnswer,
   captureAnswerDraft,
   challengeSessionKey,
-  legacyChallengeSessionKey,
   createChallengeSession,
-  restoreChallengeSession,
   shouldRenderAnswerInput,
   type ChallengeSession,
   type ChallengeSessionKeyInput,
@@ -22,6 +22,9 @@ import {
   localizeQuestion,
   localizeText,
   setStoredLanguageValue,
+  getStoredLanguageValue,
+  isLanguage,
+  UTHYNK_LANGUAGE_EVENT,
   type Language,
   uiCopy,
 } from '@/lib/reasoningI18n';
@@ -121,10 +124,6 @@ function readProfile() {
   }
 }
 
-function getQuestionId(category: string, index: number) {
-  return `${category}-${index}`;
-}
-
 function normalizeFeedback(payload: Feedback, phase: 'follow_up' | 'synthesis'): Feedback {
   return {
     ...payload,
@@ -145,9 +144,12 @@ export default function LessonQuestionClient({ category, questions }: Props) {
   const [error, setError] = useState('');
   const [restored, setRestored] = useState(false);
   const [session, setSession] = useState<ChallengeSession | null>(null);
+  const [ready, setReady] = useState(false);
+  const [loadedStorageKey, setLoadedStorageKey] = useState('');
   const [voiceStatus, setVoiceStatus] = useState('');
   const [voiceSupported, setVoiceSupported] = useState(true);
   const answerRef = useRef<HTMLTextAreaElement | null>(null);
+  const draftUpdateRef = useRef<(draft: string) => void>(() => {});
   const recognitionRef = useRef<any>(null);
   const listeningRef = useRef(false);
   const copy = uiCopy[language];
@@ -158,35 +160,33 @@ export default function LessonQuestionClient({ category, questions }: Props) {
     () => questions.map((question, index) => localizeQuestion(category, index, question, language)),
     [category, language, questions]
   );
-  const adaptedQuestions = useMemo(
-    () =>
-      localizedQuestions.map((question, index) =>
-        adaptQuestionForAge(question, category, safeAgeBand, index)
-      ),
-    [category, localizedQuestions, safeAgeBand]
-  );
-  const selectedQuestion = adaptedQuestions[selectedIndex] || adaptedQuestions[0] || '';
+  // Lesson scenarios retain their meaning for every age band. The reasoning API
+  // still receives ageBand; generic English age frames must not replace translations.
+  const selectedQuestion = localizedQuestions[selectedIndex] || localizedQuestions[0] || '';
+  const sourceQuestion = questions[selectedIndex] || questions[0] || '';
+  const questionRecord = getLessonQuestion(category, sourceQuestion);
   const profile = typeof window === 'undefined' ? null : readProfile();
   const userId = profile?.id || null;
   const keyInput: ChallengeSessionKeyInput = {
     ageBand: safeAgeBand,
     category,
     language,
-    questionId: getQuestionId(category, selectedIndex),
+    questionId: questionRecord?.id || `${category}-${selectedIndex}`,
     questionIndex: selectedIndex,
     userId,
   };
   const activeStorageKey = challengeSessionKey(keyInput);
+  const selectionStorageKey = lessonSelectionKey(keyInput);
 
   useEffect(() => {
-    const storedLanguage = localStorage.getItem('uthynk-language');
     const initialProfile = readProfile();
-
-    if (storedLanguage === 'en' || storedLanguage === 'es' || storedLanguage === 'fr') {
-      setLanguage(storedLanguage);
-    }
-
-    setAgeBand(initialProfile?.age_band || '18_plus');
+    setLanguage(getStoredLanguageValue());
+    const initialAge = normalizeAgeBand(initialProfile?.age_band || '18_plus');
+    setAgeBand(initialAge);
+    setSelectedIndex(readLessonSelection(localStorage, {
+      category, ageBand: initialAge, userId: initialProfile?.id, language: getStoredLanguageValue(),
+    }, questions));
+    setReady(true);
 
     trackEvent(
       createTelemetryEvent('lesson_category_arrived', initialProfile?.id, {
@@ -194,45 +194,49 @@ export default function LessonQuestionClient({ category, questions }: Props) {
         questions: questions.length,
       })
     );
-  }, [category, questions.length]);
+  }, [category, questions]);
 
   useEffect(() => {
-    // Migrate the most recently active legacy language slot without deleting history.
-    const legacy = (['en','es','fr'] as const).map(language => {
-      try { return restoreChallengeSession(JSON.parse(localStorage.getItem(legacyChallengeSessionKey({ ...keyInput, language })) || 'null')); }
-      catch { return null; }
-    }).filter(Boolean).sort((a,b) => (b?.updatedAt || '').localeCompare(a?.updatedAt || ''))[0];
-    const raw = localStorage.getItem(activeStorageKey) || (legacy ? JSON.stringify(legacy) : null);
-
-    if (!raw) {
-      setSession(null);
-      setAnswer('');
-      setRestored(false);
-      return;
+    function updateLanguage() {
+      const nextLanguage = getStoredLanguageValue();
+      setLanguage(nextLanguage);
+      setSession(current => current ? { ...current, language: nextLanguage } : current);
     }
-
-    try {
-      const parsed = restoreChallengeSession(JSON.parse(raw));
-
-      if (parsed) {
-        setSession(parsed);
-        setAnswer(parsed.activeAnswerDraft);
-        setRestored(true);
-        return;
-      }
-    } catch {
-      localStorage.removeItem(activeStorageKey);
+    function onLanguageEvent(event: Event) {
+      const nextLanguage = (event as CustomEvent).detail;
+      if (!isLanguage(nextLanguage)) return;
+      setLanguage(nextLanguage);
+      setSession(current => current ? { ...current, language: nextLanguage } : current);
     }
-
-    setSession(null);
-    setAnswer('');
-    setRestored(false);
-  }, [activeStorageKey]); // eslint-disable-line react-hooks/exhaustive-deps
+    function onStorage(event: StorageEvent) {
+      if (event.key === 'uthynk-language' || event.key === null) updateLanguage();
+    }
+    window.addEventListener(UTHYNK_LANGUAGE_EVENT, onLanguageEvent);
+    window.addEventListener('storage', onStorage);
+    return () => {
+      window.removeEventListener(UTHYNK_LANGUAGE_EVENT, onLanguageEvent);
+      window.removeEventListener('storage', onStorage);
+    };
+  }, []);
 
   useEffect(() => {
-    if (!session) return;
+    if (!ready) return;
+    const parsed = readLessonSession(localStorage, keyInput, questionRecord);
+    setSession(parsed);
+    setAnswer(parsed?.activeAnswerDraft || '');
+    setRestored(Boolean(parsed));
+    setLoadedStorageKey(activeStorageKey);
+  }, [activeStorageKey, ready]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!ready || loadedStorageKey !== activeStorageKey || !session || challengeSessionKey(session) !== activeStorageKey) return;
     localStorage.setItem(challengeSessionKey(session), JSON.stringify(session));
-  }, [session]);
+  }, [session, ready, loadedStorageKey, activeStorageKey]);
+
+  useEffect(() => {
+    if (!ready || loadedStorageKey !== activeStorageKey || !questionRecord) return;
+    localStorage.setItem(selectionStorageKey, questionRecord.id);
+  }, [ready, loadedStorageKey, activeStorageKey, selectionStorageKey, questionRecord]);
 
   useEffect(() => {
     const SpeechRecognition =
@@ -245,19 +249,20 @@ export default function LessonQuestionClient({ category, questions }: Props) {
     }
 
     const recognition = new SpeechRecognition();
+    let disposed = false;
 
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = language === 'es' ? 'es-US' : language === 'fr' ? 'fr-FR' : 'en-US';
 
     recognition.onresult = (event: any) => {
+      if (disposed) return;
       const transcript = Array.from(event.results)
         .map((result: any) => result[0]?.transcript || '')
         .join(' ')
         .trim();
 
-      setAnswer(transcript);
-      setSession((current) => captureAnswerDraft(current, transcript));
+      draftUpdateRef.current(transcript);
     };
 
     recognition.onerror = () => {
@@ -279,6 +284,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
     recognitionRef.current = recognition;
 
     return () => {
+      disposed = true;
       listeningRef.current = false;
       try {
         recognition.stop();
@@ -353,8 +359,11 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
   function updateAnswer(nextAnswer: string) {
     setAnswer(nextAnswer);
-    setSession((current) => captureAnswerDraft(current || createChallengeSession({ ...keyInput, conversationId: crypto.randomUUID(), originalQuestion: selectedQuestion, sessionId: crypto.randomUUID() }), nextAnswer));
+    setSession((current) => captureAnswerDraft(current || createChallengeSession({ ...keyInput, conversationId: crypto.randomUUID(), originalQuestion: sourceQuestion, sessionId: crypto.randomUUID() }), nextAnswer));
   }
+  // Speech callbacks must capture the currently selected question, not the
+  // question that happened to be selected when recognition was initialized.
+  draftUpdateRef.current = updateAnswer;
 
   function startNewChallenge() {
     // A tombstone prevents older v2 language slots from reappearing after a deliberate reset.
@@ -373,10 +382,11 @@ export default function LessonQuestionClient({ category, questions }: Props) {
         category,
         challenge: active.originalQuestion,
         conversationId: active.conversationId,
-        displayedQuestion: active.originalQuestion,
+        displayedQuestion: selectedQuestion,
         firstUserAnswer: active.firstResponse,
         language,
         originalQuestion: active.originalQuestion,
+        questionId: active.questionId,
         perspectiveExpansion: active.perspectiveExpansion,
         phase,
         question: phase === 'synthesis' ? active.secondaryQuestion : active.originalQuestion,
@@ -418,13 +428,13 @@ export default function LessonQuestionClient({ category, questions }: Props) {
         createChallengeSession({
           ...keyInput,
           conversationId: crypto.randomUUID(),
-          originalQuestion: selectedQuestion,
+          originalQuestion: sourceQuestion,
           sessionId: crypto.randomUUID(),
         });
 
       if (active.step === 'main_question') {
         const feedback = await requestFeedback('follow_up', active, submittedAnswer);
-        setSession(applyPerspectiveExpansion(active, submittedAnswer, feedback));
+        setSession(current => ({ ...applyPerspectiveExpansion(active, submittedAnswer, feedback), language: current?.language || active.language }));
         setAnswer('');
         return;
       }
@@ -432,7 +442,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
       if (active.step === 'secondary_question') {
         const feedback = await requestFeedback('synthesis', active, submittedAnswer);
         const completed = applyFinalSynthesis(active, submittedAnswer, feedback);
-        setSession(completed);
+        setSession(current => ({ ...completed, language: current?.language || active.language }));
         setAnswer('');
         trackEvent(
           createTelemetryEvent('completed_reasoning_loop', userId, {
@@ -509,11 +519,11 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
       <section className="lessonQuestionLayout" style={{ maxWidth: '100%', minWidth: 0, width: '100%' }}>
         <div className="lessonQuestionList" style={{ minWidth: 0 }}>
-          {adaptedQuestions.map((question, index) => (
+          {localizedQuestions.map((question, index) => (
             <button
               className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}
               disabled={loading || Boolean(session)}
-              key={`${category}-${index}-${question}`}
+              key={getLessonQuestion(category, questions[index])?.id || `${category}-${index}`}
               onClick={() => selectQuestion(index)}
               type="button"
             >
@@ -528,7 +538,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
           {safeAgeBand !== '18_plus' ? (
             <div className="ageModeBadge">{ageBandLabel(safeAgeBand)}</div>
           ) : null}
-          <h2>{session?.originalQuestion || selectedQuestion}</h2>
+          <h2>{selectedQuestion}</h2>
 
           <div className="thinkingLabelLayer" aria-label="Challenge progress">
             {progressLabels.map((label, index) => (
