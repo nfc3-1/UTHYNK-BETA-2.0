@@ -9,3 +9,4 @@
 @media(prefers-reduced-motion:reduce){.moving,.bubble{animation:none}}
 
 .scene[data-playing="false"] .moving{animation-play-state:paused}
+.headerActions{display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0}.headerActions a{white-space:normal;text-align:center}
