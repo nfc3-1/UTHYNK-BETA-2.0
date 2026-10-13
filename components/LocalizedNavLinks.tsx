@@ -1,5 +1,6 @@
 'use client';
 
+import { ThinkingPathsNavLink } from '@/components/PathShell';
 import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -72,6 +73,7 @@ export default function LocalizedNavLinks({ className = 'appNav', items = primar
           {copy[item.key]}
         </Link>
       ))}
+      <ThinkingPathsNavLink language={language} />
       <RestrictedNavLinks />
     </nav>
   );

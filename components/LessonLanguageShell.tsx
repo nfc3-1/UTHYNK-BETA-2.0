@@ -1,5 +1,7 @@
 'use client';
 
+import { ThinkingPathsNavLink } from '@/components/PathShell';
+
 import { LessonLibraryGuide, LessonsNavLink, lessonLibraryStats } from '@/components/LessonDiscovery';
 import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import Link from 'next/link';
@@ -114,6 +116,7 @@ export default function LessonLanguageShell({ categories }: Props) {
           <nav className="appNav">
             <Link href="/">{copy.home}</Link>
             <LessonsNavLink language={language} />
+            <ThinkingPathsNavLink language={language} />
             <RestrictedNavLinks />
             <Link href="/profile">{copy.profileNav}</Link>
             <Link href="/feedback">{copy.feedbackNav}</Link>

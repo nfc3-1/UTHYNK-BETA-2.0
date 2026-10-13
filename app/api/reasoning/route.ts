@@ -1,3 +1,4 @@
+import { resolveReadingRequest } from '@/lib/readingAccess';
 import { NextResponse } from "next/server";
 import { reasoningProviderError } from "@/lib/reasoningProviderError";
 import { getServerSessionUser } from "@/lib/auth";
@@ -16,6 +17,7 @@ import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
 import { evolveTraitScore } from "@/lib/traits";
 
 type ReasoningRequest = {
+  readingModuleId?: string;
   ageBand?: "under_13" | "13_17" | "18_plus";
   challenge?: string;
   challengeId?: string;
@@ -1070,6 +1072,15 @@ function streamingFeedback(args: {
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ReasoningRequest;
+    if (body.readingModuleId !== undefined) {
+      const reading = await resolveReadingRequest(body.readingModuleId);
+      if (!reading.ok) return NextResponse.json({ error: reading.error }, { status: reading.status });
+      body.category = reading.module.category;
+      body.challenge = reading.context;
+      body.originalQuestion = reading.context;
+      body.section = `reading:${reading.module.id}`;
+      if (body.phase !== 'synthesis') body.question = reading.module.question.en;
+    }
     const sessionUser = await getServerSessionUser();
     const userId = sessionUser?.id;
     const sessionId = body.sessionId || crypto.randomUUID();
