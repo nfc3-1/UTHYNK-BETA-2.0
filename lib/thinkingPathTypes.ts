@@ -3,7 +3,7 @@ export type PathText = Record<Language, string>;
 export type ReadingModule = {
   id: string; title: PathText; work: PathText; author: string; edition: string;
   location: PathText; sourceUrl: string;
-  sourceKind: 'excerpt';
+  sourceKind: 'excerpt' | 'guided_reading';
   rights: 'public_domain_us' | 'government_text';
   rightsEvidence: { jurisdiction: 'US'; statusUrl: string; checkedAt: string };
   editorialStatus: 'needs_review' | 'approved';

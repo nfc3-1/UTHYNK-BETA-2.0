@@ -32,8 +32,8 @@ export default function ReadingPathClient({ pathSlug, pathTitle, reading, module
       <aside className={`card ${styles.readingNav}`}><h2>{copy.progress}</h2><ol>{reading.modules.map((item, index) => <li key={item.id}><Link href={`${baseUrl}?lesson=${item.id}`} aria-current={item.id === readingModule.id ? 'page' : undefined}>{index + 1}. {item.title[language]}<span className={styles.status}>{copy[progress[item.id] || 'untouched']}</span></Link></li>)}</ol><p className={styles.review}>{copy.local}</p></aside>
       <article className={`card ${styles.passage}`}><span className={styles.badge}>{copy.reading} · {moduleIndex + 1} / {reading.modules.length}</span><h1>{readingModule.title[language]}</h1><p>{readingModule.work[language]} · {readingModule.author}</p><p className={styles.review}>{readingModule.location[language]} · {readingModule.edition}</p>
         {readingModule.contentNote && <p className={styles.note}>{readingModule.contentNote[language]}</p>}
-        <h2>{copy.excerpt}</h2>
-        <blockquote>{readingModule.text[language]}</blockquote>
+        <h2>{readingModule.sourceKind === 'excerpt' ? copy.excerpt : copy.guided}</h2>
+        {readingModule.sourceKind === 'excerpt' ? <blockquote>{readingModule.text[language]}</blockquote> : <p>{readingModule.text[language]}</p>}
         <a href={readingModule.sourceUrl} target="_blank" rel="noopener noreferrer">{copy.source} ↗</a>
         <p className={styles.review}><a href={readingModule.rightsEvidence.statusUrl} target="_blank" rel="noopener noreferrer">{copy.publicDomain}</a></p>
         <h2>{copy.context}</h2><p>{readingModule.plainLanguage[language]}</p><section className={styles.angles}><h2>{copy.lenses}</h2><ul>{readingModule.lenses.map(lens => <li key={lens.en}>{lens[language]}</li>)}</ul></section>

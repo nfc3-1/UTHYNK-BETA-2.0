@@ -1,0 +1,37 @@
+{
+  "marcus": {
+    "work": {"en":"Meditations", "es":"Meditaciones", "fr":"Pensées pour moi-même"},
+    "author":"Marcus Aurelius",
+    "edition":"George Long translation · Project Gutenberg #6920",
+    "sourceUrl":"https://www.gutenberg.org/cache/epub/6920/pg6920-images.html",
+    "rights":"public_domain_us"
+  },
+  "hume": {
+    "work":{"en":"An Enquiry Concerning Human Understanding", "es":"Investigación sobre el entendimiento humano", "fr":"Enquête sur l’entendement humain"},
+    "author":"David Hume",
+    "edition":"L. A. Selby-Bigge edition · Project Gutenberg #9662",
+    "sourceUrl":"https://www.gutenberg.org/files/9662/9662-h/9662-h.htm",
+    "rights":"public_domain_us"
+  },
+  "douglass": {
+    "work":{"en":"Narrative of the Life of Frederick Douglass", "es":"Narración de la vida de Frederick Douglass", "fr":"Récit de la vie de Frederick Douglass"},
+    "author":"Frederick Douglass",
+    "edition":"1845 · Project Gutenberg #23",
+    "sourceUrl":"https://www.gutenberg.org/cache/epub/23/pg23-images.html",
+    "rights":"public_domain_us"
+  },
+  "dubois": {
+    "work":{"en":"The Souls of Black Folk", "es":"Las almas del pueblo negro", "fr":"Les Âmes du peuple noir"},
+    "author":"W. E. B. Du Bois",
+    "edition":"1903 · Project Gutenberg #408",
+    "sourceUrl":"https://www.gutenberg.org/cache/epub/408/pg408-images.html",
+    "rights":"public_domain_us"
+  },
+  "billRights": {
+    "work":{"en":"U.S. Bill of Rights", "es":"Carta de Derechos de Estados Unidos", "fr":"Déclaration des droits des États-Unis"},
+    "author":"First United States Congress",
+    "edition":"1791 · National Archives transcription",
+    "sourceUrl":"https://www.archives.gov/founding-docs/bill-of-rights-transcript",
+    "rights":"government_text"
+  }
+}

@@ -4,7 +4,7 @@ The seven thematic groups were supplied by the user on 2026-10-13. Reading sourc
 
 Thinking Paths are thematic categories. Reading Paths are ordered sequences of readings inside a category. Existing daily challenges and the 450-question lesson bank keep their own identities and behavior.
 
-This starter release has seven themes and eleven readings. The themes are Power & Leadership; Freedom & Government; Meaning/Morality/Suffering; Truth & Knowledge; Human Nature; Civilizations & Culture; and Economics & Society. Each reading supports the existing four steps: Main Question → Perspective Expansion → Secondary Question → Final Synthesis. There is no additional reasoning turn. Source context is resolved on the server before either provider call; client text cannot replace it. The existing reasoning coach, age-aware prompts, voice interaction, and conversation persistence are reused.
+This starter release has seven themes and seventy readings: exactly ten parts in each Reading Path. The themes are Power & Leadership; Freedom & Government; Meaning/Morality/Suffering; Truth & Knowledge; Human Nature; Civilizations & Culture; and Economics & Society. Each reading supports the existing four steps: Main Question → Perspective Expansion → Secondary Question → Final Synthesis. There is no additional reasoning turn. Source context is resolved on the server before either provider call; client text cannot replace it. The existing reasoning coach, age-aware prompts, voice interaction, and conversation persistence are reused.
 
 ## Access and rollout
 
@@ -16,9 +16,9 @@ Reading modules have permanent IDs independent of title, sequence position, and 
 
 ## Editorial review and sources
 
-All eleven modules are marked `needs_review` and display a beta editorial notice. English quotations are short excerpts from the linked edition; Spanish/French quotations are new UThynk working translations, not quotations from an independently published translation. Their accuracy, register, attribution, and historical context need bilingual editorial approval before changing status to `approved`. Original context, contrasting lenses, and questions also need review. Review coverage includes all eleven modules in all three languages; no required starter content field is missing.
+All seventy modules are marked `needs_review` and display a beta editorial notice. Eleven readings retain short English excerpts from the linked editions; the other fifty-nine are clearly labeled original UThynk guided adaptations of specific passages, not verbatim author quotations. Spanish/French quotations are new UThynk working translations, not quotations from an independently published translation. Their accuracy, register, attribution, and historical context need bilingual editorial approval before changing status to `approved`. Original context, contrasting lenses, and questions also need review. Review coverage includes all seventy modules in all three languages; no required starter content field is missing.
 
-Source pages and the selected Project Gutenberg editions’ explicit U.S. public-domain status were checked on 2026-10-13. Each module includes a jurisdiction, verification date, and linked rights evidence. The U.S. Copyright Office confirms that works published in the United States before January 1, 1931 are public domain: https://www.copyright.gov/what-is-copyright/. `public_domain_us` records the selected edition's U.S. status, not a worldwide rights claim. The interface links to full public-domain works at their primary repositories. No companion guides to copyrighted works are included.
+Source pages and the selected Project Gutenberg editions’ explicit U.S. public-domain status were checked on 2026-10-13. Each module includes a jurisdiction, verification date, and linked rights evidence. The U.S. Copyright Office confirms that works published in the United States before January 1, 1931 are public domain: https://www.copyright.gov/what-is-copyright/. `public_domain_us` records the selected edition's U.S. status, not a worldwide rights claim. The interface links to full public-domain works at their primary repositories. New sources include Marcus Aurelius (George Long, not Meric Casaubon), David Hume (Selby-Bigge edition), Frederick Douglass, W. E. B. Du Bois, and the Bill of Rights; all selected editions’ U.S. public-domain status was checked on 2026-10-13. No companion guides to copyrighted works are included.
 
 | Module ID | Work / passage | Edition and source | Review focus |
 |---|---|---|---|
@@ -34,9 +34,15 @@ Source pages and the selected Project Gutenberg editions’ explicit U.S. public
 | reading-herodotus-customs-3-38 | Histories, III, 38 | [G. C. Macaulay, 1890](https://www.gutenberg.org/files/2707/2707-h/2707-h.htm) | Cultural familiarity versus fairness; ancient observer’s interpretation, not a universal claim |
 | reading-smith-interest-1-2 | Wealth of Nations, I, II | [Adam Smith, 1776](https://www.gutenberg.org/files/3300/3300-h/3300-h.htm) | Self-interest versus greed; avoid implying all exchanges are fair |
 
+## Maintaining the ten-part paths
+
+`data/thinkingPathParts.json` contains the 59 additional parts, with permanent IDs and English/Spanish/French text for titles, source locations, guided readings, context, contrasting lenses, and questions. `data/readingSources.json` records the five additional sources; `lib/thinkingPaths.ts` combines them with the original eleven parts. A semantic change requires a new part ID; reordering or wording corrections keep identity. Coverage tests enforce exactly ten parts per path and seventy distinct IDs, reading texts, titles, and questions. The original eleven IDs and their session keys are retained.
+
+The reading text is shown before the existing four-step reasoning exercise. Reading and comparing source perspectives do not add a fifth reasoning question. Editorial status remains `needs_review` for all seventy parts, including the working Spanish and French renderings. There are no missing starter content fields in any language.
+
 ## Remaining scope
 
-This is a functioning starter library, not a complete course or full-text reader. Additional works, more readings per theme, editorial approval, and cross-device path completion remain future work. Passage-specific reasoning quality still needs beta evaluation with live model responses; automated tests mock the provider and verify contracts, not literary interpretation. Existing translated lesson coverage is unchanged.
+This is a functioning starter library, not a complete course or full-text reader. Additional works, editorial approval, and cross-device path completion remain future work. Passage-specific reasoning quality still needs beta evaluation with live model responses; automated tests mock the provider and verify contracts, not literary interpretation. Existing translated lesson coverage is unchanged.
 
 ## Verification
 

@@ -64,4 +64,15 @@ describe('Reading Path journey', () => {
     expect(page.root.findByType('textarea').props.value).toBe(''); type('Different reading');
     act(() => page.unmount()); mount(); expect(page.root.findByType('textarea').props.value).toBe('Saved reading thought');
   });
+  it('restores the tenth part independently after navigating back to the first part', () => {
+    setup(); const last = reading.modules[9]; mount(last.id); type('Tenth part draft'); change('es');
+    expect(page.root.findAllByType('blockquote')).toHaveLength(0);
+    expect(JSON.stringify(page.toJSON())).toContain(last.text.es);
+    expect(readingProgress(localStorage, last, 'verified-user', '13_17', 'fr')).toBe('saved');
+    act(() => page.unmount()); mount(); type('First part draft');
+    act(() => page.unmount()); mount(last.id); change('fr');
+    expect(page.root.findByType('textarea').props.value).toBe('Tenth part draft');
+    expect(page.root.findAllByType('a').some(link => link.props.href?.endsWith(`lesson=${last.id}`))).toBe(true);
+  });
+
 });
