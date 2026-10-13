@@ -1,5 +1,6 @@
 "use client";
 
+import { LessonDiscoveryBanner, LessonsNavLink } from "@/components/LessonDiscovery";
 import ThinkingWalkthrough, { ThinkingStepHint, VISUAL_GUIDE_DISMISSED } from "@/components/ThinkingWalkthrough";
 import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
@@ -1779,7 +1780,7 @@ export default function ReasoningPage() {
           <nav className="appNav" aria-label="Reasoning navigation">
             <Link href="/">{copy.home}</Link>
             <Link href="/daily">{pageText[language].daily}</Link>
-            <Link href="/lessons">{pageText[language].lessons}</Link>
+            <LessonsNavLink language={language} />
             <RestrictedNavLinks />
             <Link href="/profile">{pageText[language].profileNav}</Link>
             <Link href="/feedback">{pageText[language].feedbackNav}</Link>
@@ -1811,6 +1812,8 @@ export default function ReasoningPage() {
           </label>
         </div>
       </header>
+
+      <LessonDiscoveryBanner language={language} lessonCount={challenges.length} categoryCount={categoryLinks.length} />
 
       <ThinkingWalkthrough language={language} open={showOnboarding} onOpenChange={setShowOnboarding} />
 

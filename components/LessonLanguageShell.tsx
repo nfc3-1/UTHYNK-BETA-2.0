@@ -1,5 +1,6 @@
 'use client';
 
+import { LessonLibraryGuide, LessonsNavLink, lessonLibraryStats } from '@/components/LessonDiscovery';
 import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -112,7 +113,7 @@ export default function LessonLanguageShell({ categories }: Props) {
         <div className="topControls">
           <nav className="appNav">
             <Link href="/">{copy.home}</Link>
-            <Link href="/lessons">{copy.lessonsNav}</Link>
+            <LessonsNavLink language={language} />
             <RestrictedNavLinks />
             <Link href="/profile">{copy.profileNav}</Link>
             <Link href="/feedback">{copy.feedbackNav}</Link>
@@ -140,7 +141,7 @@ export default function LessonLanguageShell({ categories }: Props) {
       <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
           <div className="eyebrow">{copy.lessonsNav}</div>
-          <div className="panelLabel">Question Bank: Real-World Micro-Cases v4</div>
+          <div className="panelLabel">{lessonLibraryStats(language, categories)}</div>
           <h1>{language === 'es' ? 'Elige una categoria de pensamiento.' : language === 'fr' ? 'Choisis une categorie de pensee.' : 'Choose a thinking category.'}</h1>
           <p>
             {language === 'es'
@@ -151,6 +152,8 @@ export default function LessonLanguageShell({ categories }: Props) {
           </p>
         </div>
       </section>
+
+      <LessonLibraryGuide language={language} categories={categories} />
 
       <section className="lessonCategoryGrid">
         {categories.map((item) => (
