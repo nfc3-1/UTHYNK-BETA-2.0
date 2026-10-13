@@ -1,5 +1,6 @@
 'use client';
 
+import { LessonQuestionListHint, LessonsNavLink } from '@/components/LessonDiscovery';
 import ThinkingWalkthrough, { ThinkingStepHint } from '@/components/ThinkingWalkthrough';
 import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -484,7 +485,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
         <div className="topControls">
           <nav className="appNav">
             <a href="/">{copy.home}</a>
-            <a href="/lessons">{copy.lessonsNav}</a>
+            <LessonsNavLink language={language} />
             <RestrictedNavLinks />
             <a href="/profile">{copy.profileNav}</a>
             <a href="/feedback">{copy.feedbackNav}</a>
@@ -522,6 +523,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
 
       <section className="lessonQuestionLayout" style={{ maxWidth: '100%', minWidth: 0, width: '100%' }}>
         <div className="lessonQuestionList" style={{ minWidth: 0 }}>
+          <LessonQuestionListHint language={language} />
           {localizedQuestions.map((question, index) => (
             <button
               className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}

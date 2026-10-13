@@ -34,6 +34,17 @@ async function submit() { await act(async () => { await submitButton().props.onC
 afterEach(() => { if (page) act(() => page.unmount()); vi.unstubAllGlobals(); });
 
 describe("reasoning page finite workout", () => {
+  it('keeps All lessons and the library shortcut visible after dismissing How to use', () => {
+    setup();
+    act(() => button('Start thinking').props.onClick());
+    type('response', 'Keep my daily challenge draft');
+    const links = page.root.findAllByType('a').filter(link => link.props.href === '/lessons');
+    expect(links.some(link => link.children.join('') === 'All lessons')).toBe(true);
+    expect(links.some(link => link.children[0] === 'Explore all lessons')).toBe(true);
+    expect(JSON.stringify(page.toJSON())).toContain('There’s more than the daily challenge.');
+    expect(field('response').props.value).toBe('Keep my daily challenge draft');
+    expect(requests).toHaveLength(0);
+  });
   for (const language of ['en','es','fr']) it(`completes and restores the ${language} finite flow`, async () => {
     setup(language);
     const perspective = language === 'es' ? 'Considera quién se beneficia.' : language === 'fr' ? 'Considère qui en profite.' : 'Consider who benefits.';
