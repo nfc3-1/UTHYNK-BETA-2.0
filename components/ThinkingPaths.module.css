@@ -1,0 +1,214 @@
+.shell {
+  max-width:1180px;
+  margin:0 auto;
+  padding:24px 20px 64px;
+  color:#172044;
+}
+.header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:20px;
+  flex-wrap:wrap;
+}
+.header nav {
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.header label {
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.header select {
+  padding:9px;
+  border-radius:9px;
+  border:1px solid #d8d9e8;
+  background:white;
+  color:#172044;
+}
+.hero {
+  padding:32px;
+  margin:24px 0;
+  background:linear-gradient(130deg,#f4f0ff,#effbf9);
+}
+.hero h1 {
+  font-size:clamp(2rem,4vw,3.2rem);
+  margin:12px 0;
+}
+.hero p {
+  font-size:1.12rem;
+  line-height:1.7;
+  max-width:800px;
+}
+.badge {
+  font-size:.8rem;
+  font-weight:700;
+  color:#6046a3;
+  letter-spacing:.06em;
+}
+.guide {
+  padding:26px;
+  margin:24px 0;
+}
+.guide h2 {
+  margin-top:0;
+}
+.guide ol {
+  list-style:none;
+  padding:0;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+.guide li {
+  border-radius:16px;
+  padding:20px;
+  background:#f7f8fc;
+}
+.guide p {
+  line-height:1.6;
+  margin-bottom:0;
+}
+.stepIcon {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:54px;
+  height:54px;
+  margin-bottom:12px;
+  font-size:2rem;
+  color:#6046a3;
+  background:#eae3fa;
+  border-radius:16px;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:22px;
+  margin-bottom:26px;
+}
+.pathCard {
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+}
+.pathCard h2 {
+  margin:10px 0;
+}
+.pathCard p,.pathCard li {
+  line-height:1.6;
+}
+.pathCard .meta {
+  color:#5b627c;
+  font-size:.9rem;
+}
+.pathCard a {
+  margin-top:auto;
+}
+.locked {
+  padding:26px;
+  border:2px solid #e6c984;
+}
+.locked a {
+  display:inline-block;
+  margin:8px 22px 0 0;
+}
+.readingLayout {
+  display:grid;
+  grid-template-columns:260px minmax(0,1fr);
+  gap:24px;
+  margin:24px 0;
+  align-items:start;
+}
+.readingNav {
+  padding:22px;
+  position:sticky;
+  top:18px;
+}
+.readingNav ol {
+  list-style:none;
+  padding:0;
+}
+.readingNav li {
+  margin:12px 0;
+}
+.readingNav a {
+  display:block;
+  padding:12px;
+  border-radius:10px;
+  background:#f6f5fb;
+}
+.readingNav a[aria-current=page] {
+  outline:2px solid #7560bb;
+  background:#eee8fc;
+}
+.status {
+  display:block;
+  font-size:.8rem;
+  margin-top:5px;
+  color:#525a74;
+}
+.passage {
+  padding:30px;
+  scroll-margin-top:20px;
+}
+.passage h1 {
+  margin:10px 0;
+}
+.passage blockquote {
+  font-size:1.3rem;
+  line-height:1.8;
+  margin:22px 0;
+  padding:20px;
+  border-left:4px solid #9f80cf;
+  background:#f6f2fc;
+}
+.passage p,.passage li {
+  line-height:1.7;
+}
+.angles {
+  padding:20px;
+  background:#edf9f5;
+  border-radius:14px;
+}
+.note {
+  padding:12px 16px;
+  background:#fff6dc;
+  border-radius:10px;
+  font-size:.9rem;
+}
+.review {
+  font-size:.85rem;
+  color:#62677a;
+}
+.footer {
+  margin:24px 0;
+  padding:22px;
+}
+.footer a {
+  margin-right:20px;
+}
+@media(max-width:760px) {
+  .grid,.readingLayout,.guide ol {
+    grid-template-columns:1fr;
+  }
+  .readingNav {
+    position:static;
+  }
+  .hero,.pathCard,.passage {
+    padding:22px;
+  }
+  .header {
+    gap:14px;
+  }
+  .header nav {
+    gap:14px;
+  }
+  .shell {
+    padding:14px 12px 40px;
+  }
+}

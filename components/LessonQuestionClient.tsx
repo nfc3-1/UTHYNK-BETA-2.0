@@ -1,5 +1,7 @@
 'use client';
 
+import { ThinkingPathsNavLink } from '@/components/PathShell';
+
 import { LessonQuestionListHint, LessonsNavLink } from '@/components/LessonDiscovery';
 import ThinkingWalkthrough, { ThinkingStepHint } from '@/components/ThinkingWalkthrough';
 import RestrictedNavLinks from '@/components/RestrictedNavLinks';
@@ -35,6 +37,11 @@ import { createTelemetryEvent, trackEvent } from '@/lib/telemetry';
 type Props = {
   category: string;
   questions: string[];
+  questionIds?: string[];
+  questionTranslations?: Record<Language, string[]>;
+  readingModuleId?: string;
+  sessionUserId?: string;
+  onSessionChange?: (session: ChallengeSession | null) => void;
 };
 
 type Feedback = {
@@ -137,7 +144,7 @@ function normalizeFeedback(payload: Feedback, phase: 'follow_up' | 'synthesis'):
   };
 }
 
-export default function LessonQuestionClient({ category, questions }: Props) {
+export default function LessonQuestionClient({ category, questions, questionIds, questionTranslations, readingModuleId, sessionUserId, onSessionChange }: Props) {
   const [language, setLanguage] = useState<Language>('en');
   const [answer, setAnswer] = useState('');
   const [loading, setLoading] = useState(false);
@@ -159,8 +166,8 @@ export default function LessonQuestionClient({ category, questions }: Props) {
   const visibleCategory = localizeCategory(category, language);
   const safeAgeBand = normalizeAgeBand(ageBand);
   const localizedQuestions = useMemo(
-    () => questions.map((question, index) => localizeQuestion(category, index, question, language)),
-    [category, language, questions]
+    () => questionTranslations?.[language] || questions.map((question, index) => localizeQuestion(category, index, question, language)),
+    [category, language, questions, questionTranslations]
   );
   // Lesson scenarios retain their meaning for every age band. The reasoning API
   // still receives ageBand; generic English age frames must not replace translations.
@@ -168,12 +175,12 @@ export default function LessonQuestionClient({ category, questions }: Props) {
   const sourceQuestion = questions[selectedIndex] || questions[0] || '';
   const questionRecord = getLessonQuestion(category, sourceQuestion);
   const profile = typeof window === 'undefined' ? null : readProfile();
-  const userId = profile?.id || null;
+  const userId = sessionUserId || profile?.id || null;
   const keyInput: ChallengeSessionKeyInput = {
     ageBand: safeAgeBand,
     category,
     language,
-    questionId: questionRecord?.id || `${category}-${selectedIndex}`,
+    questionId: questionIds?.[selectedIndex] || questionRecord?.id || `${category}-${selectedIndex}`,
     questionIndex: selectedIndex,
     userId,
   };
@@ -185,8 +192,8 @@ export default function LessonQuestionClient({ category, questions }: Props) {
     setLanguage(getStoredLanguageValue());
     const initialAge = normalizeAgeBand(initialProfile?.age_band || '18_plus');
     setAgeBand(initialAge);
-    setSelectedIndex(readLessonSelection(localStorage, {
-      category, ageBand: initialAge, userId: initialProfile?.id, language: getStoredLanguageValue(),
+    setSelectedIndex(readingModuleId ? 0 : readLessonSelection(localStorage, {
+      category, ageBand: initialAge, userId: sessionUserId || initialProfile?.id, language: getStoredLanguageValue(),
     }, questions));
     setReady(true);
 
@@ -196,7 +203,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
         questions: questions.length,
       })
     );
-  }, [category, questions]);
+  }, [category, questions, readingModuleId, sessionUserId]);
 
   useEffect(() => {
     function updateLanguage() {
@@ -234,6 +241,10 @@ export default function LessonQuestionClient({ category, questions }: Props) {
     if (!ready || loadedStorageKey !== activeStorageKey || !session || challengeSessionKey(session) !== activeStorageKey) return;
     localStorage.setItem(challengeSessionKey(session), JSON.stringify(session));
   }, [session, ready, loadedStorageKey, activeStorageKey]);
+
+  useEffect(() => {
+    if (ready && loadedStorageKey === activeStorageKey) onSessionChange?.(session);
+  }, [session, ready, loadedStorageKey, activeStorageKey, onSessionChange]);
 
   useEffect(() => {
     if (!ready || loadedStorageKey !== activeStorageKey || !questionRecord) return;
@@ -381,6 +392,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
     const response = await fetch('/api/reasoning', {
       body: JSON.stringify({
         ageBand: safeAgeBand,
+        readingModuleId,
         category,
         challenge: active.originalQuestion,
         conversationId: active.conversationId,
@@ -486,6 +498,7 @@ export default function LessonQuestionClient({ category, questions }: Props) {
           <nav className="appNav">
             <a href="/">{copy.home}</a>
             <LessonsNavLink language={language} />
+            <ThinkingPathsNavLink language={language} />
             <RestrictedNavLinks />
             <a href="/profile">{copy.profileNav}</a>
             <a href="/feedback">{copy.feedbackNav}</a>
@@ -511,24 +524,24 @@ export default function LessonQuestionClient({ category, questions }: Props) {
         </div>
       </header>
 
-      <section className="appHero card" style={{ marginTop: 18 }}>
+      {!readingModuleId && <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
           <div className="eyebrow">{flow.category}</div>
           <h1>{visibleCategory}</h1>
           <p>{flow.intro}</p>
         </div>
-      </section>
+      </section>}
 
       <ThinkingWalkthrough language={language} />
 
       <section className="lessonQuestionLayout" style={{ maxWidth: '100%', minWidth: 0, width: '100%' }}>
         <div className="lessonQuestionList" style={{ minWidth: 0 }}>
-          <LessonQuestionListHint language={language} />
+          {!readingModuleId && <LessonQuestionListHint language={language} />}
           {localizedQuestions.map((question, index) => (
             <button
               className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}
               disabled={loading || Boolean(session)}
-              key={getLessonQuestion(category, questions[index])?.id || `${category}-${index}`}
+              key={questionIds?.[index] || getLessonQuestion(category, questions[index])?.id || `${category}-${index}`}
               onClick={() => selectQuestion(index)}
               type="button"
             >

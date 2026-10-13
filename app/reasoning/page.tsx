@@ -1,5 +1,7 @@
 "use client";
 
+import { ThinkingPathsNavLink } from "@/components/PathShell";
+
 import { LessonDiscoveryBanner, LessonsNavLink } from "@/components/LessonDiscovery";
 import ThinkingWalkthrough, { ThinkingStepHint, VISUAL_GUIDE_DISMISSED } from "@/components/ThinkingWalkthrough";
 import RestrictedNavLinks from '@/components/RestrictedNavLinks';
@@ -1781,6 +1783,7 @@ export default function ReasoningPage() {
             <Link href="/">{copy.home}</Link>
             <Link href="/daily">{pageText[language].daily}</Link>
             <LessonsNavLink language={language} />
+            <ThinkingPathsNavLink language={language} />
             <RestrictedNavLinks />
             <Link href="/profile">{pageText[language].profileNav}</Link>
             <Link href="/feedback">{pageText[language].feedbackNav}</Link>
