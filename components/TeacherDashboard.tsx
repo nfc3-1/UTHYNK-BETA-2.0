@@ -215,7 +215,7 @@ export default function TeacherDashboard({ questionBank }: Props) {
 
   return (
     <section className="teacherShell">
-      <section className="card teacherPanel" aria-label="Teacher demo notice">
+      <section className="card teacherPanel" aria-label="Teacher demo notice" style={{ marginBottom: 18 }}>
         <div className="panelLabel">Demo workspace</div>
         <h2>Fictional students and sample results</h2>
         <p>All student names, completion statuses, dates, and reasoning indicators below are generated examples. They are not student submissions or measured learning gains.</p>

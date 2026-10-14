@@ -70,7 +70,7 @@ export default function LeaderboardPage() {
         <div className="methodSteps">
           {leaderboard.map((user) => (
             <div key={user.username}>
-              <strong>{user.username} (demo)</strong>
+              <span><b>{user.username} (demo)</b></span>
               <span>
                 {user.rank} · {user.xp} XP · {user.streak} day streak · {user.trait}
               </span>

@@ -235,7 +235,7 @@ export default function Profile() {
           <div className="methodSteps">
             {traits.map((trait) => (
               <div key={trait.label}>
-                <strong>{t(trait.label)}</strong>
+                <span>{t(trait.label)}</span>
               </div>
             ))}
           </div>
