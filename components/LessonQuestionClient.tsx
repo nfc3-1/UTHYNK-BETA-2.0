@@ -74,7 +74,6 @@ const flowCopy = {
     secondHint: 'Use the new angles to deepen or revise your thinking.',
     secondPlaceholder: 'Write your second answer.',
     selected: 'Main Question',
-    selectQuestion: 'Start with this',
     synthesis: 'Final Synthesis',
     progress: ['Main Question', 'Perspective Expansion', 'Secondary Question', 'Final Synthesis'],
   },
@@ -95,7 +94,6 @@ const flowCopy = {
     secondHint: 'Usa los nuevos angulos para profundizar o revisar tu pensamiento.',
     secondPlaceholder: 'Escribe tu segunda respuesta.',
     selected: 'Pregunta principal',
-    selectQuestion: 'Empezar con esta',
     synthesis: 'Sintesis final',
     progress: ['Pregunta principal', 'Expansion de perspectiva', 'Pregunta secundaria', 'Sintesis final'],
   },
@@ -116,7 +114,6 @@ const flowCopy = {
     secondHint: 'Utilise les nouveaux angles pour approfondir ou revoir ta reflexion.',
     secondPlaceholder: 'Ecris ta deuxieme reponse.',
     selected: 'Question principale',
-    selectQuestion: 'Commencer avec celle-ci',
     synthesis: 'Synthese finale',
     progress: ['Question principale', 'Elargissement de perspective', 'Question secondaire', 'Synthese finale'],
   },
@@ -493,7 +490,7 @@ export default function LessonQuestionClient({ category, questions, questionIds,
         </div>
       </section>}
 
-      <ThinkingWalkthrough language={language} />
+      {!readingModuleId && <ThinkingWalkthrough language={language} />}
 
       <section className={readingModuleId ? "readingThinkingSession" : "lessonQuestionLayout"} style={{ maxWidth: '100%', minWidth: 0, width: '100%' }}>
         {!readingModuleId && <div className="lessonQuestionList" style={{ minWidth: 0 }}>
@@ -501,12 +498,12 @@ export default function LessonQuestionClient({ category, questions, questionIds,
           {localizedQuestions.map((question, index) => (
             <button
               className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}
+              aria-pressed={selectedIndex === index}
               disabled={loading || Boolean(session)}
               key={questionIds?.[index] || getLessonQuestion(category, questions[index])?.id || `${category}-${index}`}
               onClick={() => selectQuestion(index)}
               type="button"
             >
-              <span>{flow.selectQuestion}</span>
               {question}
             </button>
           ))}

@@ -92,7 +92,7 @@ describe('lesson language persistence', () => {
     for (const language of ['en', 'es', 'fr'] as const) {
       select(language);
       expect(questionText()).toBe(localizeQuestion('Epistemology', 0, questions[0], language));
-      expect(page.root.findAllByProps({ className: 'lessonQuestion' }).map(button => button.children.slice(1).join('')))
+      expect(page.root.findAllByProps({ className: 'lessonQuestion' }).map(button => button.children.join('')))
         .toEqual(questions.slice(1).map((source, index) => localizeQuestion('Epistemology', index + 1, source, language)));
     }
   });
