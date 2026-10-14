@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { thinkingPaths, getReadingModule, getThinkingPath, publicPathSummaries, readingReasoningContext } from '../lib/thinkingPaths';
 import { getCategories } from '../lib/questionBank';
 import { pathCopy } from '../lib/pathCopy';
+import passageData from '../data/readingPassages.json';
 const modules = thinkingPaths.flatMap(path => path.readingPaths).flatMap(path => path.modules);
 describe('Thinking Paths catalog contract', () => {
   it('keeps thematic identities separate from existing challenge categories', () => {
@@ -40,22 +41,23 @@ describe('Thinking Paths catalog contract', () => {
   });
   it('exposes only catalog metadata to accounts without beta access', () => {
     const publicJson = JSON.stringify(publicPathSummaries());
-    expect(publicJson).not.toContain('plainLanguage'); expect(publicJson).not.toContain('sourceUrl');
+    expect(publicJson).not.toContain('plainLanguage'); expect(publicJson).not.toContain('sourceUrl'); expect(publicJson).not.toContain('"text":');
     modules.forEach(module => { expect(publicJson).not.toContain(module.question.en); expect(publicJson).not.toContain(module.text.en); });
   });
-  it('includes verifiable attribution and limits reproduced source text', () => {
+  it('includes substantial source passages and verifiable attribution', () => {
     modules.forEach(module => {
       expect(module.sourceUrl).toMatch(/^https:\/\//); expect(module.edition).toBeTruthy();
-      expect(module.rightsEvidence.jurisdiction).toBe('US'); expect(module.rightsEvidence.statusUrl).toMatch(/^https:\/\//); expect(module.rightsEvidence.checkedAt).toBe('2026-10-13');
-      if (module.sourceKind === 'excerpt') expect(module.text.en.split(/\s+/).length).toBeLessThanOrEqual(25);
+      expect(module.rightsEvidence.jurisdiction).toBe('US'); expect(module.rightsEvidence.statusUrl).toMatch(/^https:\/\//); expect(module.rightsEvidence.checkedAt).toBe('2026-10-14');
+      expect(module.sourceKind).toBe('excerpt');
+      for (const language of ['en','es','fr'] as const) {
+        expect(module.text[language].split(/\s+/).length).toBeGreaterThanOrEqual(90);
+        expect(module.text[language]).not.toMatch(/[…]$/);
+      }
       const context = readingReasoningContext(module);
       expect(context).toContain(module.text.en); expect(context).toContain(module.question.en); expect(context).toContain(module.work.en);
     });
-    expect(modules.filter(module => module.sourceKind === 'guided_reading')).toHaveLength(59);
-    modules.filter(module => module.sourceKind === 'guided_reading').forEach(module => {
-      expect(module.text.en.split(/\s+/).length).toBeGreaterThanOrEqual(35);
-      expect(readingReasoningContext(module)).toContain('UThynk guided adaptation');
-    });
+    expect(Object.keys(passageData.passages).sort()).toEqual(modules.map(module => module.id).sort());
+    expect(passageData.schemaVersion).toBe(1);
     expect(getReadingModule('reading-achebe-culture-guide')).toBeUndefined();
     modules.forEach(module => expect(['public_domain_us', 'government_text']).toContain(module.rights));
   });

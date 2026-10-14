@@ -30,17 +30,21 @@ export default function ReadingPathClient({ pathSlug, pathTitle, reading, module
     <section className={`card ${styles.hero}`}><Link href={`/thinking-paths/${pathSlug}`}>{pathTitle[language]}</Link><h1>{reading.title[language]}</h1><p>{reading.description[language]}</p></section>
     <div className={styles.readingLayout}>
       <aside className={`card ${styles.readingNav}`}><h2>{copy.progress}</h2><ol>{reading.modules.map((item, index) => <li key={item.id}><Link href={`${baseUrl}?lesson=${item.id}`} aria-current={item.id === readingModule.id ? 'page' : undefined}>{index + 1}. {item.title[language]}<span className={styles.status}>{copy[progress[item.id] || 'untouched']}</span></Link></li>)}</ol><p className={styles.review}>{copy.local}</p></aside>
-      <article className={`card ${styles.passage}`}><span className={styles.badge}>{copy.reading} · {moduleIndex + 1} / {reading.modules.length}</span><h1>{readingModule.title[language]}</h1><p>{readingModule.work[language]} · {readingModule.author}</p><p className={styles.review}>{readingModule.location[language]} · {readingModule.edition}</p>
+      <div className={styles.readingContent}><article className={`card ${styles.passage}`}><span className={styles.badge}>{copy.reading} · {moduleIndex + 1} / {reading.modules.length}</span><h2 className={styles.readingTitle}>{readingModule.title[language]}</h2><p>{readingModule.work[language]} · {readingModule.author}</p><p className={styles.review}>{readingModule.location[language]} · {readingModule.edition}</p>
         {readingModule.contentNote && <p className={styles.note}>{readingModule.contentNote[language]}</p>}
         <h2>{readingModule.sourceKind === 'excerpt' ? copy.excerpt : copy.guided}</h2>
-        {readingModule.sourceKind === 'excerpt' ? <blockquote>{readingModule.text[language]}</blockquote> : <p>{readingModule.text[language]}</p>}
+        <div className={styles.passageText} data-reading-passage={readingModule.id}>{readingModule.text[language].split('\n\n').map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div>
         <a href={readingModule.sourceUrl} target="_blank" rel="noopener noreferrer">{copy.source} ↗</a>
         <p className={styles.review}><a href={readingModule.rightsEvidence.statusUrl} target="_blank" rel="noopener noreferrer">{copy.publicDomain}</a></p>
-        <h2>{copy.context}</h2><p>{readingModule.plainLanguage[language]}</p><section className={styles.angles}><h2>{copy.lenses}</h2><ul>{readingModule.lenses.map(lens => <li key={lens.en}>{lens[language]}</li>)}</ul></section>
+        <details className={styles.angles}><summary>{copy.context}</summary><p>{readingModule.plainLanguage[language]}</p><h3>{copy.lenses}</h3><ul>{readingModule.lenses.map(lens => <li key={lens.en}>{lens[language]}</li>)}</ul></details>
         {readingModule.editorialStatus === 'needs_review' && <p className={styles.review}>{copy.review}</p>}
+        <a className={`btn ${styles.thinkLink}`} href="#reading-thinking">{copy.thinkAfterReading} ↓</a>
       </article>
-    </div>
+      <section id="reading-thinking" className={styles.thinking} aria-label={copy.thinkAfterReading}>
     <LessonQuestionClient key={readingModule.id} category={readingModule.category} questions={questions} questionIds={ids} questionTranslations={translations} readingModuleId={readingModule.id} sessionUserId={userId} onSessionChange={refreshProgress} />
+      </section>
     <section className={`card ${styles.footer}`}><Link href={`/thinking-paths/${pathSlug}`}>← {copy.back}</Link>{next ? <Link className="btn btnPrimary" href={`${baseUrl}?lesson=${next.id}`}>{copy.next}: {next.title[language]} →</Link> : <p>{copy.end}</p>}</section>
+      </div>
+    </div>
   </PathShell>;
 }

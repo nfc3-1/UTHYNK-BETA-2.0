@@ -1,9 +1,10 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState, type ReactNode } from 'react';
-import { getStoredLanguageValue, setStoredLanguageValue, languageOptions, UTHYNK_LANGUAGE_EVENT, type Language } from '@/lib/reasoningI18n';
+import { getStoredLanguageValue, setStoredLanguageValue, UTHYNK_LANGUAGE_EVENT, type Language } from '@/lib/reasoningI18n';
 import { pathCopy } from '@/lib/pathCopy';
 import styles from './ThinkingPaths.module.css';
+import LessonAppHeader from './LessonAppHeader';
 
 export function usePathLanguage() {
   const [language, setLanguage] = useState<Language>('en');
@@ -20,13 +21,8 @@ export function ThinkingPathsNavLink({ language }: { language: Language }) {
   return <Link href="/thinking-paths">{pathCopy[language].title} <small>{pathCopy[language].beta}</small></Link>;
 }
 export default function PathShell({ language, changeLanguage, children }: { language: Language; changeLanguage: (value: Language) => void; children: ReactNode }) {
-  const copy = pathCopy[language];
-  return <main className={styles.shell}>
-    <header className={`card ${styles.header}`}>
-      <Link href="/" className="appBrandText"><img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" /><strong>UThynk</strong></Link>
-      <nav aria-label={copy.title}><Link href="/">{copy.home}</Link><Link href="/lessons">{copy.lessons}</Link><ThinkingPathsNavLink language={language} /></nav>
-      <label>{copy.language}<select aria-label={copy.language} value={language} onChange={event => changeLanguage(event.target.value as Language)}>{languageOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
-    </header>
+  return <main className={`appShell ${styles.shell}`}>
+    <LessonAppHeader language={language} changeLanguage={changeLanguage} />
     {children}
   </main>;
 }

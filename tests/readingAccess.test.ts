@@ -29,7 +29,7 @@ describe('Reading Path beta boundary', () => {
   it('never serializes the full reading to an ungranted account', async () => {
     const page = await ReadingPage({ params, searchParams: {} });
     expect(page.props.locked).toBe(true); expect(page.props.reading).toBeUndefined();
-    expect(JSON.stringify(page.props)).not.toContain(getReadingModule(moduleId)!.text.en);
+    expect(JSON.stringify(page.props)).not.toContain(JSON.stringify(getReadingModule(moduleId)!.text.en).slice(1, -1));
     state.sections = ['thinking_paths'];
     const allowed = await ReadingPage({ params, searchParams: {} });
     expect(allowed.props.moduleId).toBe(moduleId); expect(allowed.props.userId).toBe('server-profile');
@@ -49,7 +49,7 @@ describe('Reading Path beta boundary', () => {
     state.sections = ['thinking_paths'];
     const first = { readingModuleId: moduleId, category: 'forged', challenge: 'forged source', originalQuestion: 'forged source', question: 'forged question', response: 'Independent checks.', language: 'fr', ageBand: 'under_13' };
     expect((await request(first)).status).toBe(200);
-    expect(JSON.stringify(sent[0])).toContain(getReadingModule(moduleId)!.text.en); expect(JSON.stringify(sent[0])).not.toContain('forged source');
+    expect(JSON.parse(sent[0].messages[1].content).challenge).toBe(readingReasoningContext(getReadingModule(moduleId)!)); expect(JSON.stringify(sent[0])).not.toContain('forged source');
     expect(sent[0].messages[0].content).toContain('French');
     expect((await request({ ...first, phase: 'synthesis', firstUserAnswer: 'Independent checks.', perspectiveExpansion: 'Consider the power of checks.', secondaryQuestion: 'Who chooses the checkers?', secondUserAnswer: 'People should choose them.' })).status).toBe(200);
     expect(JSON.parse(sent[1].messages[1].content).synthesisContext.originalQuestion).toBe(readingReasoningContext(getReadingModule(moduleId)!));

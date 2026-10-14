@@ -30,17 +30,32 @@ async function submit() { await act(async () => { await page.root.findAllByType(
 function saved() { return JSON.parse([...storage.entries()].find(([key]) => key.includes(module.id))![1]); }
 afterEach(() => { if (page) act(() => page.unmount()); vi.unstubAllGlobals(); });
 describe('Reading Path journey', () => {
+  it('keeps one shared header and places the four-step session beside the same reading progress list', () => {
+    setup(); mount();
+    expect(page.root.findAllByType('header')).toHaveLength(1);
+    expect(page.root.findAllByType('main')).toHaveLength(1);
+    expect(page.root.findAllByType('h1')).toHaveLength(1);
+    expect(page.root.findAllByType('select')).toHaveLength(1);
+    expect(page.root.findAllByProps({ className: 'lessonQuestionList' })).toHaveLength(0);
+    const readingContent = page.root.findByType('article').parent!;
+    expect(readingContent.findByType('textarea')).toBeTruthy();
+    expect(readingContent.findAllByType('header')).toHaveLength(0);
+    const passage = page.root.findByProps({ 'data-reading-passage': module.id });
+    expect(passage.findAllByType('p')).toHaveLength(module.text.en.split('\n\n').length);
+    expect(page.root.findByProps({ href: '#reading-thinking' })).toBeTruthy();
+  });
+
   it('switches passage and question language without losing either draft or creating a fifth step', async () => {
     setup(); mount(); type('First draft'); change('es');
     const first = saved();
-    expect(page.root.findByType('blockquote').children.join('')).toBe(module.text.es);
+    expect(page.root.findByProps({ 'data-reading-passage': module.id }).findAllByType('p').map(paragraph => paragraph.children.join('')).join('\n\n')).toBe(module.text.es);
     expect(page.root.findByType('textarea').props.value).toBe('First draft');
     expect(first.userId).toBe('verified-user'); expect(first.questionId).toBe(module.id);
     expect(first.originalQuestion).toBe(module.question.en);
     act(() => page.unmount()); mount();
     expect(page.root.findByType('textarea').props.value).toBe('First draft');
     await submit(); type('Second draft'); change('fr');
-    expect(page.root.findByType('blockquote').children.join('')).toBe(module.text.fr);
+    expect(page.root.findByProps({ 'data-reading-passage': module.id }).findAllByType('p').map(paragraph => paragraph.children.join('')).join('\n\n')).toBe(module.text.fr);
     expect(saved()).toMatchObject({ conversationId: first.conversationId, sessionId: first.sessionId, firstResponse: 'First draft', activeAnswerDraft: 'Second draft' });
     act(() => page.unmount()); mount();
     expect(page.root.findByType('textarea').props.value).toBe('Second draft');
@@ -66,8 +81,7 @@ describe('Reading Path journey', () => {
   });
   it('restores the tenth part independently after navigating back to the first part', () => {
     setup(); const last = reading.modules[9]; mount(last.id); type('Tenth part draft'); change('es');
-    expect(page.root.findAllByType('blockquote')).toHaveLength(0);
-    expect(JSON.stringify(page.toJSON())).toContain(last.text.es);
+    expect(page.root.findByProps({ 'data-reading-passage': last.id }).findAllByType('p').map(paragraph => paragraph.children.join('')).join('\n\n')).toBe(last.text.es);
     expect(readingProgress(localStorage, last, 'verified-user', '13_17', 'fr')).toBe('saved');
     act(() => page.unmount()); mount(); type('First part draft');
     act(() => page.unmount()); mount(last.id); change('fr');
