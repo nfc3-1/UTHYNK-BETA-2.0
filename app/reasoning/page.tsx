@@ -1,5 +1,8 @@
 "use client";
 
+import BetaFeedbackNotice from "@/components/BetaFeedbackNotice";
+import { betaFeedbackCopy } from "@/lib/betaAssessment";
+
 import { ThinkingPathsNavLink } from "@/components/PathShell";
 
 import { LessonDiscoveryBanner, LessonsNavLink } from "@/components/LessonDiscovery";
@@ -35,7 +38,7 @@ const initialFeedback = {
     "What if your first instinct creates a second problem while a calmer response builds leverage?",
   followUp:
     "What specific next step protects your position without overreacting?",
-  strengths: ["strategic restraint", "long-term awareness"],
+  strengths: [],
   verifier: {
     behavioral: {
       adaptability: 70,
@@ -48,7 +51,7 @@ const initialFeedback = {
       incentives: false,
     },
   },
-  weaknesses: ["needs incentive analysis", "clarify the next step"],
+  weaknesses: [],
 };
 
 const WELCOME_MESSAGE = "__uthynk_welcome__";
@@ -417,10 +420,6 @@ function getProgressionState(xp: number) {
   return { percent, value: `${xp} XP` };
 }
 
-function getTraitExplanation(_trait: string, fallback: string) {
-  return fallback;
-}
-
 function ReasoningExperience({
   language,
 }: {
@@ -511,10 +510,6 @@ function ReasoningExperience({
   const visibleDifficulty = localizeText(difficulty, language);
   const visiblePressure = localizeText(pressure, language);
   const progressionState = getProgressionState(profile?.xp || 0);
-  const evidenceDelta = Math.max(
-    1,
-    Math.round(((feedback.verifier?.behavioral?.evidence || feedback.score || 70) - 62) / 8)
-  );
   const topWeakness = visibleFeedback.weaknesses[0]?.toLowerCase() || "";
   const hasPriorThinkingHistory = Boolean(
     profile?.id &&
@@ -1046,10 +1041,6 @@ function ReasoningExperience({
 
       setFeedback({ ...data, trait: data.trait || challenge.trait });
       setLatestReward({
-        evidenceDelta: Math.max(
-          1,
-          Math.round(((data.verifier?.behavioral?.evidence || data.score || 70) - 62) / 8)
-        ),
         pattern: data.trait || challenge.trait,
         xp: data.xp || 8,
       });
@@ -1123,16 +1114,10 @@ function ReasoningExperience({
     }
   }
 
-  const primaryIdentity = localizeText(profile?.primary_trait, language) || visibleFeedback.trait;
-  const traitExplanation = getTraitExplanation(primaryIdentity, text.genericTraitExplanation);
-  const secondaryMode = visibleFeedback.strengths[0] || "Strategic restraint";
-  const growthEdge = visibleFeedback.weaknesses[0] || "Evidence strength";
-  const biasWatch =
-    feedback.verifier?.signals?.incentives
-      ? "Incentive blind spot"
-      : (100 - (feedback.verifier?.behavioral?.emotionalControl || 50)) > 35
-        ? "Emotional rigidity"
-        : "Overconfidence";
+  const betaCopy = betaFeedbackCopy[language];
+  const primaryIdentity = evaluatedClaim ? visibleFeedback.trait : betaCopy.rubric[0];
+  const secondaryMode = visibleFeedback.strengths[0] || betaCopy.empty;
+  const growthEdge = visibleFeedback.weaknesses[0] || betaCopy.empty;
   const activeLensLabel = inferredLens.label;
   const questionType = inferredLens.questionType;
   const workoutSteps = [
@@ -1155,7 +1140,7 @@ function ReasoningExperience({
     <section className="uthynkReasoningLayout">
       <aside className="uthynkSidePanel uthynkLeftPanel">
         <section className="leftRailSection identitySummaryCard">
-          <div className="panelLabel">{copy.identity}</div>
+          <div className="panelLabel">{betaCopy.progress}</div>
           <strong className="identityRank">{localizeText(profile?.rank || "Observer", language)}</strong>
           <div className="identityMetaGrid">
             <div>
@@ -1168,11 +1153,11 @@ function ReasoningExperience({
             </div>
           </div>
           <div>
-            <span>{copy.trait}</span>
+            <span>{betaCopy.focus}</span>
             <strong>{primaryIdentity}</strong>
           </div>
-          <p className="traitExplanation">{traitExplanation}</p>
-          <div className="progressBar" aria-label={copy.identityProgression}>
+          <BetaFeedbackNotice language={language} />
+          <div className="progressBar" aria-label={betaCopy.progress}>
             <div
               className="progressFill uthynkProgressFill"
               style={{ width: `${progressionState.percent}%` }}
@@ -1187,14 +1172,12 @@ function ReasoningExperience({
         </section>
 
         <details className="leftRailDetails" open={hasCompletedWorkout}>
-          <summary>{copy.thinkingProfile}</summary>
+          <summary>{betaCopy.observations}</summary>
           <section className="leftRailSection profileSignalCard">
-          <div className="panelLabel">{copy.thinkingProfile}</div>
+          <div className="panelLabel">{betaCopy.observations}</div>
           <div className="profileRows">
-            <div><span>{copy.primaryMode}</span><strong>{primaryIdentity}</strong></div>
-            <div><span>{copy.style}</span><strong>{localizeText(secondaryMode, language)}</strong></div>
-            <div><span>{copy.growthEdge}</span><strong>{localizeText(growthEdge, language)}</strong></div>
-            <div><span>{copy.biasWatch}</span><strong>{localizeText(biasWatch, language)}</strong></div>
+            <div><span>{betaCopy.strength}</span><strong>{evaluatedClaim ? localizeText(secondaryMode, language) : betaCopy.empty}</strong></div>
+            <div><span>{betaCopy.next}</span><strong>{evaluatedClaim ? localizeText(growthEdge, language) : betaCopy.empty}</strong></div>
           </div>
           </section>
         </details>
@@ -1220,7 +1203,7 @@ function ReasoningExperience({
             <div className="leftSignalTabs" role="tablist" aria-label="Live reasoning signals">
               {[
                 { id: "patterns", label: text.liveSignalPatterns },
-                { id: "metrics", label: text.liveSignalMetrics },
+                { id: "metrics", label: betaCopy.rubricTab },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -1249,22 +1232,7 @@ function ReasoningExperience({
 
           {leftSignalTab === "metrics" ? (
             <div className="compactMetricGrid">
-              <div>
-                <span title={copy.logicQualityTooltip}>{copy.logicQuality}</span>
-                <strong>{visibleFeedback.score}</strong>
-              </div>
-              <div>
-                <span title={copy.evidenceStrengthTooltip}>{copy.evidenceStrength}</span>
-                <strong>{feedback.verifier?.behavioral?.evidence || visibleFeedback.score}</strong>
-              </div>
-              <div>
-                <span title={copy.emotionalRigidityTooltip}>{copy.emotionalRigidity}</span>
-                <strong>{100 - (feedback.verifier?.behavioral?.emotionalControl || 50)}</strong>
-              </div>
-              <div>
-                <span title={copy.manipulationTacticsTooltip}>{copy.manipulationTactics}</span>
-                <strong>{feedback.verifier?.signals?.incentives ? copy.flagged : copy.scanning}</strong>
-              </div>
+              {betaCopy.rubric.map(criterion => <div key={criterion}><span>{criterion}</span></div>)}
             </div>
           ) : null}
           </section>
@@ -1312,7 +1280,7 @@ function ReasoningExperience({
             <div className="progressRewardBadge">
               <span>{text.reward}</span>
               <strong>+{expectedReward} XP</strong>
-              <small>{latestReward ? text.traitImproved : text.traitGrowthAvailable}</small>
+              <small>{latestReward ? betaCopy.reward : betaCopy.focus}</small>
             </div>
           </div>
           <div className="workoutStepRail">
@@ -1594,9 +1562,9 @@ function ReasoningExperience({
           <section className="growthReward" aria-live="polite">
             <div>
               <span>+{latestReward.xp} {copy.insightXp}</span>
-              <strong>{copy.rewardPattern}: {localizeText(latestReward.pattern, language)}</strong>
+              <strong>{betaCopy.focus}: {localizeText(latestReward.pattern, language)}</strong>
             </div>
-            <p>{copy.improved}: {copy.evidenceStrength} +{latestReward.evidenceDelta}</p>
+            <p>{betaCopy.notice}</p>
           </section>
         ) : null}
 
@@ -1608,8 +1576,8 @@ function ReasoningExperience({
             </div>
 
             <div className="thinkingLabelLayer">
-              <span>{copy.evidenceStrength} +{evidenceDelta}</span>
-              <span>{copy.rewardPattern}: {visibleFeedback.trait || text.independentVerification}</span>
+              <span>{betaCopy.title}</span>
+              <span>{betaCopy.focus}: {visibleFeedback.trait || text.independentVerification}</span>
               {visibleFeedback.strengths.slice(0, 2).map((item) => (
                 <span key={item}>{item}</span>
               ))}

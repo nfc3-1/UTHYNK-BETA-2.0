@@ -48,29 +48,29 @@ export default function LeaderboardPage() {
 
       <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
-          <div className="eyebrow">Competitive Intelligence</div>
-          <h1>Cognitive Rankings</h1>
+          <div className="eyebrow">Demo preview</div>
+          <h1>Sample Participation Board</h1>
           <p>
-            UThynk tracks reasoning growth, consistency, and cognitive progression across users.
+            These fictional profiles, XP totals, and streaks illustrate a possible participation board. They are not real users, cognitive rankings, or measured learning gains.
           </p>
         </div>
 
         <div className="challengePreview">
-          <div className="panelLabel">Global Status</div>
+          <div className="panelLabel">Example rank</div>
           <h2>Master of Thought</h2>
           <p>
-            Reserved for elite long-term reasoning performance and consistency.
+            Ranks reflect participation XP, not validated reasoning ability.
           </p>
         </div>
       </section>
 
       <section className="card methodPanel" style={{ marginTop: 18 }}>
-        <div className="panelLabel">Top Cognitive Profiles</div>
+        <div className="panelLabel">Fictional profiles — demo data</div>
 
         <div className="methodSteps">
           {leaderboard.map((user) => (
             <div key={user.username}>
-              <strong>{user.username}</strong>
+              <span><b>{user.username} (demo)</b></span>
               <span>
                 {user.rank} · {user.xp} XP · {user.streak} day streak · {user.trait}
               </span>

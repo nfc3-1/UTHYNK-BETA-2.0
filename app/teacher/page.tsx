@@ -29,9 +29,9 @@ export default async function TeacherPage() {
 
       <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
-          <div className="eyebrow">Teacher Backend V1 &mdash; built for pilot classrooms.</div>
+          <div className="eyebrow">Teacher workspace preview &mdash; demo data only.</div>
           <h1>Teacher Dashboard</h1>
-          <p>Assign reasoning challenges, track completion, and support student thinking growth.</p>
+          <p>Explore sample classes and assignments. The students and results shown are fictional; live classroom records are not connected yet.</p>
         </div>
       </section>
 

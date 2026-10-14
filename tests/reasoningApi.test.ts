@@ -124,3 +124,65 @@ describe('synthesis perspective integration and diagnostic contract', () => {
     expect(body.weaknesses).toEqual([weakness]);
   });
 });
+
+describe('provisional beta rubric and language-independent participation', () => {
+  const equivalents = {
+    en: 'I would test the rule in one class and compare attendance with another class before extending it.',
+    es: 'Probaría la regla en una clase y compararía la asistencia con otra antes de ampliarla.',
+    fr: 'Je testerais la règle dans une classe et comparerais la présence avec une autre avant de l’étendre.',
+  };
+  for (const language of ['en', 'es', 'fr'] as const) it(`does not add keyword or length adjustments in ${language}`, async () => {
+    result = { score: 83, xp: 95, perspectiveExpansion: localized[language][0], secondaryQuestion: localized[language][1] };
+    const body = await (await request({ language, response: equivalents[language] })).json();
+    expect(body.score).toBe(83);
+    expect(body.xp).toBe(35);
+    expect(body.assessment).toEqual({ status: 'provisional', rubricVersion: 'beta-v1', scoreSource: 'model' });
+    expect(body.verifier.status).toBe('retired');
+    expect(body.verifier.signals).toEqual({});
+    expect(body.strengths).toEqual([]);
+    expect(body.weaknesses).toEqual([]);
+    const system = sent[0].messages[0].content;
+    expect(system).toContain('Do not reward answer length, English keywords');
+    expect(system).toContain('A reasoned disagreement can be strong');
+    expect(system).toContain('specific passage detail for reading tasks');
+    expect(system).not.toContain('Verifier engine result');
+    expect(system).not.toContain('blending your judgment');
+  });
+
+  it('awards the same completion XP for short disagreement and long keyword-filled text', async () => {
+    for (const [score, secondUserAnswer] of [[0, 'I disagree.'], [100, 'because evidence data example alternative cost benefit '.repeat(80)]] as const) {
+      result = { score, xp: 999, finalSynthesis: 'Your answer raises a testable claim. Compare the available evidence before applying it.' };
+      const body = await (await request({ ...apolloContext, secondUserAnswer, phase: 'synthesis' })).json();
+      expect(body.score).toBe(score); // A zero is a valid model estimate, not a missing value.
+      expect(body.xp).toBe(52);
+      expect(body.behavioral).toEqual(body.verifier.behavioral); // Retired compatibility values.
+      expect(sent[sent.length - 1].messages[0].content).toContain('beta-v1 rubric');
+    }
+  });
+
+  for (const score of [undefined, null, '99']) it(`marks a missing or invalid score unavailable (${score}) without inventing evidence`, async () => {
+    result = { score, perspectiveExpansion: localized.en[0], secondaryQuestion: localized.en[1] };
+    const body = await (await request({ response: 'evidence alternative risk cost '.repeat(40) })).json();
+    expect(body.score).toBe(70);
+    expect(body.assessment.scoreSource).toBe('unavailable');
+    expect(body.strengths).toEqual([]);
+    expect(body.weaknesses).toEqual([]);
+  });
+
+  it('includes the same provisional metadata and fixed XP through streaming', async () => {
+    const content = JSON.stringify({ score: 84, xp: 90, finalSynthesis: 'You questioned the rule and kept a defensible exception. Check the evidence before generalizing.' });
+    vi.stubGlobal('fetch', async () => new Response(new ReadableStream({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode(`data: ${JSON.stringify({ choices: [{ delta: { content } }] })}\n\ndata: [DONE]\n\n`));
+        controller.close();
+      },
+    }), { headers: { 'content-type': 'text/event-stream' } }));
+    const response = await request({ ...apolloContext, secondUserAnswer: 'Keep an exception.', phase: 'synthesis', stream: true });
+    const { readReasoningResponse } = await import('../lib/reasoningResponse');
+    const body = await readReasoningResponse(response, () => {});
+    expect(body.score).toBe(84);
+    expect(body.xp).toBe(52);
+    expect(body.assessment.rubricVersion).toBe('beta-v1');
+    expect(body.verifier.status).toBe('retired');
+  });
+});

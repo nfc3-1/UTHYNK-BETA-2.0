@@ -192,9 +192,9 @@ export default function TeacherDashboard({ questionBank }: Props) {
 
     try {
       await navigator.clipboard.writeText(selectedClass.classCode);
-      setCopyStatus('Class code copied.');
+      setCopyStatus('Demo class code copied; enrollment is not available yet.');
     } catch {
-      setCopyStatus('Class code ready to share.');
+      setCopyStatus('Demo class code is shown below; enrollment is not available yet.');
     }
   }
 
@@ -215,11 +215,17 @@ export default function TeacherDashboard({ questionBank }: Props) {
 
   return (
     <section className="teacherShell">
+      <section className="card teacherPanel" aria-label="Teacher demo notice" style={{ marginBottom: 18 }}>
+        <div className="panelLabel">Demo workspace</div>
+        <h2>Fictional students and sample results</h2>
+        <p>All student names, completion statuses, dates, and reasoning indicators below are generated examples. They are not student submissions or measured learning gains.</p>
+        <p>Classes, assignments, and comments are saved only in this browser. Nothing is sent to students, and class codes do not enroll students yet. Use fictional information while trying this demo.</p>
+      </section>
       <div className="teacherGrid">
         <aside className="teacherStack">
           <section className="card teacherPanel">
-            <div className="panelLabel">Create Class</div>
-            <h2>Start a pilot class</h2>
+            <div className="panelLabel">Create Demo Class</div>
+            <h2>Try a demo class</h2>
             <label className="teacherField">
               <span>Class name</span>
               <input
@@ -229,12 +235,12 @@ export default function TeacherDashboard({ questionBank }: Props) {
               />
             </label>
             <button className="btn btnPrimary" type="button" onClick={createClass}>
-              Create Class
+              Create Demo Class
             </button>
           </section>
 
           <section className="card teacherPanel">
-            <div className="panelLabel">Existing Classes</div>
+            <div className="panelLabel">Demo Classes</div>
             {classes.length ? (
               <div className="teacherClassList">
                 {classes.map((item) => (
@@ -253,7 +259,7 @@ export default function TeacherDashboard({ questionBank }: Props) {
                 ))}
               </div>
             ) : (
-              <p className="teacherMuted">Create your first class to begin assigning reasoning challenges.</p>
+              <p className="teacherMuted">Create a demo class to explore the sample workflow.</p>
             )}
           </section>
         </aside>
@@ -275,14 +281,14 @@ export default function TeacherDashboard({ questionBank }: Props) {
               </div>
 
               <div className="teacherInvite">
-                <p>Share this class code with students so they can join your UThynk class.</p>
-                <span>Student join flow coming next: students will enter this code from their profile or onboarding screen.</span>
+                <p>This is a sample class code. It cannot enroll students.</p>
+                <span>Student enrollment and persistent classroom records are planned for the classroom backend sprint.</span>
                 {copyStatus ? <small>{copyStatus}</small> : null}
               </div>
 
               <div className="teacherTwoColumn">
                 <section className="teacherSubPanel">
-                  <div className="panelLabel">Assign Challenge</div>
+                  <div className="panelLabel">Save Demo Assignment</div>
                   <label className="teacherField">
                     <span>Category</span>
                     <select value={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)}>
@@ -304,7 +310,7 @@ export default function TeacherDashboard({ questionBank }: Props) {
                     <input type="date" value={dueDate} onChange={(event) => setDueDate(event.target.value)} />
                   </label>
                   <button className="btn btnPrimary" type="button" onClick={assignChallenge}>
-                    Assign Challenge
+                    Save Demo Assignment
                   </button>
                 </section>
 
@@ -334,24 +340,24 @@ export default function TeacherDashboard({ questionBank }: Props) {
               <section className="teacherSubPanel">
                 <div className="teacherSectionHeader">
                   <div>
-                    <div className="panelLabel">Student Progress</div>
+                    <div className="panelLabel">Sample Student Progress</div>
                     <h3>{activeAssignment ? activeAssignment.category : 'No assignment selected'}</h3>
                   </div>
                   {activeAssignment ? <span>{formatDate(activeAssignment.createdAt)}</span> : null}
                 </div>
                 {activeAssignment ? (
-                  <div className="teacherProgressTable">
+                  <div className="teacherProgressTable" aria-label="Fictional student results">
                     <div className="teacherProgressHead">
                       <span>Student name</span>
-                      <span>Assignment status</span>
-                      <span>Completed date</span>
+                      <span>Sample status</span>
+                      <span>Sample completion date</span>
                       <span>Evidence Use</span>
                       <span>Reflection Quality</span>
                       <span>Perspective Taking</span>
                     </div>
                     {progressRows.map((row) => (
                       <div className="teacherProgressRow" key={row.id}>
-                        <strong>{row.studentName}</strong>
+                        <strong>{row.studentName} (demo)</strong>
                         <span>{statusLabels[row.status]}</span>
                         <span>{formatDate(row.completedAt)}</span>
                         <span>{growthLabels[row.reasoningGrowth.evidenceUse]}</span>
@@ -361,13 +367,13 @@ export default function TeacherDashboard({ questionBank }: Props) {
                     ))}
                   </div>
                 ) : (
-                  <p className="teacherMuted">Assign a challenge to see qualitative reasoning growth indicators.</p>
+                  <p className="teacherMuted">Save a demo assignment to see fictional progress examples.</p>
                 )}
               </section>
 
               <section className="teacherSubPanel">
-                <div className="panelLabel">Teacher Comments</div>
-                <p className="teacherMuted">Leave a comment focused on evidence, reflection, or perspective-taking.</p>
+                <div className="panelLabel">Demo Comments</div>
+                <p className="teacherMuted">Try a practice comment. It stays in this browser and is not delivered to a student.</p>
                 <div className="teacherCommentGrid">
                   <label className="teacherField">
                     <span>Assignment</span>
@@ -385,7 +391,7 @@ export default function TeacherDashboard({ questionBank }: Props) {
                     <span>Student</span>
                     <select value={selectedStudent} onChange={(event) => setSelectedStudent(event.target.value)}>
                       {demoStudents.map((student) => (
-                        <option key={student} value={student}>{student}</option>
+                        <option key={student} value={student}>{student} (demo)</option>
                       ))}
                     </select>
                   </label>
@@ -399,7 +405,7 @@ export default function TeacherDashboard({ questionBank }: Props) {
                   />
                 </label>
                 <button className="btn btnPrimary" type="button" onClick={saveComment} disabled={!activeAssignment}>
-                  Save Comment
+                  Save Demo Comment
                 </button>
 
                 {selectedAssignmentComments.length ? (
@@ -419,8 +425,8 @@ export default function TeacherDashboard({ questionBank }: Props) {
           ) : (
             <div className="teacherEmptyState">
               <div className="panelLabel">Selected Class</div>
-              <h2>Create a class to unlock the teacher workflow.</h2>
-              <p>Create Class, class code, assignments, progress, and comments all stay local for V1.</p>
+              <h2>Create a demo class to explore the teacher workflow.</h2>
+              <p>This preview stores demo classes, assignments, and practice comments only in this browser.</p>
             </div>
           )}
         </section>

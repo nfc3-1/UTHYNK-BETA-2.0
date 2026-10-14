@@ -1,3 +1,4 @@
+import { betaAssessmentPrompt, provisionalAssessment, retiredVerifier } from '@/lib/betaAssessment';
 import { resolveReadingRequest } from '@/lib/readingAccess';
 import { NextResponse } from "next/server";
 import { reasoningProviderError } from "@/lib/reasoningProviderError";
@@ -73,6 +74,8 @@ type BehavioralScores = {
 };
 
 type VerifierResult = {
+  status: "retired";
+  assessment?: ReturnType<typeof provisionalAssessment>["assessment"];
   score: number;
   behavioral: BehavioralScores;
   signals: Record<string, boolean>;
@@ -80,6 +83,7 @@ type VerifierResult = {
 };
 
 type ReasoningFeedback = {
+  assessment: ReturnType<typeof provisionalAssessment>["assessment"];
   analysis: string;
   behavioral: BehavioralScores;
   contrarian: string;
@@ -309,59 +313,6 @@ function clamp(value: number, min = 0, max = 100) {
   return Math.min(max, Math.max(min, Math.round(value)));
 }
 
-function verifierEngine(response: string, category: ReasoningCategory): VerifierResult {
-  const lower = response.toLowerCase();
-  const words = response.trim() ? response.trim().split(/\s+/).length : 0;
-  const signals = {
-    evidence: /\b(because|evidence|data|example|for instance|shows|proof|observed)\b/.test(lower),
-    alternatives: /\b(alternative|option|instead|another|otherwise|could)\b/.test(lower),
-    tradeoff: /\b(tradeoff|risk|cost|benefit|downside|upside|however|although|but)\b/.test(lower),
-    action: /\b(next|then|first|step|would|will|should|test|measure)\b/.test(lower),
-    perspective: /\b(they|their|someone|stakeholder|opponent|other side|audience)\b/.test(lower),
-    emotionalControl: /\b(calm|pause|listen|avoid|de-escalate|wait|tone|restraint)\b/.test(lower),
-    incentives: /\b(incentive|motivation|leverage|reward|pressure|reputation|cost)\b/.test(lower),
-  };
-
-  const behavioral = {
-    evidence: clamp((signals.evidence ? 72 : 42) + Math.min(18, words)),
-    adaptability: clamp((signals.alternatives ? 68 : 40) + (signals.tradeoff ? 12 : 0) + Math.min(12, words / 2)),
-    emotionalControl: clamp((signals.emotionalControl ? 74 : 44) + (signals.perspective ? 10 : 0)),
-    incentives: clamp((signals.incentives ? 74 : 42) + (signals.tradeoff ? 10 : 0)),
-  };
-  const categoryWeights: Record<ReasoningCategory, (keyof BehavioralScores)[]> = {
-    "logic-critical-thinking": ["evidence", "adaptability"],
-    epistemology: ["evidence", "adaptability"],
-    "ethics-moral-reasoning": ["emotionalControl", "adaptability"],
-    "strategic-thinking": ["incentives", "adaptability"],
-    "street-lessons": ["incentives", "emotionalControl"],
-    "financial-judgment": ["incentives", "adaptability"],
-    "leadership-influence": ["emotionalControl", "incentives"],
-    "media-information-literacy": ["evidence", "adaptability"],
-    "science-evidence": ["evidence", "adaptability"],
-    "history-civilization": ["adaptability", "evidence"],
-    "technology-ai": ["adaptability", "incentives"],
-    "creativity-innovation": ["adaptability", "evidence"],
-    "work-purpose-ambition": ["incentives", "adaptability"],
-    "identity-human-behavior": ["emotionalControl", "adaptability"],
-    "literature-timeless-wisdom": ["adaptability", "emotionalControl"],
-  };
-  const weightedKeys = categoryWeights[category];
-  const weighted = weightedKeys.reduce((sum, key) => sum + behavioral[key], 0) / weightedKeys.length;
-  const base = Math.min(28, words * 1.1);
-  const score = clamp(35 + base + weighted * 0.45);
-  const missingMoves = Object.entries(signals)
-    .filter(([, present]) => !present)
-    .map(([name]) => name)
-    .slice(0, 4);
-
-  return {
-    score,
-    behavioral,
-    signals,
-    missingMoves,
-  };
-}
-
 function ensureString(value: unknown, fallback: string) {
   const text = String(value || "").trim();
 
@@ -424,10 +375,7 @@ function sanitizeFeedback(
   phase: "follow_up" | "synthesis" = "follow_up",
   synthesisContext?: SynthesisContext
 ): ReasoningFeedback {
-  const aiScore = Number(parsed?.score);
-  const score = clamp(
-    Number.isFinite(aiScore) ? aiScore * 0.72 + verifier.score * 0.28 : verifier.score
-  );
+  const { score, assessment } = provisionalAssessment(parsed?.score);
   const trait = ensureString(parsed?.trait, language === 'es' ? 'Razonamiento' : language === 'fr' ? 'Raisonnement' : categoryPrompt.traitOptions[0]);
   const fallbackAnalysis =
     language === "es"
@@ -467,28 +415,20 @@ function sanitizeFeedback(
 
   return {
     analysis,
-    behavioral: {
-      evidence: clamp(Number(parsed?.behavioral?.evidence) || verifier.behavioral.evidence),
-      adaptability: clamp(
-        Number(parsed?.behavioral?.adaptability) || verifier.behavioral.adaptability
-      ),
-      emotionalControl: clamp(
-        Number(parsed?.behavioral?.emotionalControl) || verifier.behavioral.emotionalControl
-      ),
-      incentives: clamp(Number(parsed?.behavioral?.incentives) || verifier.behavioral.incentives),
-    },
+    assessment,
+    behavioral: verifier.behavioral,
     contrarian: perspectiveExpansion,
     finalSynthesis,
     followUp: secondaryQuestion,
     perspectiveExpansion,
     score,
     secondaryQuestion,
-    strengths: ensureList(parsed?.strengths, language === 'en' ? categoryPrompt.reasoningLens.slice(0, 2) : []),
+    strengths: ensureList(parsed?.strengths, []),
     trait,
-    // The verifier sees only the latest answer; it cannot diagnose the complete synthesis journey.
-    weaknesses: ensureList(parsed?.weaknesses, phase !== 'synthesis' && language === 'en' ? verifier.missingMoves : []),
-    xp: clamp(Number(parsed?.xp) || (score >= 85 ? 70 : score >= 70 ? 52 : 35), 20, 95),
-    verifier,
+    weaknesses: ensureList(parsed?.weaknesses, []),
+    // Participation credit is independent of model grades, language, and answer length.
+    xp: phase === 'synthesis' ? 52 : 35,
+    verifier: { ...verifier, assessment },
   };
 }
 
@@ -502,7 +442,6 @@ function buildAdaptiveSystemPrompt({
   profile,
   sessionId,
   synthesisContext,
-  verifier,
 }: {
   categoryPrompt: CategoryPrompt;
   conversationId: string;
@@ -513,7 +452,6 @@ function buildAdaptiveSystemPrompt({
   profile?: any;
   sessionId: string;
   synthesisContext?: SynthesisContext;
-  verifier: VerifierResult;
 }) {
   const ageBand = profile?.age_band || "18_plus";
   const style = profile?.onboarding_style || "balanced";
@@ -529,6 +467,7 @@ function buildAdaptiveSystemPrompt({
 
   if (phase === 'synthesis') {
     return [
+      betaAssessmentPrompt,
       'You are UThynk. Conclude a completed two-answer reasoning conversation. This is the final synthesis, not another perspective expansion or a short appraisal of the latest answer.',
       'Both answers come from the SAME person. Address that person directly as you (tú in Spanish, tu in French), in plain conversational language. Never refer to the user, first user or second user, and never describe the two answers as different people. Explain what you introduced as the coach and how their second answer actually responded to it.',
       `Write every user-facing field entirely in ${responseLanguage}, including translated trait labels and strengths/weaknesses. Paraphrase earlier turns in ${responseLanguage}; do not mix languages. Keep JSON keys in English.`,
@@ -544,17 +483,18 @@ function buildAdaptiveSystemPrompt({
       'Do not label the paragraphs or display rigid headings. Do not quote questions, ask a new question, invite another response, or create a fifth step. Do not introduce another challenge.',
       'Before returning, silently check all five elements: the first answer contributes, the central perspective is explained in relation to it, the second answer is represented honestly, exactly one remaining user gap is identified, and the final principle draws on BOTH sources. Check that weaknesses agree with the synthesis about what the person did and did not explore. Check the word target.',
       'analysis must be identical to finalSynthesis. contrarian, perspectiveExpansion, followUp and secondaryQuestion must all be empty strings.',
-      `Assessment lens: ${categoryPrompt.reasoningLens.join(', ')}. Verifier: ${JSON.stringify(verifier)}. Ground strengths and weaknesses in the two user answers.`,
-      'For synthesis weaknesses, distinguish three facts: the coach introduced an idea; the person engaged with it; the synthesis integrated it. Only the second is evidence of user reasoning. The verifier covers only the latest answer and cannot establish omissions across both answers. Do not label an idea missing if either user answer actually explored it. A weakness must describe the person\'s remaining reasoning gap, never an omission by the coach or synthesis. If you integrate an idea the person did not explore, explicitly attribute that gap to their answers. If they explored it, identify only a supported remaining edge, not missing engagement. Return at most one weakness aligned with the synthesis gap, or [] if no user gap is supported.',
+      `Assessment lens: ${categoryPrompt.reasoningLens.join(', ')}. Ground strengths and weaknesses in the two user answers.`,
+      'For synthesis weaknesses, distinguish three facts: the coach introduced an idea; the person engaged with it; the synthesis integrated it. Only the second is evidence of user reasoning. Do not label an idea missing if either user answer actually explored it. A weakness must describe the person\'s remaining reasoning gap, never an omission by the coach or synthesis. If you integrate an idea the person did not explore, explicitly attribute that gap to their answers. If they explored it, identify only a supported remaining edge, not missing engagement. Return at most one weakness aligned with the synthesis gap, or [] if no user gap is supported.',
       'Before writing, privately separate claims from firstUserAnswer, the central coach idea, and claims from secondUserAnswer. Attribute each insight to its actual source. Never credit the person with an idea found only in perspectiveExpansion. This evidence rule applies equally in English, Spanish, and French. For example, when the coach introduces constraints driving creativity and the person only says the lesson applies in business, they transferred the original lesson; they did NOT accept, recognize, or integrate the constraints-creativity mechanism. Say plainly that their reply did not explore that mechanism, then explain its contribution yourself. If they instead discuss creative reuse or reject the causal claim, represent that actual engagement and do not diagnose the mechanism as absent.',
       'Write the gap once in everyday language, not as "the remaining reasoning gap", "a solid starting point", "a solid foundation", or their translations. Do not grade the answer or add generic praise. Keep within the age-specific word target in the requested language. Make the final sentence itself a practical principle combining the original reasoning with the new lens, preserving any disagreement or uncertainty; do not append a generic inspirational sentence.',
       'Calibration example ONLY when the first answer balances preparation and adaptability, the coach introduces constraints driving creativity, and the second answer merely transfers the lesson to business: "You noticed that preparation cannot anticipate every surprise, so adapting remains part of being prepared. That connects planning with the ability to respond when the plan stops fitting.\n\nI added the idea that limited options can sometimes make that response more inventive. This expands your starting point: adapting may involve using a restriction to discover a solution, rather than simply coping until more resources arrive. You carried the preparation-and-adaptation lesson into business, but your reply did not yet explore whether a particular limit would encourage creative reuse or prevent useful work. That distinction matters because scarcity is not automatically helpful.\n\nPutting these ideas together gives preparation a second purpose: helping you recognize what can be changed when circumstances narrow your choices. When adapting a plan elsewhere, examine which limits could focus invention and which need to be removed." Adapt the reasoning to the actual conversation; never copy this example indiscriminately. If the person already discusses creative reuse and insufficient funding, credit both and choose a genuinely untested edge such as evidence for where the threshold lies. If they reject the lens, the principle must preserve that uncertainty rather than declare constraints beneficial.',
       'Sensitive-topic rule: for self-harm, suicide, trauma, abuse, mental health, medical issues or identity-based harm, use supportive, non-adversarial language and appropriate safety guidance.',
-      'Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.',
+      'Return only valid JSON with keys: score number, trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[].',
     ].join(' ');
   }
 
   return [
+    betaAssessmentPrompt,
     "You are UThynk, an adaptive reasoning coach. You must produce specific, non-repetitive feedback.",
     `Write every user-facing response field, including trait, strengths and weaknesses, entirely in ${responseLanguage}. Translate or paraphrase earlier turns into this language even if the user or history uses another language. Never mix languages within a generated response. Keep JSON keys in English.`,
     `Session identity: sessionId=${sessionId}, conversationId=${conversationId}.`,
@@ -571,7 +511,6 @@ function buildAdaptiveSystemPrompt({
     `User age band: ${ageBand}. Coaching style: ${style}.`,
     `Age adaptation rule: ${ageDirective}`,
     `Persistent memory: ${JSON.stringify(memory || null)}.`,
-    `Verifier engine result: ${JSON.stringify(verifier)}.`,
     `Do not repeat these follow-ups: ${JSON.stringify(recentFollowUps)}.`,
     synthesisContext ? `Synthesis context: ${JSON.stringify(synthesisContext)}.` : "",
     "Current workout phase: perspective expansion. The user has answered the main question. In contrarian and perspectiveExpansion, recognize the user's reasoning and introduce two or three meaningful angles they may not have considered, using approachable phrases such as 'Have you considered...' or 'Another angle is...'. Address assumptions, evidence, incentives, tradeoffs, consequences, or opposing explanations. Then write exactly one secondaryQuestion and matching followUp question based on the original question, the first answer, and those new perspectives.",
@@ -582,8 +521,7 @@ function buildAdaptiveSystemPrompt({
     "Prefer plain phrasing such as 'Have you thought about...', 'Could someone...', 'What if...', or 'What would change if...'. Avoid abstract academic wording like 'How might the emotional appeal of...' when a simpler sentence works.",
     "Do not use generic prompts like 'explain further', 'give another example', or 'clarify your reasoning'.",
     "Sensitive-topic rule: if the prompt or answer concerns self-harm, suicide, trauma, abuse, mental health, medical issues, or identity-based harm, switch to supportive, non-adversarial exploration and appropriate safety guidance.",
-    "Score by blending your judgment with the verifier result. Penalize generic, unsupported, or evasive reasoning.",
-    "Return only valid JSON with keys: score number, xp number, trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[], behavioral object with evidence/adaptability/emotionalControl/incentives numbers.",
+    "Return only valid JSON with keys: score number, trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[].",
   ].join(" ");
 }
 
@@ -632,60 +570,13 @@ async function updateTrait(userId: string, traitName: string, reasoningScore: nu
   }
 
   await upsertCanonicalTrait({
-    evidence: `Reasoning score ${reasoningScore}`,
+    evidence: `Provisional beta-v1 response estimate ${reasoningScore}; not a validated learning measure`,
     profileId: userId,
     traitName,
     traitScore: nextScore,
   });
 
   return { traitName, traitScore: nextScore };
-}
-
-async function updateReasoningProfile(userId: string, feedback: ReasoningFeedback) {
-  if (!hasSupabaseAdminEnv() || !supabaseAdmin) {
-    return null;
-  }
-
-  const { data: existing } = await supabaseAdmin
-    .from("reasoning_profiles")
-    .select("*")
-    .eq("user_id", userId)
-    .single();
-
-  const blend = (current: number | null | undefined, next: number) =>
-    clamp((Number(current) || 50) * 0.75 + next * 0.25);
-
-  const nextProfile = {
-    user_id: userId,
-    evidence_score: blend(existing?.evidence_score, feedback.behavioral.evidence),
-    adaptability_score: blend(existing?.adaptability_score, feedback.behavioral.adaptability),
-    emotional_control_score: blend(
-      existing?.emotional_control_score,
-      feedback.behavioral.emotionalControl
-    ),
-    incentives_score: blend(existing?.incentives_score, feedback.behavioral.incentives),
-    dominant_trait: feedback.trait,
-    updated_at: new Date().toISOString(),
-  };
-
-  if (existing?.id) {
-    const { data } = await supabaseAdmin
-      .from("reasoning_profiles")
-      .update(nextProfile)
-      .eq("id", existing.id)
-      .select("*")
-      .single();
-
-    return data;
-  }
-
-  const { data } = await supabaseAdmin
-    .from("reasoning_profiles")
-    .insert(nextProfile)
-    .select("*")
-    .single();
-
-  return data;
 }
 
 async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
@@ -704,11 +595,15 @@ async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
   }
 
   const nextXp = (existing.xp || 0) + feedback.xp;
-  const nextScore = calculateReasoningScore(existing.reasoning_score || 70, feedback.score);
+  const hasEstimate = feedback.assessment.scoreSource === "model";
+  const nextScore = hasEstimate
+    ? calculateReasoningScore(existing.reasoning_score ?? 70, feedback.score)
+    : existing.reasoning_score ?? 70;
   const nextStreak = calculateNextStreak(existing.updated_at || null, existing.streak || 0);
   const nextRank = getRankFromXp(nextXp);
-  const evolvedTrait = await updateTrait(userId, feedback.trait, feedback.score);
-  const reasoningProfile = await updateReasoningProfile(userId, feedback);
+  const evolvedTrait = hasEstimate ? await updateTrait(userId, feedback.trait, feedback.score) : null;
+  // Retired behavioral estimates must not update a person-level profile.
+  const reasoningProfile = null;
 
   await supabaseAdmin
     .from("user_profiles")
@@ -811,7 +706,7 @@ async function persistSession({
     ai_score: feedback.score,
     verifier_score: feedback.verifier.score,
     blended_score: feedback.score,
-    rubric: categoryPrompt.reasoningLens.join(", "),
+    rubric: `${feedback.assessment.rubricVersion}; provisional; ${categoryPrompt.reasoningLens.join(", ")}`,
     signals: feedback.verifier,
   });
 
@@ -907,7 +802,6 @@ async function callOpenAi({
             profile,
             sessionId,
             synthesisContext,
-            verifier,
           }),
         },
         {
@@ -1145,7 +1039,7 @@ export async function POST(request: Request) {
                 : "18_plus",
           }
         : null);
-    const verifier = verifierEngine(response, category);
+    const verifier = retiredVerifier();
     const modeSeed = stableModeSeed({
       category,
       challenge,

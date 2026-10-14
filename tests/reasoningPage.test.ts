@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createElement } from "react";
 import { act, create, type ReactTestRenderer } from "react-test-renderer";
+import { betaFeedbackCopy } from "../lib/betaAssessment";
 import ReasoningPage from "../app/reasoning/page";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push() {} }), useSearchParams: () => new URLSearchParams("id=workplace-01") }));
@@ -66,6 +67,13 @@ describe("reasoning page finite workout", () => {
     expect(requests.length).toBe(2);
     const saved = JSON.parse([...storage.entries()].find(([key]) => key.startsWith('uthynk-reasoning:v1:'))![1]);
     expect(saved.feedback.analysis).toBe(synthesis); expect(saved.workoutStage).toBe('complete');
+    const rendered = JSON.stringify(page.toJSON());
+    expect(rendered).toContain(betaFeedbackCopy[language as 'en' | 'es' | 'fr'].notice);
+    expect(rendered).not.toMatch(/Emotional rigidity|Incentive blind spot|emotionalRigidityTooltip/);
+    expect(page.root.findAllByProps({ className: 'compactMetricGrid' })).toHaveLength(0);
+    const criteria = page.root.findAllByType('button').find(node => node.children.join('') === betaFeedbackCopy[language as 'en' | 'es' | 'fr'].rubricTab)!;
+    act(() => criteria.props.onClick());
+    expect(page.root.findByProps({ className: 'compactMetricGrid' }).findAllByType('span').map(node => node.children.join(''))).toEqual(betaFeedbackCopy[language as 'en' | 'es' | 'fr'].rubric);
   });
   it("dictates into each visible draft and keeps previous challenge storage when starting another", async () => {
     setup();
