@@ -28,8 +28,8 @@ function requireValue(name: string, value: string, missing: string[]) {
 
 export function readServerEnv(env: EnvSource = process.env): ServerEnv {
   const nodeEnv = env.NODE_ENV || 'development';
-  const supabaseUrl = getFirst(env, ['NEXT_PUBLIC_SUPABASE_URL']);
-  const supabaseServiceRoleKey = getFirst(env, ['SUPABASE_SERVICE_ROLE_KEY']);
+  const supabaseUrl = getFirst(env, ['NEXT_PUBLIC_SUPABASE_URL', 'SUPABASE_URL']);
+  const supabaseServiceRoleKey = getFirst(env, ['SUPABASE_SERVICE_ROLE_KEY', 'SUPABASE_SERVICE_ROLE']);
   const cookieSigningSecret = getFirst(env, ['AUTH_COOKIE_SECRET', 'COOKIE_SIGNING_SECRET']);
   const openaiApiKey = getFirst(env, ['OPENAI_API_KEY']);
 
@@ -58,8 +58,8 @@ export function validateServerEnv(env: EnvSource = process.env): ServerEnv {
   const missing: string[] = [];
 
   if (isProduction) {
-    requireValue('NEXT_PUBLIC_SUPABASE_URL', getFirst(env, ['NEXT_PUBLIC_SUPABASE_URL']), missing);
-    requireValue('SUPABASE_SERVICE_ROLE_KEY', values.supabaseServiceRoleKey, missing);
+    requireValue('NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL', getFirst(env, ['NEXT_PUBLIC_SUPABASE_URL', 'SUPABASE_URL']), missing);
+    requireValue('SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SERVICE_ROLE', values.supabaseServiceRoleKey, missing);
     requireValue('AUTH_COOKIE_SECRET or COOKIE_SIGNING_SECRET', values.cookieSigningSecret, missing);
     requireValue('OPENAI_API_KEY', values.openaiApiKey || '', missing);
   }
