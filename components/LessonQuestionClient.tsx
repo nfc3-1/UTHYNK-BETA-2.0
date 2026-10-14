@@ -1,5 +1,7 @@
 'use client';
 
+import BetaFeedbackNotice from '@/components/BetaFeedbackNotice';
+
 import LessonAppHeader from './LessonAppHeader';
 
 import { LessonQuestionListHint } from '@/components/LessonDiscovery';
@@ -533,6 +535,8 @@ export default function LessonQuestionClient({ category, questions, questionIds,
             </div>
           ) : null}
 
+          {session?.perspectiveExpansion && <BetaFeedbackNotice language={language} />}
+
           {session?.perspectiveExpansion ? (
             <div className="plainResponseLayer">
               <span>{flow.perspective}</span>
@@ -560,7 +564,7 @@ export default function LessonQuestionClient({ category, questions, questionIds,
               <p>{session.finalSynthesis}</p>
               {session.growthIndicators.length ? (
                 <div className="thinkingLabelLayer">
-                  {session.growthIndicators.map((item) => (
+                  {session.growthIndicators.filter(item => !/^Score\s+\d/.test(item)).map((item) => (
                     <span key={item}>{localizeText(item, language)}</span>
                   ))}
                 </div>

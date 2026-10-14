@@ -1,5 +1,8 @@
 'use client';
 
+import BetaFeedbackNotice from '@/components/BetaFeedbackNotice';
+import { betaFeedbackCopy } from '@/lib/betaAssessment';
+
 import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import { profileText } from '@/lib/profileI18n';
 import Link from 'next/link';
@@ -56,6 +59,7 @@ export default function Profile() {
   }, []);
   const t = (value: string) => profileText(value, language);
   const copy = uiCopy[language];
+  const betaCopy = betaFeedbackCopy[language];
   const profile = useMemo(() => data?.profile || {}, [data?.profile]);
   const sessions = useMemo(() => data?.sessions || [], [data?.sessions]);
   const traits = useMemo(() => {
@@ -68,34 +72,23 @@ export default function Profile() {
 
     const dynamicTraits = Array.from(counts.entries()).map(([label, count]) => ({
       label,
-      value: Math.min(100, 62 + count * 6),
+      count,
     }));
 
     return dynamicTraits.length
       ? dynamicTraits
-      : [{ label: profile.primary_trait || 'Analytical', value: profile.reasoning_score || 70 }];
-  }, [profile.primary_trait, profile.reasoning_score, sessions]);
-  const averageReasoning = sessions.length
-    ? Math.round(
-        sessions.reduce((sum: number, session: any) => sum + (session.reasoning_score || 0), 0) /
-          sessions.length
-      )
-    : profile.reasoning_score || 70;
+      : [{ label: profile.primary_trait || 'Analytical', count: 0 }];
+  }, [profile.primary_trait, sessions]);
   const recommendations = useMemo(() => getAdaptiveChallenges(profile), [profile]);
   const coachingIntensity = getCoachingIntensity(profile.streak, profile.reasoning_score);
-  const identityLabels = [
-    profile.primary_trait || 'Analytical Thinker',
-    sessions.length >= 3 ? 'Evidence Builder' : 'Question Assumptions',
-    averageReasoning >= 80 ? 'Strategic Pattern Spotter' : 'Growth in Progress',
-  ];
   const snapshotText = [
-    t('UThynk Thinking Snapshot'),
-    `${t('Logic')}: ${averageReasoning}`,
-    `${t('Strategy')}: ${Math.min(99, Math.max(0, averageReasoning + (sessions.length >= 3 ? 4 : 0)))}`,
-    `${t('Evidence')}: ${traits[0]?.value || averageReasoning}`,
-    `${t('Current trait')}: ${t(profile.primary_trait || 'Analytical Thinker')}`,
+    `UThynk — ${betaCopy.snapshot}`,
+    betaCopy.notice,
+    `XP: ${profile.xp || 0}`,
+    `${t('day streak')}: ${profile.streak || 0}`,
+    `${betaCopy.sessions}: ${sessions.length}`,
     `${t('Rank')}: ${t(profile.rank || 'Observer')}`,
-    'https://uthynk-beta-2-0.vercel.app',
+    'https://www.uthynk.com',
   ].join('\n');
 
   async function writeSnapshotToClipboard() {
@@ -144,7 +137,7 @@ export default function Profile() {
         await navigator.share({
           text: snapshotText,
           title: t('UThynk Thinking Snapshot'),
-          url: 'https://uthynk-beta-2-0.vercel.app',
+          url: 'https://www.uthynk.com',
         });
         setSnapshotStatus(t('Snapshot shared'));
         trackEvent(createTelemetryEvent('shared_thinking_snapshot', profile?.id, { method: 'native_share' }));
@@ -185,25 +178,15 @@ export default function Profile() {
         <div className="heroCopy">
           <div className="eyebrow">{copy.profileNav}</div>
           <h1>{localizeText(profile.rank || 'Observer', language)}</h1>
-          <p>
-            {language === 'es'
-              ? 'Tu identidad, progreso, rasgos e historial de sesiones viven en un solo lugar. UThynk sigue en quien se esta convirtiendo tu pensamiento.'
-              : language === 'fr'
-                ? 'Ton identite, tes progres, tes traits et ton historique de sessions vivent au meme endroit. UThynk suit ce que ton raisonnement devient.'
-                : 'Your identity, progress, traits, and session history now live in one place. UThynk tracks who your thinking is becoming, not just what you scored.'}
-          </p>
-          <div className="profileIdentityTags">
-            {identityLabels.map((label) => (
-              <span key={label}>{t(label)}</span>
-            ))}
-          </div>
+          <p>{betaCopy.history}</p>
+          <BetaFeedbackNotice language={language} />
         </div>
 
         <div className="challengePreview">
           <div className="panelLabel">
-            {language === 'es' ? 'Resumen de crecimiento' : language === 'fr' ? 'Apercu de progression' : 'Growth Snapshot'}
+            {betaCopy.snapshot}
           </div>
-          <h2>{localizeText(profile.primary_trait || 'Analytical Thinker', language)}</h2>
+          <h2>{betaCopy.progress}</h2>
           <p>
             {language === 'es'
               ? `Modo de entrenamiento: ${t(coachingIntensity)}. Tus proximas sesiones deben fortalecer evidencia, adaptabilidad y restriccion estrategica.`
@@ -221,8 +204,8 @@ export default function Profile() {
               <span>{t('day streak')}</span>
             </div>
             <div>
-              <strong>{profile.reasoning_score || 70}</strong>
-              <span>{t('score')}</span>
+              <strong>{sessions.length}</strong>
+              <span>{betaCopy.sessions}</span>
             </div>
           </div>
         </div>
@@ -234,58 +217,39 @@ export default function Profile() {
 
           <div className="statList">
             <div className="statItem">
-              <span>{t('Current identity')}</span>
+              <span>{betaCopy.focus}</span>
               <strong>{t(profile.primary_trait || 'Analytical')}</strong>
             </div>
 
             <div className="statItem">
-              <span>{t('Completed')}</span>
+              <span>{betaCopy.sessions}</span>
               <strong>{sessions.length}</strong>
             </div>
 
-            <div className="statItem">
-              <span>{t('Average Reasoning')}</span>
-              <strong>{averageReasoning}</strong>
-            </div>
-
-            <div className="statItem">
-              <span>{t('Growth Trend')}</span>
-              <strong>{t(sessions.length > 1 ? 'Active' : 'Starting')}</strong>
-            </div>
           </div>
         </aside>
 
         <section className="card methodPanel">
-          <div className="panelLabel">{t('Traits')}</div>
+          <div className="panelLabel">{betaCopy.focus}</div>
 
           <div className="methodSteps">
             {traits.map((trait) => (
               <div key={trait.label}>
-                <strong>{trait.value}</strong>
-                <span>{t(trait.label)}</span>
+                <strong>{t(trait.label)}</strong>
               </div>
             ))}
           </div>
         </section>
 
         <section className="card snapshotPanel">
-          <div className="panelLabel">{t('Thinking Snapshot')}</div>
+          <div className="panelLabel">{betaCopy.snapshot}</div>
           <div className="snapshotScoreGrid">
-            <div>
-              <strong>{averageReasoning}</strong>
-              <span>{t('Logic')}</span>
-            </div>
-            <div>
-              <strong>{Math.min(99, Math.max(0, averageReasoning + (sessions.length >= 3 ? 4 : 0)))}</strong>
-              <span>{t('Strategy')}</span>
-            </div>
-            <div>
-              <strong>{traits[0]?.value || averageReasoning}</strong>
-              <span>{t('Evidence')}</span>
-            </div>
+            <div><strong>{profile.xp || 0}</strong><span>XP</span></div>
+            <div><strong>{profile.streak || 0}</strong><span>{t('day streak')}</span></div>
+            <div><strong>{sessions.length}</strong><span>{betaCopy.sessions}</span></div>
           </div>
           <p>
-            {t('Current trait')}: <strong>{t(profile.primary_trait || 'Analytical Thinker')}</strong>
+            {betaCopy.focus}: <strong>{t(profile.primary_trait || 'Analytical Thinker')}</strong>
           </p>
           <div className="snapshotActions">
             <button className="btn btnPrimary" type="button" onClick={shareSnapshot}>{t('Share')}</button>
@@ -322,7 +286,7 @@ export default function Profile() {
               <div className="focusCard" key={session.id}>
                 <strong>{t(session.trait_detected || 'Trait evolving')}</strong>
                 <span>
-                  {localizeCategory(session.challenge_category, language) || t('Reasoning Session')} - {session.reasoning_score || 0}
+                  {localizeCategory(session.challenge_category, language) || t('Reasoning Session')}
                 </span>
               </div>
             ))}

@@ -1,3 +1,4 @@
+import BetaFeedbackNotice from '../components/BetaFeedbackNotice';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
@@ -64,7 +65,20 @@ describe('lesson language persistence', () => {
     expect(questionText()).toBe(questions[0]);
     expect(savedSession().step).toBe('final_synthesis');
     expect(savedSession().secondResponse).toBe('Second spoken draft');
+    expect(page.root.findAllByType(BetaFeedbackNotice)).toHaveLength(1);
+    expect(page.root.findByType(BetaFeedbackNotice).props.language).toBe('en');
     expect(page.root.findAllByType('textarea')).toHaveLength(0);
+  });
+  it('keeps historical scores in saved data without presenting them as learning evidence', () => {
+    setup();
+    const record = getLessonQuestion('Epistemology', questions[0])!;
+    const old = { ...createChallengeSession({ ageBand: '18_plus', category: 'Epistemology', language: 'en', questionId: record.id, questionIndex: 0, originalQuestion: questions[0], sessionId: 'old-s', conversationId: 'old-c' }), completed: true, step: 'final_synthesis', firstResponse: 'Original answer', secondResponse: 'Original follow-up', finalSynthesis: 'Original synthesis', perspectiveExpansion: 'A new angle.', secondaryQuestion: 'What else?', growthIndicators: ['Score 88', 'Evidence', 'XP +52'] };
+    storage.set(challengeSessionKey(old), JSON.stringify(old)); mount();
+    expect(JSON.stringify(page.toJSON())).not.toContain('Score 88');
+    expect(JSON.stringify(page.toJSON())).toContain('Original synthesis');
+    expect(JSON.parse(storage.get(challengeSessionKey(old))!).growthIndicators).toContain('Score 88');
+    expect(page.root.findAllByType('textarea')).toHaveLength(0);
+    expect(requests).toHaveLength(0);
   });
   it('migrates a legacy Spanish session and does not resurrect it after explicit reset', () => {
     setup(); storage.set('uthynk-language','es');

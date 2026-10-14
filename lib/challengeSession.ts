@@ -133,7 +133,6 @@ function mergeGrowthIndicators(feedback: ReasoningFeedbackSnapshot, existing: st
         feedback.trait,
         ...(feedback.strengths || []),
         ...(feedback.weaknesses || []),
-        typeof feedback.score === "number" ? `Score ${Math.round(feedback.score)}` : "",
         typeof feedback.xp === "number" ? `XP +${Math.round(feedback.xp)}` : "",
       ].filter(Boolean) as string[]
     )
