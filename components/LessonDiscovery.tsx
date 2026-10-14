@@ -11,7 +11,7 @@ const copy = {
     guideTitle: 'How to choose a lesson', guideIntro: 'You can choose your own lesson here, even after finishing the daily challenge.',
     steps: [
       { title: 'Pick a category', text: 'Tap a category card below to open its collection of questions.' },
-      { title: 'Pick a question', text: 'On the next screen, tap “Start with this” beside the question you want.' },
+      { title: 'Pick a question', text: 'On the next screen, tap the question you want to explore.' },
       { title: 'Think it through', text: 'Give your answer, explore a new angle, answer the follow-up, and read the final synthesis.' },
     ],
     try: 'Try a category', questions: 'Choose a question from this category',
@@ -23,7 +23,7 @@ const copy = {
     guideTitle: 'Cómo elegir una lección', guideIntro: 'Aquí puedes elegir tu propia lección, incluso después de terminar el desafío diario.',
     steps: [
       { title: 'Elige una categoría', text: 'Pulsa una tarjeta de categoría de abajo para abrir su colección de preguntas.' },
-      { title: 'Elige una pregunta', text: 'En la siguiente pantalla, pulsa «Empezar con esta» junto a la pregunta que quieras.' },
+      { title: 'Elige una pregunta', text: 'En la siguiente pantalla, pulsa la pregunta que quieras explorar.' },
       { title: 'Piensa a fondo', text: 'Da tu respuesta, explora otro ángulo, responde la pregunta siguiente y lee la síntesis final.' },
     ],
     try: 'Probar una categoría', questions: 'Elige una pregunta de esta categoría',
@@ -35,7 +35,7 @@ const copy = {
     guideTitle: 'Comment choisir une leçon', guideIntro: 'Ici, tu peux choisir ta propre leçon, même après avoir terminé le défi du jour.',
     steps: [
       { title: 'Choisis une catégorie', text: 'Appuie sur une carte de catégorie ci-dessous pour ouvrir ses questions.' },
-      { title: 'Choisis une question', text: 'Sur l’écran suivant, appuie sur «Commencer avec celle-ci» à côté de la question choisie.' },
+      { title: 'Choisis une question', text: 'Sur l’écran suivant, appuie sur la question que tu souhaites explorer.' },
       { title: 'Réfléchis', text: 'Donne ta réponse, explore un nouvel angle, réponds à la question suivante et lis la synthèse finale.' },
     ],
     try: 'Essayer une catégorie', questions: 'Choisis une question dans cette catégorie',
