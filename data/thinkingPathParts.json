@@ -13,11 +13,6 @@
         "es": "¿A quién sirve el liderazgo?",
         "fr": "Qui la direction sert-elle ?"
       },
-      "text": {
-        "en": "Socrates compares ruling with skilled work such as medicine. A physician’s task concerns the patient’s benefit, not simply the physician’s advantage. Applied to leadership, the comparison asks whether authority is a service to those governed or a resource for whoever holds it.",
-        "es": "Sócrates compara gobernar con un oficio como la medicina. La tarea del médico se ocupa del beneficio del paciente, no solo de su propia ventaja. Aplicada al liderazgo, la comparación pregunta si la autoridad sirve a los gobernados o a quien la posee.",
-        "fr": "Socrate compare le gouvernement à un métier comme la médecine. Le médecin cherche le bien du patient, pas seulement son propre avantage. Appliquée à la direction, cette comparaison demande si l’autorité sert les personnes gouvernées ou celui qui la détient."
-      },
       "plainLanguage": {
         "en": "This argument challenges Thrasymachus’s account of justice as the advantage of the stronger. A comparison is an argument to examine, not proof.",
         "es": "Este argumento cuestiona la justicia entendida como ventaja del más fuerte. Una comparación debe examinarse; no es una prueba.",
@@ -53,11 +48,6 @@
         "en": "Popularity and navigation",
         "es": "Popularidad y navegación",
         "fr": "Popularité et navigation"
-      },
-      "text": {
-        "en": "Plato imagines sailors competing to control a ship while dismissing the person who studies navigation. The contest for authority and the knowledge needed to use it become different tasks. Winning support may matter, but it does not by itself show that someone can steer safely.",
-        "es": "Platón imagina marineros que compiten por controlar un barco y desprecian a quien estudia navegación. Disputar la autoridad y saber usarla son tareas distintas. Ganar apoyo puede importar, pero no demuestra por sí solo que alguien sepa conducir con seguridad.",
-        "fr": "Platon imagine des marins qui se disputent le contrôle d’un navire tout en méprisant celui qui étudie la navigation. Conquérir l’autorité et savoir l’exercer sont deux tâches différentes. Obtenir du soutien compte, mais ne prouve pas à lui seul que l’on sache diriger sans danger."
       },
       "plainLanguage": {
         "en": "Plato defends philosophical expertise. His analogy also raises the problem of recognizing expertise without granting unchecked power.",
@@ -95,11 +85,6 @@
         "es": "Fuerza prestada",
         "fr": "Force empruntée"
       },
-      "text": {
-        "en": "Machiavelli warns that hired soldiers may have interests different from those of the ruler who employs them. A force that seems convenient can become unreliable when danger changes its incentives. The broader issue is dependence: a leader must understand what keeps another person’s support in place.",
-        "es": "Maquiavelo advierte que los soldados contratados pueden tener intereses distintos a los del gobernante. Una fuerza conveniente puede volverse poco fiable cuando el peligro cambia sus incentivos. El problema más amplio es la dependencia: un líder debe entender qué sostiene el apoyo ajeno.",
-        "fr": "Machiavel avertit que les soldats engagés peuvent avoir des intérêts différents de ceux du dirigeant. Une force commode peut devenir peu fiable lorsque le danger modifie ses incitations. La question plus générale est la dépendance : il faut comprendre ce qui maintient le soutien d’autrui."
-      },
       "plainLanguage": {
         "en": "The setting is military politics in Renaissance Italy. Applying it to a team requires testing the analogy rather than treating every contractor as disloyal.",
         "es": "El contexto es la política militar de la Italia renacentista. Aplicarlo a un equipo exige examinar la analogía, no desconfiar de todo contratista.",
@@ -135,11 +120,6 @@
         "en": "Choosing advisers",
         "es": "Elegir asesores",
         "fr": "Choisir des conseillers"
-      },
-      "text": {
-        "en": "Machiavelli treats a ruler’s choice of advisers as evidence of judgment. An adviser who seeks only personal advantage can distort decisions. Yet the relationship also depends on how the ruler treats that adviser. Good counsel needs more than a clever person; it needs conditions that reward useful service.",
-        "es": "Maquiavelo ve la elección de asesores como evidencia del juicio del gobernante. Un asesor que busca solo su ventaja puede distorsionar decisiones. La relación también depende del trato que recibe. Un buen consejo necesita algo más que inteligencia: condiciones que premien el servicio útil.",
-        "fr": "Machiavel voit le choix des conseillers comme un indice du jugement du dirigeant. Un conseiller qui ne cherche que son avantage peut fausser les décisions. La relation dépend aussi du traitement qu’il reçoit. Un bon conseil exige plus que de l’intelligence : des conditions favorables à un service utile."
       },
       "plainLanguage": {
         "en": "This is advice to princes about political loyalty. Modern teams can examine competence, incentives, and independence separately.",
@@ -177,11 +157,6 @@
         "es": "Dar espacio a consejos incómodos",
         "fr": "Faire place aux conseils dérangeants"
       },
-      "text": {
-        "en": "Machiavelli sees flattery as a danger because a ruler may mistake pleasing words for sound advice. He proposes selected advisers who may speak frankly when asked. That protects deliberation, but leaves a tension: a leader who controls every question may never hear the warning they most need.",
-        "es": "Maquiavelo ve un peligro en confundir palabras agradables con consejos sólidos. Propone asesores escogidos que hablen con franqueza cuando se les consulte. Esto protege la deliberación, pero deja una tensión: quien controla todas las preguntas quizá nunca escuche la advertencia más necesaria.",
-        "fr": "Machiavel voit un danger dans la confusion entre paroles agréables et conseils solides. Il propose des conseillers choisis qui parlent franchement lorsqu’on les consulte. Cela protège la délibération, mais laisse une tension : contrôler toutes les questions peut empêcher d’entendre l’avertissement essentiel."
-      },
       "plainLanguage": {
         "en": "The proposed balance favors orderly counsel over unrestricted criticism. Examine what that arrangement could miss.",
         "es": "El equilibrio propuesto favorece consejos ordenados frente a críticas sin restricción. Examina qué podría pasar por alto.",
@@ -218,11 +193,6 @@
         "es": "Cuando un método exitoso deja de funcionar",
         "fr": "Quand une méthode efficace ne fonctionne plus"
       },
-      "text": {
-        "en": "Machiavelli argues that success depends partly on whether a person’s way of acting suits the times. A cautious habit can help in one situation and fail in another. Preparation limits some dangers, yet familiar habits make adaptation difficult precisely when changed circumstances demand it.",
-        "es": "Maquiavelo sostiene que el éxito depende en parte de que la forma de actuar se ajuste a los tiempos. La cautela puede ayudar en una situación y fallar en otra. Prepararse limita algunos peligros, pero los hábitos dificultan adaptarse cuando cambian las circunstancias.",
-        "fr": "Machiavel soutient que le succès dépend en partie de l’accord entre une manière d’agir et les circonstances. La prudence peut aider dans une situation et échouer dans une autre. La préparation limite certains dangers, mais les habitudes compliquent l’adaptation lorsque les circonstances changent."
-      },
       "plainLanguage": {
         "en": "His discussion combines chance, preparation, and temperament. It does not show that boldness always wins.",
         "es": "Su discusión combina azar, preparación y temperamento. No demuestra que la audacia siempre gane.",
@@ -258,11 +228,6 @@
         "en": "Responsibility before blame",
         "es": "Responsabilidad antes de culpar",
         "fr": "La responsabilité avant le blâme"
-      },
-      "text": {
-        "en": "Sun Tzu distinguishes difficulties caused by terrain from failures connected with command. Weak preparation, unclear authority, and mismatched strength can turn a difficult situation into defeat. Before blaming the people doing the work, the person directing them must examine the conditions and instructions provided.",
-        "es": "Sun Tzu distingue las dificultades del terreno de los fallos relacionados con el mando. Una mala preparación, una autoridad confusa o fuerzas mal ajustadas pueden causar una derrota. Antes de culpar a quienes trabajan, quien dirige debe examinar las condiciones y las instrucciones dadas.",
-        "fr": "Sun Tzu distingue les difficultés du terrain des défaillances liées au commandement. Une préparation insuffisante, une autorité confuse ou des forces mal adaptées peuvent conduire à la défaite. Avant de blâmer ceux qui exécutent le travail, le responsable doit examiner les conditions et les instructions fournies."
       },
       "plainLanguage": {
         "en": "This military analysis separates situational constraints from leadership errors. A school or workplace analogy needs its own evidence.",
@@ -302,11 +267,6 @@
         "es": "Un ideal y sus exclusiones",
         "fr": "Un idéal et ses exclusions"
       },
-      "text": {
-        "en": "The Declaration presents equality and rights as grounds for legitimate government. In 1776, those claims existed alongside slavery and unequal political participation. Reading the principle and its historical application together creates two questions: what does the ideal demand, and why did practice fall short?",
-        "es": "La Declaración presenta la igualdad y los derechos como bases de un gobierno legítimo. En 1776, esas afirmaciones coexistían con la esclavitud y una participación política desigual. Leer el principio junto a su aplicación histórica plantea qué exige el ideal y por qué la práctica quedó por debajo.",
-        "fr": "La Déclaration présente l’égalité et les droits comme fondements d’un gouvernement légitime. En 1776, ces affirmations coexistaient avec l’esclavage et une participation politique inégale. Lire le principe avec son application historique demande ce qu’exige l’idéal et pourquoi la pratique ne l’a pas réalisé."
-      },
       "plainLanguage": {
         "en": "A founding statement can provide a standard for criticism without excusing the exclusions of its authors.",
         "es": "Una declaración fundacional puede ofrecer un criterio crítico sin excusar las exclusiones de sus autores.",
@@ -342,11 +302,6 @@
         "en": "When is change justified?",
         "es": "¿Cuándo se justifica el cambio?",
         "fr": "Quand le changement est-il justifié ?"
-      },
-      "text": {
-        "en": "The Declaration defends changing a government that defeats its purposes, while cautioning against overturning established institutions for minor or temporary causes. Its case relies on a pattern of abuses. The tension is between protecting people from persistent harm and avoiding destructive change based on every disappointment.",
-        "es": "La Declaración defiende cambiar un gobierno que frustra sus fines, pero desaconseja derribar instituciones por causas leves o pasajeras. Su argumento se apoya en una serie de abusos. La tensión está entre proteger frente al daño persistente y evitar cambios destructivos por cada decepción.",
-        "fr": "La Déclaration défend le changement d’un gouvernement qui contredit ses fins, tout en déconseillant de renverser les institutions pour des causes légères ou passagères. Son argument repose sur une série d’abus. La tension oppose protection contre un dommage persistant et changements destructeurs à chaque déception."
       },
       "plainLanguage": {
         "en": "This is an argument for independence, not a universal formula that resolves every modern political dispute.",
@@ -384,11 +339,6 @@
         "es": "Dividir la autoridad",
         "fr": "Diviser l’autorité"
       },
-      "text": {
-        "en": "The Constitution assigns different responsibilities to Congress, the president, and the courts. No single institution is given every task. Dividing authority can make domination harder, but it also creates coordination problems. A decision may need several bodies to cooperate even when each claims to represent the public interest.",
-        "es": "La Constitución asigna responsabilidades distintas al Congreso, al presidente y a los tribunales. Ninguna institución recibe todas las tareas. Dividir la autoridad dificulta la dominación, pero genera problemas de coordinación. Varias instituciones pueden necesitar cooperar aunque cada una afirme representar el interés público.",
-        "fr": "La Constitution attribue des responsabilités différentes au Congrès, au président et aux tribunaux. Aucune institution ne reçoit toutes les tâches. Diviser l’autorité complique la domination, mais crée des problèmes de coordination. Plusieurs institutions doivent parfois coopérer alors que chacune prétend représenter l’intérêt public."
-      },
       "plainLanguage": {
         "en": "The document specifies offices and powers; the effectiveness of checks depends on how institutions act.",
         "es": "El documento define cargos y poderes; la eficacia del control depende de cómo actúen las instituciones.",
@@ -424,11 +374,6 @@
         "en": "Who gets represented?",
         "es": "¿Quién está representado?",
         "fr": "Qui est représenté ?"
-      },
-      "text": {
-        "en": "The original Constitution gave the House and Senate different bases of representation. It also included rules tied to slavery and allowed state-based voting qualifications. Representation therefore involved choices about people, states, and political access, not simply the instruction that everyone should have an equal voice.",
-        "es": "La Constitución original dio a la Cámara y al Senado bases distintas de representación. Incluyó reglas ligadas a la esclavitud y requisitos electorales dependientes de los estados. Representar implicaba decidir sobre personas, estados y acceso político, no solo pedir que todos tuvieran la misma voz.",
-        "fr": "La Constitution originale donne à la Chambre et au Sénat des bases différentes de représentation. Elle comprend des règles liées à l’esclavage et des conditions électorales dépendant des États. Représenter implique donc des choix concernant personnes, États et accès politique, pas seulement une voix égale pour tous."
       },
       "plainLanguage": {
         "en": "Later amendments altered parts of this system. This reading examines the original design rather than presenting it as current law.",
@@ -466,11 +411,6 @@
         "es": "Elección local y reglas comunes",
         "fr": "Choix local et règles communes"
       },
-      "text": {
-        "en": "The Constitution lists powers for the national legislature and restrictions on states. The design makes some decisions shared and others local. Local knowledge can improve decisions, while common rules can solve problems crossing borders. Choosing the level of authority also determines whose disagreement carries the most weight.",
-        "es": "La Constitución enumera poderes nacionales y restricciones estatales. El diseño hace que algunas decisiones sean comunes y otras locales. El conocimiento local puede mejorar decisiones, mientras las reglas comunes resuelven problemas entre territorios. Elegir el nivel de autoridad también determina qué desacuerdo pesa más.",
-        "fr": "La Constitution énumère des pouvoirs nationaux et des restrictions imposées aux États. Certaines décisions deviennent communes, d’autres locales. Le savoir local peut améliorer les décisions, tandis que des règles communes répondent aux problèmes transfrontaliers. Choisir le niveau d’autorité détermine aussi quels désaccords comptent le plus."
-      },
       "plainLanguage": {
         "en": "This reading concerns the original allocation of powers. Modern disputes also depend on amendments and interpretation.",
         "es": "Esta lectura trata del reparto original de poderes. Las disputas actuales también dependen de enmiendas e interpretación.",
@@ -506,11 +446,6 @@
         "en": "Repairing the rules",
         "es": "Corregir las reglas",
         "fr": "Réparer les règles"
-      },
-      "text": {
-        "en": "Article V provides procedures for changing the Constitution. The requirements make revision difficult rather than impossible. That can protect a basic framework from temporary pressure, but it can also slow correction of serious flaws. A durable institution needs both continuity and a credible route to repair.",
-        "es": "El artículo V establece procedimientos para cambiar la Constitución. Los requisitos dificultan la revisión sin hacerla imposible. Protegen el marco básico frente a presiones pasajeras, pero pueden retrasar la corrección de defectos graves. Una institución duradera necesita continuidad y una vía creíble de reparación.",
-        "fr": "L’article V prévoit des procédures de modification de la Constitution. Les exigences rendent la révision difficile, pas impossible. Elles protègent le cadre fondamental des pressions passagères, mais peuvent retarder la correction de défauts graves. Une institution durable exige continuité et possibilité réelle de réparation."
       },
       "plainLanguage": {
         "en": "Thresholds for change are themselves design choices. Ask who benefits from the difficulty and who bears its costs.",
@@ -548,11 +483,6 @@
         "es": "Proteger el desacuerdo",
         "fr": "Protéger le désaccord"
       },
-      "text": {
-        "en": "The First Amendment limits congressional interference with religion, expression, assembly, and petitions. These protections matter partly because disagreement can be unwelcome to those in power. The reading asks why protection is especially important when an opinion is disliked, while leaving the boundaries of particular cases to careful examination.",
-        "es": "La Primera Enmienda limita la intervención del Congreso en religión, expresión, reunión y peticiones. Estas protecciones importan porque el desacuerdo puede incomodar al poder. La lectura pregunta por qué proteger opiniones desagradables resulta especialmente importante, dejando los límites concretos para un examen cuidadoso.",
-        "fr": "Le premier amendement limite l’intervention du Congrès dans la religion, l’expression, les réunions et les pétitions. Ces protections importent parce que le désaccord peut déplaire au pouvoir. Cette lecture demande pourquoi protéger une opinion mal accueillie est essentiel, tout en exigeant un examen attentif des cas particuliers."
-      },
       "plainLanguage": {
         "en": "The amendment protects against government interference. Its historical rule is distinct from a promise that every private platform must host every view.",
         "es": "La enmienda protege frente a la intervención del gobierno. Esa regla histórica no obliga a toda plataforma privada a publicar cualquier opinión.",
@@ -588,11 +518,6 @@
         "en": "Freedom needs access",
         "es": "La libertad necesita acceso",
         "fr": "La liberté exige un accès réel"
-      },
-      "text": {
-        "en": "Douglass describes discovering that literacy was feared by those who held him in slavery. He pursued learning through small opportunities despite restrictions. Reading gave him tools to understand his condition, but also made its injustice more painful. Access to knowledge changed what freedom could mean and how he might seek it.",
-        "es": "Douglass relata que quienes lo esclavizaban temían que aprendiera a leer. Aprovechó pequeñas oportunidades pese a las restricciones. La lectura le permitió entender su situación, pero también hizo más dolorosa la injusticia. Acceder al conocimiento cambió el significado de la libertad y cómo podía buscarla.",
-        "fr": "Douglass raconte que ceux qui le maintenaient en esclavage craignaient qu’il apprenne à lire. Il saisit de petites occasions malgré les restrictions. La lecture lui permit de comprendre sa situation, mais rendit aussi l’injustice plus douloureuse. L’accès au savoir transforma le sens de la liberté et les moyens de la rechercher."
       },
       "plainLanguage": {
         "en": "His 1845 autobiography describes slavery in the United States. The adaptation omits graphic incidents and focuses on education and agency.",
@@ -632,11 +557,6 @@
         "es": "El cuidado en la práctica",
         "fr": "Le soin dans la pratique"
       },
-      "text": {
-        "en": "Zosima distinguishes imagined love of humanity from the demanding work of caring for actual people. Admiring oneself as compassionate is easier than helping someone who is difficult, ungrateful, or inconvenient. The scene shifts attention from the beauty of an intention to the patience required by a relationship.",
-        "es": "Zósima distingue el amor imaginado a la humanidad del trabajo exigente de cuidar a personas concretas. Verse como alguien compasivo es más fácil que ayudar a alguien difícil o desagradecido. La escena dirige la atención desde una intención hermosa hacia la paciencia que exige una relación.",
-        "fr": "Zossima distingue l’amour imaginé de l’humanité du travail exigeant de prendre soin de personnes réelles. Se voir comme compatissant est plus facile qu’aider quelqu’un de difficile ou d’ingrat. La scène déplace l’attention de la beauté d’une intention vers la patience qu’exige une relation."
-      },
       "plainLanguage": {
         "en": "Zosima speaks as a character in a novel. His counsel can be examined alongside the need for healthy boundaries.",
         "es": "Zósima habla como personaje de una novela. Su consejo puede examinarse junto a la necesidad de límites saludables.",
@@ -672,11 +592,6 @@
         "en": "Comfort at the price of choice",
         "es": "Comodidad al precio de elegir",
         "fr": "Le confort au prix du choix"
-      },
-      "text": {
-        "en": "Ivan’s story imagines an authority that promises security while treating freedom as a burden people cannot bear. The promise sounds protective, but it takes decisions away from those being protected. The scene tests whether relieving uncertainty is an act of care, a form of control, or both at once.",
-        "es": "El relato de Iván imagina una autoridad que promete seguridad y considera la libertad una carga insoportable. La promesa parece protectora, pero quita decisiones a los protegidos. La escena examina si aliviar la incertidumbre es cuidado, control o ambas cosas a la vez.",
-        "fr": "Le récit d’Ivan imagine une autorité promettant la sécurité tout en considérant la liberté comme un fardeau insupportable. La promesse semble protectrice, mais retire les décisions aux personnes protégées. La scène demande si soulager l’incertitude relève du soin, du contrôle ou des deux."
       },
       "plainLanguage": {
         "en": "The Inquisitor’s position is part of Ivan’s fictional argument, not an instruction from the novel to surrender choice.",
@@ -714,11 +629,6 @@
         "es": "Responsabilidad más allá de culpar",
         "fr": "La responsabilité au-delà du blâme"
       },
-      "text": {
-        "en": "Zosima urges people to consider their responsibility for others rather than placing every failure outside themselves. Read as an ethical challenge, this asks what one can do within a shared world. It need not mean that every person caused every harm, or that a victim should accept blame for an injustice.",
-        "es": "Zósima pide considerar la responsabilidad hacia otros en vez de situar todo fallo fuera de uno mismo. Como desafío ético, pregunta qué podemos hacer en un mundo compartido. No implica que cada persona causó todo daño ni que una víctima deba aceptar culpa por una injusticia.",
-        "fr": "Zossima invite à considérer notre responsabilité envers autrui plutôt qu’à placer tout échec hors de nous. Comme défi éthique, cela demande ce que nous pouvons faire dans un monde partagé. Cela ne signifie pas que chacun a causé tout dommage ni qu’une victime doive accepter la faute."
-      },
       "plainLanguage": {
         "en": "Distinguish responsibility to respond from responsibility for causing an event. The two are not identical.",
         "es": "Distingue la responsabilidad de responder de la responsabilidad por causar un hecho. No son idénticas.",
@@ -754,11 +664,6 @@
         "en": "Duty and rest",
         "es": "Deber y descanso",
         "fr": "Devoir et repos"
-      },
-      "text": {
-        "en": "Marcus challenges his reluctance to leave a warm bed by recalling the work of a human being. He compares purposeful activity with the work of other living things. The challenge is useful when comfort becomes avoidance, but it also invites a distinction between avoiding responsibility and genuinely needing rest.",
-        "es": "Marco cuestiona su resistencia a dejar una cama cálida recordando el trabajo humano. Compara actuar con propósito con la actividad de otros seres vivos. El desafío ayuda cuando la comodidad se vuelve evasión, pero exige distinguir entre evitar una responsabilidad y necesitar descanso de verdad.",
-        "fr": "Marc conteste sa réticence à quitter un lit chaud en rappelant le travail humain. Il compare l’activité orientée vers un but à celle des autres êtres vivants. Ce défi aide lorsque le confort devient évitement, mais exige de distinguer fuite d’une responsabilité et véritable besoin de repos."
       },
       "plainLanguage": {
         "en": "These are an emperor’s private reminders. They should be tested against a person’s circumstances, not treated as a demand for constant productivity.",
@@ -796,11 +701,6 @@
         "es": "Preparación en vez de un guion perfecto",
         "fr": "La préparation plutôt qu’un scénario parfait"
       },
-      "text": {
-        "en": "Marcus compares living with wrestling rather than following a dance. A dance suggests a planned sequence; wrestling requires readiness for unexpected resistance. The image directs attention toward steadiness when events disrupt a plan. Yet being prepared for difficulty differs from expecting every encounter to be a fight.",
-        "es": "Marco compara vivir con luchar, no con seguir una danza. La danza sugiere una secuencia prevista; la lucha exige estar preparado para resistencias inesperadas. La imagen destaca la firmeza cuando falla un plan. Estar preparado para dificultades no equivale a ver cada encuentro como combate.",
-        "fr": "Marc compare la vie à la lutte plutôt qu’à une danse. La danse suggère une suite prévue ; la lutte exige de répondre à des résistances inattendues. L’image souligne la fermeté lorsque le plan est perturbé. Se préparer aux difficultés ne signifie pas voir chaque rencontre comme un combat."
-      },
       "plainLanguage": {
         "en": "This is a metaphor for resilience, not advice to dominate other people.",
         "es": "Es una metáfora de resistencia, no un consejo para dominar a otros.",
@@ -836,11 +736,6 @@
         "en": "Truth as an obligation to others",
         "es": "La verdad como deber hacia otros",
         "fr": "La vérité comme devoir envers autrui"
-      },
-      "text": {
-        "en": "Marcus connects injustice and falsehood with the failure to live cooperatively. A lie can damage the shared understanding on which other people act. His argument treats truthfulness as more than a private virtue: it is part of maintaining relationships in a community of reasoning beings.",
-        "es": "Marco vincula injusticia y falsedad con el fracaso de la cooperación. Una mentira puede dañar la comprensión compartida sobre la que otros actúan. La veracidad aparece como algo más que una virtud privada: sostiene relaciones dentro de una comunidad de seres que razonan.",
-        "fr": "Marc relie injustice et fausseté à l’échec de la coopération. Un mensonge peut détruire la compréhension commune sur laquelle autrui agit. La véracité apparaît comme plus qu’une vertu privée : elle soutient les relations dans une communauté d’êtres capables de raisonner."
       },
       "plainLanguage": {
         "en": "His Stoic account rests on a view of human social nature. Examine its implications in a concrete case.",
@@ -878,11 +773,6 @@
         "es": "Reciprocidad y necesidades distintas",
         "fr": "Réciprocité et besoins différents"
       },
-      "text": {
-        "en": "Confucius presents reciprocity as a guide: consider what you would not want others to impose on you. This shifts attention from your advantage toward the other person’s experience. It is a starting point for judgment, but another person may have needs or preferences that differ from your own.",
-        "es": "Confucio presenta la reciprocidad como guía: considera lo que no querrías que otros te impusieran. Así desplaza la atención desde tu ventaja hacia la experiencia ajena. Es un punto de partida, pero otra persona puede tener necesidades o preferencias diferentes de las tuyas.",
-        "fr": "Confucius présente la réciprocité comme guide : considère ce que tu ne voudrais pas subir. L’attention passe de ton avantage à l’expérience d’autrui. C’est un point de départ pour le jugement, mais une autre personne peut avoir des besoins ou préférences différents des tiens."
-      },
       "plainLanguage": {
         "en": "A general rule still requires listening to the particular person affected.",
         "es": "Una regla general aún exige escuchar a la persona afectada.",
@@ -919,11 +809,6 @@
         "es": "Cuando una regla necesita criterio",
         "fr": "Quand une règle exige du jugement"
       },
-      "text": {
-        "en": "Socrates questions whether justice is simply telling the truth and returning what one owes. Returning a weapon to someone no longer able to use it safely would follow the usual rule while creating danger. The example tests whether a familiar definition survives a case in which its application causes harm.",
-        "es": "Sócrates pregunta si la justicia consiste solo en decir la verdad y devolver lo debido. Devolver un arma a alguien incapaz de usarla con seguridad seguiría la regla habitual y crearía peligro. El ejemplo prueba si una definición conocida resiste un caso en que aplicarla causa daño.",
-        "fr": "Socrate demande si la justice consiste simplement à dire la vérité et rendre ce que l’on doit. Rendre une arme à quelqu’un incapable de l’utiliser sans danger respecterait la règle habituelle tout en créant un risque. L’exemple teste une définition lorsque son application cause un dommage."
-      },
       "plainLanguage": {
         "en": "This opening dialogue tests definitions through counterexamples. It does not establish that inconvenient promises may always be ignored.",
         "es": "El diálogo inicial prueba definiciones con contraejemplos. No permite ignorar cualquier promesa incómoda.",
@@ -959,11 +844,6 @@
         "en": "Care before a problem grows",
         "es": "Cuidar antes de que crezca el problema",
         "fr": "Agir avant qu’un problème grandisse"
-      },
-      "text": {
-        "en": "The Tao Te Ching directs attention toward the beginnings of difficult and large tasks. What later feels overwhelming can start as something small enough to notice and address. The passage also warns against treating commitments lightly. Small steps matter when they respond to the real problem rather than distract from it.",
-        "es": "El Tao Te Ching dirige la atención al comienzo de tareas difíciles y grandes. Lo que después abruma puede empezar como algo pequeño que aún se puede atender. También advierte contra compromisos tomados a la ligera. Los pasos pequeños importan si responden al problema real en vez de distraer.",
-        "fr": "Le Tao Te King attire l’attention sur les débuts des tâches difficiles et importantes. Ce qui devient accablant peut commencer assez petit pour être remarqué et traité. Le passage avertit aussi contre les engagements pris à la légère. Les petits pas comptent s’ils répondent au vrai problème plutôt que distraire."
       },
       "plainLanguage": {
         "en": "The passage combines restraint with attentiveness. Doing less is not the same as paying no attention.",
@@ -1003,11 +883,6 @@
         "es": "Saber lo que no sabes",
         "fr": "Savoir ce que l’on ne sait pas"
       },
-      "text": {
-        "en": "Socrates responds to a report of the oracle by examining people believed to be wise. He finds confidence that exceeds understanding. His own advantage, as he describes it, is not possessing every answer but avoiding a false claim to knowledge. The challenge is to distinguish honest uncertainty from unearned certainty.",
-        "es": "Sócrates responde al anuncio del oráculo examinando a personas consideradas sabias. Encuentra confianza que supera la comprensión. Su ventaja no consiste en tener todas las respuestas, sino en evitar atribuirse un saber que no posee. El desafío distingue incertidumbre honesta y certeza sin fundamento.",
-        "fr": "Socrate répond au message de l’oracle en examinant des personnes réputées sages. Il trouve une confiance supérieure à leur compréhension. Son avantage ne consiste pas à posséder toutes les réponses, mais à éviter de prétendre savoir. Le défi distingue incertitude honnête et certitude injustifiée."
-      },
       "plainLanguage": {
         "en": "Plato presents Socrates’s defense at trial. Treat the account as a philosophical argument, not a test of who is smartest.",
         "es": "Platón presenta la defensa de Sócrates en juicio. Examina el argumento filosófico, no quién es más inteligente.",
@@ -1043,11 +918,6 @@
         "en": "A claim under questioning",
         "es": "Una afirmación bajo examen",
         "fr": "Une affirmation à l’épreuve des questions"
-      },
-      "text": {
-        "en": "Socrates questions Meletus about the accusations against him and presses on tensions within the account. A serious claim should survive more than confident repetition. Asking what follows from its premises can expose contradiction, but winning an exchange does not by itself establish every part of one’s own position.",
-        "es": "Sócrates pregunta a Meleto sobre sus acusaciones y señala tensiones internas. Una afirmación seria debe resistir algo más que repeticiones seguras. Examinar sus premisas puede revelar contradicciones, pero ganar un intercambio no demuestra todos los elementos de la propia posición.",
-        "fr": "Socrate interroge Mélétos sur ses accusations et met en évidence des tensions internes. Une affirmation sérieuse doit résister à plus qu’une répétition assurée. Examiner les conséquences des prémisses peut révéler des contradictions, mais gagner un échange ne prouve pas toute sa propre position."
       },
       "plainLanguage": {
         "en": "Cross-examination can test consistency. It must also be paired with evidence about the actual issue.",
@@ -1085,11 +955,6 @@
         "es": "Más allá de una imagen familiar",
         "fr": "Au-delà d’une image familière"
       },
-      "text": {
-        "en": "Plato describes prisoners who know a world of shadows and a difficult movement toward seeing its causes. Familiar appearances can feel complete when no comparison is available. Leaving them behind is uncomfortable, and explaining a changed understanding to others can be harder than acquiring it.",
-        "es": "Platón describe prisioneros que conocen un mundo de sombras y un difícil camino para ver sus causas. Las apariencias familiares parecen completas si no hay comparación. Dejarlas atrás incomoda, y explicar a otros una comprensión nueva puede ser más difícil que adquirirla.",
-        "fr": "Platon décrit des prisonniers qui connaissent un monde d’ombres et une progression difficile vers ses causes. Les apparences familières semblent complètes sans comparaison. Les quitter est inconfortable, et expliquer une nouvelle compréhension à autrui peut être plus difficile que l’acquérir."
-      },
       "plainLanguage": {
         "en": "The cave is an educational analogy. It does not license assuming that anyone who disagrees with you is trapped in ignorance.",
         "es": "La caverna es una analogía educativa. No permite asumir que todo el que discrepa está atrapado en la ignorancia.",
@@ -1125,11 +990,6 @@
         "en": "What supports the conclusion?",
         "es": "¿Qué sostiene la conclusión?",
         "fr": "Qu’est-ce qui soutient la conclusion ?"
-      },
-      "text": {
-        "en": "Plato distinguishes ways of understanding, from images and beliefs to reasoning that examines its starting points. A convincing conclusion can still depend on an assumption that has not been tested. The passage asks the reader to look beneath the result and identify what kind of support the argument actually uses.",
-        "es": "Platón distingue formas de comprender, desde imágenes y creencias hasta razonamientos que examinan sus puntos de partida. Una conclusión convincente aún puede depender de una suposición no comprobada. El pasaje pide mirar bajo el resultado e identificar qué apoyo usa realmente el argumento.",
-        "fr": "Platon distingue des façons de comprendre, des images et croyances au raisonnement examinant ses points de départ. Une conclusion convaincante peut dépendre d’une hypothèse non vérifiée. Le passage invite à regarder sous le résultat et identifier le soutien réel de l’argument."
       },
       "plainLanguage": {
         "en": "Plato’s hierarchy belongs to his philosophical system. Use it to examine assumptions without treating its categories as settled scientific facts.",
@@ -1167,11 +1027,6 @@
         "es": "¿De dónde vino la idea?",
         "fr": "D’où vient l’idée ?"
       },
-      "text": {
-        "en": "Hume connects ideas with impressions: the livelier experiences from which thought draws its materials. This invites asking what experience supports a concept rather than accepting a label as an explanation. He also considers a missing shade of blue as a complication, showing that a philosophical rule can meet a difficult exception.",
-        "es": "Hume relaciona ideas e impresiones: experiencias más vivas de las que el pensamiento obtiene materiales. Invita a preguntar qué experiencia sostiene un concepto en vez de aceptar una etiqueta como explicación. También considera un tono de azul ausente, una excepción difícil para su regla.",
-        "fr": "Hume relie les idées aux impressions, expériences plus vives dont la pensée tire ses matériaux. Il invite à demander quelle expérience soutient un concept au lieu de prendre une étiquette pour une explication. Il considère aussi une nuance de bleu absente, exception difficile à sa règle."
-      },
       "plainLanguage": {
         "en": "This is Hume’s account of ideas, including a problem he acknowledges. It is a theory to evaluate, not a demand to dismiss abstract thought.",
         "es": "Es la teoría de Hume, incluido un problema que reconoce. Debe evaluarse, no usarse para rechazar el pensamiento abstracto.",
@@ -1207,11 +1062,6 @@
         "en": "Proof or observation?",
         "es": "¿Prueba u observación?",
         "fr": "Preuve ou observation ?"
-      },
-      "text": {
-        "en": "Hume distinguishes relations between ideas from claims about matters of fact. A mathematical conclusion and a prediction about tomorrow do not have the same kind of support. The distinction asks whether an argument establishes necessity or relies on experience that could have turned out differently.",
-        "es": "Hume distingue relaciones entre ideas y afirmaciones sobre hechos. Una conclusión matemática y una predicción sobre mañana no tienen el mismo apoyo. La distinción pregunta si un argumento establece una necesidad o depende de experiencias que podrían haber sido diferentes.",
-        "fr": "Hume distingue les relations entre idées des affirmations sur les faits. Une conclusion mathématique et une prévision pour demain n’ont pas le même soutien. La distinction demande si un argument établit une nécessité ou repose sur une expérience qui aurait pu être différente."
       },
       "plainLanguage": {
         "en": "Different questions call for different evidence. A demand for mathematical certainty can be misplaced in a factual decision.",
@@ -1249,11 +1099,6 @@
         "es": "¿Continuará el patrón?",
         "fr": "La tendance continuera-t-elle ?"
       },
-      "text": {
-        "en": "Hume asks what justifies moving from observed events to expectations about events not yet observed. A pattern in the past helps us predict, but the prediction assumes some continuity. Pointing to earlier successful predictions uses experience again, leaving the deeper justification open to examination.",
-        "es": "Hume pregunta qué justifica pasar de hechos observados a expectativas sobre hechos aún no observados. Un patrón pasado ayuda a predecir, pero supone continuidad. Señalar predicciones exitosas vuelve a usar la experiencia y deja abierta la justificación más profunda.",
-        "fr": "Hume demande ce qui justifie le passage des événements observés aux attentes concernant ceux qui ne le sont pas encore. Une tendance passée aide à prévoir, mais suppose une continuité. Citer des prévisions réussies utilise encore l’expérience et laisse ouverte la justification plus profonde."
-      },
       "plainLanguage": {
         "en": "The problem challenges certainty, not the everyday usefulness of every prediction.",
         "es": "El problema cuestiona la certeza, no la utilidad cotidiana de toda predicción.",
@@ -1290,11 +1135,6 @@
         "es": "Una expectativa familiar",
         "fr": "Une attente familière"
       },
-      "text": {
-        "en": "Hume explains that repeated experience forms habits of expectation. We anticipate one event after another without reconstructing a proof each time. This makes action possible in daily life, but the feeling of naturalness can conceal how much a belief depends on repetition rather than demonstrated necessity.",
-        "es": "Hume explica que la experiencia repetida forma hábitos de expectativa. Anticipamos un hecho tras otro sin rehacer una prueba cada vez. Así podemos actuar a diario, pero la sensación de naturalidad oculta cuánto depende una creencia de la repetición y no de una necesidad demostrada.",
-        "fr": "Hume explique que les expériences répétées forment des habitudes d’attente. Nous anticipons un événement après un autre sans reconstruire une preuve à chaque fois. Cela permet l’action quotidienne, mais l’impression de naturel masque parfois la dépendance d’une croyance à la répétition plutôt qu’à une nécessité démontrée."
-      },
       "plainLanguage": {
         "en": "Habit explains how expectations arise; it does not make every habitual expectation reliable.",
         "es": "El hábito explica el origen de expectativas; no hace fiable toda expectativa habitual.",
@@ -1330,11 +1170,6 @@
         "en": "How much should a report count?",
         "es": "¿Cuánto debe pesar un relato?",
         "fr": "Quel poids donner à un récit ?"
-      },
-      "text": {
-        "en": "In his discussion of extraordinary reports, Hume asks readers to compare testimony with other experience. A witness’s confidence is not the only consideration: error, deception, conflicting reports, and the unusual nature of the claim matter. The task is to weigh competing explanations rather than accept or reject a story merely because it is striking.",
-        "es": "Al discutir relatos extraordinarios, Hume propone comparar testimonios con otras experiencias. La confianza del testigo no basta: importan errores, engaños, relatos contradictorios y lo inusual de la afirmación. Se trata de sopesar explicaciones, no aceptar o rechazar una historia solo porque impresiona.",
-        "fr": "Dans sa discussion des récits extraordinaires, Hume propose de comparer les témoignages à d’autres expériences. La confiance du témoin ne suffit pas : erreurs, tromperies, récits contradictoires et caractère inhabituel comptent. Il faut peser les explications plutôt qu’accepter ou rejeter une histoire parce qu’elle frappe."
       },
       "plainLanguage": {
         "en": "Hume applies this argument to miracles. Here the exercise examines evidence without prescribing a religious belief.",
@@ -1374,11 +1209,6 @@
         "es": "Aprender es más que acumular",
         "fr": "Apprendre ne se réduit pas à accumuler"
       },
-      "text": {
-        "en": "Confucius connects learning with thought and warns about neglecting either. Collecting lessons without examining them can leave knowledge unused; thinking without learning can drift without correction. The passage asks for a relationship between received knowledge and the work of testing what it means.",
-        "es": "Confucio une aprendizaje y reflexión y advierte sobre descuidar cualquiera. Acumular lecciones sin examinarlas deja conocimiento sin usar; pensar sin aprender puede desviarse sin corrección. El pasaje pide relacionar el saber recibido con el trabajo de comprobar qué significa.",
-        "fr": "Confucius relie apprentissage et réflexion et avertit contre l’abandon de l’un ou l’autre. Accumuler des leçons sans les examiner laisse le savoir inutilisé ; penser sans apprendre peut dériver sans correction. Le passage demande de relier le savoir reçu au travail d’examiner son sens."
-      },
       "plainLanguage": {
         "en": "The Analects preserves brief teachings and conversations. Their brevity invites application and careful interpretation.",
         "es": "Las Analectas conservan enseñanzas y conversaciones breves. Su brevedad invita a aplicar e interpretar con cuidado.",
@@ -1414,11 +1244,6 @@
         "en": "A practical self-review",
         "es": "Una revisión personal práctica",
         "fr": "Un examen personnel concret"
-      },
-      "text": {
-        "en": "A speaker in the Analects describes reviewing whether he served others faithfully, dealt sincerely with friends, and practiced what he had received in teaching. The review turns character into questions about conduct. It is more specific than simply asking whether one is a good person.",
-        "es": "Un interlocutor de las Analectas revisa si sirvió fielmente a otros, fue sincero con amigos y practicó las enseñanzas recibidas. La revisión convierte el carácter en preguntas sobre la conducta. Es más concreta que preguntar simplemente si uno es buena persona.",
-        "fr": "Un interlocuteur des Entretiens examine s’il a servi autrui fidèlement, traité ses amis sincèrement et pratiqué les enseignements reçus. Cet examen transforme le caractère en questions sur les actes. Il est plus précis que demander simplement si l’on est une bonne personne."
       },
       "plainLanguage": {
         "en": "Legge names the speaker Tsang. The emphasis is on repeated examination of particular responsibilities.",
@@ -1456,11 +1281,6 @@
         "es": "Comparar sin desprecio",
         "fr": "Comparer sans mépris"
       },
-      "text": {
-        "en": "Confucius advises learning from people who show good qualities and examining oneself when seeing qualities one criticizes. Attention is directed away from simply ranking others. Another person’s conduct becomes a prompt to notice what you might practice or correct in yourself.",
-        "es": "Confucio aconseja aprender de buenas cualidades ajenas y examinarse al observar defectos criticados. La atención deja de limitarse a clasificar a otros. Su conducta se convierte en una invitación a notar qué puedes practicar o corregir en ti.",
-        "fr": "Confucius conseille d’apprendre des bonnes qualités d’autrui et de s’examiner face aux défauts que l’on critique. L’attention ne se limite plus à classer les autres. Leur conduite devient une invitation à remarquer ce que l’on pourrait pratiquer ou corriger en soi."
-      },
       "plainLanguage": {
         "en": "Self-examination can accompany criticism without replacing accountability for another person’s conduct.",
         "es": "Examinarse puede acompañar la crítica sin eliminar la responsabilidad por la conducta ajena.",
@@ -1496,11 +1316,6 @@
         "en": "Knowing when enough is enough",
         "es": "Saber cuándo basta",
         "fr": "Savoir quand cela suffit"
-      },
-      "text": {
-        "en": "The Tao Te Ching uses images of excessive fullness and guarded treasure to question relentless accumulation. Finishing a task and stepping back can be wiser than seeking more distinction indefinitely. The idea challenges the assumption that a little success always justifies pursuing still more of the same.",
-        "es": "El Tao Te Ching usa imágenes de plenitud excesiva y tesoros vigilados para cuestionar la acumulación sin fin. Terminar una tarea y retirarse puede ser más sabio que buscar reconocimiento indefinido. La idea cuestiona que un poco de éxito siempre justifique perseguir más de lo mismo.",
-        "fr": "Le Tao Te King utilise des images de plénitude excessive et de trésors gardés pour contester l’accumulation sans fin. Terminer une tâche puis se retirer peut être plus sage que chercher indéfiniment la distinction. L’idée conteste qu’un peu de succès justifie toujours davantage de la même chose."
       },
       "plainLanguage": {
         "en": "Restraint is a proposed source of stability. It should be compared with responsibilities that still require effort.",
@@ -1538,11 +1353,6 @@
         "es": "Flexibilidad con integridad",
         "fr": "Souplesse et intégrité"
       },
-      "text": {
-        "en": "The Tao Te Ching pairs apparent opposites: yielding and remaining whole, being low and finding room to grow. These images suggest that insisting on outward dominance can threaten what one wants to preserve. Yielding may protect a purpose, but it can also become surrender if no boundary remains.",
-        "es": "El Tao Te Ching une opuestos aparentes: ceder y permanecer entero, estar abajo y encontrar espacio para crecer. Las imágenes sugieren que insistir en dominar puede amenazar lo que se quiere preservar. Ceder puede proteger un propósito, pero también ser rendirse si no queda límite.",
-        "fr": "Le Tao Te King rapproche des opposés apparents : céder et rester entier, être bas et trouver une place pour grandir. Ces images suggèrent qu’insister sur la domination peut menacer ce que l’on veut préserver. Céder peut protéger un but, mais devenir une capitulation sans limite."
-      },
       "plainLanguage": {
         "en": "The paradoxes invite reflection rather than a literal rule to accept every demand.",
         "es": "Las paradojas invitan a reflexionar, no a aceptar literalmente toda exigencia.",
@@ -1578,11 +1388,6 @@
         "en": "A habit that can change",
         "es": "Un hábito capaz de cambiar",
         "fr": "Une habitude capable de changer"
-      },
-      "text": {
-        "en": "The Tao Te Ching contrasts the flexibility of living things with the stiffness associated with death. As a metaphor for conduct, the contrast asks whether a rigid habit protects us or prevents response to a changing world. Strength might include the capacity to adjust without losing direction.",
-        "es": "El Tao Te Ching contrasta la flexibilidad de lo vivo con la rigidez asociada a la muerte. Como metáfora de conducta, pregunta si un hábito rígido protege o impide responder a un mundo cambiante. La fuerza puede incluir ajustarse sin perder dirección.",
-        "fr": "Le Tao Te King oppose la souplesse des êtres vivants à la rigidité associée à la mort. Comme métaphore de conduite, cela demande si une habitude rigide protège ou empêche de répondre à un monde changeant. La force peut inclure la capacité d’ajuster sans perdre sa direction."
       },
       "plainLanguage": {
         "en": "The biological image is used philosophically, not as a claim that flexibility resolves every practical problem.",
@@ -1620,11 +1425,6 @@
         "es": "Prepararse para personas imperfectas",
         "fr": "Se préparer aux imperfections d’autrui"
       },
-      "text": {
-        "en": "Marcus begins a day by expecting to encounter difficult conduct. He reminds himself that other people share his human nature, even when their behavior is objectionable. Expectation can reduce surprise and resentment, but understanding another person does not require permitting every action they take.",
-        "es": "Marco comienza el día esperando encontrar conductas difíciles. Recuerda que otros comparten su naturaleza humana aunque su comportamiento sea criticable. Prepararse reduce sorpresa y resentimiento, pero comprender a alguien no obliga a permitir todo lo que haga.",
-        "fr": "Marc commence la journée en s’attendant à des conduites difficiles. Il rappelle qu’autrui partage sa nature humaine même lorsqu’il agit mal. Cette attente réduit surprise et ressentiment, mais comprendre quelqu’un n’oblige pas à permettre tous ses actes."
-      },
       "plainLanguage": {
         "en": "This private reminder aims at managing one’s response. It does not erase the need for accountability.",
         "es": "El recordatorio privado busca gestionar la propia respuesta. No elimina la necesidad de exigir responsabilidad.",
@@ -1660,11 +1460,6 @@
         "en": "The image and the behavior",
         "es": "La imagen y la conducta",
         "fr": "L’image et les actes"
-      },
-      "text": {
-        "en": "Machiavelli examines how a ruler’s public appearance can differ from conduct when circumstances change. People often judge what they can see, while hidden choices remain uncertain. The passage raises a practical problem for observers: favorable presentation may convey real qualities or conceal actions that undermine them.",
-        "es": "Maquiavelo examina cómo la apariencia pública de un gobernante puede diferir de su conducta cuando cambian las circunstancias. La gente juzga lo visible mientras desconoce decisiones ocultas. Una presentación favorable puede expresar cualidades reales o esconder acciones que las contradicen.",
-        "fr": "Machiavel examine comment l’apparence publique d’un dirigeant peut différer de ses actes lorsque les circonstances changent. Les gens jugent le visible tandis que des choix restent cachés. Une présentation favorable peut exprimer de vraies qualités ou dissimuler des actes qui les contredisent."
       },
       "plainLanguage": {
         "en": "Machiavelli’s political advice is controversial. The exercise concerns how to evaluate a public image, not how to deceive.",
@@ -1704,11 +1499,6 @@
         "es": "¿Qué acciones se recuerdan?",
         "fr": "Quels actes garde-t-on en mémoire ?"
       },
-      "text": {
-        "en": "Herodotus introduces his inquiry as a way to preserve notable deeds of Greeks and other peoples and to investigate their conflict. Recording more than one side can widen memory, yet the recorder still chooses what is notable and how groups are named. Inclusion and framing are separate questions.",
-        "es": "Heródoto presenta su investigación para conservar acciones notables de griegos y otros pueblos y examinar su conflicto. Registrar varios lados amplía la memoria, pero quien escribe aún elige qué importa y cómo nombra a los grupos. Incluir y encuadrar son cuestiones distintas.",
-        "fr": "Hérodote présente son enquête pour préserver les actes remarquables des Grecs et d’autres peuples et examiner leur conflit. Enregistrer plusieurs côtés élargit la mémoire, mais le narrateur choisit encore ce qui compte et comment nommer les groupes. Inclusion et cadrage sont deux questions distinctes."
-      },
       "plainLanguage": {
         "en": "His ancient vocabulary reflects his setting. Preserving an account does not make its categories neutral.",
         "es": "Su vocabulario antiguo refleja su contexto. Conservar un relato no vuelve neutrales sus categorías.",
@@ -1744,11 +1534,6 @@
         "en": "The observer’s lens",
         "es": "La mirada del observador",
         "fr": "Le regard de l’observateur"
-      },
-      "text": {
-        "en": "Herodotus describes Egyptian customs by contrasting them with practices familiar to his audience. Difference becomes the organizing pattern of the account. That can draw attention to unnoticed assumptions, but it can also make another society appear mainly as the opposite of the observer’s own.",
-        "es": "Heródoto describe costumbres egipcias contrastándolas con prácticas conocidas por sus lectores. La diferencia organiza el relato. Esto destaca supuestos inadvertidos, pero también puede presentar otra sociedad principalmente como lo opuesto a la del observador.",
-        "fr": "Hérodote décrit les coutumes égyptiennes en les opposant aux pratiques connues de son public. La différence organise son récit. Cela révèle des présupposés inaperçus, mais peut aussi présenter une autre société surtout comme l’inverse de celle de l’observateur."
       },
       "plainLanguage": {
         "en": "Read these ancient reports critically. Some observations require corroboration rather than automatic acceptance.",
@@ -1786,11 +1571,6 @@
         "es": "Relatos distintos del comienzo",
         "fr": "Des récits différents du commencement"
       },
-      "text": {
-        "en": "Herodotus opens with rival accounts of how conflict between peoples began. Different narrators locate the first wrong in different events. The opening shows how a story of origins can assign responsibility before later evidence is considered. Herodotus separates these reports from the point at which he begins his own inquiry.",
-        "es": "Heródoto comienza con relatos rivales sobre el origen del conflicto. Cada narrador sitúa la primera injusticia en hechos distintos. Una historia de origen puede asignar responsabilidades antes de examinar pruebas posteriores. Heródoto distingue esos relatos del punto donde inicia su propia investigación.",
-        "fr": "Hérodote commence par des récits rivaux de l’origine du conflit. Les narrateurs placent la première injustice dans des événements différents. Un récit d’origine peut attribuer la responsabilité avant l’examen de preuves ultérieures. Hérodote distingue ces rapports du point où débute sa propre enquête."
-      },
       "plainLanguage": {
         "en": "The original includes violent events; this adaptation focuses on narration and attribution without graphic details.",
         "es": "El original incluye hechos violentos; la adaptación se centra en narración y atribución sin detalles gráficos.",
@@ -1826,11 +1606,6 @@
         "en": "Different fears, different institutions",
         "es": "Temores distintos, instituciones distintas",
         "fr": "Des craintes différentes, des institutions différentes"
-      },
-      "text": {
-        "en": "Herodotus reports a debate contrasting rule by one, by a few, and by many. Each speaker emphasizes a danger in the alternatives and a strength in the preferred system. Political judgment emerges from competing fears about disorder, corruption, and unchecked power rather than a single agreed measure of success.",
-        "es": "Heródoto relata un debate entre gobierno de uno, de pocos y de muchos. Cada orador destaca peligros ajenos y fortalezas del sistema preferido. El juicio político surge de temores rivales sobre desorden, corrupción y poder sin control, no de una única medida del éxito.",
-        "fr": "Hérodote rapporte un débat entre le gouvernement d’un seul, de quelques-uns et du grand nombre. Chaque orateur souligne les dangers des alternatives et les forces de son système préféré. Le jugement politique naît de craintes concurrentes du désordre, de la corruption et du pouvoir incontrôlé."
       },
       "plainLanguage": {
         "en": "Treat this as a reported ancient debate, not a verified transcript or a verdict on every present-day system.",
@@ -1868,11 +1643,6 @@
         "es": "¿Quién controla el conocimiento personal?",
         "fr": "Qui contrôle le savoir personnel ?"
       },
-      "text": {
-        "en": "Douglass begins by explaining that he lacks the ordinary knowledge of his age that many people take for granted. His account connects this absence with the conditions of enslavement and disrupted family relationships. Control over information can shape identity before a person has the chance to tell their own story.",
-        "es": "Douglass explica que carece del conocimiento de su edad que otros dan por hecho. Vincula esta ausencia con la esclavitud y las relaciones familiares interrumpidas. Controlar la información puede moldear la identidad antes de que una persona pueda contar su historia.",
-        "fr": "Douglass explique qu’il ignore son âge, information que beaucoup considèrent comme acquise. Il relie cette absence à l’esclavage et aux liens familiaux interrompus. Le contrôle de l’information peut façonner l’identité avant qu’une personne puisse raconter sa propre histoire."
-      },
       "plainLanguage": {
         "en": "This is a firsthand account of slavery, adapted without graphic material. Missing records should not be confused with a lack of personal history.",
         "es": "Es un relato directo de esclavitud, adaptado sin material gráfico. La falta de registros no significa ausencia de historia personal.",
@@ -1908,11 +1678,6 @@
         "en": "Why a narrator may leave things out",
         "es": "Por qué un narrador omite detalles",
         "fr": "Pourquoi un narrateur omet des détails"
-      },
-      "text": {
-        "en": "Douglass explains that he will not describe every detail of his escape because doing so could expose helpers and endanger others. His choice makes omission part of an ethical decision, not simply a flaw in a story. Readers must consider both the need for evidence and the possible consequences of disclosure.",
-        "es": "Douglass explica que no contará todos los detalles de su huida para no exponer a quienes ayudaron ni poner a otros en peligro. La omisión es una decisión ética, no solo un defecto narrativo. Los lectores deben considerar tanto la necesidad de pruebas como las consecuencias de revelar información.",
-        "fr": "Douglass explique qu’il ne racontera pas tous les détails de sa fuite afin de ne pas exposer ses soutiens ni mettre autrui en danger. L’omission relève d’un choix éthique, pas seulement d’un défaut narratif. Les lecteurs doivent considérer les preuves et les conséquences de la divulgation."
       },
       "plainLanguage": {
         "en": "A narrator can have a legitimate reason for silence. That does not remove every question about reliability.",
@@ -1950,11 +1715,6 @@
         "es": "Verte a través de otros ojos",
         "fr": "Se voir à travers le regard d’autrui"
       },
-      "text": {
-        "en": "Du Bois describes the strain of experiencing oneself through personal aspirations and through a society’s judgment. His account of double consciousness concerns Black American life after emancipation. It asks how an outside gaze can enter a person’s self-understanding without exhausting the richness of that person’s identity.",
-        "es": "Du Bois describe la tensión entre las aspiraciones propias y el juicio social. Su idea de doble conciencia trata de la vida afroamericana tras la emancipación. Pregunta cómo la mirada externa entra en la comprensión personal sin agotar la riqueza de la identidad.",
-        "fr": "Du Bois décrit la tension entre aspirations personnelles et jugement social. Son idée de double conscience concerne la vie noire américaine après l’émancipation. Elle demande comment le regard extérieur entre dans la compréhension de soi sans épuiser la richesse de l’identité."
-      },
       "plainLanguage": {
         "en": "The concept has a specific historical setting. Applying it elsewhere requires attention to similarities and differences.",
         "es": "El concepto tiene un contexto histórico concreto. Aplicarlo en otro lugar exige atender a semejanzas y diferencias.",
@@ -1991,11 +1751,6 @@
         "es": "¿Qué cambió y para quién?",
         "fr": "Qu’est-ce qui a changé, et pour qui ?"
       },
-      "text": {
-        "en": "Du Bois recalls teaching in a rural community and later returning to find altered circumstances. Changes that might look like progress from a distance do not tell the whole story of particular lives. His narrative asks whether material development, opportunity, and human well-being necessarily move together.",
-        "es": "Du Bois recuerda enseñar en una comunidad rural y volver después a circunstancias distintas. Cambios que parecen progreso a distancia no cuentan toda la historia de vidas concretas. Su relato pregunta si desarrollo material, oportunidades y bienestar humano avanzan necesariamente juntos.",
-        "fr": "Du Bois se souvient d’avoir enseigné dans une communauté rurale puis d’y revenir dans des circonstances transformées. Des changements ressemblant au progrès de loin ne racontent pas toute l’histoire des vies particulières. Son récit demande si développement matériel, possibilités et bien-être avancent nécessairement ensemble."
-      },
       "plainLanguage": {
         "en": "This is a historical narrative about a community, not a claim that every improvement is false.",
         "es": "Es un relato histórico sobre una comunidad, no una afirmación de que toda mejora sea falsa.",
@@ -2031,11 +1786,6 @@
         "en": "Memory outside official records",
         "es": "Memoria fuera de registros oficiales",
         "fr": "La mémoire hors des documents officiels"
-      },
-      "text": {
-        "en": "Du Bois treats spiritual songs as expressions of memory, sorrow, and hope rather than mere entertainment. Cultural forms can preserve experience that official records overlook. Interpreting them requires attention to the people and circumstances from which they arose, instead of reducing them to a pleasant sound or a single message.",
-        "es": "Du Bois considera los cantos espirituales expresiones de memoria, dolor y esperanza, no mero entretenimiento. Las formas culturales preservan experiencias que los registros oficiales omiten. Interpretarlas exige atender a sus personas y circunstancias, sin reducirlas a un sonido agradable o un mensaje único.",
-        "fr": "Du Bois considère les chants spirituels comme des expressions de mémoire, de peine et d’espoir plutôt qu’un simple divertissement. Les formes culturelles préservent des expériences négligées par les documents officiels. Leur interprétation exige de considérer leurs personnes et circonstances, sans les réduire à un son agréable ou à un seul message."
       },
       "plainLanguage": {
         "en": "This adaptation discusses the chapter without reproducing lyrics or musical notation.",
@@ -2075,11 +1825,6 @@
         "es": "Más producción, tareas más estrechas",
         "fr": "Plus de production, des tâches plus étroites"
       },
-      "text": {
-        "en": "Smith uses a pin factory to show how dividing a process into specialized tasks can greatly increase output. Workers gain skill through repetition, avoid switching tasks, and use better methods. The benefit is coordination, but the same arrangement raises questions about dependence and what workers lose when their activity becomes narrow.",
-        "es": "Smith usa una fábrica de alfileres para mostrar cómo especializar tareas aumenta mucho la producción. La repetición mejora habilidades, evita cambios de tarea y permite mejores métodos. La coordinación beneficia, pero plantea dependencia y qué pierden los trabajadores cuando su actividad se estrecha.",
-        "fr": "Smith utilise une fabrique d’épingles pour montrer que des tâches spécialisées augmentent fortement la production. La répétition améliore l’habileté, évite les changements de tâche et favorise les méthodes. La coordination profite, mais pose les questions de dépendance et de ce que perdent les travailleurs dans une activité étroite."
-      },
       "plainLanguage": {
         "en": "The example concerns a particular production process. Efficiency is one outcome to consider, not the only outcome.",
         "es": "El ejemplo trata de un proceso concreto. La eficiencia es un resultado importante, pero no el único.",
@@ -2115,11 +1860,6 @@
         "en": "When a specialty becomes viable",
         "es": "Cuando una especialidad es viable",
         "fr": "Quand une spécialité devient viable"
-      },
-      "text": {
-        "en": "Smith connects the division of labor with the size of the market. A narrow specialty needs enough people who want its output. In a small or isolated community, one person may need several skills instead. The passage explains why a useful idea can succeed in one setting and be impractical in another.",
-        "es": "Smith relaciona la división del trabajo con el tamaño del mercado. Una especialidad estrecha necesita suficientes personas interesadas. En una comunidad pequeña o aislada, alguien puede necesitar varias habilidades. Una idea útil puede funcionar en un entorno y ser inviable en otro.",
-        "fr": "Smith relie la division du travail à la taille du marché. Une spécialité étroite exige assez de personnes intéressées par sa production. Dans une communauté petite ou isolée, une personne peut avoir besoin de plusieurs compétences. Une idée utile peut réussir dans un contexte et être impraticable dans un autre."
       },
       "plainLanguage": {
         "en": "Transport and access affect the relevant market, not simply the number of people nearby.",
@@ -2157,11 +1897,6 @@
         "es": "Una herramienta común de intercambio",
         "fr": "Un outil commun d’échange"
       },
-      "text": {
-        "en": "Smith describes the difficulty of trading when each person must want exactly what the other offers. A commonly accepted medium of exchange can make cooperation easier by separating one transaction from the next. Its usefulness depends on others accepting it, making a shared convention central to the system.",
-        "es": "Smith describe la dificultad de intercambiar cuando cada persona debe querer exactamente lo que ofrece la otra. Un medio aceptado facilita cooperar al separar una transacción de la siguiente. Su utilidad depende de que otros lo acepten: una convención compartida sostiene el sistema.",
-        "fr": "Smith décrit la difficulté d’échanger lorsque chacun doit vouloir exactement ce que l’autre propose. Un moyen accepté facilite la coopération en séparant une transaction de la suivante. Son utilité dépend de son acceptation par autrui : une convention commune soutient le système."
-      },
       "plainLanguage": {
         "en": "This is Smith’s historical explanation of exchange. It need not settle every question about the origin of money.",
         "es": "Es la explicación histórica de Smith sobre el intercambio. No resuelve toda cuestión sobre el origen del dinero.",
@@ -2197,11 +1932,6 @@
         "en": "Useful does not always mean expensive",
         "es": "Útil no siempre significa caro",
         "fr": "Utile ne signifie pas toujours cher"
-      },
-      "text": {
-        "en": "Smith distinguishes usefulness from what something can command in exchange. Water and diamonds make the contrast memorable: something essential can have a low exchange price, while something less necessary can be costly. The distinction warns against treating a price as a complete judgment of importance.",
-        "es": "Smith distingue utilidad y lo que algo obtiene en intercambio. Agua y diamantes hacen memorable el contraste: algo esencial puede tener un precio bajo y algo menos necesario ser caro. La distinción advierte contra tomar el precio como juicio completo de importancia.",
-        "fr": "Smith distingue l’utilité de ce qu’une chose permet d’obtenir dans un échange. L’eau et les diamants rendent le contraste mémorable : l’essentiel peut coûter peu, le moins nécessaire très cher. Cette distinction avertit contre le prix comme jugement complet de l’importance."
       },
       "plainLanguage": {
         "en": "The passage introduces a distinction, not a complete modern theory of how all prices are set.",
@@ -2239,11 +1969,6 @@
         "es": "Una elección bajo presión desigual",
         "fr": "Un choix sous pression inégale"
       },
-      "text": {
-        "en": "Smith discusses bargaining between workers and employers and notes that their ability to wait is not equal. A person with fewer reserves may accept terms they would otherwise refuse. The fact that an agreement was reached therefore does not tell the whole story about the alternatives each side could realistically use.",
-        "es": "Smith examina la negociación entre trabajadores y empleadores y observa que no pueden esperar por igual. Quien tiene menos reservas puede aceptar condiciones que rechazaría en otra situación. Llegar a un acuerdo no cuenta toda la historia de las alternativas reales de cada lado.",
-        "fr": "Smith examine la négociation entre travailleurs et employeurs et note qu’ils ne peuvent pas attendre de la même façon. Celui qui possède moins de réserves peut accepter des conditions qu’il refuserait autrement. Un accord ne raconte donc pas toute l’histoire des alternatives réelles de chaque partie."
-      },
       "plainLanguage": {
         "en": "Smith’s account of labor markets includes bargaining conditions, not merely individual effort or productivity.",
         "es": "El análisis laboral de Smith incluye condiciones de negociación, no solo esfuerzo o productividad individual.",
@@ -2279,11 +2004,6 @@
         "en": "What does a high return tell you?",
         "es": "¿Qué indica un rendimiento alto?",
         "fr": "Que révèle un rendement élevé ?"
-      },
-      "text": {
-        "en": "Smith compares profits across circumstances and considers how competition, capital, and changing conditions affect them. A return cannot be interpreted without its setting. A high profit might reflect an opportunity, limited competition, or unusual conditions; it is not automatically a measure of how useful an activity is to everyone.",
-        "es": "Smith compara beneficios según circunstancias y considera competencia, capital y cambios del entorno. No se entiende un rendimiento sin contexto. Un beneficio alto puede reflejar una oportunidad, poca competencia o condiciones excepcionales; no mide automáticamente la utilidad de la actividad para todos.",
-        "fr": "Smith compare les profits selon les circonstances et examine concurrence, capital et changements du contexte. Un rendement ne s’interprète pas sans son cadre. Un profit élevé peut refléter une occasion, une concurrence limitée ou des conditions inhabituelles ; il ne mesure pas automatiquement l’utilité pour tous."
       },
       "plainLanguage": {
         "en": "The historical discussion invites questions about causes and comparisons rather than a promise about an investment.",
@@ -2321,11 +2041,6 @@
         "es": "Demanda respaldada por capacidad",
         "fr": "Une demande soutenue par la capacité"
       },
-      "text": {
-        "en": "Smith distinguishes the market price from a reference price covering ordinary costs and returns. He also discusses demand able to bring a product to market, not merely a wish to obtain it. A market can therefore respond strongly to purchasing power while leaving some real needs unmet.",
-        "es": "Smith distingue el precio de mercado de un precio de referencia que cubre costes y rendimientos habituales. También distingue demanda capaz de llevar un producto al mercado y el mero deseo de tenerlo. Un mercado puede responder al poder de compra dejando necesidades reales sin atender.",
-        "fr": "Smith distingue le prix de marché d’un prix de référence couvrant coûts et rendements ordinaires. Il distingue aussi la demande capable de faire venir un produit du simple souhait de l’obtenir. Un marché peut répondre fortement au pouvoir d’achat tout en laissant de vrais besoins insatisfaits."
-      },
       "plainLanguage": {
         "en": "The distinction between wanting and being able to pay matters when evaluating what markets reveal.",
         "es": "Distinguir querer y poder pagar importa al evaluar lo que revelan los mercados.",
@@ -2362,11 +2077,6 @@
         "es": "Resultados más allá de intenciones",
         "fr": "Des résultats au-delà des intentions"
       },
-      "text": {
-        "en": "In discussing domestic investment, Smith describes a person seeking security and gain whose activity may also support a wider outcome. The example separates intention from consequence. It does not establish that every pursuit of private gain benefits society; the mechanism and circumstances must still be examined.",
-        "es": "Al tratar la inversión nacional, Smith describe a alguien que busca seguridad y ganancia y puede contribuir a un resultado más amplio. El ejemplo separa intención y consecuencia. No demuestra que toda búsqueda de beneficio privado ayude a la sociedad: hay que examinar mecanismos y circunstancias.",
-        "fr": "À propos de l’investissement national, Smith décrit une personne cherchant sécurité et profit dont l’activité peut aussi contribuer à un résultat plus large. L’exemple distingue intention et conséquence. Il ne prouve pas que tout gain privé profite à la société : mécanismes et circonstances doivent être examinés."
-      },
       "plainLanguage": {
         "en": "The famous invisible-hand discussion appears in this specific argument. Avoid converting one mechanism into a universal guarantee.",
         "es": "La conocida mano invisible aparece en este argumento concreto. No conviertas un mecanismo en garantía universal.",
@@ -2402,11 +2112,6 @@
         "en": "The human cost of narrow work",
         "es": "El coste humano del trabajo limitado",
         "fr": "Le coût humain d’un travail étroit"
-      },
-      "text": {
-        "en": "Smith returns to the consequences of highly divided labor and worries about the effects of repetitive tasks on a person’s capacities. He considers education as a response. The same system that raises production can create needs that production figures alone do not display.",
-        "es": "Smith vuelve a las consecuencias del trabajo muy dividido y se preocupa por los efectos de tareas repetitivas sobre capacidades personales. Considera la educación como respuesta. El sistema que aumenta la producción puede crear necesidades que las cifras productivas no muestran.",
-        "fr": "Smith revient aux conséquences du travail très divisé et s’inquiète des effets de tâches répétitives sur les capacités personnelles. Il envisage l’éducation comme réponse. Le système qui augmente la production peut créer des besoins invisibles dans les seuls chiffres de production."
       },
       "plainLanguage": {
         "en": "This part completes a comparison with the pin factory: productive gains and human development must be considered together.",

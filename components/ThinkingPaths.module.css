@@ -5,40 +5,12 @@
   --walkthrough-accent-rgb:229,231,235;
   --walkthrough-illustration-bg:#182246;
   --walkthrough-background:linear-gradient(125deg,#182246,#111936);
-  max-width:1180px;
-  margin:0 auto;
-  padding:24px 20px 64px;
+  padding-bottom:40px;
   color:var(--text);
 }
-.header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-  padding:20px;
-  flex-wrap:wrap;
-}
-.header nav {
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-}
-.header label {
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.header select option {
-  background:#121936;
-  color:var(--text);
-}
-.header select {
-  padding:9px;
-  border-radius:9px;
-  border:1px solid var(--stroke);
-  background:rgba(255,255,255,0.08);
-  color:var(--text);
-}
+.shell :global(.appTop) { flex-wrap:wrap; gap:16px; }
+.shell :global(.topControls) { flex-wrap:wrap; min-width:0; max-width:100%; }
+.shell :global(.appNav) { flex-wrap:wrap; max-width:100%; }
 .hero {
   padding:32px;
   margin:24px 0;
@@ -139,9 +111,12 @@
   align-items:start;
 }
 .readingNav {
+  min-width:0;
   padding:22px;
   position:sticky;
   top:18px;
+  max-height:calc(100dvh - 36px);
+  overflow:auto;
 }
 .readingNav ol {
   list-style:none;
@@ -171,17 +146,24 @@
   padding:30px;
   scroll-margin-top:20px;
 }
-.passage h1 {
+.readingTitle {
   margin:10px 0;
+  font-size:clamp(1.7rem,3vw,2.2rem);
 }
-.passage blockquote {
-  font-size:1.3rem;
-  line-height:1.8;
+.readingContent { min-width:0; }
+.passageText {
+  max-width:70ch;
+  font-size:1.12rem;
+  line-height:1.85;
   margin:22px 0;
-  padding:20px;
-  border-left:4px solid #23c6b8;
-  background:rgba(35,198,184,0.08);
+  padding-left:22px;
+  border-left:3px solid #23c6b8;
 }
+.passageText p { margin:0 0 1.1em; }
+.thinkLink { margin-top:20px; }
+.thinking { scroll-margin-top:24px; margin-top:24px; }
+.thinking :global(.readingThinkingSession) { margin-top:18px; }
+.angles summary { cursor:pointer; font-weight:700; }
 .passage p,.passage li {
   line-height:1.7;
 }
@@ -243,17 +225,21 @@
   }
   .readingNav {
     position:static;
+    max-height:none;
+    overflow:visible;
   }
   .hero,.pathCard,.passage {
     padding:22px;
   }
-  .header {
-    gap:14px;
+  .readingNav ol {
+    display:flex;
+    overflow-x:auto;
+    gap:12px;
+    padding:4px;
+    scroll-snap-type:x proximity;
   }
-  .header nav {
-    gap:14px;
-  }
-  .shell {
-    padding:14px 12px 40px;
-  }
+  .readingNav li { min-width:190px; max-width:240px; flex-shrink:0; scroll-snap-align:start; }
+  .passageText { padding-left:14px; font-size:1.05rem; }
+  .footer { display:flex; flex-direction:column; gap:16px; }
+  .footer a { margin-right:0; }
 }

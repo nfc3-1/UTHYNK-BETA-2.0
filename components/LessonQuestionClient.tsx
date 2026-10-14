@@ -1,10 +1,9 @@
 'use client';
 
-import { ThinkingPathsNavLink } from '@/components/PathShell';
+import LessonAppHeader from './LessonAppHeader';
 
-import { LessonQuestionListHint, LessonsNavLink } from '@/components/LessonDiscovery';
+import { LessonQuestionListHint } from '@/components/LessonDiscovery';
 import ThinkingWalkthrough, { ThinkingStepHint } from '@/components/ThinkingWalkthrough';
-import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ageBandLabel, normalizeAgeBand } from '@/lib/ageAdaptivePrompts';
 import { getLessonQuestion } from '@/lib/lessonQuestions';
@@ -21,7 +20,6 @@ import {
   type ChallengeSessionKeyInput,
 } from '@/lib/challengeSession';
 import {
-  languageOptions,
   localizeCategory,
   localizeQuestion,
   localizeText,
@@ -485,44 +483,7 @@ export default function LessonQuestionClient({ category, questions, questionIds,
 
   return (
     <>
-      <header className="appTop card">
-        <a href="/" className="appBrandText">
-          <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
-          <span className="brandCopy">
-            <strong>UThynk</strong>
-            <small>Better thinking. <em>Better decisions.</em></small>
-          </span>
-        </a>
-
-        <div className="topControls">
-          <nav className="appNav">
-            <a href="/">{copy.home}</a>
-            <LessonsNavLink language={language} />
-            <ThinkingPathsNavLink language={language} />
-            <RestrictedNavLinks />
-            <a href="/profile">{copy.profileNav}</a>
-            <a href="/feedback">{copy.feedbackNav}</a>
-            <a href="/store">{copy.storeNav}</a>
-          </nav>
-
-          <label className="languageSelectLabel topLanguageSelect">
-            <span>{copy.adaptiveLanguage}</span>
-            <select
-              aria-label={copy.adaptiveLanguage}
-              className="languageSelect"
-              value={language}
-              disabled={loading}
-              onChange={(event) => changeLanguage(event.target.value as Language)}
-            >
-              {languageOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-      </header>
+      {!readingModuleId && <LessonAppHeader language={language} changeLanguage={changeLanguage} disabled={loading} />}
 
       {!readingModuleId && <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
@@ -534,8 +495,8 @@ export default function LessonQuestionClient({ category, questions, questionIds,
 
       <ThinkingWalkthrough language={language} />
 
-      <section className="lessonQuestionLayout" style={{ maxWidth: '100%', minWidth: 0, width: '100%' }}>
-        <div className="lessonQuestionList" style={{ minWidth: 0 }}>
+      <section className={readingModuleId ? "readingThinkingSession" : "lessonQuestionLayout"} style={{ maxWidth: '100%', minWidth: 0, width: '100%' }}>
+        {!readingModuleId && <div className="lessonQuestionList" style={{ minWidth: 0 }}>
           {!readingModuleId && <LessonQuestionListHint language={language} />}
           {localizedQuestions.map((question, index) => (
             <button
@@ -549,7 +510,7 @@ export default function LessonQuestionClient({ category, questions, questionIds,
               {question}
             </button>
           ))}
-        </div>
+        </div>}
 
         <div className="card lessonStartPanel" style={{ minWidth: 0 }}>
           <div className="panelLabel">{flow.selected}</div>
