@@ -19,6 +19,22 @@ const moduleId = 'reading-plato-republic-473';
 const params = { path: 'power-leadership', reading: 'rulers-responsibility' };
 const request = (body: object) => POST(new Request('http://localhost/api/reasoning', { method: 'POST', body: JSON.stringify(body) }));
 describe('Reading Path beta boundary', () => {
+  it('keeps previous readings private, scoped to their path, and authorized on every reasoning turn', async () => {
+    const oldId = 'reading-power-ship-and-expertise';
+    const locked = await ReadingPage({ params, searchParams: { lesson: oldId } });
+    expect(locked.props.locked).toBe(true); expect(locked.props.previousModules).toBeUndefined();
+    expect(JSON.stringify(locked.props)).not.toContain(getReadingModule(oldId)!.question.en);
+    state.sections = ['thinking_paths'];
+    const allowed = await ReadingPage({ params, searchParams: { lesson: oldId } });
+    expect(allowed.props.moduleId).toBe(oldId); expect(allowed.props.reading.modules).toHaveLength(10);
+    expect(allowed.props.previousModules.some((item: { id: string }) => item.id === oldId)).toBe(true);
+    await expect(ReadingPage({ params, searchParams: { lesson: 'reading-truth-cave-and-appearances' } })).rejects.toThrow('not-found');
+    expect((await request({ readingModuleId: oldId, response: 'Keep the original context.' })).status).toBe(200);
+    expect(JSON.parse(sent[0].messages[1].content).challenge).toBe(readingReasoningContext(getReadingModule(oldId)!));
+    state.sections = [];
+    expect((await request({ readingModuleId: oldId, phase: 'synthesis', response: 'Continue.' })).status).toBe(403);
+    expect(sent).toHaveLength(1);
+  });
   it('admits admins and explicit beta grants, never unrelated roles or grants', async () => {
     expect((await resolveReadingRequest(moduleId)).ok).toBe(false);
     state.role = 'teacher'; state.sections = ['teacher','studio']; expect((await resolveReadingRequest(moduleId)).ok).toBe(false);

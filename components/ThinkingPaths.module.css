@@ -173,6 +173,9 @@
   border:1px solid rgba(35,198,184,0.25);
   border-radius:14px;
 }
+.previousReadings { padding:12px; }
+.previousReadings ul { list-style:none; padding:0; margin:12px 0 0; }
+.readingNav .previousReadings li { min-width:0; max-width:none; }
 .note {
   padding:12px 16px;
   background:rgba(255,255,255,0.06);
@@ -192,6 +195,7 @@
   margin-right:20px;
 }
 .shell a:focus-visible,
+.shell summary:focus-visible,
 .shell select:focus-visible {
   outline:3px solid var(--uthynk-gold);
   outline-offset:4px;
