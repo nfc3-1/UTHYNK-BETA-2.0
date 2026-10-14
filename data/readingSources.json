@@ -1,37 +1,387 @@
 {
   "marcus": {
-    "work": {"en":"Meditations", "es":"Meditaciones", "fr":"Pensées pour moi-même"},
-    "author":"Marcus Aurelius",
-    "edition":"George Long translation · Project Gutenberg #6920",
-    "sourceUrl":"https://www.gutenberg.org/cache/epub/6920/pg6920-images.html",
-    "rights":"public_domain_us"
+    "work": {
+      "en": "Meditations",
+      "es": "Meditaciones",
+      "fr": "Pensées pour moi-même"
+    },
+    "author": "Marcus Aurelius",
+    "edition": "George Long translation · Project Gutenberg #6920",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/6920/pg6920-images.html",
+    "rights": "public_domain_us"
   },
   "hume": {
-    "work":{"en":"An Enquiry Concerning Human Understanding", "es":"Investigación sobre el entendimiento humano", "fr":"Enquête sur l’entendement humain"},
-    "author":"David Hume",
-    "edition":"L. A. Selby-Bigge edition · Project Gutenberg #9662",
-    "sourceUrl":"https://www.gutenberg.org/files/9662/9662-h/9662-h.htm",
-    "rights":"public_domain_us"
+    "work": {
+      "en": "An Enquiry Concerning Human Understanding",
+      "es": "Investigación sobre el entendimiento humano",
+      "fr": "Enquête sur l’entendement humain"
+    },
+    "author": "David Hume",
+    "edition": "L. A. Selby-Bigge edition · Project Gutenberg #9662",
+    "sourceUrl": "https://www.gutenberg.org/files/9662/9662-h/9662-h.htm",
+    "rights": "public_domain_us"
   },
   "douglass": {
-    "work":{"en":"Narrative of the Life of Frederick Douglass", "es":"Narración de la vida de Frederick Douglass", "fr":"Récit de la vie de Frederick Douglass"},
-    "author":"Frederick Douglass",
-    "edition":"1845 · Project Gutenberg #23",
-    "sourceUrl":"https://www.gutenberg.org/cache/epub/23/pg23-images.html",
-    "rights":"public_domain_us"
+    "work": {
+      "en": "Narrative of the Life of Frederick Douglass",
+      "es": "Narración de la vida de Frederick Douglass",
+      "fr": "Récit de la vie de Frederick Douglass"
+    },
+    "author": "Frederick Douglass",
+    "edition": "1845 · Project Gutenberg #23",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/23/pg23-images.html",
+    "rights": "public_domain_us"
   },
   "dubois": {
-    "work":{"en":"The Souls of Black Folk", "es":"Las almas del pueblo negro", "fr":"Les Âmes du peuple noir"},
-    "author":"W. E. B. Du Bois",
-    "edition":"1903 · Project Gutenberg #408",
-    "sourceUrl":"https://www.gutenberg.org/cache/epub/408/pg408-images.html",
-    "rights":"public_domain_us"
+    "work": {
+      "en": "The Souls of Black Folk",
+      "es": "Las almas del pueblo negro",
+      "fr": "Les Âmes du peuple noir"
+    },
+    "author": "W. E. B. Du Bois",
+    "edition": "1903 · Project Gutenberg #408",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/408/pg408-images.html",
+    "rights": "public_domain_us"
   },
   "billRights": {
-    "work":{"en":"U.S. Bill of Rights", "es":"Carta de Derechos de Estados Unidos", "fr":"Déclaration des droits des États-Unis"},
-    "author":"First United States Congress",
-    "edition":"1791 · National Archives transcription",
-    "sourceUrl":"https://www.archives.gov/founding-docs/bill-of-rights-transcript",
-    "rights":"government_text"
+    "work": {
+      "en": "U.S. Bill of Rights",
+      "es": "Carta de Derechos de Estados Unidos",
+      "fr": "Déclaration des droits des États-Unis"
+    },
+    "author": "First United States Congress",
+    "edition": "1791 · National Archives transcription",
+    "sourceUrl": "https://www.archives.gov/founding-docs/bill-of-rights-transcript",
+    "rights": "government_text"
+  },
+  "xenophon": {
+    "author": "Xenophon",
+    "work": {
+      "en": "Cyropaedia",
+      "es": "Ciropedia",
+      "fr": "Cyropédie"
+    },
+    "edition": "H. G. Dakyns translation, revised by F. M. Stawell; Everyman’s Library transcription · Project Gutenberg #2085",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/2085/pg2085-images.html",
+    "rights": "public_domain_us"
+  },
+  "follett": {
+    "author": "Mary Parker Follett",
+    "work": {
+      "en": "The New State",
+      "es": "El nuevo Estado",
+      "fr": "Le nouvel État"
+    },
+    "edition": "1918 · Project Gutenberg #73755",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/73755/pg73755-images.html",
+    "rights": "public_domain_us"
+  },
+  "thoreau": {
+    "author": "Henry David Thoreau",
+    "work": {
+      "en": "On the Duty of Civil Disobedience",
+      "es": "Del deber de la desobediencia civil",
+      "fr": "Du devoir de désobéissance civile"
+    },
+    "edition": "1849 essay; Gutenberg transcription · Project Gutenberg #71",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/71/pg71-images.html",
+    "rights": "public_domain_us"
+  },
+  "baconEssays": {
+    "author": "Francis Bacon",
+    "work": {
+      "en": "The Essays or Counsels, Civil and Moral",
+      "es": "Ensayos o consejos civiles y morales",
+      "fr": "Essais ou conseils civils et moraux"
+    },
+    "edition": "1625 essays; Gutenberg transcription · Project Gutenberg #575",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/575/pg575-images.html",
+    "rights": "public_domain_us"
+  },
+  "locke": {
+    "author": "John Locke",
+    "work": {
+      "en": "Second Treatise of Government",
+      "es": "Segundo tratado sobre el gobierno civil",
+      "fr": "Second traité du gouvernement civil"
+    },
+    "edition": "1690; Gutenberg transcription · Project Gutenberg #7370",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/7370/pg7370-images.html",
+    "rights": "public_domain_us"
+  },
+  "mill": {
+    "author": "John Stuart Mill",
+    "work": {
+      "en": "On Liberty",
+      "es": "Sobre la libertad",
+      "fr": "De la liberté"
+    },
+    "edition": "1859 text; Walter Scott edition with W. L. Courtney introduction · Project Gutenberg #34901",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/34901/pg34901-images.html",
+    "rights": "public_domain_us"
+  },
+  "wollstonecraft": {
+    "author": "Mary Wollstonecraft",
+    "work": {
+      "en": "A Vindication of the Rights of Woman",
+      "es": "Vindicación de los derechos de la mujer",
+      "fr": "Défense des droits de la femme"
+    },
+    "edition": "1792; Gutenberg transcription · Project Gutenberg #3420",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/3420/pg3420-images.html",
+    "rights": "public_domain_us"
+  },
+  "rousseau": {
+    "author": "Jean-Jacques Rousseau",
+    "work": {
+      "en": "The Social Contract",
+      "es": "El contrato social",
+      "fr": "Du contrat social"
+    },
+    "edition": "G. D. H. Cole translation; The Social Contract & Discourses · Project Gutenberg #46333",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/46333/pg46333-images.html",
+    "rights": "public_domain_us"
+  },
+  "epictetus": {
+    "author": "Epictetus",
+    "work": {
+      "en": "The Enchiridion",
+      "es": "Manual",
+      "fr": "Manuel"
+    },
+    "edition": "Thomas W. Higginson translation; 1948 Liberal Arts Press edition (U.S. public domain per Gutenberg) · Project Gutenberg #45109",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/45109/pg45109-images.html",
+    "rights": "public_domain_us"
+  },
+  "tolstoy": {
+    "author": "Leo Tolstoy",
+    "work": {
+      "en": "What Men Live By",
+      "es": "De qué viven los hombres",
+      "fr": "Ce qui fait vivre les hommes"
+    },
+    "edition": "Aylmer and Louise Maude translation; What Men Live By, and Other Tales · Project Gutenberg #6157",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/6157/pg6157-images.html",
+    "rights": "public_domain_us"
+  },
+  "dhammapada": {
+    "author": "Dhammapada (Buddhist tradition)",
+    "work": {
+      "en": "Dhammapada",
+      "es": "Dhammapada",
+      "fr": "Dhammapada"
+    },
+    "edition": "F. Max Müller translation, 1881 · Project Gutenberg #2017",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/2017/pg2017-images.html",
+    "rights": "public_domain_us"
+  },
+  "bacon": {
+    "author": "Francis Bacon",
+    "work": {
+      "en": "Novum Organum",
+      "es": "Novum Organum",
+      "fr": "Novum Organum"
+    },
+    "edition": "Joseph Devey edition, P. F. Collier & Son, 1902 · Project Gutenberg #45988",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/45988/pg45988-images.html",
+    "rights": "public_domain_us"
+  },
+  "descartes": {
+    "author": "René Descartes",
+    "work": {
+      "en": "Discourse on the Method",
+      "es": "Discurso del método",
+      "fr": "Discours de la méthode"
+    },
+    "edition": "John Veitch translation; Gutenberg transcription · Project Gutenberg #59",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/59/pg59-images.html",
+    "rights": "public_domain_us"
+  },
+  "james": {
+    "author": "William James",
+    "work": {
+      "en": "Pragmatism",
+      "es": "Pragmatismo",
+      "fr": "Pragmatisme"
+    },
+    "edition": "1907 · Project Gutenberg #5116",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/5116/pg5116-images.html",
+    "rights": "public_domain_us"
+  },
+  "montaigne": {
+    "author": "Michel de Montaigne",
+    "work": {
+      "en": "Essays",
+      "es": "Ensayos",
+      "fr": "Essais"
+    },
+    "edition": "Charles Cotton translation, revised by W. Carew Hazlitt, 1877 · Project Gutenberg #3600",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/3600/pg3600-images.html",
+    "rights": "public_domain_us"
+  },
+  "eliot": {
+    "author": "George Eliot",
+    "work": {
+      "en": "Silas Marner",
+      "es": "Silas Marner",
+      "fr": "Silas Marner"
+    },
+    "edition": "1861; Gutenberg transcription · Project Gutenberg #550",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/550/pg550-images.html",
+    "rights": "public_domain_us"
+  },
+  "austen": {
+    "author": "Jane Austen",
+    "work": {
+      "en": "Pride and Prejudice",
+      "es": "Orgullo y prejuicio",
+      "fr": "Orgueil et préjugés"
+    },
+    "edition": "1894 George Allen edition; George Saintsbury preface and Hugh Thomson illustrations · Project Gutenberg #1342",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/1342/pg1342-images.html",
+    "rights": "public_domain_us"
+  },
+  "aesop": {
+    "author": "Aesop (fable tradition)",
+    "work": {
+      "en": "Aesop’s Fables",
+      "es": "Fábulas de Esopo",
+      "fr": "Fables d’Ésope"
+    },
+    "edition": "V. S. Vernon Jones translation, 1912; G. K. Chesterton introduction · Project Gutenberg #11339",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/11339/pg11339-images.html",
+    "rights": "public_domain_us"
+  },
+  "tagore": {
+    "author": "Rabindranath Tagore",
+    "work": {
+      "en": "Nationalism",
+      "es": "Nacionalismo",
+      "fr": "Nationalisme"
+    },
+    "edition": "1917 · Project Gutenberg #40766",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/40766/pg40766-images.html",
+    "rights": "public_domain_us"
+  },
+  "zitkala": {
+    "author": "Zitkala-Sa",
+    "work": {
+      "en": "American Indian Stories",
+      "es": "Relatos indígenas americanos",
+      "fr": "Récits amérindiens"
+    },
+    "edition": "1921 · Project Gutenberg #10376",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/10376/pg10376-images.html",
+    "rights": "public_domain_us"
+  },
+  "princeNarrative": {
+    "author": "Mary Prince",
+    "work": {
+      "en": "The History of Mary Prince",
+      "es": "La historia de Mary Prince",
+      "fr": "L’Histoire de Mary Prince"
+    },
+    "edition": "1831; related by Prince, transcribed by Susanna Strickland, edited by Thomas Pringle · Project Gutenberg #17851",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/17851/pg17851-images.html",
+    "rights": "public_domain_us"
+  },
+  "equiano": {
+    "author": "Olaudah Equiano",
+    "work": {
+      "en": "The Interesting Narrative of the Life of Olaudah Equiano",
+      "es": "La interesante narración de la vida de Olaudah Equiano",
+      "fr": "Le Récit intéressant de la vie d’Olaudah Equiano"
+    },
+    "edition": "1789, volume I; Gutenberg transcription · Project Gutenberg #15399",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/15399/pg15399-images.html",
+    "rights": "public_domain_us"
+  },
+  "marx": {
+    "author": "Karl Marx and Friedrich Engels",
+    "work": {
+      "en": "The Communist Manifesto",
+      "es": "Manifiesto del Partido Comunista",
+      "fr": "Manifeste du Parti communiste"
+    },
+    "edition": "Samuel Moore translation, edited by Friedrich Engels, 1888 · Project Gutenberg #61",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/61/pg61-images.html",
+    "rights": "public_domain_us"
+  },
+  "bastiat": {
+    "author": "Frédéric Bastiat",
+    "work": {
+      "en": "Essays on Political Economy",
+      "es": "Ensayos de economía política",
+      "fr": "Essais d’économie politique"
+    },
+    "edition": "Historical English collection; translator not credited in the transcription · Project Gutenberg #15962",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/15962/pg15962-images.html",
+    "rights": "public_domain_us"
+  },
+  "veblen": {
+    "author": "Thorstein Veblen",
+    "work": {
+      "en": "The Theory of the Leisure Class",
+      "es": "Teoría de la clase ociosa",
+      "fr": "Théorie de la classe de loisir"
+    },
+    "edition": "1899; Gutenberg transcription · Project Gutenberg #833",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/833/pg833-images.html",
+    "rights": "public_domain_us"
+  },
+  "ruskin": {
+    "author": "John Ruskin",
+    "work": {
+      "en": "Unto This Last",
+      "es": "Hasta este último",
+      "fr": "Jusqu’au dernier"
+    },
+    "edition": "George Allen collection: Unto This Last, and Other Essays on Political Economy · Project Gutenberg #36541",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/36541/pg36541-images.html",
+    "rights": "public_domain_us"
+  },
+  "george": {
+    "author": "Henry George",
+    "work": {
+      "en": "Progress and Poverty",
+      "es": "Progreso y pobreza",
+      "fr": "Progrès et pauvreté"
+    },
+    "edition": "1898 Memorial Edition, volume I, Doubleday and McClure · Project Gutenberg #55308",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/55308/pg55308-images.html",
+    "rights": "public_domain_us"
+  },
+  "addams": {
+    "author": "Jane Addams",
+    "work": {
+      "en": "Twenty Years at Hull-House",
+      "es": "Veinte años en Hull-House",
+      "fr": "Vingt ans à Hull-House"
+    },
+    "edition": "1910 · Project Gutenberg #1325",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/1325/pg1325-images.html",
+    "rights": "public_domain_us"
+  },
+  "washington": {
+    "author": "Booker T. Washington",
+    "work": {
+      "en": "Up from Slavery",
+      "es": "De la esclavitud a la libertad",
+      "fr": "L’Ascension d’un ancien esclave"
+    },
+    "edition": "1901 · Project Gutenberg #2376",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/2376/pg2376-images.html",
+    "rights": "public_domain_us"
+  },
+  "bellamy": {
+    "author": "Edward Bellamy",
+    "work": {
+      "en": "Looking Backward, 2000 to 1887",
+      "es": "Mirando atrás, de 2000 a 1887",
+      "fr": "Cent ans après, ou l’an 2000"
+    },
+    "edition": "1888 · Project Gutenberg #624",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/624/pg624-images.html",
+    "rights": "public_domain_us"
   }
 }

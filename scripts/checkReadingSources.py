@@ -18,8 +18,12 @@ class SourceText(HTMLParser):
         self.parts = []
         self.anchor = 0
         self.skip = 0
+        self.page_span_depth = 0
 
     def handle_starttag(self, tag, attrs):
+        page_classes = {'pagenum', 'pageno'}
+        if tag == 'span' and (self.page_span_depth or page_classes.intersection(dict(attrs).get('class', '').split())):
+            self.page_span_depth += 1
         if tag in ('script', 'style', 'nav', 'header', 'footer'):
             self.skip += 1
         if tag == 'a':
@@ -28,6 +32,8 @@ class SourceText(HTMLParser):
             self.parts.append(' ')
 
     def handle_endtag(self, tag):
+        if tag == 'span' and self.page_span_depth:
+            self.page_span_depth -= 1
         if tag in ('script', 'style', 'nav', 'header', 'footer'):
             self.skip = max(0, self.skip - 1)
         if tag == 'a':
@@ -37,7 +43,7 @@ class SourceText(HTMLParser):
 
     def handle_data(self, data):
         # Gutenberg's linked numeric footnote markers are not passage text.
-        if not self.skip and not (self.anchor and data.strip().isdigit()):
+        if not self.skip and not self.page_span_depth and not (self.anchor and data.strip().isdigit()):
             self.parts.append(data)
 
 

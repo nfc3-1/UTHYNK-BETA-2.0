@@ -2,6 +2,7 @@
 import partData from '@/data/thinkingPathParts.json';
 import newSources from '@/data/readingSources.json';
 import passageData from '@/data/readingPassages.json';
+import retiredPartData from '@/data/retiredReadingParts.json';
 import type { PathText, ReadingModule, ThinkingPath, PathSummary } from '@/lib/thinkingPathTypes';
 const t = (en: string, es: string, fr: string): PathText => ({ en, es, fr });
 // A semantic change needs a new ID; wording fixes retain the current identity.
@@ -10,7 +11,7 @@ const passages: Record<string, Passage> = passageData.passages;
 const makeModule = (value: Omit<ReadingModule, 'editorialStatus' | 'rightsEvidence' | 'text' | 'sourceKind'>): ReadingModule => {
   const passage = passages[value.id];
   if (!passage || passage.sourceUrl !== value.sourceUrl) throw new Error(`Missing or mismatched source passage: ${value.id}`);
-  const gutenbergId = value.sourceUrl.match(/\/(?:files|epub)\/(\d+)\//)?.[1];
+  const gutenbergId = value.sourceUrl.match(/\/(?:files|(?:cache\/)?epub)\/(\d+)\//)?.[1];
   return {
     ...value,
     ...passage,
@@ -130,13 +131,14 @@ const categoryByPath: Record<string, string> = {
   'civilizations-culture': 'History & Civilization',
   'economics-society': 'Financial Judgment',
 };
-const additions = Object.fromEntries(Object.entries(partData).map(([slug, entries]) => [slug,
-  (entries as Part[]).map(({ source, ...part }) => {
+const buildParts = (slug: string, entries: Part[]) => entries.map(({ source, ...part }) => {
     if (!sources[source] || !categoryByPath[slug]) throw new Error(`Unknown reading source or path: ${source}/${slug}`);
     const { work, author, edition, sourceUrl, rights } = sources[source];
     return makeModule({ work, author, edition, sourceUrl, rights, ...part, category: categoryByPath[slug] });
-  }),
-]));
+  });
+const additions = Object.fromEntries(Object.entries(partData).map(([slug, entries]) => [slug, buildParts(slug, entries as Part[])]));
+// Replaced passages keep their original identities and answers; they are not active path parts.
+const previousReadings = Object.fromEntries(Object.entries(retiredPartData).map(([key, entries]) => [key, buildParts(key.split('/')[0], entries as Part[])]));
 
 export const thinkingPaths: ThinkingPath[] = [
   { slug: 'power-leadership', title: t('Power & Leadership', 'Poder y liderazgo', 'Pouvoir et leadership'), description: t('Who should lead, how power works, and what keeps it accountable.', 'Quién debe dirigir, cómo funciona el poder y cómo exigir responsabilidad.', 'Qui doit diriger, comment fonctionne le pouvoir et comment le contrôler.'), readingPaths: [{ slug: 'rulers-responsibility', title: t('Rulers and responsibility', 'Gobernantes y responsabilidad', 'Dirigeants et responsabilité'), description: t('Ten readings on wisdom, trust, counsel, preparation, and accountable leadership.', 'Diez lecturas sobre sabiduría, confianza, consejos, preparación y liderazgo responsable.', 'Dix lectures sur sagesse, confiance, conseil, préparation et direction responsable.'), modules: [plato, prince, sun, ...additions['power-leadership']] }] },
@@ -145,11 +147,18 @@ export const thinkingPaths: ThinkingPath[] = [
   { slug: 'truth-knowledge', title: t('Truth & Knowledge', 'Verdad y conocimiento', 'Vérité et connaissance'), description: t('Examine certainty, evidence, and what could change your mind.', 'Examina certeza, pruebas y qué podría cambiar tu opinión.', 'Examine certitude, preuves et ce qui pourrait changer ton avis.'), readingPaths: [{ slug: 'the-examined-life', title: t('The examined life', 'La vida examinada', 'La vie examinée'), description: t('Ten readings testing certainty, assumptions, appearances, and testimony.', 'Diez lecturas para examinar certeza, supuestos, apariencias y testimonios.', 'Dix lectures pour examiner certitude, hypothèses, apparences et témoignages.'), modules: [socrates, ...additions['truth-knowledge']] }] },
   { slug: 'human-nature', title: t('Human Nature', 'Naturaleza humana', 'Nature humaine'), description: t('Character, motives, habits, and strength beyond appearances.', 'Carácter, motivos, hábitos y fuerza más allá de las apariencias.', 'Caractère, motivations, habitudes et force au-delà des apparences.'), readingPaths: [{ slug: 'character-and-adaptability', title: t('Character and adaptability', 'Carácter y adaptación', 'Caractère et adaptation'), description: t('Ten readings on character, habits, flexibility, and the distance between image and conduct.', 'Diez lecturas sobre carácter, hábitos, flexibilidad y distancia entre imagen y conducta.', 'Dix lectures sur caractère, habitudes, souplesse et écart entre image et actes.'), modules: [confucius, tao, ...additions['human-nature']] }] },
   { slug: 'civilizations-culture', title: t('Civilizations & Culture', 'Civilizaciones y cultura', 'Civilisations et culture'), description: t('Different perspectives on belonging, change, and shared memory.', 'Perspectivas distintas sobre pertenencia, cambio y memoria compartida.', 'Différentes perspectives sur l’appartenance, le changement et la mémoire commune.'), readingPaths: [{ slug: 'inside-outside-stories', title: t('Inside and outside stories', 'Historias internas y externas', 'Récits internes et externes'), description: t('Ten readings comparing historical accounts, identity, cultural memory, and measures of progress.', 'Diez lecturas que comparan relatos históricos, identidad, memoria cultural y medidas del progreso.', 'Dix lectures comparant récits historiques, identité, mémoire culturelle et mesures du progrès.'), modules: [herodotus, ...additions['civilizations-culture']] }] },
-  { slug: 'economics-society', title: t('Economics & Society', 'Economía y sociedad', 'Économie et société'), description: t('Incentives, exchange, cooperation, and who carries the costs.', 'Incentivos, intercambio, cooperación y quién soporta los costes.', 'Incitations, échanges, coopération et répartition des coûts.'), readingPaths: [{ slug: 'interests-and-exchange', title: t('Interests and exchange', 'Intereses e intercambio', 'Intérêts et échanges'), description: t('Ten readings following Smith through specialization, exchange, bargaining, prices, and education.', 'Diez lecturas de Smith sobre especialización, intercambio, negociación, precios y educación.', 'Dix lectures de Smith sur spécialisation, échange, négociation, prix et éducation.'), modules: [smith, ...additions['economics-society']] }] },
+  { slug: 'economics-society', title: t('Economics & Society', 'Economía y sociedad', 'Économie et société'), description: t('Incentives, exchange, cooperation, and who carries the costs.', 'Incentivos, intercambio, cooperación y quién soporta los costes.', 'Incitations, échanges, coopération et répartition des coûts.'), readingPaths: [{ slug: 'interests-and-exchange', title: t('Interests and exchange', 'Intereses e intercambio', 'Intérêts et échanges'), description: t('Ten readings comparing exchange, innovation, status, opportunity, and the costs of economic progress.', 'Diez lecturas que comparan intercambio, innovación, posición social, oportunidades y los costos del progreso económico.', 'Dix lectures comparant échange, innovation, statut social, possibilités et coûts du progrès économique.'), modules: [smith, ...additions['economics-society']] }] },
 ];
 
 export function getThinkingPath(slug: string) { return thinkingPaths.find(path => path.slug === slug); }
-export function getReadingModule(id: string) { return thinkingPaths.flatMap(path => path.readingPaths).flatMap(path => path.modules).find(module => module.id === id); }
+export function getPreviousReadingModules(pathSlug: string, readingSlug: string): ReadingModule[] {
+  if (!getThinkingPath(pathSlug)?.readingPaths.some(reading => reading.slug === readingSlug)) return [];
+  return previousReadings[`${pathSlug}/${readingSlug}`] || [];
+}
+export function getReadingModule(id: string) {
+  return thinkingPaths.flatMap(path => path.readingPaths).flatMap(path => path.modules).find(module => module.id === id)
+    || Object.values(previousReadings).flat().find(module => module.id === id);
+}
 export function publicPathSummaries(): PathSummary[] {
   return thinkingPaths.map(path => ({ ...path, readingPaths: path.readingPaths.map(reading => ({ ...reading, modules: reading.modules.map(({ id, title, work, author }) => ({ id, title, work, author })) })) }));
 }

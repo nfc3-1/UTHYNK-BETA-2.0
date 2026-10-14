@@ -37,75 +37,75 @@
       }
     },
     {
-      "id": "reading-power-ship-and-expertise",
-      "source": "plato",
-      "location": {
-        "en": "Book VI: the ship analogy, 488a–489d",
-        "es": "Libro VI: analogía del barco, 488a–489d",
-        "fr": "Livre VI : analogie du navire, 488a–489d"
-      },
+      "source": "xenophon",
+      "id": "reading-xenophon-cyrus-supplies",
       "title": {
-        "en": "Popularity and navigation",
-        "es": "Popularidad y navegación",
-        "fr": "Popularité et navigation"
+        "en": "Promises and practical responsibility",
+        "es": "Promesas y responsabilidad práctica",
+        "fr": "Promesses et responsabilité pratique"
+      },
+      "location": {
+        "en": "Book I, chapter VI, §11",
+        "es": "Libro I, capítulo VI, §11",
+        "fr": "Livre I, chapitre VI, §11"
       },
       "plainLanguage": {
-        "en": "Plato defends philosophical expertise. His analogy also raises the problem of recognizing expertise without granting unchecked power.",
-        "es": "Platón defiende el saber filosófico. La analogía también plantea cómo reconocerlo sin conceder poder sin control.",
-        "fr": "Platon défend le savoir philosophique. Son analogie pose aussi la question de sa reconnaissance sans pouvoir incontrôlé."
+        "en": "Cyrus and his father discuss promises, gratitude, and supplying an army. Leadership also depends on meeting practical obligations.",
+        "es": "Ciro y su padre hablan de promesas, gratitud y abastecimiento de un ejército. El liderazgo también depende de cumplir obligaciones prácticas.",
+        "fr": "Cyrus et son père discutent de promesses, de gratitude et du ravitaillement d’une armée. Diriger suppose aussi de remplir des obligations concrètes."
       },
       "lenses": [
         {
-          "en": "Useful knowledge may be unpopular.",
-          "es": "El conocimiento útil puede ser impopular.",
-          "fr": "Un savoir utile peut être impopulaire."
+          "en": "Keeping an agreement establishes a dependable baseline.",
+          "es": "Cumplir un acuerdo establece una base de confianza.",
+          "fr": "Respecter un accord crée une base fiable."
         },
         {
-          "en": "An expert still needs scrutiny and communication.",
-          "es": "Un experto aún necesita control y comunicación.",
-          "fr": "Un expert a toujours besoin de contrôle et de communication."
+          "en": "Extra gifts may win gratitude while obscuring unmet obligations.",
+          "es": "Los regalos adicionales pueden ganar gratitud y ocultar obligaciones incumplidas.",
+          "fr": "Des cadeaux supplémentaires peuvent susciter la gratitude tout en masquant des obligations négligées."
         }
       ],
       "question": {
-        "en": "How would you test a popular candidate’s competence without assuming that an unpopular expert should automatically lead?",
-        "es": "¿Cómo comprobarías la competencia de un candidato popular sin suponer que un experto impopular debe dirigir automáticamente?",
-        "fr": "Comment vérifierais-tu la compétence d’un candidat populaire sans supposer qu’un expert impopulaire doive automatiquement diriger ?"
+        "en": "How would you distinguish a leader’s generosity from simply fulfilling what people were already owed?",
+        "es": "¿Cómo distinguirías la generosidad de un líder del simple cumplimiento de lo que ya debía a los demás?",
+        "fr": "Comment distinguerais-tu la générosité d’un dirigeant du simple respect de ce qu’il devait déjà aux autres ?"
       }
     },
     {
-      "id": "reading-power-borrowed-strength",
-      "source": "prince",
-      "location": {
-        "en": "Chapter XII: mercenaries",
-        "es": "Capítulo XII: mercenarios",
-        "fr": "Chapitre XII : mercenaires"
-      },
+      "source": "follett",
+      "id": "reading-follett-neighborhood-leadership",
       "title": {
-        "en": "Borrowed strength",
-        "es": "Fuerza prestada",
-        "fr": "Force empruntée"
+        "en": "Helping people contribute",
+        "es": "Ayudar a los demás a contribuir",
+        "fr": "Aider chacun à contribuer"
+      },
+      "location": {
+        "en": "Chapter XXXIV, neighborhood leadership",
+        "es": "Capítulo XXXIV, liderazgo vecinal",
+        "fr": "Chapitre XXXIV, direction du groupe de quartier"
       },
       "plainLanguage": {
-        "en": "The setting is military politics in Renaissance Italy. Applying it to a team requires testing the analogy rather than treating every contractor as disloyal.",
-        "es": "El contexto es la política militar de la Italia renacentista. Aplicarlo a un equipo exige examinar la analogía, no desconfiar de todo contratista.",
-        "fr": "Le contexte est la politique militaire de l’Italie renaissante. L’appliquer à une équipe exige de tester l’analogie, pas de suspecter tout prestataire."
+        "en": "Follett presents leadership as discovering people’s abilities and connecting them to community needs.",
+        "es": "Follett presenta el liderazgo como descubrir las capacidades de las personas y vincularlas con las necesidades de la comunidad.",
+        "fr": "Follett présente la direction comme la découverte des capacités de chacun et leur mise en relation avec les besoins de la communauté."
       },
       "lenses": [
         {
-          "en": "Aligned incentives can support dependable cooperation.",
-          "es": "Los incentivos alineados pueden sostener una cooperación fiable.",
-          "fr": "Des incitations concordantes peuvent soutenir une coopération fiable."
+          "en": "A leader can help abilities emerge.",
+          "es": "Un líder puede ayudar a que surjan capacidades.",
+          "fr": "Un dirigeant peut aider les capacités à se révéler."
         },
         {
-          "en": "Keeping everything in-house can also create costly weaknesses.",
-          "es": "Mantener todo dentro del grupo también puede generar debilidades costosas.",
-          "fr": "Tout garder en interne peut aussi créer des faiblesses coûteuses."
+          "en": "Deciding what someone is best suited for can limit their choices.",
+          "es": "Decidir para qué sirve mejor alguien puede limitar sus opciones.",
+          "fr": "Décider de ce qui convient le mieux à quelqu’un peut limiter ses choix."
         }
       ],
       "question": {
-        "en": "Which dependency in a team deserves a backup plan, and what evidence would make you trust it?",
-        "es": "¿Qué dependencia de un equipo necesita un plan alternativo y qué pruebas te permitirían confiar en ella?",
-        "fr": "Quelle dépendance d’une équipe mérite un plan de secours, et quelles preuves te permettraient de lui faire confiance ?"
+        "en": "When does helping someone find a useful role empower them, and when does it become deciding their role for them?",
+        "es": "¿Cuándo ayudar a alguien a encontrar un papel útil le da autonomía y cuándo se convierte en decidir su papel por él?",
+        "fr": "Quand aider quelqu’un à trouver un rôle utile lui donne-t-il de l’autonomie, et quand revient-il à décider de son rôle à sa place ?"
       }
     },
     {
@@ -145,75 +145,75 @@
       }
     },
     {
-      "id": "reading-power-flattery-and-truth",
-      "source": "prince",
-      "location": {
-        "en": "Chapter XXIII: flatterers",
-        "es": "Capítulo XXIII: aduladores",
-        "fr": "Chapitre XXIII : flatteurs"
-      },
+      "source": "baconEssays",
+      "id": "reading-bacon-risks-of-counsel",
       "title": {
-        "en": "Making room for unwelcome advice",
-        "es": "Dar espacio a consejos incómodos",
-        "fr": "Faire place aux conseils dérangeants"
+        "en": "The risks of taking advice",
+        "es": "Los riesgos de aceptar consejos",
+        "fr": "Les risques du conseil"
+      },
+      "location": {
+        "en": "Essay XX, Of Counsel, inconveniences of counsel",
+        "es": "Ensayo XX, Sobre el consejo, inconvenientes del consejo",
+        "fr": "Essai XX, Du conseil, inconvénients du conseil"
       },
       "plainLanguage": {
-        "en": "The proposed balance favors orderly counsel over unrestricted criticism. Examine what that arrangement could miss.",
-        "es": "El equilibrio propuesto favorece consejos ordenados frente a críticas sin restricción. Examina qué podría pasar por alto.",
-        "fr": "L’équilibre proposé privilégie un conseil organisé plutôt qu’une critique sans restriction. Examine ce qu’il pourrait manquer."
+        "en": "Bacon names secrecy, authority, and advisers’ self-interest as tensions in seeking advice. His proposed alternatives deserve scrutiny too.",
+        "es": "Bacon señala el secreto, la autoridad y el interés propio de los consejeros como tensiones al pedir consejo. Sus alternativas también merecen examen.",
+        "fr": "Bacon relève le secret, l’autorité et l’intérêt personnel des conseillers comme tensions dans la recherche de conseils. Ses solutions méritent aussi un examen."
       },
       "lenses": [
         {
-          "en": "A defined channel can make criticism usable.",
-          "es": "Un canal definido puede hacer útil la crítica.",
-          "fr": "Un canal défini peut rendre la critique utile."
+          "en": "Independent advice can correct a leader’s blind spots.",
+          "es": "El consejo independiente puede corregir los puntos ciegos de un líder.",
+          "fr": "Un conseil indépendant peut corriger les angles morts d’un dirigeant."
         },
         {
-          "en": "People may need to raise problems before being invited.",
-          "es": "A veces hay que señalar problemas sin esperar una invitación.",
-          "fr": "Il peut être nécessaire de signaler un problème avant d’y être invité."
+          "en": "A small private circle can hide mistakes and conflicts of interest.",
+          "es": "Un pequeño círculo privado puede ocultar errores y conflictos de intereses.",
+          "fr": "Un petit cercle privé peut cacher des erreurs et des conflits d’intérêts."
         }
       ],
       "question": {
-        "en": "What rule would let a team raise an uncomfortable warning while keeping decisions manageable?",
-        "es": "¿Qué regla permitiría al equipo dar una advertencia incómoda sin volver inmanejables las decisiones?",
-        "fr": "Quelle règle permettrait à une équipe de donner un avertissement dérangeant sans rendre les décisions ingérables ?"
+        "en": "How could a leader protect necessary confidentiality while making advisers’ interests and mistakes accountable?",
+        "es": "¿Cómo podría un líder proteger la confidencialidad necesaria y exigir responsabilidad por los intereses y errores de sus consejeros?",
+        "fr": "Comment un dirigeant pourrait-il préserver la confidentialité nécessaire tout en exigeant des comptes sur les intérêts et les erreurs de ses conseillers ?"
       }
     },
     {
-      "id": "reading-power-fortune-and-adaptation",
-      "source": "prince",
-      "location": {
-        "en": "Chapter XXV: fortune",
-        "es": "Capítulo XXV: fortuna",
-        "fr": "Chapitre XXV : fortune"
-      },
+      "source": "thoreau",
+      "id": "reading-thoreau-unjust-laws",
       "title": {
-        "en": "When a successful method stops working",
-        "es": "Cuando un método exitoso deja de funcionar",
-        "fr": "Quand une méthode efficace ne fonctionne plus"
+        "en": "Listening before resistance grows",
+        "es": "Escuchar antes de que crezca la resistencia",
+        "fr": "Écouter avant que la résistance grandisse"
+      },
+      "location": {
+        "en": "Resistance to Civil Government, paragraph on unjust laws",
+        "es": "Resistencia al gobierno civil, párrafo sobre las leyes injustas",
+        "fr": "Résistance au gouvernement civil, paragraphe sur les lois injustes"
       },
       "plainLanguage": {
-        "en": "His discussion combines chance, preparation, and temperament. It does not show that boldness always wins.",
-        "es": "Su discusión combina azar, preparación y temperamento. No demuestra que la audacia siempre gane.",
-        "fr": "Sa discussion mêle hasard, préparation et tempérament. Elle ne démontre pas que l’audace gagne toujours."
+        "en": "Thoreau asks whether institutions make reform possible or force dissent toward resistance. He criticizes waiting for a majority.",
+        "es": "Thoreau pregunta si las instituciones permiten reformar o empujan la disidencia hacia la resistencia. Critica la espera de una mayoría.",
+        "fr": "Thoreau demande si les institutions rendent la réforme possible ou poussent les opposants à résister. Il critique l’attente d’une majorité."
       },
       "lenses": [
         {
-          "en": "Past success can hide a changed environment.",
-          "es": "El éxito pasado puede ocultar un entorno distinto.",
-          "fr": "Le succès passé peut masquer un environnement transformé."
+          "en": "Listening to a minority can expose a serious injustice.",
+          "es": "Escuchar a una minoría puede revelar una injusticia grave.",
+          "fr": "Écouter une minorité peut révéler une injustice grave."
         },
         {
-          "en": "Changing too quickly can abandon a sound method.",
-          "es": "Cambiar demasiado pronto puede abandonar un método sólido.",
-          "fr": "Changer trop vite peut faire abandonner une bonne méthode."
+          "en": "Urgency does not by itself establish that a proposed remedy is wise.",
+          "es": "La urgencia no demuestra por sí sola que un remedio propuesto sea sensato.",
+          "fr": "L’urgence ne prouve pas à elle seule qu’un remède proposé est judicieux."
         }
       ],
       "question": {
-        "en": "What signal would justify changing a successful strategy, rather than simply reacting to one setback?",
-        "es": "¿Qué señal justificaría cambiar una estrategia exitosa en vez de reaccionar a un solo revés?",
-        "fr": "Quel signal justifierait de modifier une stratégie efficace plutôt que de réagir à un seul revers ?"
+        "en": "What should leaders do when a minority calls a law unjust but the majority wants to keep it?",
+        "es": "¿Qué deberían hacer los líderes cuando una minoría considera injusta una ley pero la mayoría quiere conservarla?",
+        "fr": "Que devraient faire les dirigeants lorsqu’une minorité juge une loi injuste mais que la majorité souhaite la conserver ?"
       }
     },
     {
@@ -291,147 +291,147 @@
       }
     },
     {
-      "id": "reading-freedom-change-and-prudence",
-      "source": "declaration",
-      "location": {
-        "en": "Preamble: altering government and prudence",
-        "es": "Preámbulo: cambiar el gobierno y prudencia",
-        "fr": "Préambule : changement de gouvernement et prudence"
-      },
+      "source": "locke",
+      "id": "reading-locke-consent-majority",
       "title": {
-        "en": "When is change justified?",
-        "es": "¿Cuándo se justifica el cambio?",
-        "fr": "Quand le changement est-il justifié ?"
+        "en": "Consent and majority decisions",
+        "es": "Consentimiento y decisiones de la mayoría",
+        "fr": "Consentement et décisions majoritaires"
+      },
+      "location": {
+        "en": "Chapter VIII, §95",
+        "es": "Capítulo VIII, §95",
+        "fr": "Chapitre VIII, §95"
       },
       "plainLanguage": {
-        "en": "This is an argument for independence, not a universal formula that resolves every modern political dispute.",
-        "es": "Es un argumento a favor de la independencia, no una fórmula que resuelva toda disputa política actual.",
-        "fr": "C’est un argument pour l’indépendance, pas une formule résolvant tout conflit politique actuel."
+        "en": "Locke moves from individual consent to a community in which the majority can decide. The transition raises questions about continuing consent.",
+        "es": "Locke pasa del consentimiento individual a una comunidad donde la mayoría puede decidir. Esa transición plantea preguntas sobre el consentimiento continuo.",
+        "fr": "Locke passe du consentement individuel à une communauté où la majorité peut décider. Ce passage soulève la question de la continuité du consentement."
       },
       "lenses": [
         {
-          "en": "Stability can protect valuable cooperation.",
-          "es": "La estabilidad puede proteger una cooperación valiosa.",
-          "fr": "La stabilité peut protéger une coopération précieuse."
+          "en": "Shared decisions allow a community to act.",
+          "es": "Las decisiones compartidas permiten actuar a una comunidad.",
+          "fr": "Des décisions communes permettent à une communauté d’agir."
         },
         {
-          "en": "Stability can also prolong abuse.",
-          "es": "La estabilidad también puede prolongar abusos.",
-          "fr": "La stabilité peut aussi prolonger des abus."
+          "en": "Agreeing to join may not mean agreeing to every later decision.",
+          "es": "Aceptar incorporarse no significa aceptar cada decisión posterior.",
+          "fr": "Accepter d’adhérer ne signifie pas accepter chaque décision ultérieure."
         }
       ],
       "question": {
-        "en": "What evidence would distinguish a temporary failure from a pattern that requires institutional change?",
-        "es": "¿Qué pruebas distinguirían un fallo temporal de un patrón que exige cambios institucionales?",
-        "fr": "Quelles preuves distingueraient un échec temporaire d’une tendance exigeant un changement institutionnel ?"
+        "en": "What limits should majority rule have when someone consented to join a community but rejects its later decisions?",
+        "es": "¿Qué límites debería tener el gobierno de la mayoría cuando alguien aceptó incorporarse a una comunidad pero rechaza sus decisiones posteriores?",
+        "fr": "Quelles limites faudrait-il imposer à la règle majoritaire lorsqu’une personne a accepté de rejoindre une communauté mais rejette ses décisions ultérieures ?"
       }
     },
     {
-      "id": "reading-freedom-separated-powers",
-      "source": "constitution",
-      "location": {
-        "en": "Articles I–III: legislative, executive, and judicial powers",
-        "es": "Artículos I–III: poderes legislativo, ejecutivo y judicial",
-        "fr": "Articles I–III : pouvoirs législatif, exécutif et judiciaire"
-      },
+      "source": "rousseau",
+      "id": "reading-rousseau-general-will",
       "title": {
-        "en": "Dividing authority",
-        "es": "Dividir la autoridad",
-        "fr": "Diviser l’autorité"
+        "en": "A majority and a common interest",
+        "es": "Una mayoría y un interés común",
+        "fr": "Une majorité et un intérêt commun"
+      },
+      "location": {
+        "en": "Book II, chapter III, opening two paragraphs",
+        "es": "Libro II, capítulo III, primeros dos párrafos",
+        "fr": "Livre II, chapitre III, deux premiers paragraphes"
       },
       "plainLanguage": {
-        "en": "The document specifies offices and powers; the effectiveness of checks depends on how institutions act.",
-        "es": "El documento define cargos y poderes; la eficacia del control depende de cómo actúen las instituciones.",
-        "fr": "Le document définit fonctions et pouvoirs ; l’efficacité des contrôles dépend de l’action des institutions."
+        "en": "Rousseau distinguishes the common interest from adding together private preferences. He also admits that people can be deceived.",
+        "es": "Rousseau distingue el interés común de la suma de preferencias privadas. También admite que las personas pueden ser engañadas.",
+        "fr": "Rousseau distingue l’intérêt commun de la somme des préférences privées. Il admet aussi que le peuple peut être trompé."
       },
       "lenses": [
         {
-          "en": "Separate powers can check mistakes or abuses.",
-          "es": "Separar poderes permite controlar errores o abusos.",
-          "fr": "La séparation des pouvoirs peut contrôler les erreurs ou abus."
+          "en": "Shared interests may differ from what the largest faction wants.",
+          "es": "Los intereses compartidos pueden diferir de lo que quiere el grupo más numeroso.",
+          "fr": "Les intérêts communs peuvent différer de ce que souhaite le groupe le plus nombreux."
         },
         {
-          "en": "Too much friction can prevent necessary action.",
-          "es": "Demasiada fricción puede impedir acciones necesarias.",
-          "fr": "Trop de friction peut empêcher des actions nécessaires."
+          "en": "A leader could claim to know the common interest better than everyone else.",
+          "es": "Un líder podría afirmar que conoce el interés común mejor que todos los demás.",
+          "fr": "Un dirigeant pourrait prétendre connaître l’intérêt commun mieux que tous les autres."
         }
       ],
       "question": {
-        "en": "When is a delay evidence that checks are working, and when is it evidence that government is failing?",
-        "es": "¿Cuándo indica una demora que los controles funcionan y cuándo que el gobierno está fallando?",
-        "fr": "Quand un retard montre-t-il que les contrôles fonctionnent, et quand montre-t-il une défaillance du gouvernement ?"
+        "en": "How could a community test a claim about the common interest without letting a leader define it beyond challenge?",
+        "es": "¿Cómo podría una comunidad examinar una afirmación sobre el interés común sin dejar que un líder lo defina sin posibilidad de cuestionarlo?",
+        "fr": "Comment une communauté pourrait-elle examiner une affirmation sur l’intérêt commun sans laisser un dirigeant le définir à l’abri de toute contestation ?"
       }
     },
     {
-      "id": "reading-freedom-representation",
-      "source": "constitution",
-      "location": {
-        "en": "Article I, sections 2–3: representation",
-        "es": "Artículo I, secciones 2–3: representación",
-        "fr": "Article I, sections 2–3 : représentation"
-      },
+      "source": "wollstonecraft",
+      "id": "reading-wollstonecraft-education-rights",
       "title": {
-        "en": "Who gets represented?",
-        "es": "¿Quién está representado?",
-        "fr": "Qui est représenté ?"
+        "en": "Education and participation",
+        "es": "Educación y participación",
+        "fr": "Éducation et participation"
+      },
+      "location": {
+        "en": "Dedication to Talleyrand, argument for women’s education",
+        "es": "Dedicatoria a Talleyrand, argumento sobre la educación de las mujeres",
+        "fr": "Dédicace à Talleyrand, argument pour l’éducation des femmes"
       },
       "plainLanguage": {
-        "en": "Later amendments altered parts of this system. This reading examines the original design rather than presenting it as current law.",
-        "es": "Las enmiendas posteriores modificaron parte del sistema. Esta lectura examina el diseño original, no lo presenta como ley actual.",
-        "fr": "Des amendements ont ensuite modifié ce système. Cette lecture examine sa conception initiale sans la présenter comme le droit actuel."
+        "en": "Wollstonecraft links education, reasoning, and civic participation. Her argument challenges exclusion while using the family roles of her time.",
+        "es": "Wollstonecraft vincula educación, razonamiento y participación cívica. Cuestiona la exclusión usando también los papeles familiares de su época.",
+        "fr": "Wollstonecraft relie éducation, raisonnement et participation civique. Elle conteste l’exclusion tout en s’appuyant sur les rôles familiaux de son époque."
       },
       "lenses": [
         {
-          "en": "Representing regions can protect smaller communities.",
-          "es": "Representar regiones puede proteger comunidades pequeñas.",
-          "fr": "Représenter les régions peut protéger les petites communautés."
+          "en": "Rights are more usable when people can understand and exercise them.",
+          "es": "Los derechos se pueden ejercer mejor cuando las personas los comprenden.",
+          "fr": "Les droits sont plus accessibles lorsque chacun peut les comprendre et les exercer."
         },
         {
-          "en": "Regional rules can give people unequal influence.",
-          "es": "Las reglas regionales pueden dar influencia desigual a las personas.",
-          "fr": "Les règles régionales peuvent donner aux personnes une influence inégale."
+          "en": "Making education a condition of rights could create another exclusion.",
+          "es": "Convertir la educación en condición para tener derechos podría crear otra exclusión.",
+          "fr": "Faire de l’éducation une condition des droits pourrait créer une nouvelle exclusion."
         }
       ],
       "question": {
-        "en": "What tradeoff arises when a government tries to represent both equal citizens and unequal-sized regions?",
-        "es": "¿Qué tensión surge cuando un gobierno intenta representar a ciudadanos iguales y regiones de tamaño desigual?",
-        "fr": "Quel compromis apparaît lorsqu’un gouvernement cherche à représenter à la fois des citoyens égaux et des régions de tailles différentes ?"
+        "en": "How can education support equal participation without making people prove they are educated enough to deserve rights?",
+        "es": "¿Cómo puede la educación apoyar una participación igualitaria sin exigir que las personas demuestren estar suficientemente educadas para merecer derechos?",
+        "fr": "Comment l’éducation peut-elle soutenir une participation égale sans exiger que chacun prouve être assez instruit pour mériter des droits ?"
       }
     },
     {
-      "id": "reading-freedom-federal-boundaries",
-      "source": "constitution",
-      "location": {
-        "en": "Article I, sections 8 and 10: divided powers",
-        "es": "Artículo I, secciones 8 y 10: poderes divididos",
-        "fr": "Article I, sections 8 et 10 : pouvoirs partagés"
-      },
+      "source": "mill",
+      "id": "reading-mill-harm-and-liberty",
       "title": {
-        "en": "Local choice and shared rules",
-        "es": "Elección local y reglas comunes",
-        "fr": "Choix local et règles communes"
+        "en": "Where should freedom meet a limit?",
+        "es": "¿Dónde debería tener un límite la libertad?",
+        "fr": "Où la liberté devrait-elle rencontrer une limite ?"
+      },
+      "location": {
+        "en": "Chapter I, harm principle, opening sentences",
+        "es": "Capítulo I, principio del daño, primeras oraciones",
+        "fr": "Chapitre I, principe de non-nuisance, premières phrases"
       },
       "plainLanguage": {
-        "en": "This reading concerns the original allocation of powers. Modern disputes also depend on amendments and interpretation.",
-        "es": "Esta lectura trata del reparto original de poderes. Las disputas actuales también dependen de enmiendas e interpretación.",
-        "fr": "Cette lecture concerne la répartition initiale des pouvoirs. Les conflits actuels dépendent aussi des amendements et de l’interprétation."
+        "en": "Mill distinguishes preventing harm to others from forcing someone to act for their own good. What counts as harm needs careful judgment.",
+        "es": "Mill distingue evitar el daño a los demás de obligar a alguien a actuar por su propio bien. Determinar qué cuenta como daño requiere criterio.",
+        "fr": "Mill distingue la prévention d’un tort causé à autrui de l’obligation d’agir pour son propre bien. Définir le tort demande du discernement."
       },
       "lenses": [
         {
-          "en": "Local control can respond to local needs.",
-          "es": "El control local puede responder a necesidades locales.",
-          "fr": "Le contrôle local peut répondre aux besoins locaux."
+          "en": "A limit can protect others from serious harm.",
+          "es": "Un límite puede proteger a los demás de un daño grave.",
+          "fr": "Une limite peut protéger autrui d’un tort grave."
         },
         {
-          "en": "A local decision can impose costs on outsiders.",
-          "es": "Una decisión local puede imponer costes a otros.",
-          "fr": "Une décision locale peut imposer des coûts aux autres."
+          "en": "Calling something harmful can become a way to suppress unpopular choices.",
+          "es": "Calificar algo de dañino puede convertirse en una forma de reprimir decisiones impopulares.",
+          "fr": "Qualifier une chose de nuisible peut servir à réprimer des choix impopulaires."
         }
       ],
       "question": {
-        "en": "Which feature of a problem would justify solving it with a shared rule rather than separate local choices?",
-        "es": "¿Qué característica de un problema justificaría una regla común en vez de decisiones locales separadas?",
-        "fr": "Quelle caractéristique d’un problème justifierait une règle commune plutôt que des choix locaux distincts ?"
+        "en": "What evidence would justify restricting an adult’s choice to prevent harm to others, rather than merely because others dislike it?",
+        "es": "¿Qué pruebas justificarían restringir la decisión de un adulto para evitar un daño a otros, y no simplemente porque a otros les disgusta?",
+        "fr": "Quelles preuves justifieraient de limiter le choix d’un adulte pour éviter un tort à autrui, plutôt que simplement parce que ce choix déplaît ?"
       }
     },
     {
@@ -581,75 +581,75 @@
       }
     },
     {
-      "id": "reading-meaning-freedom-and-comfort",
-      "source": "ivan",
-      "location": {
-        "en": "Book V, chapter V: the Grand Inquisitor",
-        "es": "Libro V, capítulo V: el Gran Inquisidor",
-        "fr": "Livre V, chapitre V : le Grand Inquisiteur"
-      },
+      "source": "epictetus",
+      "id": "reading-epictetus-freedom-and-status",
       "title": {
-        "en": "Comfort at the price of choice",
-        "es": "Comodidad al precio de elegir",
-        "fr": "Le confort au prix du choix"
+        "en": "Status and inner freedom",
+        "es": "Posición social y libertad interior",
+        "fr": "Statut et liberté intérieure"
+      },
+      "location": {
+        "en": "Enchiridion, XIX",
+        "es": "Manual, XIX",
+        "fr": "Manuel, XIX"
       },
       "plainLanguage": {
-        "en": "The Inquisitor’s position is part of Ivan’s fictional argument, not an instruction from the novel to surrender choice.",
-        "es": "La posición del Inquisidor forma parte del argumento ficticio de Iván; la novela no ordena renunciar a elegir.",
-        "fr": "La position de l’Inquisiteur appartient à l’argument fictif d’Ivan ; le roman n’ordonne pas de renoncer au choix."
+        "en": "Epictetus locates freedom in how we direct our own judgments, rather than in office or reputation. His claim can be tested against duties to others.",
+        "es": "Epicteto sitúa la libertad en cómo dirigimos nuestros juicios, y no en los cargos o la reputación. Su afirmación puede contrastarse con nuestros deberes hacia otros.",
+        "fr": "Épictète situe la liberté dans la direction de nos propres jugements plutôt que dans une fonction ou une réputation. Son affirmation peut être confrontée à nos devoirs envers autrui."
       },
       "lenses": [
         {
-          "en": "Security can make meaningful choice possible.",
-          "es": "La seguridad puede hacer posible elegir de verdad.",
-          "fr": "La sécurité peut rendre un choix réel possible."
+          "en": "Distinguishing what we control can reduce envy and helplessness.",
+          "es": "Distinguir lo que controlamos puede reducir la envidia y la impotencia.",
+          "fr": "Distinguer ce que nous maîtrisons peut réduire l’envie et l’impuissance."
         },
         {
-          "en": "Protection can become a reason to deny agency.",
-          "es": "La protección puede usarse para negar la autonomía.",
-          "fr": "La protection peut servir à nier l’autonomie."
+          "en": "Detachment can become an excuse to ignore conditions we could help change.",
+          "es": "El desapego puede convertirse en una excusa para ignorar condiciones que podríamos ayudar a cambiar.",
+          "fr": "Le détachement peut devenir un prétexte pour ignorer des conditions que nous pourrions contribuer à changer."
         }
       ],
       "question": {
-        "en": "When should help reduce a person’s burden, and when must it preserve a choice that may be difficult?",
-        "es": "¿Cuándo debe la ayuda reducir una carga y cuándo preservar una elección difícil?",
-        "fr": "Quand l’aide doit-elle alléger un fardeau, et quand doit-elle préserver un choix difficile ?"
+        "en": "When does focusing on what you control help you act responsibly, and when might it excuse withdrawing from others’ problems?",
+        "es": "¿Cuándo centrarse en lo que controlas te ayuda a actuar responsablemente y cuándo podría justificar que te apartes de los problemas de otros?",
+        "fr": "Quand te concentrer sur ce que tu maîtrises t’aide-t-il à agir de manière responsable, et quand pourrait-il justifier ton retrait face aux problèmes d’autrui ?"
       }
     },
     {
-      "id": "reading-meaning-shared-responsibility",
-      "source": "ivan",
-      "location": {
-        "en": "Book VI, chapter III: Zosima’s teachings",
-        "es": "Libro VI, capítulo III: enseñanzas de Zósima",
-        "fr": "Livre VI, chapitre III : enseignements de Zossima"
-      },
+      "source": "tolstoy",
+      "id": "reading-tolstoy-care-beyond-kinship",
       "title": {
-        "en": "Responsibility beyond blame",
-        "es": "Responsabilidad más allá de culpar",
-        "fr": "La responsabilité au-delà du blâme"
+        "en": "Care beyond family ties",
+        "es": "Cuidar más allá de los lazos familiares",
+        "fr": "Prendre soin au-delà des liens familiaux"
+      },
+      "location": {
+        "en": "What Men Live By, XI, the angel’s third lesson",
+        "es": "De qué viven los hombres, XI, tercera lección del ángel",
+        "fr": "Ce qui fait vivre les hommes, XI, troisième leçon de l’ange"
       },
       "plainLanguage": {
-        "en": "Distinguish responsibility to respond from responsibility for causing an event. The two are not identical.",
-        "es": "Distingue la responsabilidad de responder de la responsabilidad por causar un hecho. No son idénticas.",
-        "fr": "Distingue la responsabilité de répondre de celle d’avoir causé un événement. Elles ne sont pas identiques."
+        "en": "In Tolstoy’s story, an angel learns from a woman who raises orphaned twins. The scene links human survival with care beyond kinship.",
+        "es": "En el relato de Tolstói, un ángel aprende de una mujer que cría a unas gemelas huérfanas. La escena vincula la supervivencia humana con el cuidado más allá del parentesco.",
+        "fr": "Dans le récit de Tolstoï, un ange apprend d’une femme qui élève des jumelles orphelines. La scène relie la survie humaine au soin au-delà de la parenté."
       },
       "lenses": [
         {
-          "en": "Shared responsibility can motivate useful action.",
-          "es": "La responsabilidad compartida puede motivar acciones útiles.",
-          "fr": "Une responsabilité partagée peut motiver des actions utiles."
+          "en": "Someone outside a family can become essential to its children.",
+          "es": "Alguien ajeno a una familia puede volverse esencial para sus hijos.",
+          "fr": "Une personne extérieure à la famille peut devenir essentielle à ses enfants."
         },
         {
-          "en": "Assigning unlimited blame can conceal actual causes.",
-          "es": "Asignar culpa ilimitada puede ocultar las causas reales.",
-          "fr": "Attribuer une faute illimitée peut masquer les causes réelles."
+          "en": "Recognizing care does not settle how its burdens should be shared.",
+          "es": "Reconocer el cuidado no resuelve cómo deben repartirse sus cargas.",
+          "fr": "Reconnaître le soin ne règle pas la répartition de ses charges."
         }
       ],
       "question": {
-        "en": "What responsibility can you reasonably accept for a problem you did not cause, and where should that responsibility end?",
-        "es": "¿Qué responsabilidad puedes aceptar ante un problema que no causaste y dónde debería terminar?",
-        "fr": "Quelle responsabilité peux-tu raisonnablement accepter pour un problème que tu n’as pas causé, et où devrait-elle s’arrêter ?"
+        "en": "What responsibilities do we have toward people outside our own families, and how should a community share the cost of fulfilling them?",
+        "es": "¿Qué responsabilidades tenemos hacia personas ajenas a nuestras familias y cómo debería una comunidad compartir el costo de cumplirlas?",
+        "fr": "Quelles responsabilités avons-nous envers les personnes extérieures à nos familles, et comment une communauté devrait-elle partager le coût de leur accomplissement ?"
       }
     },
     {
@@ -689,39 +689,39 @@
       }
     },
     {
-      "id": "reading-meaning-preparation-for-setbacks",
-      "source": "marcus",
-      "location": {
-        "en": "Book VII, section 61: the wrestler’s art",
-        "es": "Libro VII, sección 61: el arte del luchador",
-        "fr": "Livre VII, section 61 : l’art du lutteur"
-      },
+      "source": "dhammapada",
+      "id": "reading-dhammapada-hatred-and-response",
       "title": {
-        "en": "Readiness rather than a perfect script",
-        "es": "Preparación en vez de un guion perfecto",
-        "fr": "La préparation plutôt qu’un scénario parfait"
+        "en": "Responding without feeding hatred",
+        "es": "Responder sin alimentar el odio",
+        "fr": "Répondre sans nourrir la haine"
+      },
+      "location": {
+        "en": "Chapter I, verses 1–6",
+        "es": "Capítulo I, versos 1–6",
+        "fr": "Chapitre I, versets 1–6"
       },
       "plainLanguage": {
-        "en": "This is a metaphor for resilience, not advice to dominate other people.",
-        "es": "Es una metáfora de resistencia, no un consejo para dominar a otros.",
-        "fr": "C’est une métaphore de résilience, pas un conseil pour dominer autrui."
+        "en": "These Buddhist verses connect thought, action, and the continuation of hatred. The old English translation uses “love” for the response that interrupts it.",
+        "es": "Estos versos budistas vinculan pensamiento, acción y persistencia del odio. La antigua traducción inglesa usa «amor» para la respuesta que lo interrumpe.",
+        "fr": "Ces versets bouddhiques relient pensée, action et persistance de la haine. L’ancienne traduction anglaise emploie « amour » pour la réponse qui l’interrompt."
       },
       "lenses": [
         {
-          "en": "Preparation can include the unexpected.",
-          "es": "La preparación puede incluir lo inesperado.",
-          "fr": "La préparation peut intégrer l’imprévu."
+          "en": "Refusing revenge can interrupt a cycle of harm.",
+          "es": "Rechazar la venganza puede interrumpir un ciclo de daño.",
+          "fr": "Refuser la vengeance peut interrompre un cycle de torts."
         },
         {
-          "en": "A combative mindset can create unnecessary conflict.",
-          "es": "Una actitud combativa puede generar conflictos innecesarios.",
-          "fr": "Un état d’esprit combatif peut créer des conflits inutiles."
+          "en": "Letting go of hatred still leaves the question of safety and justice.",
+          "es": "Dejar el odio no elimina la cuestión de la seguridad y la justicia.",
+          "fr": "Renoncer à la haine laisse entière la question de la sécurité et de la justice."
         }
       ],
       "question": {
-        "en": "What preparation would make you resilient to a setback while keeping you open to cooperation?",
-        "es": "¿Qué preparación te haría resistente a un revés sin cerrarte a cooperar?",
-        "fr": "Quelle préparation te rendrait résilient face à un revers tout en restant ouvert à la coopération ?"
+        "en": "How could someone reject hatred while still protecting themselves and holding a wrongdoer responsible?",
+        "es": "¿Cómo podría alguien rechazar el odio y al mismo tiempo protegerse y exigir responsabilidad a quien le hizo daño?",
+        "fr": "Comment quelqu’un pourrait-il refuser la haine tout en se protégeant et en demandant des comptes à l’auteur d’un tort ?"
       }
     },
     {
@@ -907,111 +907,111 @@
       }
     },
     {
-      "id": "reading-truth-testing-an-accusation",
-      "source": "socrates",
-      "location": {
-        "en": "Apology: questioning Meletus",
-        "es": "Apología: preguntas a Meleto",
-        "fr": "Apologie : questions à Mélétos"
-      },
+      "source": "descartes",
+      "id": "reading-descartes-four-rules",
       "title": {
-        "en": "A claim under questioning",
-        "es": "Una afirmación bajo examen",
-        "fr": "Une affirmation à l’épreuve des questions"
+        "en": "A method for difficult questions",
+        "es": "Un método para preguntas difíciles",
+        "fr": "Une méthode pour les questions difficiles"
+      },
+      "location": {
+        "en": "Part II, four rules of method",
+        "es": "Parte II, cuatro reglas del método",
+        "fr": "Deuxième partie, quatre règles de la méthode"
       },
       "plainLanguage": {
-        "en": "Cross-examination can test consistency. It must also be paired with evidence about the actual issue.",
-        "es": "El interrogatorio puede comprobar coherencia. También necesita pruebas sobre el asunto real.",
-        "fr": "Le questionnement peut tester la cohérence. Il exige aussi des preuves concernant le problème réel."
+        "en": "Descartes proposes doubt, division, ordered reasoning, and review as tools for inquiry. A method still needs standards for deciding what is clear.",
+        "es": "Descartes propone duda, división, razonamiento ordenado y revisión como herramientas para investigar. Un método aún necesita criterios para decidir qué es claro.",
+        "fr": "Descartes propose le doute, la division, le raisonnement ordonné et la vérification comme outils d’enquête. Une méthode exige encore des critères de clarté."
       },
       "lenses": [
         {
-          "en": "Questions can reveal an unstable claim.",
-          "es": "Las preguntas pueden revelar una afirmación débil.",
-          "fr": "Les questions peuvent révéler une affirmation fragile."
+          "en": "Breaking a problem into parts can reveal mistakes.",
+          "es": "Dividir un problema en partes puede revelar errores.",
+          "fr": "Diviser un problème peut révéler des erreurs."
         },
         {
-          "en": "A skilled speaker may exploit an unclear answer.",
-          "es": "Un orador hábil puede aprovechar una respuesta confusa.",
-          "fr": "Un orateur habile peut exploiter une réponse confuse."
+          "en": "The parts can be misleading if their relationships are overlooked.",
+          "es": "Las partes pueden engañar si se pasan por alto sus relaciones.",
+          "fr": "Les parties peuvent induire en erreur si leurs relations sont négligées."
         }
       ],
       "question": {
-        "en": "How would you test an accusation’s consistency without mistaking rhetorical success for proof?",
-        "es": "¿Cómo comprobarías la coherencia de una acusación sin confundir éxito retórico con prueba?",
-        "fr": "Comment vérifierais-tu la cohérence d’une accusation sans confondre succès rhétorique et preuve ?"
+        "en": "How would you use Descartes’s rules on a difficult claim while checking that a feeling of clarity is not false confidence?",
+        "es": "¿Cómo aplicarías las reglas de Descartes a una afirmación difícil y comprobarías que la sensación de claridad no es una falsa confianza?",
+        "fr": "Comment appliquerais-tu les règles de Descartes à une affirmation difficile tout en vérifiant que le sentiment de clarté n’est pas une fausse assurance ?"
       }
     },
     {
-      "id": "reading-truth-cave-and-appearances",
-      "source": "plato",
-      "location": {
-        "en": "Book VII: the cave, 514a–517a",
-        "es": "Libro VII: la caverna, 514a–517a",
-        "fr": "Livre VII : la caverne, 514a–517a"
-      },
+      "source": "bacon",
+      "id": "reading-bacon-personal-lenses",
       "title": {
-        "en": "Beyond a familiar picture",
-        "es": "Más allá de una imagen familiar",
-        "fr": "Au-delà d’une image familière"
+        "en": "The lens you bring to evidence",
+        "es": "La mirada con la que observas las pruebas",
+        "fr": "Le regard que tu portes sur les preuves"
+      },
+      "location": {
+        "en": "Book I, aphorism XLII",
+        "es": "Libro I, aforismo XLII",
+        "fr": "Livre I, aphorisme XLII"
       },
       "plainLanguage": {
-        "en": "The cave is an educational analogy. It does not license assuming that anyone who disagrees with you is trapped in ignorance.",
-        "es": "La caverna es una analogía educativa. No permite asumir que todo el que discrepa está atrapado en la ignorancia.",
-        "fr": "La caverne est une analogie éducative. Elle n’autorise pas à croire que toute personne en désaccord soit prisonnière de l’ignorance."
+        "en": "Bacon’s “idols of the den” describe how temperament, education, admired authorities, and mood can shape inquiry.",
+        "es": "Los «ídolos de la caverna» de Bacon describen cómo el temperamento, la educación, las autoridades admiradas y el estado de ánimo pueden influir en la investigación.",
+        "fr": "Les « idoles de la caverne » de Bacon décrivent l’influence du tempérament, de l’éducation, des autorités admirées et de l’humeur sur l’enquête."
       },
       "lenses": [
         {
-          "en": "An unfamiliar perspective may reveal missing causes.",
-          "es": "Una perspectiva nueva puede revelar causas ausentes.",
-          "fr": "Une perspective inhabituelle peut révéler des causes manquantes."
+          "en": "Personal experience helps us notice what others miss.",
+          "es": "La experiencia personal ayuda a advertir lo que otros pasan por alto.",
+          "fr": "L’expérience personnelle aide à remarquer ce qui échappe aux autres."
         },
         {
-          "en": "Feeling enlightened is not evidence of being correct.",
-          "es": "Sentirse iluminado no demuestra tener razón.",
-          "fr": "Se sentir éclairé ne prouve pas que l’on ait raison."
+          "en": "The same experience can make contrary evidence harder to see.",
+          "es": "Esa misma experiencia puede dificultar ver pruebas contrarias.",
+          "fr": "La même expérience peut rendre les preuves contraires plus difficiles à voir."
         }
       ],
       "question": {
-        "en": "What comparison could test whether your familiar picture of a situation is leaving something important out?",
-        "es": "¿Qué comparación comprobaría si tu visión familiar de una situación omite algo importante?",
-        "fr": "Quelle comparaison permettrait de vérifier si ton image familière d’une situation oublie quelque chose d’important ?"
+        "en": "Which part of your background could help you understand a claim while also making you overlook evidence against it?",
+        "es": "¿Qué aspecto de tu experiencia podría ayudarte a comprender una afirmación y también hacerte pasar por alto pruebas en su contra?",
+        "fr": "Quel aspect de ton expérience pourrait t’aider à comprendre une affirmation tout en te faisant négliger les preuves qui la contredisent ?"
       }
     },
     {
-      "id": "reading-truth-line-and-assumptions",
-      "source": "plato",
-      "location": {
-        "en": "Book VI: the divided line, 509d–511e",
-        "es": "Libro VI: línea dividida, 509d–511e",
-        "fr": "Livre VI : ligne divisée, 509d–511e"
-      },
+      "source": "bacon",
+      "id": "reading-bacon-language-and-confusion",
       "title": {
-        "en": "What supports the conclusion?",
-        "es": "¿Qué sostiene la conclusión?",
-        "fr": "Qu’est-ce qui soutient la conclusion ?"
+        "en": "When words create the dispute",
+        "es": "Cuando las palabras crean la disputa",
+        "fr": "Quand les mots créent le désaccord"
+      },
+      "location": {
+        "en": "Book I, aphorism XLIII",
+        "es": "Libro I, aforismo XLIII",
+        "fr": "Livre I, aphorisme XLIII"
       },
       "plainLanguage": {
-        "en": "Plato’s hierarchy belongs to his philosophical system. Use it to examine assumptions without treating its categories as settled scientific facts.",
-        "es": "La jerarquía pertenece al sistema filosófico de Platón. Úsala para examinar supuestos sin tratar sus categorías como hechos científicos definitivos.",
-        "fr": "Cette hiérarchie appartient au système de Platon. Utilise-la pour examiner les hypothèses sans en faire des faits scientifiques établis."
+        "en": "Bacon argues that language can obstruct thought, even when people try to define their terms.",
+        "es": "Bacon sostiene que el lenguaje puede obstaculizar el pensamiento incluso cuando las personas intentan definir sus términos.",
+        "fr": "Bacon soutient que le langage peut entraver la pensée même lorsque l’on tente de définir les termes."
       },
       "lenses": [
         {
-          "en": "Tracing assumptions can reveal a hidden weakness.",
-          "es": "Rastrear supuestos puede revelar debilidades ocultas.",
-          "fr": "Remonter aux hypothèses peut révéler une faiblesse cachée."
+          "en": "Defining a term can uncover an apparent disagreement.",
+          "es": "Definir un término puede aclarar un desacuerdo aparente.",
+          "fr": "Définir un terme peut éclaircir un désaccord apparent."
         },
         {
-          "en": "Practical reasoning sometimes needs provisional assumptions.",
-          "es": "El razonamiento práctico a veces necesita supuestos provisionales.",
-          "fr": "Le raisonnement pratique exige parfois des hypothèses provisoires."
+          "en": "A shared definition does not settle disagreements about facts or values.",
+          "es": "Una definición compartida no resuelve desacuerdos sobre hechos o valores.",
+          "fr": "Une définition commune ne règle pas les désaccords sur les faits ou les valeurs."
         }
       ],
       "question": {
-        "en": "Which assumption does your conclusion depend on most, and how would you test it before relying on the conclusion?",
-        "es": "¿De qué supuesto depende más tu conclusión y cómo lo comprobarías antes de confiar en ella?",
-        "fr": "De quelle hypothèse ta conclusion dépend-elle le plus, et comment la vérifierais-tu avant de t’y fier ?"
+        "en": "How would you tell whether a disagreement is about different meanings of a word or a real difference in evidence and values?",
+        "es": "¿Cómo distinguirías un desacuerdo sobre el significado de una palabra de una diferencia real en las pruebas y los valores?",
+        "fr": "Comment distinguerais-tu un désaccord sur le sens d’un mot d’une véritable différence de preuves et de valeurs ?"
       }
     },
     {
@@ -1051,39 +1051,39 @@
       }
     },
     {
-      "id": "reading-truth-facts-and-demonstrations",
-      "source": "hume",
-      "location": {
-        "en": "Section IV, part I: kinds of inquiry",
-        "es": "Sección IV, parte I: tipos de investigación",
-        "fr": "Section IV, partie I : types de recherche"
-      },
+      "source": "descartes",
+      "id": "reading-descartes-example-not-authority",
       "title": {
-        "en": "Proof or observation?",
-        "es": "¿Prueba u observación?",
-        "fr": "Preuve ou observation ?"
+        "en": "An example rather than a command",
+        "es": "Un ejemplo en vez de una orden",
+        "fr": "Un exemple plutôt qu’un ordre"
+      },
+      "location": {
+        "en": "Part I, the purpose of the account",
+        "es": "Parte I, propósito del relato",
+        "fr": "Première partie, but du récit"
       },
       "plainLanguage": {
-        "en": "Different questions call for different evidence. A demand for mathematical certainty can be misplaced in a factual decision.",
-        "es": "Preguntas distintas requieren pruebas distintas. Exigir certeza matemática puede ser inadecuado para una decisión factual.",
-        "fr": "Des questions différentes exigent des preuves différentes. Demander une certitude mathématique peut être inadapté à une décision factuelle."
+        "en": "Descartes presents his method as a personal account that includes examples to imitate and to avoid. A thinker’s reputation does not make every example reliable.",
+        "es": "Descartes presenta su método como un relato personal con ejemplos que conviene imitar y evitar. La reputación de un pensador no hace fiables todos sus ejemplos.",
+        "fr": "Descartes présente sa méthode comme un récit personnel contenant des exemples à suivre et à éviter. La réputation d’un penseur ne rend pas tous ses exemples fiables."
       },
       "lenses": [
         {
-          "en": "Logical consistency is necessary for many arguments.",
-          "es": "La coherencia lógica es necesaria para muchos argumentos.",
-          "fr": "La cohérence logique est nécessaire à de nombreux arguments."
+          "en": "A candid account can make another person’s reasoning available for inspection.",
+          "es": "Un relato sincero permite examinar el razonamiento de otra persona.",
+          "fr": "Un récit sincère permet d’examiner le raisonnement d’autrui."
         },
         {
-          "en": "Consistency alone does not establish a factual claim.",
-          "es": "La coherencia sola no demuestra una afirmación factual.",
-          "fr": "La cohérence seule n’établit pas une affirmation factuelle."
+          "en": "Admiration can turn a personal example into unquestioned authority.",
+          "es": "La admiración puede convertir un ejemplo personal en autoridad incuestionable.",
+          "fr": "L’admiration peut transformer un exemple personnel en autorité incontestée."
         }
       ],
       "question": {
-        "en": "Is your claim about what must be true or what experience suggests, and how should that change your confidence?",
-        "es": "¿Tu afirmación trata de lo necesariamente cierto o de lo que sugiere la experiencia y cómo cambia eso tu confianza?",
-        "fr": "Ton affirmation concerne-t-elle ce qui doit être vrai ou ce que suggère l’expérience, et comment cela devrait-il modifier ta confiance ?"
+        "en": "How would you decide which parts of an admired thinker’s method to adopt and which to reject?",
+        "es": "¿Cómo decidirías qué partes del método de un pensador al que admiras adoptar y cuáles rechazar?",
+        "fr": "Comment déciderais-tu quelles parties de la méthode d’un penseur admiré adopter et lesquelles rejeter ?"
       }
     },
     {
@@ -1123,113 +1123,113 @@
       }
     },
     {
-      "id": "reading-truth-habit-and-belief",
-      "source": "hume",
-      "location": {
-        "en": "Section V: custom and expectation",
-        "es": "Sección V: costumbre y expectativa",
-        "fr": "Section V : habitude et attente"
-      },
+      "source": "james",
+      "id": "reading-james-practical-differences",
       "title": {
-        "en": "A familiar expectation",
-        "es": "Una expectativa familiar",
-        "fr": "Une attente familière"
+        "en": "What difference would it make?",
+        "es": "¿Qué diferencia produciría?",
+        "fr": "Quelle différence cela ferait-il ?"
+      },
+      "location": {
+        "en": "Lecture II, the pragmatic method",
+        "es": "Conferencia II, método pragmático",
+        "fr": "Deuxième conférence, méthode pragmatique"
       },
       "plainLanguage": {
-        "en": "Habit explains how expectations arise; it does not make every habitual expectation reliable.",
-        "es": "El hábito explica el origen de expectativas; no hace fiable toda expectativa habitual.",
-        "fr": "L’habitude explique l’origine des attentes ; elle ne rend pas toute attente habituelle fiable."
+        "en": "James proposes tracing the practical consequences of competing ideas. He asks whether an apparent dispute would make any difference in experience.",
+        "es": "James propone seguir las consecuencias prácticas de ideas contrapuestas. Pregunta si una disputa aparente produciría alguna diferencia en la experiencia.",
+        "fr": "James propose de suivre les conséquences pratiques des idées opposées. Il demande si un désaccord apparent produirait une différence dans l’expérience."
       },
       "lenses": [
         {
-          "en": "Habits reduce the work of routine decisions.",
-          "es": "Los hábitos facilitan decisiones rutinarias.",
-          "fr": "Les habitudes facilitent les décisions routinières."
+          "en": "An observable consequence can help clarify what a claim means.",
+          "es": "Una consecuencia observable puede aclarar qué significa una afirmación.",
+          "fr": "Une conséquence observable peut préciser le sens d’une affirmation."
         },
         {
-          "en": "A comfortable belief may escape needed checks.",
-          "es": "Una creencia cómoda puede evitar controles necesarios.",
-          "fr": "Une croyance confortable peut échapper aux vérifications nécessaires."
+          "en": "A difference might matter even if it is difficult to measure immediately.",
+          "es": "Una diferencia podría importar aunque sea difícil medirla de inmediato.",
+          "fr": "Une différence peut compter même si elle est difficile à mesurer immédiatement."
         }
       ],
       "question": {
-        "en": "Which belief feels obvious mainly because it is familiar, and what independent check would you use?",
-        "es": "¿Qué creencia parece obvia sobre todo por ser familiar y qué comprobación independiente usarías?",
-        "fr": "Quelle croyance semble évidente surtout parce qu’elle est familière, et quelle vérification indépendante utiliserais-tu ?"
+        "en": "Choose two competing explanations: what practical difference would help you distinguish them, and what might that test miss?",
+        "es": "Elige dos explicaciones contrapuestas: ¿qué diferencia práctica te ayudaría a distinguirlas y qué podría pasar por alto esa prueba?",
+        "fr": "Choisis deux explications opposées : quelle différence pratique t’aiderait à les distinguer, et que pourrait manquer cette épreuve ?"
       }
     },
     {
-      "id": "reading-truth-testimony-and-evidence",
-      "source": "hume",
-      "location": {
-        "en": "Section X, part I: evaluating testimony",
-        "es": "Sección X, parte I: evaluar testimonios",
-        "fr": "Section X, partie I : évaluer les témoignages"
-      },
+      "source": "mill",
+      "id": "reading-mill-living-truth",
       "title": {
-        "en": "How much should a report count?",
-        "es": "¿Cuánto debe pesar un relato?",
-        "fr": "Quel poids donner à un récit ?"
+        "en": "A belief you can explain",
+        "es": "Una creencia que puedes explicar",
+        "fr": "Une conviction que tu peux expliquer"
+      },
+      "location": {
+        "en": "Chapter II, truth and open discussion",
+        "es": "Capítulo II, verdad y discusión abierta",
+        "fr": "Chapitre II, vérité et discussion ouverte"
       },
       "plainLanguage": {
-        "en": "Hume applies this argument to miracles. Here the exercise examines evidence without prescribing a religious belief.",
-        "es": "Hume aplica el argumento a milagros. El ejercicio examina pruebas sin prescribir una creencia religiosa.",
-        "fr": "Hume applique cet argument aux miracles. Cet exercice examine les preuves sans prescrire de croyance religieuse."
+        "en": "Mill considers even a true belief weakened when it is never discussed. Knowing a conclusion differs from understanding its grounds.",
+        "es": "Mill considera que incluso una creencia verdadera se debilita si nunca se debate. Conocer una conclusión difiere de comprender sus fundamentos.",
+        "fr": "Mill estime que même une conviction vraie s’affaiblit si elle n’est jamais discutée. Connaître une conclusion diffère de comprendre ses fondements."
       },
       "lenses": [
         {
-          "en": "Reliable testimony can supply knowledge you lack firsthand.",
-          "es": "Un testimonio fiable aporta conocimiento que no tienes directamente.",
-          "fr": "Un témoignage fiable peut apporter un savoir non directement accessible."
+          "en": "Challenge can strengthen understanding of a well-supported belief.",
+          "es": "El cuestionamiento puede fortalecer la comprensión de una creencia bien fundamentada.",
+          "fr": "La contestation peut renforcer la compréhension d’une conviction bien fondée."
         },
         {
-          "en": "Independent confirmation can matter more than repeated retelling.",
-          "es": "La confirmación independiente puede pesar más que repetir el relato.",
-          "fr": "Une confirmation indépendante peut compter plus que la répétition d’un récit."
+          "en": "Discussion needs standards so that repetition and intimidation do not replace evidence.",
+          "es": "El debate necesita criterios para que la repetición y la intimidación no sustituyan las pruebas.",
+          "fr": "La discussion exige des critères afin que répétition et intimidation ne remplacent pas les preuves."
         }
       ],
       "question": {
-        "en": "What additional evidence would make an extraordinary report worth accepting without demanding impossible certainty?",
-        "es": "¿Qué pruebas adicionales justificarían aceptar un relato extraordinario sin exigir certeza imposible?",
-        "fr": "Quelles preuves supplémentaires justifieraient d’accepter un récit extraordinaire sans exiger une certitude impossible ?"
+        "en": "How can a belief you think is true remain open to challenge without treating every objection as equally credible?",
+        "es": "¿Cómo puede una creencia que consideras verdadera seguir abierta al cuestionamiento sin tratar todas las objeciones como igualmente creíbles?",
+        "fr": "Comment une conviction que tu juges vraie peut-elle rester ouverte à la contestation sans considérer chaque objection comme également crédible ?"
       }
     }
   ],
   "human-nature": [
     {
-      "id": "reading-human-learning-and-thinking",
-      "source": "confucius",
-      "location": {
-        "en": "Book II: learning and thought",
-        "es": "Libro II: aprendizaje y pensamiento",
-        "fr": "Livre II : apprentissage et réflexion"
-      },
+      "source": "montaigne",
+      "id": "reading-montaigne-power-of-custom",
       "title": {
-        "en": "Learning is more than collecting",
-        "es": "Aprender es más que acumular",
-        "fr": "Apprendre ne se réduit pas à accumuler"
+        "en": "How habits gain authority",
+        "es": "Cómo los hábitos ganan autoridad",
+        "fr": "Comment les habitudes gagnent de l’autorité"
+      },
+      "location": {
+        "en": "Book I, chapter XXII, opening sentences on custom",
+        "es": "Libro I, capítulo XXII, primeras oraciones sobre la costumbre",
+        "fr": "Livre I, chapitre XXII, premières phrases sur la coutume"
       },
       "plainLanguage": {
-        "en": "The Analects preserves brief teachings and conversations. Their brevity invites application and careful interpretation.",
-        "es": "Las Analectas conservan enseñanzas y conversaciones breves. Su brevedad invita a aplicar e interpretar con cuidado.",
-        "fr": "Les Entretiens conservent de brefs enseignements et conversations. Leur brièveté invite à une application et une interprétation attentives."
+        "en": "Montaigne describes custom as a teacher whose authority grows unnoticed. His calf-and-ox story is an illustration, not a physical training claim.",
+        "es": "Montaigne describe la costumbre como una maestra cuya autoridad crece sin que lo notemos. El relato del ternero y el buey es una ilustración, no una afirmación sobre entrenamiento físico.",
+        "fr": "Montaigne décrit la coutume comme une maîtresse dont l’autorité grandit sans être remarquée. L’histoire du veau et du bœuf est une illustration, pas une affirmation sur l’entraînement physique."
       },
       "lenses": [
         {
-          "en": "Study supplies material that can correct intuition.",
-          "es": "Estudiar aporta material que corrige la intuición.",
-          "fr": "L’étude apporte des éléments pouvant corriger l’intuition."
+          "en": "Practice can make difficult actions easier.",
+          "es": "La práctica puede facilitar acciones difíciles.",
+          "fr": "La pratique peut rendre plus faciles des actions difficiles."
         },
         {
-          "en": "Reflection tests whether a lesson fits the situation.",
-          "es": "La reflexión comprueba si una lección encaja.",
-          "fr": "La réflexion vérifie si une leçon convient à la situation."
+          "en": "Familiarity can also make an unhealthy pattern seem unavoidable.",
+          "es": "La familiaridad también puede hacer que un patrón perjudicial parezca inevitable.",
+          "fr": "La familiarité peut aussi faire paraître inévitable une habitude nuisible."
         }
       ],
       "question": {
-        "en": "What would you need to learn before judging a problem, and what would you need to question after learning it?",
-        "es": "¿Qué necesitas aprender antes de juzgar un problema y qué cuestionar después de aprenderlo?",
-        "fr": "Que devrais-tu apprendre avant de juger un problème, et que devrais-tu questionner après cet apprentissage ?"
+        "en": "How could you tell whether a familiar habit is helping you grow or quietly limiting what you think is possible?",
+        "es": "¿Cómo podrías saber si un hábito familiar te ayuda a crecer o limita silenciosamente lo que crees posible?",
+        "fr": "Comment pourrais-tu savoir si une habitude familière t’aide à grandir ou limite discrètement ce que tu crois possible ?"
       }
     },
     {
@@ -1269,39 +1269,39 @@
       }
     },
     {
-      "id": "reading-human-learning-from-others",
-      "source": "confucius",
-      "location": {
-        "en": "Book IV: seeing worth and its absence",
-        "es": "Libro IV: observar virtud y su ausencia",
-        "fr": "Livre IV : observer la vertu et son absence"
-      },
+      "source": "austen",
+      "id": "reading-austen-vanity-and-judgment",
       "title": {
-        "en": "Comparison without contempt",
-        "es": "Comparar sin desprecio",
-        "fr": "Comparer sans mépris"
+        "en": "When pride distorts judgment",
+        "es": "Cuando el orgullo distorsiona el juicio",
+        "fr": "Quand l’orgueil déforme le jugement"
+      },
+      "location": {
+        "en": "Chapter XXXVI, Elizabeth’s self-reassessment",
+        "es": "Capítulo XXXVI, nueva evaluación de Elizabeth sobre sí misma",
+        "fr": "Chapitre XXXVI, réévaluation d’Elizabeth"
       },
       "plainLanguage": {
-        "en": "Self-examination can accompany criticism without replacing accountability for another person’s conduct.",
-        "es": "Examinarse puede acompañar la crítica sin eliminar la responsabilidad por la conducta ajena.",
-        "fr": "L’examen de soi peut accompagner la critique sans supprimer la responsabilité d’autrui pour ses actes."
+        "en": "After reading Darcy’s letter, Elizabeth recognizes that flattery and wounded pride shaped her judgments of Darcy and Wickham.",
+        "es": "Tras leer la carta de Darcy, Elizabeth reconoce que la adulación y el orgullo herido influyeron en sus juicios sobre Darcy y Wickham.",
+        "fr": "Après avoir lu la lettre de Darcy, Elizabeth reconnaît que la flatterie et l’orgueil blessé ont façonné ses jugements sur Darcy et Wickham."
       },
       "lenses": [
         {
-          "en": "A disliked behavior may also reveal your own blind spot.",
-          "es": "Una conducta que rechazas puede revelar tu punto ciego.",
-          "fr": "Un comportement déplaisant peut révéler ton propre angle mort."
+          "en": "Acknowledging a bias can make correction possible.",
+          "es": "Reconocer un sesgo puede hacer posible corregirse.",
+          "fr": "Reconnaître un biais peut permettre de se corriger."
         },
         {
-          "en": "Not every criticism is merely a projection.",
-          "es": "No toda crítica es una proyección personal.",
-          "fr": "Toute critique n’est pas une simple projection personnelle."
+          "en": "Self-criticism can become another overreaction unless new evidence is weighed.",
+          "es": "La autocrítica puede convertirse en otra reacción excesiva si no se valoran las nuevas pruebas.",
+          "fr": "L’autocritique peut devenir une nouvelle réaction excessive si les preuves nouvelles ne sont pas pesées."
         }
       ],
       "question": {
-        "en": "How would you learn from a behavior you dislike while still judging the other person’s action fairly?",
-        "es": "¿Cómo aprenderías de una conducta que rechazas juzgando justamente la acción ajena?",
-        "fr": "Comment apprendrais-tu d’un comportement déplaisant tout en jugeant équitablement l’acte d’autrui ?"
+        "en": "What could help you revise a judgment shaped by praise or rejection without swinging to the opposite extreme?",
+        "es": "¿Qué podría ayudarte a revisar un juicio influido por elogios o rechazo sin pasar al extremo contrario?",
+        "fr": "Qu’est-ce qui pourrait t’aider à revoir un jugement façonné par l’éloge ou le rejet sans basculer dans l’extrême opposé ?"
       }
     },
     {
@@ -1341,75 +1341,75 @@
       }
     },
     {
-      "id": "reading-human-bending-and-integrity",
-      "source": "tao",
-      "location": {
-        "en": "Chapter 22: bending and preservation",
-        "es": "Capítulo 22: flexión y preservación",
-        "fr": "Chapitre 22 : souplesse et préservation"
-      },
+      "source": "aesop",
+      "id": "reading-aesop-wind-and-sun",
       "title": {
-        "en": "Flexibility with integrity",
-        "es": "Flexibilidad con integridad",
-        "fr": "Souplesse et intégrité"
+        "en": "Force and persuasion",
+        "es": "Fuerza y persuasión",
+        "fr": "Force et persuasion"
+      },
+      "location": {
+        "en": "The North Wind and the Sun, complete fable",
+        "es": "El viento del norte y el sol, fábula completa",
+        "fr": "Le Vent du Nord et le Soleil, fable complète"
       },
       "plainLanguage": {
-        "en": "The paradoxes invite reflection rather than a literal rule to accept every demand.",
-        "es": "Las paradojas invitan a reflexionar, no a aceptar literalmente toda exigencia.",
-        "fr": "Ces paradoxes invitent à réfléchir, pas à accepter littéralement toute demande."
+        "en": "The wind and sun compete to remove a traveler’s cloak. Greater pressure makes the traveler resist; warmth changes his choice.",
+        "es": "El viento y el sol compiten por quitarle la capa a un viajero. Una mayor presión lo hace resistirse; el calor cambia su decisión.",
+        "fr": "Le vent et le soleil rivalisent pour faire retirer son manteau à un voyageur. Une pression accrue renforce sa résistance ; la chaleur modifie son choix."
       },
       "lenses": [
         {
-          "en": "A flexible method can preserve a firm purpose.",
-          "es": "Un método flexible puede preservar un propósito firme.",
-          "fr": "Une méthode souple peut préserver un but ferme."
+          "en": "Changing conditions can persuade more effectively than direct pressure.",
+          "es": "Cambiar las condiciones puede persuadir mejor que la presión directa.",
+          "fr": "Modifier les conditions peut persuader plus efficacement que la pression directe."
         },
         {
-          "en": "Giving way can reward unfair pressure.",
-          "es": "Ceder puede premiar una presión injusta.",
-          "fr": "Céder peut récompenser une pression injuste."
+          "en": "Gentle influence can still manipulate someone without their awareness.",
+          "es": "Una influencia suave también puede manipular a alguien sin que lo advierta.",
+          "fr": "Une influence douce peut aussi manipuler quelqu’un à son insu."
         }
       ],
       "question": {
-        "en": "Which part of a disagreement could you yield on while protecting the value that matters most?",
-        "es": "¿En qué parte de un desacuerdo podrías ceder protegiendo el valor más importante?",
-        "fr": "Sur quelle partie d’un désaccord pourrais-tu céder tout en protégeant la valeur essentielle ?"
+        "en": "When is changing someone’s environment a respectful way to persuade them, and when does it become manipulation?",
+        "es": "¿Cuándo cambiar el entorno de alguien es una forma respetuosa de persuadirlo y cuándo se convierte en manipulación?",
+        "fr": "Quand modifier l’environnement de quelqu’un est-il une manière respectueuse de le persuader, et quand cela devient-il de la manipulation ?"
       }
     },
     {
-      "id": "reading-human-living-flexibility",
-      "source": "tao",
-      "location": {
-        "en": "Chapter 76: softness and rigidity",
-        "es": "Capítulo 76: suavidad y rigidez",
-        "fr": "Chapitre 76 : souplesse et rigidité"
-      },
+      "source": "eliot",
+      "id": "reading-eliot-care-and-attention",
       "title": {
-        "en": "A habit that can change",
-        "es": "Un hábito capaz de cambiar",
-        "fr": "Une habitude capable de changer"
+        "en": "Care changes what we notice",
+        "es": "Cuidar cambia lo que advertimos",
+        "fr": "Prendre soin change ce que nous remarquons"
+      },
+      "location": {
+        "en": "Chapter XIV, Silas and Eppie outdoors",
+        "es": "Capítulo XIV, Silas y Eppie al aire libre",
+        "fr": "Chapitre XIV, Silas et Eppie dehors"
       },
       "plainLanguage": {
-        "en": "The biological image is used philosophically, not as a claim that flexibility resolves every practical problem.",
-        "es": "La imagen biológica se usa filosóficamente, no para afirmar que la flexibilidad resuelve todo problema.",
-        "fr": "Cette image biologique est philosophique ; elle ne signifie pas que la souplesse résolve tout problème pratique."
+        "en": "Silas’s adopted daughter draws his attention back to nature and memory after isolation and loss. Small shared experiences change his daily world.",
+        "es": "La hija adoptiva de Silas devuelve su atención a la naturaleza y los recuerdos tras el aislamiento y la pérdida. Pequeñas experiencias compartidas cambian su mundo cotidiano.",
+        "fr": "La fille adoptive de Silas ramène son attention vers la nature et la mémoire après l’isolement et la perte. De petites expériences partagées changent son quotidien."
       },
       "lenses": [
         {
-          "en": "A revisable habit can respond to evidence.",
-          "es": "Un hábito revisable puede responder a pruebas.",
-          "fr": "Une habitude révisable peut répondre aux preuves."
+          "en": "Caring for another person can reopen neglected parts of life.",
+          "es": "Cuidar a otra persona puede reabrir aspectos descuidados de la vida.",
+          "fr": "Prendre soin d’autrui peut rouvrir des aspects négligés de la vie."
         },
         {
-          "en": "Some stable commitments deserve protection.",
-          "es": "Algunos compromisos estables merecen protección.",
-          "fr": "Certains engagements stables méritent protection."
+          "en": "Care can also involve demands that a peaceful scene does not show.",
+          "es": "Cuidar también puede implicar exigencias que una escena tranquila no muestra.",
+          "fr": "Le soin peut aussi imposer des exigences qu’une scène paisible ne montre pas."
         }
       ],
       "question": {
-        "en": "Which habit should remain stable, and which should change when the circumstances that formed it disappear?",
-        "es": "¿Qué hábito debe permanecer y cuál cambiar cuando desaparecen las circunstancias que lo formaron?",
-        "fr": "Quelle habitude devrait rester stable, et laquelle devrait changer lorsque ses circonstances d’origine disparaissent ?"
+        "en": "How might caring for someone change what you pay attention to, and what support would keep that care from becoming overwhelming?",
+        "es": "¿Cómo podría cuidar a alguien cambiar aquello a lo que prestas atención y qué apoyo evitaría que ese cuidado se volviera abrumador?",
+        "fr": "Comment prendre soin de quelqu’un pourrait-il changer ce à quoi tu prêtes attention, et quel soutien empêcherait ce soin de devenir écrasant ?"
       }
     },
     {
@@ -1487,111 +1487,111 @@
   ],
   "civilizations-culture": [
     {
-      "id": "reading-culture-remembering-many-sides",
-      "source": "herodotus",
-      "location": {
-        "en": "Book I: opening statement of inquiry",
-        "es": "Libro I: apertura de la investigación",
-        "fr": "Livre I : ouverture de l’enquête"
-      },
+      "source": "equiano",
+      "id": "reading-equiano-memory-and-belonging",
       "title": {
-        "en": "Whose deeds get remembered?",
-        "es": "¿Qué acciones se recuerdan?",
-        "fr": "Quels actes garde-t-on en mémoire ?"
+        "en": "Memory and belonging",
+        "es": "Memoria y pertenencia",
+        "fr": "Mémoire et appartenance"
+      },
+      "location": {
+        "en": "Volume I, chapter II, opening paragraph",
+        "es": "Volumen I, capítulo II, primer párrafo",
+        "fr": "Volume I, chapitre II, premier paragraphe"
       },
       "plainLanguage": {
-        "en": "His ancient vocabulary reflects his setting. Preserving an account does not make its categories neutral.",
-        "es": "Su vocabulario antiguo refleja su contexto. Conservar un relato no vuelve neutrales sus categorías.",
-        "fr": "Son vocabulaire antique reflète son contexte. Préserver un récit ne rend pas ses catégories neutres."
+        "en": "Equiano introduces his life story by describing the lasting impression of his country’s customs. Affection and sorrow coexist in his recollection.",
+        "es": "Equiano presenta su historia de vida describiendo la huella duradera de las costumbres de su país. El afecto y la tristeza conviven en su recuerdo.",
+        "fr": "Equiano présente son histoire en décrivant l’empreinte durable des coutumes de son pays. Affection et tristesse coexistent dans son souvenir."
       },
       "lenses": [
         {
-          "en": "Multiple accounts can preserve neglected experience.",
-          "es": "Varios relatos conservan experiencias desatendidas.",
-          "fr": "Plusieurs récits peuvent préserver des expériences négligées."
+          "en": "Personal memory can preserve experiences missing from official accounts.",
+          "es": "La memoria personal puede conservar experiencias ausentes de los relatos oficiales.",
+          "fr": "La mémoire personnelle peut préserver des expériences absentes des récits officiels."
         },
         {
-          "en": "An inclusive account still selects and frames.",
-          "es": "Un relato inclusivo aún selecciona y encuadra.",
-          "fr": "Un récit inclusif sélectionne et cadre toujours."
+          "en": "Memory reflects a narrator’s perspective and still needs thoughtful interpretation.",
+          "es": "La memoria refleja la perspectiva de quien narra y requiere una interpretación cuidadosa.",
+          "fr": "La mémoire reflète la perspective du narrateur et exige une interprétation attentive."
         }
       ],
       "question": {
-        "en": "Whose account would you add to a familiar history, and how would you test both the old account and the new one?",
-        "es": "¿Qué relato añadirías a una historia familiar y cómo comprobarías tanto el viejo como el nuevo?",
-        "fr": "Quel récit ajouterais-tu à une histoire familière, et comment vérifierais-tu l’ancien comme le nouveau ?"
+        "en": "How should we read a person’s affectionate memory of home without assuming it describes everyone’s experience there?",
+        "es": "¿Cómo deberíamos leer el recuerdo afectuoso de alguien sobre su tierra sin suponer que describe la experiencia de todos allí?",
+        "fr": "Comment lire le souvenir affectueux d’une personne envers son pays sans supposer qu’il décrit l’expérience de tous ceux qui y vivent ?"
       }
     },
     {
-      "id": "reading-culture-observers-and-customs",
-      "source": "herodotus",
-      "location": {
-        "en": "Book II, chapter 35: Egyptian customs",
-        "es": "Libro II, capítulo 35: costumbres egipcias",
-        "fr": "Livre II, chapitre 35 : coutumes égyptiennes"
-      },
+      "source": "tagore",
+      "id": "reading-tagore-unity-and-difference",
       "title": {
-        "en": "The observer’s lens",
-        "es": "La mirada del observador",
-        "fr": "Le regard de l’observateur"
+        "en": "Unity without rigid boundaries",
+        "es": "Unidad sin fronteras rígidas",
+        "fr": "Unité sans frontières rigides"
+      },
+      "location": {
+        "en": "Nationalism in the West, unity and social classification",
+        "es": "Nacionalismo en Occidente, unidad y clasificación social",
+        "fr": "Nationalisme en Occident, unité et classification sociale"
       },
       "plainLanguage": {
-        "en": "Read these ancient reports critically. Some observations require corroboration rather than automatic acceptance.",
-        "es": "Lee críticamente estos informes antiguos. Algunas observaciones necesitan corroboración, no aceptación automática.",
-        "fr": "Lis ces rapports antiques de manière critique. Certaines observations exigent une corroboration plutôt qu’une acceptation automatique."
+        "en": "Tagore criticizes both national self-worship and rigid social divisions. He treats India’s historical experiments as incomplete and capable of serious error.",
+        "es": "Tagore critica tanto la adoración de la nación como las divisiones sociales rígidas. Considera incompletos los experimentos históricos de la India y capaces de errores graves.",
+        "fr": "Tagore critique aussi bien l’adoration de la nation que les divisions sociales rigides. Il considère les expériences historiques de l’Inde comme incomplètes et susceptibles d’erreurs graves."
       },
       "lenses": [
         {
-          "en": "Contrast can reveal a hidden convention.",
-          "es": "El contraste revela convenciones ocultas.",
-          "fr": "Le contraste peut révéler une convention cachée."
+          "en": "Shared belonging can coexist with cultural differences.",
+          "es": "La pertenencia compartida puede convivir con diferencias culturales.",
+          "fr": "Une appartenance commune peut coexister avec des différences culturelles."
         },
         {
-          "en": "Difference alone may miss the reasons within a practice.",
-          "es": "La diferencia sola puede ocultar las razones de una práctica.",
-          "fr": "La différence seule peut masquer les raisons d’une pratique."
+          "en": "Celebrating unity can conceal hierarchies and restricted opportunities.",
+          "es": "Celebrar la unidad puede ocultar jerarquías y oportunidades restringidas.",
+          "fr": "Célébrer l’unité peut masquer des hiérarchies et des possibilités restreintes."
         }
       ],
       "question": {
-        "en": "How would you describe an unfamiliar custom without making your own custom the unquestioned standard?",
-        "es": "¿Cómo describirías una costumbre ajena sin convertir la tuya en el criterio incuestionable?",
-        "fr": "Comment décrirais-tu une coutume inconnue sans faire de la tienne une référence incontestable ?"
+        "en": "What would show that a society values cultural differences without fixing people into unequal roles?",
+        "es": "¿Qué demostraría que una sociedad valora las diferencias culturales sin encerrar a las personas en papeles desiguales?",
+        "fr": "Qu’est-ce qui montrerait qu’une société valorise les différences culturelles sans enfermer les personnes dans des rôles inégaux ?"
       }
     },
     {
-      "id": "reading-culture-conflicting-origins",
-      "source": "herodotus",
-      "location": {
-        "en": "Book I, chapters 1–5: competing origin stories",
-        "es": "Libro I, capítulos 1–5: relatos de origen rivales",
-        "fr": "Livre I, chapitres 1–5 : récits d’origine concurrents"
-      },
+      "source": "zitkala",
+      "id": "reading-zitkala-legends-and-listening",
       "title": {
-        "en": "Different stories of the beginning",
-        "es": "Relatos distintos del comienzo",
-        "fr": "Des récits différents du commencement"
+        "en": "How stories are shared",
+        "es": "Cómo se comparten los relatos",
+        "fr": "Comment les récits se transmettent"
+      },
+      "location": {
+        "en": "Impressions of an Indian Childhood, III, The Legends",
+        "es": "Impresiones de una infancia indígena, III, Las leyendas",
+        "fr": "Impressions d’une enfance amérindienne, III, Les légendes"
       },
       "plainLanguage": {
-        "en": "The original includes violent events; this adaptation focuses on narration and attribution without graphic details.",
-        "es": "El original incluye hechos violentos; la adaptación se centra en narración y atribución sin detalles gráficos.",
-        "fr": "L’original comprend des événements violents ; cette adaptation porte sur le récit et l’attribution sans détails explicites."
+        "en": "Zitkala-Sa recalls inviting elders to supper and learning to listen before interrupting. Storytelling is embedded in relationships and everyday practices.",
+        "es": "Zitkala-Sa recuerda cómo invitaba a los mayores a cenar y aprendía a escuchar antes de interrumpir. Contar relatos forma parte de relaciones y prácticas cotidianas.",
+        "fr": "Zitkala-Sa se souvient des invitations adressées aux anciens pour le repas et de l’apprentissage de l’écoute avant d’interrompre. Les récits s’inscrivent dans les relations et les pratiques quotidiennes."
       },
       "lenses": [
         {
-          "en": "The starting point can change who appears responsible.",
-          "es": "El punto de partida cambia quién parece responsable.",
-          "fr": "Le point de départ peut modifier la responsabilité apparente."
+          "en": "Stories carry knowledge together with ways of listening and relating.",
+          "es": "Los relatos transmiten conocimientos junto con formas de escuchar y relacionarse.",
+          "fr": "Les récits transmettent des connaissances avec des manières d’écouter et d’être en relation."
         },
         {
-          "en": "A longer story does not automatically become a better-supported story.",
-          "es": "Un relato más largo no es necesariamente más sólido.",
-          "fr": "Un récit plus long n’est pas automatiquement mieux étayé."
+          "en": "A recollection from one community cannot stand for every community’s traditions.",
+          "es": "Un recuerdo de una comunidad no representa las tradiciones de todas las comunidades.",
+          "fr": "Le souvenir d’une communauté ne peut représenter les traditions de toutes les autres."
         }
       ],
       "question": {
-        "en": "How would you choose a fair starting point for a dispute when each side offers a different origin story?",
-        "es": "¿Cómo elegirías un comienzo justo para una disputa si cada lado ofrece un origen distinto?",
-        "fr": "Comment choisirais-tu un point de départ équitable pour un conflit lorsque chaque côté propose une origine différente ?"
+        "en": "What might be lost when we preserve the words of a story but ignore how, when, and among whom it was told?",
+        "es": "¿Qué podría perderse al conservar las palabras de un relato pero ignorar cómo, cuándo y entre quiénes se contaba?",
+        "fr": "Que pourrait-on perdre en conservant les mots d’un récit mais en ignorant comment, quand et entre qui il était raconté ?"
       }
     },
     {
@@ -1739,39 +1739,39 @@
       }
     },
     {
-      "id": "reading-culture-measures-of-progress",
-      "source": "dubois",
-      "location": {
-        "en": "Chapter IV: Of the Meaning of Progress",
-        "es": "Capítulo IV: sobre el significado del progreso",
-        "fr": "Chapitre IV : du sens du progrès"
-      },
+      "source": "princeNarrative",
+      "id": "reading-prince-earnings-and-freedom",
       "title": {
-        "en": "What changed, and for whom?",
-        "es": "¿Qué cambió y para quién?",
-        "fr": "Qu’est-ce qui a changé, et pour qui ?"
+        "en": "Earning without being free",
+        "es": "Ganar dinero sin ser libre",
+        "fr": "Gagner de l’argent sans être libre"
+      },
+      "location": {
+        "en": "Personal narrative, earning money toward freedom",
+        "es": "Relato personal, ganancias para intentar comprar la libertad",
+        "fr": "Récit personnel, argent gagné pour tenter d’acheter la liberté"
       },
       "plainLanguage": {
-        "en": "This is a historical narrative about a community, not a claim that every improvement is false.",
-        "es": "Es un relato histórico sobre una comunidad, no una afirmación de que toda mejora sea falsa.",
-        "fr": "C’est un récit historique sur une communauté, pas l’affirmation que toute amélioration soit fausse."
+        "en": "Mary Prince describes earning money while enslaved, yet being unable to secure freedom. Economic initiative and basic freedom are different things.",
+        "es": "Mary Prince describe cómo ganaba dinero mientras estaba esclavizada sin poder conseguir su libertad. La iniciativa económica y la libertad básica son cosas distintas.",
+        "fr": "Mary Prince décrit l’argent gagné alors qu’elle était réduite en esclavage, sans pouvoir obtenir sa liberté. L’initiative économique et la liberté fondamentale sont différentes."
       },
       "lenses": [
         {
-          "en": "Measurable development can create real opportunities.",
-          "es": "El desarrollo medible crea oportunidades reales.",
-          "fr": "Un développement mesurable peut créer de vraies possibilités."
+          "en": "A person can exercise ingenuity even under severe constraints.",
+          "es": "Una persona puede mostrar ingenio incluso bajo restricciones graves.",
+          "fr": "Une personne peut faire preuve d’ingéniosité même sous de fortes contraintes."
         },
         {
-          "en": "An average can hide people left behind.",
-          "es": "Un promedio puede ocultar a quienes quedan atrás.",
-          "fr": "Une moyenne peut masquer les personnes laissées de côté."
+          "en": "Evidence of ingenuity does not make those constraints acceptable.",
+          "es": "El ingenio demostrado no vuelve aceptables esas restricciones.",
+          "fr": "Cette ingéniosité ne rend pas les contraintes acceptables."
         }
       ],
       "question": {
-        "en": "What would you measure to judge progress in a community, and whose experience might that measure miss?",
-        "es": "¿Qué medirías para juzgar el progreso de una comunidad y qué experiencias podría omitir esa medida?",
-        "fr": "Que mesurerais-tu pour juger le progrès d’une communauté, et quelles expériences cette mesure pourrait-elle manquer ?"
+        "en": "What does Prince’s account reveal about the limits of judging a society’s freedom only by opportunities to earn money?",
+        "es": "¿Qué revela el relato de Prince sobre los límites de juzgar la libertad de una sociedad solo por las oportunidades de ganar dinero?",
+        "fr": "Que révèle le récit de Prince sur les limites d’un jugement de la liberté d’une société fondé uniquement sur les possibilités de gagner de l’argent ?"
       }
     },
     {
@@ -1849,291 +1849,291 @@
       }
     },
     {
-      "id": "reading-economics-market-size",
-      "source": "smith",
-      "location": {
-        "en": "Book I, chapter III: the extent of the market",
-        "es": "Libro I, capítulo III: extensión del mercado",
-        "fr": "Livre I, chapitre III : étendue du marché"
-      },
+      "source": "bastiat",
+      "id": "reading-bastiat-seen-and-unseen",
       "title": {
-        "en": "When a specialty becomes viable",
-        "es": "Cuando una especialidad es viable",
-        "fr": "Quand une spécialité devient viable"
+        "en": "Visible gains and hidden costs",
+        "es": "Beneficios visibles y costos ocultos",
+        "fr": "Gains visibles et coûts cachés"
+      },
+      "location": {
+        "en": "That Which Is Seen, and That Which Is Not Seen, opening paragraph",
+        "es": "Lo que se ve y lo que no se ve, primer párrafo",
+        "fr": "Ce qu’on voit et ce qu’on ne voit pas, premier paragraphe"
       },
       "plainLanguage": {
-        "en": "Transport and access affect the relevant market, not simply the number of people nearby.",
-        "es": "El transporte y el acceso afectan al mercado relevante, no solo el número de personas cercanas.",
-        "fr": "Transport et accès modifient le marché pertinent, pas seulement le nombre de personnes proches."
+        "en": "Bastiat asks readers to trace delayed effects as well as immediate ones. His sweeping contrast between good and bad economists is itself a claim to test.",
+        "es": "Bastiat pide seguir los efectos tardíos además de los inmediatos. Su contraste tajante entre buenos y malos economistas también es una afirmación que examinar.",
+        "fr": "Bastiat demande de suivre les effets différés aussi bien qu’immédiats. Son contraste tranché entre bons et mauvais économistes est lui-même une affirmation à examiner."
       },
       "lenses": [
         {
-          "en": "A wider market can support deeper specialization.",
-          "es": "Un mercado amplio permite más especialización.",
-          "fr": "Un marché plus vaste peut soutenir une spécialisation accrue."
+          "en": "Immediate benefits can distract from later costs.",
+          "es": "Los beneficios inmediatos pueden distraer de costos posteriores.",
+          "fr": "Les avantages immédiats peuvent détourner l’attention des coûts ultérieurs."
         },
         {
-          "en": "Broad skills can protect against a small or changing market.",
-          "es": "Las habilidades variadas protegen ante un mercado pequeño o cambiante.",
-          "fr": "Des compétences variées peuvent protéger face à un marché petit ou changeant."
+          "en": "Predicted hidden costs can be speculative or selectively counted.",
+          "es": "Los costos ocultos previstos pueden ser especulativos o contarse selectivamente.",
+          "fr": "Les coûts cachés annoncés peuvent être spéculatifs ou comptés de façon sélective."
         }
       ],
       "question": {
-        "en": "What would make a specialized service sustainable in your setting, and what evidence of demand would you seek?",
-        "es": "¿Qué haría sostenible un servicio especializado en tu entorno y qué pruebas de demanda buscarías?",
-        "fr": "Qu’est-ce qui rendrait un service spécialisé durable dans ton contexte, et quelles preuves de demande chercherais-tu ?"
+        "en": "How would you compare a proposal’s visible benefits with its less visible costs without treating speculation as evidence?",
+        "es": "¿Cómo compararías los beneficios visibles de una propuesta con sus costos menos visibles sin tratar la especulación como prueba?",
+        "fr": "Comment comparerais-tu les avantages visibles d’une proposition à ses coûts moins visibles sans prendre la spéculation pour une preuve ?"
       }
     },
     {
-      "id": "reading-economics-money-and-coordination",
-      "source": "smith",
-      "location": {
-        "en": "Book I, chapter IV: the origin and use of money",
-        "es": "Libro I, capítulo IV: origen y uso del dinero",
-        "fr": "Livre I, chapitre IV : origine et usage de la monnaie"
-      },
+      "source": "marx",
+      "id": "reading-marx-engels-production-and-change",
       "title": {
-        "en": "A shared tool for exchange",
-        "es": "Una herramienta común de intercambio",
-        "fr": "Un outil commun d’échange"
+        "en": "Production and social change",
+        "es": "Producción y cambio social",
+        "fr": "Production et changement social"
+      },
+      "location": {
+        "en": "Section I, paragraph on changing production",
+        "es": "Sección I, párrafo sobre los cambios de la producción",
+        "fr": "Section I, paragraphe sur les transformations de la production"
       },
       "plainLanguage": {
-        "en": "This is Smith’s historical explanation of exchange. It need not settle every question about the origin of money.",
-        "es": "Es la explicación histórica de Smith sobre el intercambio. No resuelve toda cuestión sobre el origen del dinero.",
-        "fr": "C’est l’explication historique de Smith sur l’échange. Elle ne résout pas toutes les questions sur l’origine de la monnaie."
+        "en": "Marx and Engels argue that competition continually transforms production and social relationships. Their description connects innovation with instability.",
+        "es": "Marx y Engels sostienen que la competencia transforma continuamente la producción y las relaciones sociales. Vinculan innovación e inestabilidad.",
+        "fr": "Marx et Engels soutiennent que la concurrence transforme continuellement la production et les relations sociales. Ils relient innovation et instabilité."
       },
       "lenses": [
         {
-          "en": "A shared convention can reduce coordination costs.",
-          "es": "Una convención compartida reduce costes de coordinación.",
-          "fr": "Une convention commune peut réduire les coûts de coordination."
+          "en": "New methods can create opportunities and overturn harmful arrangements.",
+          "es": "Los nuevos métodos pueden crear oportunidades y desplazar estructuras perjudiciales.",
+          "fr": "De nouvelles méthodes peuvent créer des possibilités et renverser des arrangements nuisibles."
         },
         {
-          "en": "Dependence on shared acceptance creates fragility.",
-          "es": "Depender de la aceptación común crea fragilidad.",
-          "fr": "Dépendre d’une acceptation commune crée une fragilité."
+          "en": "Rapid change can also weaken security and valued relationships.",
+          "es": "Los cambios rápidos también pueden debilitar la seguridad y las relaciones valiosas.",
+          "fr": "Les changements rapides peuvent aussi affaiblir la sécurité et les relations importantes."
         }
       ],
       "question": {
-        "en": "What makes a shared exchange tool trustworthy, and what would happen if people stopped accepting it?",
-        "es": "¿Qué hace fiable una herramienta común de intercambio y qué ocurriría si dejaran de aceptarla?",
-        "fr": "Qu’est-ce qui rend un outil commun d’échange fiable, et que se passerait-il si les gens cessaient de l’accepter ?"
+        "en": "How could you evaluate an innovation’s benefits alongside the disruption it causes to people’s livelihoods and relationships?",
+        "es": "¿Cómo podrías evaluar los beneficios de una innovación junto con las alteraciones que causa en los medios de vida y las relaciones de las personas?",
+        "fr": "Comment pourrais-tu évaluer les avantages d’une innovation en même temps que les perturbations qu’elle cause dans les moyens de subsistance et les relations des personnes ?"
       }
     },
     {
-      "id": "reading-economics-use-and-exchange",
-      "source": "smith",
-      "location": {
-        "en": "Book I, chapter IV: value in use and exchange",
-        "es": "Libro I, capítulo IV: valor de uso y de cambio",
-        "fr": "Livre I, chapitre IV : valeur d’usage et d’échange"
-      },
+      "source": "veblen",
+      "id": "reading-veblen-comfort-and-status",
       "title": {
-        "en": "Useful does not always mean expensive",
-        "es": "Útil no siempre significa caro",
-        "fr": "Utile ne signifie pas toujours cher"
+        "en": "Comfort, security, and comparison",
+        "es": "Comodidad, seguridad y comparación",
+        "fr": "Confort, sécurité et comparaison"
+      },
+      "location": {
+        "en": "Chapter II, motives for accumulation",
+        "es": "Capítulo II, motivos de la acumulación",
+        "fr": "Chapitre II, motifs d’accumulation"
       },
       "plainLanguage": {
-        "en": "The passage introduces a distinction, not a complete modern theory of how all prices are set.",
-        "es": "El pasaje presenta una distinción, no una teoría moderna completa de todos los precios.",
-        "fr": "Le passage introduit une distinction, pas une théorie moderne complète de tous les prix."
+        "en": "Veblen recognizes comfort and security as motives while arguing that comparison with others shapes what people consider enough.",
+        "es": "Veblen reconoce la comodidad y la seguridad como motivos, pero sostiene que compararse con otros influye en lo que se considera suficiente.",
+        "fr": "Veblen reconnaît le confort et la sécurité comme motifs, tout en soutenant que la comparaison avec autrui façonne ce que l’on juge suffisant."
       },
       "lenses": [
         {
-          "en": "Price can reveal scarcity and willingness to exchange.",
-          "es": "El precio revela escasez y disposición a intercambiar.",
-          "fr": "Le prix peut révéler rareté et volonté d’échanger."
+          "en": "A purchase can serve a real need.",
+          "es": "Una compra puede satisfacer una necesidad real.",
+          "fr": "Un achat peut répondre à un besoin réel."
         },
         {
-          "en": "Some important benefits are poorly captured by price.",
-          "es": "El precio refleja mal algunos beneficios importantes.",
-          "fr": "Certains bénéfices importants sont mal reflétés par le prix."
+          "en": "Social expectations can change what feels like a need.",
+          "es": "Las expectativas sociales pueden cambiar lo que se siente como una necesidad.",
+          "fr": "Les attentes sociales peuvent modifier ce qui paraît nécessaire."
         }
       ],
       "question": {
-        "en": "What valuable thing would a price comparison undervalue, and how would you include its importance in a decision?",
-        "es": "¿Qué cosa valiosa subestimaría una comparación de precios y cómo incluirías su importancia al decidir?",
-        "fr": "Quelle chose précieuse serait sous-évaluée par une comparaison de prix, et comment intégrerais-tu son importance à une décision ?"
+        "en": "How would you distinguish spending for comfort or security from spending to keep up with a social comparison?",
+        "es": "¿Cómo distinguirías gastar por comodidad o seguridad de gastar para seguir el ritmo de una comparación social?",
+        "fr": "Comment distinguerais-tu une dépense pour le confort ou la sécurité d’une dépense pour suivre une comparaison sociale ?"
       }
     },
     {
-      "id": "reading-economics-bargaining-power",
-      "source": "smith",
-      "location": {
-        "en": "Book I, chapter VIII: wages and bargaining",
-        "es": "Libro I, capítulo VIII: salarios y negociación",
-        "fr": "Livre I, chapitre VIII : salaires et négociation"
-      },
+      "source": "ruskin",
+      "id": "reading-ruskin-economic-models-and-care",
       "title": {
-        "en": "A choice under unequal pressure",
-        "es": "Una elección bajo presión desigual",
-        "fr": "Un choix sous pression inégale"
+        "en": "What a model leaves out",
+        "es": "Lo que deja fuera un modelo",
+        "fr": "Ce qu’un modèle laisse de côté"
+      },
+      "location": {
+        "en": "Unto This Last, The Roots of Honour, imagined economist’s argument",
+        "es": "Hasta este último, Las raíces del honor, argumento de un economista imaginado",
+        "fr": "Jusqu’au dernier, Les racines de l’honneur, argument d’un économiste imaginé"
       },
       "plainLanguage": {
-        "en": "Smith’s account of labor markets includes bargaining conditions, not merely individual effort or productivity.",
-        "es": "El análisis laboral de Smith incluye condiciones de negociación, no solo esfuerzo o productividad individual.",
-        "fr": "L’analyse du travail chez Smith inclut les conditions de négociation, pas seulement effort ou productivité individuelle."
+        "en": "Ruskin stages an economist’s argument for leaving affection out of a model. He uses that argument as a target of criticism, not as his own recommendation.",
+        "es": "Ruskin representa el argumento de un economista que deja los afectos fuera de un modelo. Lo presenta para criticarlo, no como recomendación propia.",
+        "fr": "Ruskin met en scène l’argument d’un économiste qui exclut les affections d’un modèle. Il le présente pour le critiquer, pas comme sa propre recommandation."
       },
       "lenses": [
         {
-          "en": "Agreement can create benefits for both sides.",
-          "es": "Un acuerdo puede beneficiar a ambos lados.",
-          "fr": "Un accord peut créer des bénéfices pour les deux parties."
+          "en": "Simplification can help isolate a relationship.",
+          "es": "Simplificar puede ayudar a aislar una relación.",
+          "fr": "Simplifier peut aider à isoler une relation."
         },
         {
-          "en": "The ability to refuse affects the fairness of terms.",
-          "es": "Poder negarse afecta a la justicia de las condiciones.",
-          "fr": "La capacité de refuser affecte l’équité des conditions."
+          "en": "Removing motives that matter can make a model misleading.",
+          "es": "Eliminar motivos importantes puede volver engañoso un modelo.",
+          "fr": "Supprimer des motifs importants peut rendre un modèle trompeur."
         }
       ],
       "question": {
-        "en": "How would you evaluate an agreement when one side has much less ability to wait or walk away?",
-        "es": "¿Cómo evaluarías un acuerdo si un lado tiene mucha menos capacidad de esperar o retirarse?",
-        "fr": "Comment évaluerais-tu un accord lorsqu’une partie peut beaucoup moins attendre ou se retirer ?"
+        "en": "When is leaving care or loyalty out of an economic model useful, and when would that omission make its conclusions unreliable?",
+        "es": "¿Cuándo resulta útil excluir el cuidado o la lealtad de un modelo económico y cuándo haría esa omisión poco fiables sus conclusiones?",
+        "fr": "Quand est-il utile d’exclure le soin ou la loyauté d’un modèle économique, et quand cette omission rendrait-elle ses conclusions peu fiables ?"
       }
     },
     {
-      "id": "reading-economics-profit-and-comparison",
-      "source": "smith",
-      "location": {
-        "en": "Book I, chapter IX: profits of stock",
-        "es": "Libro I, capítulo IX: beneficios del capital",
-        "fr": "Livre I, chapitre IX : profits du capital"
-      },
+      "source": "george",
+      "id": "reading-george-progress-and-poverty",
       "title": {
-        "en": "What does a high return tell you?",
-        "es": "¿Qué indica un rendimiento alto?",
-        "fr": "Que révèle un rendement élevé ?"
+        "en": "Who benefits from progress?",
+        "es": "¿Quién se beneficia del progreso?",
+        "fr": "Qui profite du progrès ?"
+      },
+      "location": {
+        "en": "Introduction, poverty alongside progress",
+        "es": "Introducción, pobreza junto al progreso",
+        "fr": "Introduction, pauvreté au milieu du progrès"
       },
       "plainLanguage": {
-        "en": "The historical discussion invites questions about causes and comparisons rather than a promise about an investment.",
-        "es": "La discusión histórica invita a examinar causas y comparaciones, no promete resultados de inversión.",
-        "fr": "Cette discussion historique invite à examiner causes et comparaisons, sans promettre un résultat d’investissement."
+        "en": "George asks why increased productive power can coexist with poverty. He argues that material growth needs to be judged by its distribution as well as its size.",
+        "es": "George pregunta por qué una mayor capacidad productiva puede coexistir con la pobreza. Sostiene que el crecimiento material debe evaluarse por su distribución además de su tamaño.",
+        "fr": "George demande pourquoi une capacité productive accrue peut coexister avec la pauvreté. Il soutient qu’il faut juger la croissance matérielle par sa répartition autant que par son ampleur."
       },
       "lenses": [
         {
-          "en": "A return may signal valuable coordination or risk.",
-          "es": "Un rendimiento puede indicar coordinación valiosa o riesgo.",
-          "fr": "Un rendement peut signaler une coordination utile ou un risque."
+          "en": "Greater production can improve living conditions.",
+          "es": "Una mayor producción puede mejorar las condiciones de vida.",
+          "fr": "Une production accrue peut améliorer les conditions de vie."
         },
         {
-          "en": "A return alone does not establish the social benefit.",
-          "es": "El rendimiento solo no demuestra beneficio social.",
-          "fr": "Le rendement seul n’établit pas le bénéfice social."
+          "en": "Aggregate growth can conceal who receives its gains and who bears its costs.",
+          "es": "El crecimiento agregado puede ocultar quién recibe sus beneficios y quién soporta sus costos.",
+          "fr": "La croissance globale peut masquer qui en reçoit les gains et qui en supporte les coûts."
         }
       ],
       "question": {
-        "en": "What would you need to know before deciding whether a high profit reflects useful service or an advantage others cannot challenge?",
-        "es": "¿Qué necesitas saber para decidir si un beneficio alto refleja servicio útil o una ventaja que otros no pueden cuestionar?",
-        "fr": "Que devrais-tu savoir pour décider si un profit élevé reflète un service utile ou un avantage que les autres ne peuvent contester ?"
+        "en": "What evidence would you need to decide whether economic growth is improving life broadly or mainly enlarging a few fortunes?",
+        "es": "¿Qué pruebas necesitarías para decidir si el crecimiento económico mejora ampliamente la vida o aumenta principalmente unas pocas fortunas?",
+        "fr": "Quelles preuves te faudrait-il pour déterminer si la croissance économique améliore largement la vie ou agrandit surtout quelques fortunes ?"
       }
     },
     {
-      "id": "reading-economics-market-and-natural-price",
-      "source": "smith",
-      "location": {
-        "en": "Book I, chapter VII: natural and market prices",
-        "es": "Libro I, capítulo VII: precios naturales y de mercado",
-        "fr": "Livre I, chapitre VII : prix naturels et prix de marché"
-      },
+      "source": "addams",
+      "id": "reading-addams-culture-and-access",
       "title": {
-        "en": "Demand backed by ability",
-        "es": "Demanda respaldada por capacidad",
-        "fr": "Une demande soutenue par la capacité"
+        "en": "Access beyond ability to pay",
+        "es": "Acceso más allá de la capacidad de pago",
+        "fr": "L’accès au-delà de la capacité de payer"
+      },
+      "location": {
+        "en": "Chapter XVIII, Socialized Education, common intellectual enjoyment",
+        "es": "Capítulo XVIII, Educación socializada, disfrute intelectual compartido",
+        "fr": "Chapitre XVIII, Éducation socialisée, accès commun à la vie intellectuelle"
       },
       "plainLanguage": {
-        "en": "The distinction between wanting and being able to pay matters when evaluating what markets reveal.",
-        "es": "Distinguir querer y poder pagar importa al evaluar lo que revelan los mercados.",
-        "fr": "Distinguer désir et capacité de payer compte pour évaluer ce que révèlent les marchés."
+        "en": "Addams argues that cultural and intellectual opportunities should reach people whose labor leaves them unable to buy access.",
+        "es": "Addams sostiene que las oportunidades culturales e intelectuales deben llegar a quienes no pueden pagarlas con lo que ganan por su trabajo.",
+        "fr": "Addams soutient que les possibilités culturelles et intellectuelles doivent atteindre ceux dont le travail ne permet pas de payer l’accès."
       },
       "lenses": [
         {
-          "en": "Prices can coordinate supply with paying demand.",
-          "es": "Los precios coordinan oferta y demanda con capacidad de pago.",
-          "fr": "Les prix peuvent coordonner l’offre et la demande solvable."
+          "en": "Shared institutions can widen access to valued experiences.",
+          "es": "Las instituciones compartidas pueden ampliar el acceso a experiencias valiosas.",
+          "fr": "Des institutions communes peuvent élargir l’accès à des expériences importantes."
         },
         {
-          "en": "A low-paying need can remain urgent.",
-          "es": "Una necesidad con poco poder de pago puede seguir siendo urgente.",
-          "fr": "Un besoin peu solvable peut rester urgent."
+          "en": "Deciding which experiences to fund raises questions about choice and competing needs.",
+          "es": "Decidir qué experiencias financiar plantea cuestiones de elección y necesidades contrapuestas.",
+          "fr": "Décider quelles expériences financer pose la question du choix et des besoins concurrents."
         }
       ],
       "question": {
-        "en": "What important need could a market overlook, and how would you respond without ignoring the information prices provide?",
-        "es": "¿Qué necesidad importante puede pasar por alto un mercado y cómo responderías sin ignorar la información de precios?",
-        "fr": "Quel besoin important un marché pourrait-il négliger, et comment répondrais-tu sans ignorer les informations des prix ?"
+        "en": "How should a community decide which cultural opportunities to make widely accessible and how to pay for them?",
+        "es": "¿Cómo debería una comunidad decidir qué oportunidades culturales hacer ampliamente accesibles y cómo pagarlas?",
+        "fr": "Comment une communauté devrait-elle décider quelles possibilités culturelles rendre largement accessibles et comment les financer ?"
       }
     },
     {
-      "id": "reading-economics-unintended-consequences",
-      "source": "smith",
-      "location": {
-        "en": "Book IV, chapter II: domestic investment and unintended effects",
-        "es": "Libro IV, capítulo II: inversión nacional y efectos no previstos",
-        "fr": "Livre IV, chapitre II : investissement national et effets involontaires"
-      },
+      "source": "washington",
+      "id": "reading-washington-education-and-useful-work",
       "title": {
-        "en": "Results beyond intentions",
-        "es": "Resultados más allá de intenciones",
-        "fr": "Des résultats au-delà des intentions"
+        "en": "Education and useful work",
+        "es": "Educación y trabajo útil",
+        "fr": "Éducation et travail utile"
+      },
+      "location": {
+        "en": "Chapter IV, Helping Others, learning at Hampton",
+        "es": "Capítulo IV, Ayudar a otros, aprendizaje en Hampton",
+        "fr": "Chapitre IV, Aider autrui, apprentissage à Hampton"
       },
       "plainLanguage": {
-        "en": "The famous invisible-hand discussion appears in this specific argument. Avoid converting one mechanism into a universal guarantee.",
-        "es": "La conocida mano invisible aparece en este argumento concreto. No conviertas un mecanismo en garantía universal.",
-        "fr": "La célèbre main invisible apparaît dans cet argument précis. Ne transforme pas un mécanisme en garantie universelle."
+        "en": "Washington describes a change in his view of education and manual work. He links skill, independence, and service to others.",
+        "es": "Washington describe un cambio en su visión de la educación y el trabajo manual. Vincula habilidad, independencia y servicio a otros.",
+        "fr": "Washington décrit un changement dans sa vision de l’éducation et du travail manuel. Il relie compétence, indépendance et service à autrui."
       },
       "lenses": [
         {
-          "en": "Useful outcomes can arise without a shared intention.",
-          "es": "Surgen resultados útiles sin una intención común.",
-          "fr": "Des résultats utiles peuvent naître sans intention commune."
+          "en": "Useful skills can increase independence and create value for others.",
+          "es": "Las habilidades útiles pueden aumentar la independencia y crear valor para otros.",
+          "fr": "Des compétences utiles peuvent accroître l’indépendance et créer de la valeur pour autrui."
         },
         {
-          "en": "Private incentives can also shift costs onto others.",
-          "es": "Los incentivos privados también trasladan costes a otros.",
-          "fr": "Des incitations privées peuvent aussi transférer des coûts à autrui."
+          "en": "Praising work does not resolve unfair pay or limited opportunities.",
+          "es": "Elogiar el trabajo no resuelve los salarios injustos ni las oportunidades limitadas.",
+          "fr": "Valoriser le travail ne règle pas les salaires injustes ni les possibilités limitées."
         }
       ],
       "question": {
-        "en": "What mechanism would make a private goal benefit others, and what condition would reverse that result?",
-        "es": "¿Qué mecanismo haría que una meta privada beneficiara a otros y qué condición invertiría el resultado?",
-        "fr": "Quel mécanisme ferait profiter autrui d’un objectif privé, et quelle condition inverserait ce résultat ?"
+        "en": "What should education prepare someone to contribute, and how would you keep that goal from narrowing their choices or excusing unfair work conditions?",
+        "es": "¿Para qué debería preparar la educación a una persona y cómo evitarías que ese objetivo limitara sus opciones o justificara condiciones laborales injustas?",
+        "fr": "À quelle contribution l’éducation devrait-elle préparer une personne, et comment éviterais-tu que ce but limite ses choix ou excuse des conditions de travail injustes ?"
       }
     },
     {
-      "id": "reading-economics-education-and-specialization",
-      "source": "smith",
-      "location": {
-        "en": "Book V, chapter I: education of ordinary people",
-        "es": "Libro V, capítulo I: educación del pueblo",
-        "fr": "Livre V, chapitre I : éducation du peuple"
-      },
+      "source": "bellamy",
+      "id": "reading-bellamy-ranking-and-incentives",
       "title": {
-        "en": "The human cost of narrow work",
-        "es": "El coste humano del trabajo limitado",
-        "fr": "Le coût humain d’un travail étroit"
+        "en": "Incentives and the lowest rank",
+        "es": "Incentivos y el rango más bajo",
+        "fr": "Incitations et rang le plus bas"
+      },
+      "location": {
+        "en": "Chapter XII, proposed ranking system",
+        "es": "Capítulo XII, sistema de clasificación propuesto",
+        "fr": "Chapitre XII, système de classement proposé"
       },
       "plainLanguage": {
-        "en": "This part completes a comparison with the pin factory: productive gains and human development must be considered together.",
-        "es": "Esta parte completa la comparación con la fábrica de alfileres: ganancias productivas y desarrollo humano deben considerarse juntos.",
-        "fr": "Cette partie complète la comparaison avec la fabrique d’épingles : gains productifs et développement humain doivent être considérés ensemble."
+        "en": "In Bellamy’s imagined future, a speaker argues that ranks motivate workers while protecting those at the bottom from discouragement. This is a fictional proposal to evaluate.",
+        "es": "En el futuro imaginado por Bellamy, un personaje sostiene que los rangos motivan a los trabajadores y protegen del desaliento a quienes están abajo. Es una propuesta ficticia para evaluar.",
+        "fr": "Dans l’avenir imaginé par Bellamy, un personnage soutient que les rangs motivent les travailleurs tout en protégeant du découragement ceux du bas. Il s’agit d’une proposition fictive à examiner."
       },
       "lenses": [
         {
-          "en": "Specialization can fund opportunities beyond work.",
-          "es": "La especialización financia oportunidades fuera del trabajo.",
-          "fr": "La spécialisation peut financer des possibilités hors du travail."
+          "en": "Clear opportunities to advance can encourage effort.",
+          "es": "Las oportunidades claras de avanzar pueden fomentar el esfuerzo.",
+          "fr": "Des possibilités claires de progression peuvent encourager l’effort."
         },
         {
-          "en": "Productivity gains can coexist with lost capabilities.",
-          "es": "La productividad puede aumentar mientras se pierden capacidades.",
-          "fr": "Des gains de productivité peuvent coexister avec des capacités perdues."
+          "en": "Fixed rankings can hide unequal starting conditions and harm those who remain at the bottom.",
+          "es": "Las clasificaciones fijas pueden ocultar condiciones iniciales desiguales y perjudicar a quienes siguen abajo.",
+          "fr": "Des classements fixes peuvent masquer des conditions de départ inégales et nuire à ceux qui restent au bas de l’échelle."
         }
       ],
       "question": {
-        "en": "How would you preserve the benefits of specialization while protecting people’s ability to learn and exercise judgment?",
-        "es": "¿Cómo conservarías beneficios de la especialización protegiendo la capacidad de aprender y juzgar?",
-        "fr": "Comment préserverais-tu les bénéfices de la spécialisation tout en protégeant la capacité d’apprendre et de juger ?"
+        "en": "How would you test whether a ranking system motivates improvement without humiliating people or hiding unequal opportunities?",
+        "es": "¿Cómo comprobarías si un sistema de clasificación motiva a mejorar sin humillar a las personas ni ocultar oportunidades desiguales?",
+        "fr": "Comment vérifierais-tu qu’un système de classement motive l’amélioration sans humilier les personnes ni masquer des possibilités inégales ?"
       }
     }
   ]

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import ReadingPathClient from '../components/ReadingPathClient';
-import { thinkingPaths } from '../lib/thinkingPaths';
+import { thinkingPaths, getPreviousReadingModules } from '../lib/thinkingPaths';
 import { readingProgress } from '../lib/readingProgress';
 vi.mock('next/link', () => ({ default: 'a' }));
 vi.mock('../lib/telemetry', () => ({ createTelemetryEvent: () => ({}), trackEvent() {} }));
@@ -12,7 +12,8 @@ let requests: any[];
 const path = thinkingPaths[0];
 const reading = path.readingPaths[0];
 const module = reading.modules[0];
-function mount(id = module.id) { act(() => { page = create(createElement(ReadingPathClient, { pathSlug: path.slug, pathTitle: path.title, reading, moduleId: id, userId: 'verified-user' })); }); }
+const previousModules = getPreviousReadingModules(path.slug, reading.slug);
+function mount(id = module.id) { act(() => { page = create(createElement(ReadingPathClient, { pathSlug: path.slug, pathTitle: path.title, reading, previousModules, moduleId: id, userId: 'verified-user' })); }); }
 function setup() {
   storage = new Map([['uthynk-profile', JSON.stringify({ id: 'stale-local-user', age_band: '13_17' })]]); requests = [];
   vi.stubGlobal('localStorage', { getItem: (key: string) => storage.get(key) || null, setItem: (key: string, value: string) => storage.set(key, value), removeItem: (key: string) => storage.delete(key) });
@@ -27,9 +28,33 @@ function setup() {
 function change(language: string) { act(() => page.root.findAllByType('select')[0].props.onChange({ target: { value: language } })); }
 function type(value: string) { act(() => page.root.findByType('textarea').props.onChange({ target: { value } })); }
 async function submit() { await act(async () => { await page.root.findAllByType('button').find(button => button.props.className === 'btn btnPrimary')!.props.onClick(); }); }
-function saved() { return JSON.parse([...storage.entries()].find(([key]) => key.includes(module.id))![1]); }
+function saved(id = module.id) { return JSON.parse([...storage.entries()].find(([key]) => key.includes(id))![1]); }
 afterEach(() => { if (page) act(() => page.unmount()); vi.unstubAllGlobals(); });
 describe('Reading Path journey', () => {
+  it('restores an earlier reading’s two drafts across languages without transferring answers or completion to its replacement', async () => {
+    setup();
+    const old = previousModules.find(item => item.id === 'reading-power-ship-and-expertise')!;
+    const replacement = reading.modules.find(item => item.id === 'reading-xenophon-cyrus-supplies')!;
+    mount(old.id); type('Original first answer'); await submit(); type('Original second draft');
+    const original = saved(old.id); change('es');
+    act(() => page.unmount()); mount(old.id);
+    expect(page.root.findByType('textarea').props.value).toBe('Original second draft');
+    expect(saved(old.id)).toMatchObject({ sessionId: original.sessionId, conversationId: original.conversationId, firstResponse: 'Original first answer' });
+    expect(page.root.findByType('aside').findByType('ol').findAllByType('li')).toHaveLength(10);
+    expect(page.root.findByProps({ 'data-reading-passage': old.id }).findAllByType('p').map(p => p.children.join('')).join('\n\n')).toBe(old.text.es);
+    act(() => page.unmount()); mount(replacement.id);
+    expect(page.root.findByType('textarea').props.value).toBe(''); type('A new reading’s draft');
+    expect(saved(replacement.id).sessionId).not.toBe(original.sessionId);
+    act(() => page.unmount()); mount(old.id); change('fr');
+    expect(page.root.findByType('textarea').props.value).toBe('Original second draft'); await submit();
+    expect(requests.map(request => request.readingModuleId)).toEqual([old.id, old.id]);
+    expect(requests[1].language).toBe('fr');
+    expect(readingProgress(localStorage, old, 'verified-user', '13_17', 'en')).toBe('complete');
+    expect(readingProgress(localStorage, replacement, 'verified-user', '13_17', 'en')).toBe('saved');
+    expect(page.root.findAllByType('textarea')).toHaveLength(0);
+    expect(page.root.findByProps({ className: 'thinkingLabelLayer' }).findAllByType('span')).toHaveLength(4);
+    expect(page.root.findAllByType('a').some(link => link.props.href?.endsWith(`lesson=${reading.modules[0].id}`))).toBe(true);
+  });
   it('keeps one shared header and places the four-step session beside the same reading progress list', () => {
     setup(); mount();
     expect(page.root.findAllByType('header')).toHaveLength(1);

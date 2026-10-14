@@ -10,6 +10,7 @@ export const pathCopy = {
     locked: 'This Reading Path is in beta.', access: 'An administrator can grant Thinking Paths access from the in-app Access panel. Your existing lessons remain available.', signin: 'Sign in to use beta access', back: 'Back to Thinking Path',
     progress: 'Your reading progress', saved: 'Saved', complete: 'Complete', untouched: 'Not started', local: 'Progress and drafts are saved in this browser for your signed-in account and age group.',
     next: 'Next reading', end: 'You have reached the end of this path. Revisit a reading or explore another idea.', continue: 'Continue reading',
+    previousReadings: 'Previous readings', previousReading: 'Previous reading', currentReadings: 'Current readings', previousReadingNote: 'This reading belongs to an earlier selection. Your saved answers and drafts remain here; the current path has ten readings from a wider range of sources.',
   },
   es: {
     title: 'Rutas de pensamiento', reading: 'Rutas de lectura', beta: 'Beta', home: 'Inicio', lessons: 'Todas las lecciones', language: 'Idioma',
@@ -21,6 +22,7 @@ export const pathCopy = {
     locked: 'Esta ruta de lectura está en beta.', access: 'Un administrador puede conceder acceso a las rutas de pensamiento desde el panel de acceso de la aplicación. Tus lecciones actuales siguen disponibles.', signin: 'Inicia sesión para usar el acceso beta', back: 'Volver a la ruta de pensamiento',
     progress: 'Tu progreso de lectura', saved: 'Guardado', complete: 'Completado', untouched: 'Sin empezar', local: 'El progreso y los borradores se guardan en este navegador para tu cuenta y grupo de edad.',
     next: 'Siguiente lectura', end: 'Has llegado al final de esta ruta. Revisa una lectura o explora otra idea.', continue: 'Continuar leyendo',
+    previousReadings: 'Lecturas anteriores', previousReading: 'Lectura anterior', currentReadings: 'Lecturas actuales', previousReadingNote: 'Esta lectura pertenece a una selección anterior. Tus respuestas y borradores guardados siguen aquí; la ruta actual tiene diez lecturas de fuentes más variadas.',
   },
   fr: {
     title: 'Parcours de réflexion', reading: 'Parcours de lecture', beta: 'Bêta', home: 'Accueil', lessons: 'Toutes les leçons', language: 'Langue',
@@ -32,5 +34,6 @@ export const pathCopy = {
     locked: 'Ce parcours de lecture est en bêta.', access: 'Un administrateur peut accorder l’accès aux parcours de réflexion depuis le panneau d’accès de l’application. Tes leçons actuelles restent disponibles.', signin: 'Connecte-toi pour utiliser l’accès bêta', back: 'Retour au parcours de réflexion',
     progress: 'Ta progression de lecture', saved: 'Enregistré', complete: 'Terminé', untouched: 'Pas commencé', local: 'La progression et les brouillons sont enregistrés dans ce navigateur pour ton compte et ton groupe d’âge.',
     next: 'Lecture suivante', end: 'Tu as atteint la fin de ce parcours. Revisite une lecture ou explore une autre idée.', continue: 'Continuer la lecture',
+    previousReadings: 'Lectures précédentes', previousReading: 'Lecture précédente', currentReadings: 'Lectures actuelles', previousReadingNote: 'Cette lecture appartient à une sélection précédente. Tes réponses et brouillons enregistrés restent ici ; le parcours actuel compte dix lectures de sources plus variées.',
   },
 } satisfies Record<Language, object>;
