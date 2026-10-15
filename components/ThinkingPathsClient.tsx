@@ -16,11 +16,11 @@ export default function ThinkingPathsClient({ paths, selectedPath, locked = fals
     {!selected && <ThinkingWalkthrough language={language} />}
     <div className={styles.grid}>{(selected ? selected.readingPaths : paths).map(item => {
       const reading = 'modules' in item;
-      const count = reading ? item.modules.length : item.readingPaths.reduce((n, path) => n + path.modules.length, 0);
       const href = selected ? `/thinking-paths/${selected.slug}/${item.slug}` : `/thinking-paths/${item.slug}`;
       return <article className={`card ${styles.pathCard}`} key={item.slug}>
         <span className={styles.badge}>{reading ? copy.reading : copy.title}</span><h2>{item.title[language]}</h2><p>{item.description[language]}</p>
-        <p className={styles.meta}>{count} {copy.module.toLowerCase()}</p>
+        <p className={styles.meta}>{reading ? `${item.modules.length} ${copy.module.toLowerCase()}` : `${item.readingPaths.length} ${copy.reading.toLowerCase()} · 10 ${copy.each}`}</p>
+        {reading && item.practiceGoal && <p className={styles.practiceGoal}><strong>{copy.practice}: </strong>{item.practiceGoal[language]}</p>}
         {reading && <ul>{item.modules.map(module => <li key={module.id}>{module.work[language]} · {module.author}</li>)}</ul>}
         <Link className="btn btnPrimary" href={href}>{reading ? copy.start : copy.open}<span aria-hidden="true"> →</span></Link>
       </article>;

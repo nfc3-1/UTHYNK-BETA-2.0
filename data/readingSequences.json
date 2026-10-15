@@ -1,0 +1,530 @@
+{
+  "schemaVersion": 1,
+  "starterGoals": {
+    "power-leadership": {
+      "en": "Compare wisdom, influence, advice, and accountability using specific details from more than one author.",
+      "es": "Compara sabiduría, influencia, consejo y responsabilidad con detalles concretos de más de un autor.",
+      "fr": "Compare sagesse, influence, conseil et responsabilité à partir de détails précis de plusieurs auteurs."
+    },
+    "freedom-government": {
+      "en": "Distinguish a stated right from the institutions and opportunities needed to exercise it.",
+      "es": "Distingue un derecho declarado de las instituciones y oportunidades necesarias para ejercerlo.",
+      "fr": "Distingue un droit proclamé des institutions et possibilités nécessaires pour l’exercer."
+    },
+    "meaning-morality-suffering": {
+      "en": "Compare duties and consequences without treating suffering as an abstract price others must pay.",
+      "es": "Compara deberes y consecuencias sin tratar el sufrimiento como un precio abstracto que otros deben pagar.",
+      "fr": "Compare devoirs et conséquences sans traiter la souffrance comme un prix abstrait à payer par autrui."
+    },
+    "truth-knowledge": {
+      "en": "Support a belief with reasons, examine an alternative, and identify what could change your conclusion.",
+      "es": "Apoya una creencia con razones, examina una alternativa e identifica qué podría cambiar tu conclusión.",
+      "fr": "Soutiens une croyance par des raisons, examine une autre possibilité et identifie ce qui pourrait changer ta conclusion."
+    },
+    "human-nature": {
+      "en": "Use a specific detail to interpret character, consider another explanation, and distinguish adaptability from surrender.",
+      "es": "Usa un detalle concreto para interpretar el carácter, considera otra explicación y distingue adaptación de rendición.",
+      "fr": "Interprète le caractère à partir d’un détail précis, considère une autre explication et distingue adaptation et abandon."
+    },
+    "civilizations-culture": {
+      "en": "Compare historical voices while distinguishing testimony, interpretation, and missing perspectives.",
+      "es": "Compara voces históricas distinguiendo testimonio, interpretación y perspectivas ausentes.",
+      "fr": "Compare les voix historiques en distinguant témoignage, interprétation et perspectives absentes."
+    },
+    "economics-society": {
+      "en": "Compare economic arguments by tracing incentives, benefits, and costs rather than accepting a slogan.",
+      "es": "Compara argumentos económicos siguiendo incentivos, beneficios y costos en lugar de aceptar un eslogan.",
+      "fr": "Compare les arguments économiques en examinant incitations, bénéfices et coûts plutôt qu’un slogan."
+    }
+  },
+  "additionalPaths": {
+    "power-leadership": [
+      {
+        "slug": "leading-without-force",
+        "title": {
+          "en": "Leading without force",
+          "es": "Liderar sin imponer",
+          "fr": "Diriger sans imposer"
+        },
+        "description": {
+          "en": "Move from personal conviction to persuasion, cooperation, and responsibility for others.",
+          "es": "De la convicción personal a la persuasión, la cooperación y la responsabilidad por otros.",
+          "fr": "De la conviction personnelle à la persuasion, à la coopération et à la responsabilité envers autrui."
+        },
+        "practiceGoal": {
+          "en": "Use contrasting passages to explain when influence is legitimate and what limits it needs.",
+          "es": "Usa pasajes contrastantes para explicar cuándo es legítima la influencia y qué límites necesita.",
+          "fr": "Appuie-toi sur des passages contrastés pour expliquer quand l’influence est légitime et quelles limites elle exige."
+        },
+        "moduleIds": [
+          "reading-emerson-conviction-and-crowds",
+          "reading-aesop-wind-and-sun",
+          "reading-follett-neighborhood-leadership",
+          "reading-tao-water-8",
+          "reading-suntzu-artofwar-3",
+          "reading-xenophon-cyrus-supplies",
+          "reading-meaning-reciprocity",
+          "reading-tolstoy-care-beyond-kinship",
+          "reading-smith-interest-1-2",
+          "reading-power-craft-and-care"
+        ]
+      },
+      {
+        "slug": "advice-dissent-and-revision",
+        "title": {
+          "en": "Advice, dissent, and changing course",
+          "es": "Consejos, disenso y cambio de rumbo",
+          "fr": "Conseil, désaccord et changement de cap"
+        },
+        "description": {
+          "en": "Test advisers, disagreement, majority opinion, and the reasons a leader should revise a decision.",
+          "es": "Examina consejeros, desacuerdos, mayorías y razones para que un líder revise una decisión.",
+          "fr": "Examine les conseillers, le désaccord, la majorité et les raisons de réviser une décision."
+        },
+        "practiceGoal": {
+          "en": "Distinguish justified revision from inconsistency by tracing whose evidence and interests a decision includes.",
+          "es": "Distingue una revisión justificada de la incoherencia siguiendo las pruebas e intereses incluidos en una decisión.",
+          "fr": "Distingue une révision justifiée de l’inconstance en examinant les preuves et les intérêts pris en compte."
+        },
+        "moduleIds": [
+          "reading-emerson-consistency-and-revision",
+          "reading-power-advisers-and-interests",
+          "reading-bacon-risks-of-counsel",
+          "reading-bacon-personal-lenses",
+          "reading-descartes-example-not-authority",
+          "reading-mill-living-truth",
+          "reading-thoreau-unjust-laws",
+          "reading-rousseau-general-will",
+          "reading-dewey-suspending-judgment",
+          "reading-wollstonecraft-education-rights"
+        ]
+      }
+    ],
+    "freedom-government": [
+      {
+        "slug": "voice-and-access",
+        "title": {
+          "en": "Who gets a voice?",
+          "es": "¿Quién tiene voz?",
+          "fr": "Qui peut se faire entendre ?"
+        },
+        "description": {
+          "en": "Follow the gap between a promised right and the education, allies, and institutions needed to use it.",
+          "es": "Explora la distancia entre un derecho prometido y la educación, los aliados e instituciones para ejercerlo.",
+          "fr": "Explore l’écart entre un droit promis et l’éducation, les alliés et les institutions nécessaires à son exercice."
+        },
+        "practiceGoal": {
+          "en": "Support a judgment about participation with evidence about both formal rights and practical access.",
+          "es": "Sostén un juicio sobre participación con pruebas sobre derechos formales y acceso real.",
+          "fr": "Étaye un jugement sur la participation par des éléments sur les droits formels et l’accès réel."
+        },
+        "moduleIds": [
+          "reading-truth-allies-and-access",
+          "reading-wollstonecraft-education-rights",
+          "reading-freedom-literacy-and-access",
+          "reading-freedom-speech-and-disagreement",
+          "reading-locke-consent-majority",
+          "reading-follett-neighborhood-leadership",
+          "reading-zitkala-legends-and-listening",
+          "reading-culture-double-consciousness",
+          "reading-addams-culture-and-access",
+          "reading-mill-harm-and-liberty"
+        ]
+      },
+      {
+        "slug": "law-conscience-and-repair",
+        "title": {
+          "en": "Law, conscience, and repair",
+          "es": "Ley, conciencia y reparación",
+          "fr": "Loi, conscience et réparation"
+        },
+        "description": {
+          "en": "Compare institutional rules with urgent harms, personal conscience, and ways to repair a system.",
+          "es": "Compara reglas institucionales con daños urgentes, conciencia personal y formas de reparar un sistema.",
+          "fr": "Compare les règles institutionnelles aux préjudices urgents, à la conscience et aux possibilités de réforme."
+        },
+        "practiceGoal": {
+          "en": "Explain when a remedy answers the actual harm and when rules need revision or principled challenge.",
+          "es": "Explica cuándo una reparación responde al daño real y cuándo las reglas requieren revisión o impugnación fundada.",
+          "fr": "Explique quand une réparation répond au préjudice réel et quand les règles exigent révision ou contestation argumentée."
+        },
+        "moduleIds": [
+          "reading-truth-remedy-and-delay",
+          "reading-thoreau-unjust-laws",
+          "reading-freedom-amendment-and-repair",
+          "reading-declaration-consent",
+          "reading-locke-consent-majority",
+          "reading-rousseau-general-will",
+          "reading-meaning-rules-and-exceptions",
+          "reading-meaning-justice-and-truthfulness",
+          "reading-prince-earnings-and-freedom",
+          "reading-mill-harm-and-liberty"
+        ]
+      }
+    ],
+    "meaning-morality-suffering": [
+      {
+        "slug": "care-and-blind-spots",
+        "title": {
+          "en": "Care and moral blind spots",
+          "es": "Cuidado y puntos ciegos morales",
+          "fr": "L’attention et les angles morts moraux"
+        },
+        "description": {
+          "en": "Begin with hidden suffering, then examine attention, obligation, judgment, and the limits of compassion.",
+          "es": "Parte del sufrimiento oculto y examina atención, obligación, juicio y límites de la compasión.",
+          "fr": "Pars de la souffrance cachée pour examiner l’attention, l’obligation, le jugement et les limites de la compassion."
+        },
+        "practiceGoal": {
+          "en": "Use a detail from a text to explain whose needs a judgment overlooks, without assuming sympathy settles every choice.",
+          "es": "Usa un detalle del texto para explicar qué necesidades omite un juicio, sin suponer que la simpatía resuelve toda decisión.",
+          "fr": "Appuie-toi sur un détail du texte pour expliquer les besoins négligés sans supposer que la sympathie résout tout."
+        },
+        "moduleIds": [
+          "reading-wilde-happiness-behind-walls",
+          "reading-eliot-care-and-attention",
+          "reading-tolstoy-care-beyond-kinship",
+          "reading-meaning-active-love",
+          "reading-meaning-reciprocity",
+          "reading-meaning-duty-and-rest",
+          "reading-meaning-small-actions",
+          "reading-dhammapada-hatred-and-response",
+          "reading-gilman-contribution-and-control",
+          "reading-shelley-rejection-and-responsibility"
+        ]
+      },
+      {
+        "slug": "help-now-change-later",
+        "title": {
+          "en": "Help now, change the conditions",
+          "es": "Ayudar ahora, cambiar las condiciones",
+          "fr": "Aider maintenant, changer les conditions"
+        },
+        "description": {
+          "en": "Compare immediate help with duties, incentives, and institutions that shape recurring suffering.",
+          "es": "Compara ayuda inmediata con deberes, incentivos e instituciones que generan sufrimiento recurrente.",
+          "fr": "Compare l’aide immédiate aux devoirs, aux incitations et aux institutions liés à la souffrance récurrente."
+        },
+        "practiceGoal": {
+          "en": "Defend a response to harm that considers both immediate needs and the consequences of the proposed solution.",
+          "es": "Defiende una respuesta al daño que considere necesidades inmediatas y consecuencias de la solución propuesta.",
+          "fr": "Défends une réponse au préjudice qui tienne compte des besoins immédiats et des conséquences de la solution."
+        },
+        "moduleIds": [
+          "reading-wilde-seamstress-and-luxury",
+          "reading-tolstoy-care-beyond-kinship",
+          "reading-meaning-reciprocity",
+          "reading-addams-culture-and-access",
+          "reading-bastiat-seen-and-unseen",
+          "reading-ruskin-economic-models-and-care",
+          "reading-meaning-rules-and-exceptions",
+          "reading-epictetus-freedom-and-status",
+          "reading-meaning-small-actions",
+          "reading-karamazov-rebellion"
+        ]
+      }
+    ],
+    "truth-knowledge": [
+      {
+        "slug": "evidence-before-certainty",
+        "title": {
+          "en": "Evidence before certainty",
+          "es": "Pruebas antes de la certeza",
+          "fr": "Des preuves avant la certitude"
+        },
+        "description": {
+          "en": "Build an inquiry from a plausible first answer through observation, language, patterns, and revision.",
+          "es": "Construye una investigación desde una primera respuesta plausible mediante observación, lenguaje, patrones y revisión.",
+          "fr": "Construis une enquête depuis une première réponse plausible par l’observation, le langage, les régularités et la révision."
+        },
+        "practiceGoal": {
+          "en": "Separate observation from inference and name evidence that could overturn a plausible conclusion.",
+          "es": "Separa observación e inferencia e identifica pruebas que podrían refutar una conclusión plausible.",
+          "fr": "Distingue observation et inférence et indique les éléments qui pourraient renverser une conclusion plausible."
+        },
+        "moduleIds": [
+          "reading-dewey-suspending-judgment",
+          "reading-truth-knowing-your-limits",
+          "reading-bacon-personal-lenses",
+          "reading-shelley-observing-and-inferring",
+          "reading-truth-ideas-and-experience",
+          "reading-descartes-four-rules",
+          "reading-eastman-experience-and-expertise",
+          "reading-truth-induction-and-change",
+          "reading-james-practical-differences",
+          "reading-emerson-consistency-and-revision"
+        ]
+      },
+      {
+        "slug": "disagreement-and-understanding",
+        "title": {
+          "en": "Disagreeing to understand",
+          "es": "Discrepar para comprender",
+          "fr": "Le désaccord pour comprendre"
+        },
+        "description": {
+          "en": "Slow down, clarify words, examine another perspective, and distinguish an argument from an authority.",
+          "es": "Haz una pausa, aclara palabras, examina otra perspectiva y distingue argumentos de autoridad.",
+          "fr": "Prends le temps de clarifier les mots, d’examiner une autre perspective et de distinguer argument et autorité."
+        },
+        "practiceGoal": {
+          "en": "Represent an alternative fairly, compare its support with your own, and explain what remains uncertain.",
+          "es": "Representa con justicia una alternativa, compara su apoyo con el de tu posición y explica qué sigue incierto.",
+          "fr": "Présente équitablement une autre interprétation, compare ses appuis aux tiens et explique ce qui reste incertain."
+        },
+        "moduleIds": [
+          "reading-dewey-time-to-reflect",
+          "reading-bacon-language-and-confusion",
+          "reading-mill-living-truth",
+          "reading-descartes-example-not-authority",
+          "reading-austen-vanity-and-judgment",
+          "reading-herodotus-customs-3-38",
+          "reading-montaigne-power-of-custom",
+          "reading-emerson-conviction-and-crowds",
+          "reading-truth-ideas-and-experience",
+          "reading-james-practical-differences"
+        ]
+      }
+    ],
+    "human-nature": [
+      {
+        "slug": "belonging-and-responsibility",
+        "title": {
+          "en": "Belonging and responsibility",
+          "es": "Pertenencia y responsabilidad",
+          "fr": "Appartenance et responsabilité"
+        },
+        "description": {
+          "en": "Examine rejection, self-image, social pressure, and the boundary between explaining and excusing conduct.",
+          "es": "Examina rechazo, imagen propia, presión social y el límite entre explicar y excusar una conducta.",
+          "fr": "Examine rejet, image de soi, pression sociale et frontière entre expliquer et excuser une conduite."
+        },
+        "practiceGoal": {
+          "en": "Explain how circumstances shape a choice while preserving responsibility and considering another interpretation.",
+          "es": "Explica cómo las circunstancias moldean una decisión sin eliminar la responsabilidad y considera otra interpretación.",
+          "fr": "Explique comment les circonstances façonnent un choix sans supprimer la responsabilité, et considère une autre interprétation."
+        },
+        "moduleIds": [
+          "reading-shelley-rejection-and-responsibility",
+          "reading-culture-double-consciousness",
+          "reading-austen-vanity-and-judgment",
+          "reading-montaigne-power-of-custom",
+          "reading-emerson-conviction-and-crowds",
+          "reading-human-expectations-and-irritation",
+          "reading-dhammapada-hatred-and-response",
+          "reading-meaning-reciprocity",
+          "reading-epictetus-freedom-and-status",
+          "reading-eliot-care-and-attention"
+        ]
+      },
+      {
+        "slug": "appearance-motive-and-habit",
+        "title": {
+          "en": "Appearances, motives, and habits",
+          "es": "Apariencias, motivos y hábitos",
+          "fr": "Apparences, motivations et habitudes"
+        },
+        "description": {
+          "en": "Start with an observer’s guesses, then test first impressions against conduct, habits, and care.",
+          "es": "Parte de las conjeturas de un observador y contrasta primeras impresiones con conducta, hábitos y cuidado.",
+          "fr": "Pars des suppositions d’un observateur, puis confronte les premières impressions aux actes, aux habitudes et à l’attention."
+        },
+        "practiceGoal": {
+          "en": "Support an interpretation of someone’s conduct with a specific detail and a plausible competing explanation.",
+          "es": "Sostén una interpretación de la conducta con un detalle concreto y una explicación alternativa plausible.",
+          "fr": "Étaye une interprétation de la conduite par un détail précis et une autre explication plausible."
+        },
+        "moduleIds": [
+          "reading-shelley-observing-and-inferring",
+          "reading-austen-vanity-and-judgment",
+          "reading-human-appearance-and-conduct",
+          "reading-aesop-wind-and-sun",
+          "reading-eastman-experience-and-expertise",
+          "reading-human-knowing-when-enough",
+          "reading-emerson-consistency-and-revision",
+          "reading-eliot-care-and-attention",
+          "reading-human-expectations-and-irritation",
+          "reading-dewey-suspending-judgment"
+        ]
+      }
+    ],
+    "civilizations-culture": [
+      {
+        "slug": "who-preserves-the-story",
+        "title": {
+          "en": "Who preserves the story?",
+          "es": "¿Quién conserva la historia?",
+          "fr": "Qui conserve le récit ?"
+        },
+        "description": {
+          "en": "Compare memory, objects, songs, testimony, and omissions as ways communities preserve experience.",
+          "es": "Compara memoria, objetos, canciones, testimonios y omisiones como formas de conservar experiencias.",
+          "fr": "Compare mémoire, objets, chants, témoignages et omissions comme moyens de conserver l’expérience."
+        },
+        "practiceGoal": {
+          "en": "Evaluate what a historical source preserves, what it leaves out, and whose knowledge helps interpret it.",
+          "es": "Evalúa qué conserva una fuente histórica, qué omite y qué saberes ayudan a interpretarla.",
+          "fr": "Évalue ce qu’une source historique conserve, ce qu’elle omet et les savoirs nécessaires à son interprétation."
+        },
+        "moduleIds": [
+          "reading-eastman-recording-shared-memory",
+          "reading-zitkala-legends-and-listening",
+          "reading-culture-music-and-memory",
+          "reading-equiano-memory-and-belonging",
+          "reading-dewey-time-to-reflect",
+          "reading-culture-disclosure-and-protection",
+          "reading-herodotus-customs-3-38",
+          "reading-truth-allies-and-access",
+          "reading-tagore-unity-and-difference",
+          "reading-freedom-equality-and-practice"
+        ]
+      },
+      {
+        "slug": "learning-across-difference",
+        "title": {
+          "en": "Learning across difference",
+          "es": "Aprender entre diferencias",
+          "fr": "Apprendre à travers les différences"
+        },
+        "description": {
+          "en": "Move from local expertise to cultural judgments, education, recognition, and belonging.",
+          "es": "Del saber local a los juicios culturales, la educación, el reconocimiento y la pertenencia.",
+          "fr": "Du savoir situé aux jugements culturels, à l’éducation, à la reconnaissance et à l’appartenance."
+        },
+        "practiceGoal": {
+          "en": "Compare perspectives without treating one narrator as the voice of an entire people or familiarity as proof.",
+          "es": "Compara perspectivas sin tomar a un narrador como voz de todo un pueblo ni lo familiar como prueba.",
+          "fr": "Compare les perspectives sans faire d’un narrateur la voix de tout un peuple ni prendre la familiarité pour une preuve."
+        },
+        "moduleIds": [
+          "reading-eastman-experience-and-expertise",
+          "reading-herodotus-customs-3-38",
+          "reading-montaigne-power-of-custom",
+          "reading-tagore-unity-and-difference",
+          "reading-culture-double-consciousness",
+          "reading-zitkala-legends-and-listening",
+          "reading-wollstonecraft-education-rights",
+          "reading-washington-education-and-useful-work",
+          "reading-addams-culture-and-access",
+          "reading-equiano-memory-and-belonging"
+        ]
+      }
+    ],
+    "economics-society": [
+      {
+        "slug": "work-value-and-recognition",
+        "title": {
+          "en": "Work, value, and recognition",
+          "es": "Trabajo, valor y reconocimiento",
+          "fr": "Travail, valeur et reconnaissance"
+        },
+        "description": {
+          "en": "Follow useful work through exchange, specialization, unpaid contribution, status, and unequal rewards.",
+          "es": "Sigue el trabajo útil mediante intercambio, especialización, contribuciones no pagadas, prestigio y recompensas desiguales.",
+          "fr": "Suis le travail utile à travers échange, spécialisation, contributions non rémunérées, statut et récompenses inégales."
+        },
+        "practiceGoal": {
+          "en": "Distinguish productive contribution, payment, and power using evidence from contrasting economic arguments.",
+          "es": "Distingue contribución productiva, pago y poder usando pruebas de argumentos económicos contrastantes.",
+          "fr": "Distingue contribution productive, paiement et pouvoir à partir d’arguments économiques contrastés."
+        },
+        "moduleIds": [
+          "reading-gilman-contribution-and-control",
+          "reading-economics-division-of-labor",
+          "reading-wilde-seamstress-and-luxury",
+          "reading-washington-education-and-useful-work",
+          "reading-marx-engels-production-and-change",
+          "reading-veblen-comfort-and-status",
+          "reading-prince-earnings-and-freedom",
+          "reading-freedom-literacy-and-access",
+          "reading-george-progress-and-poverty",
+          "reading-bellamy-ranking-and-incentives"
+        ]
+      },
+      {
+        "slug": "progress-and-its-costs",
+        "title": {
+          "en": "Progress and its costs",
+          "es": "El progreso y sus costos",
+          "fr": "Le progrès et ses coûts"
+        },
+        "description": {
+          "en": "Compare mutual dependence, visible benefits, hidden costs, institutions, and who gets a share of progress.",
+          "es": "Compara dependencia mutua, beneficios visibles, costos ocultos, instituciones y quién participa del progreso.",
+          "fr": "Compare dépendance mutuelle, bénéfices visibles, coûts cachés, institutions et partage du progrès."
+        },
+        "practiceGoal": {
+          "en": "Trace who benefits and who bears a cost, then defend a conclusion that acknowledges a real tradeoff.",
+          "es": "Identifica quién se beneficia y quién asume un costo, y defiende una conclusión que reconozca una disyuntiva real.",
+          "fr": "Identifie les bénéficiaires et les personnes supportant un coût, puis défends une conclusion reconnaissant un véritable compromis."
+        },
+        "moduleIds": [
+          "reading-gilman-interdependence-and-independence",
+          "reading-smith-interest-1-2",
+          "reading-bastiat-seen-and-unseen",
+          "reading-marx-engels-production-and-change",
+          "reading-george-progress-and-poverty",
+          "reading-freedom-literacy-and-access",
+          "reading-follett-neighborhood-leadership",
+          "reading-addams-culture-and-access",
+          "reading-prince-earnings-and-freedom",
+          "reading-truth-remedy-and-delay"
+        ]
+      }
+    ]
+  },
+  "starterConnections": {
+    "human-nature": [
+      {
+        "en": "Begin by distinguishing a useful action from an action chosen only for personal gain. Keep that distinction as a claim to test in later readings.",
+        "es": "Empieza distinguiendo una acción útil de otra elegida solo por beneficio propio. Conserva esa distinción como una afirmación que comprobarás después.",
+        "fr": "Commence par distinguer une action utile d’une action choisie seulement pour un gain personnel. Garde cette distinction comme une proposition à éprouver ensuite."
+      },
+      {
+        "en": "Compare water’s flexibility with Confucius’s distinction between character and gain. Adaptation need not mean abandoning a principle.",
+        "es": "Compara la flexibilidad del agua con la distinción de Confucio entre carácter y beneficio. Adaptarse no implica abandonar un principio.",
+        "fr": "Compare la souplesse de l’eau à la distinction de Confucius entre caractère et gain. S’adapter ne signifie pas renoncer à un principe."
+      },
+      {
+        "en": "Bring the question of adaptation to learned habits: a familiar response may be useful, or merely difficult to question.",
+        "es": "Aplica la cuestión de adaptarse a los hábitos aprendidos: una respuesta familiar puede ser útil o simplemente difícil de cuestionar.",
+        "fr": "Applique la question de l’adaptation aux habitudes apprises : une réaction familière peut être utile ou simplement difficile à remettre en cause."
+      },
+      {
+        "en": "Move from inherited habits to a deliberate self-review. Identify what the narrator checks rather than treating reflection alone as proof of good character.",
+        "es": "Pasa de hábitos heredados a una revisión deliberada. Identifica qué examina el narrador sin tomar la reflexión por sí sola como prueba de buen carácter.",
+        "fr": "Passe des habitudes héritées à un examen délibéré. Identifie ce que le narrateur vérifie sans prendre la réflexion seule pour preuve de bon caractère."
+      },
+      {
+        "en": "Test self-review against Elizabeth’s reassessment. Separate the evidence she notices from the judgment she first wanted to believe.",
+        "es": "Contrasta la revisión personal con la reconsideración de Elizabeth. Separa las pruebas que observa del juicio que inicialmente quería creer.",
+        "fr": "Confronte l’examen personnel à la réévaluation d’Elizabeth. Distingue les éléments observés du jugement auquel elle voulait d’abord croire."
+      },
+      {
+        "en": "Extend the problem of vanity to knowing when to stop. Compare a change supported by reasons with a change driven by comparison or appetite.",
+        "es": "Amplía el problema de la vanidad a saber cuándo detenerse. Compara un cambio apoyado en razones con uno impulsado por comparación o deseo.",
+        "fr": "Élargis le problème de la vanité à la capacité de s’arrêter. Compare un changement raisonné à un changement dicté par la comparaison ou le désir."
+      },
+      {
+        "en": "Use the fable to compare force and persuasion. A story illustrates a possibility; it does not establish that gentle methods always succeed.",
+        "es": "Usa la fábula para comparar fuerza y persuasión. Un cuento ilustra una posibilidad; no demuestra que los métodos suaves siempre funcionen.",
+        "fr": "Utilise la fable pour comparer force et persuasion. Un récit illustre une possibilité ; il ne prouve pas que la douceur réussit toujours."
+      },
+      {
+        "en": "Shift from changing another person to changes in one’s own attention. Notice how caring for someone can reshape a habit.",
+        "es": "Pasa de cambiar a otra persona a los cambios en la propia atención. Observa cómo cuidar a alguien puede transformar un hábito.",
+        "fr": "Passe du changement d’autrui aux changements de sa propre attention. Observe comment prendre soin de quelqu’un peut transformer une habitude."
+      },
+      {
+        "en": "Compare care with preparing for imperfect conduct. Distinguish realistic expectations from excusing harm or assuming everyone has the same motives.",
+        "es": "Compara el cuidado con prepararse para conductas imperfectas. Distingue expectativas realistas de excusar daños o atribuir a todos los mismos motivos.",
+        "fr": "Compare l’attention à la préparation aux conduites imparfaites. Distingue attentes réalistes, excuse du mal et attribution des mêmes motifs à tous."
+      },
+      {
+        "en": "Finish by testing outward appearance against the earlier readings on conduct. Use two authors to refine your own standard for judging character; no extra written response is required here.",
+        "es": "Termina contrastando la apariencia con las lecturas anteriores sobre conducta. Usa dos autores para precisar tu criterio sobre el carácter; aquí no se pide otra respuesta escrita.",
+        "fr": "Termine en confrontant l’apparence aux lectures précédentes sur la conduite. Utilise deux auteurs pour préciser ton critère de jugement du caractère ; aucune réponse écrite supplémentaire n’est demandée ici."
+      }
+    ]
+  }
+}
