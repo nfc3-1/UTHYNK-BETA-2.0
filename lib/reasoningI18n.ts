@@ -30,6 +30,8 @@ export const languageOptions: Array<{ label: string; value: Language }> = [
 export const uiCopy = {
   en: {
     adaptiveLanguage: "Language",
+    classroomNav: "My classroom",
+    participationNav: "Participation",
     analysisTab: "Analysis",
     categories: "Categories",
     categoryTab: "Categories",
@@ -126,6 +128,8 @@ export const uiCopy = {
   },
   es: {
     adaptiveLanguage: "Idioma",
+    classroomNav: "Mi clase",
+    participationNav: "Participación",
     analysisTab: "Analisis",
     categories: "Categorías",
     categoryTab: "Categorias",
@@ -222,6 +226,8 @@ export const uiCopy = {
   },
   fr: {
     adaptiveLanguage: "Langue",
+    classroomNav: "Ma classe",
+    participationNav: "Participation",
     analysisTab: "Analyse",
     categories: "Catégories",
     categoryTab: "Categories",

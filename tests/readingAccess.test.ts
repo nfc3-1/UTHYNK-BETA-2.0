@@ -1,3 +1,4 @@
+vi.mock('../lib/assessReasoning', () => ({ assessReasoning: async () => ({ status: 'provisional', rubricVersion: 'reasoning-20-v1', scoreSource: 'rubric', earned: 16, possible: 20, percentage: 80, criteria: ['claim','evidence','alternatives','conclusion'].map(id => ({ id, points: 4, possible: 5, evidence: ['Test'] })), model: 'test-judge', fingerprint: 'test-fingerprint' }) }));
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { resolveReadingRequest } from '../lib/readingAccess';
 import { POST } from '../app/api/reasoning/route';

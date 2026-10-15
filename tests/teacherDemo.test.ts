@@ -1,41 +1,62 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createElement } from 'react';
-import { act, create, type ReactTestRenderer } from 'react-test-renderer';
-import TeacherDashboard from '../components/TeacherDashboard';
-
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { createElement } from "react";
+import { act, create, type ReactTestRenderer } from "react-test-renderer";
+import TeacherDashboard from "../components/TeacherDashboard";
+vi.mock("next/link", () => ({ default: "a" }));
 let page: ReactTestRenderer;
-afterEach(() => { if (page) act(() => page.unmount()); vi.unstubAllGlobals(); });
-const bank = { Epistemology: ['Which source would you trust?'] };
-function button(text: string) { return page.root.findAllByType('button').find(node => node.children.join('') === text)!; }
-
-describe('teacher demo boundaries', () => {
-  it('labels restored data, generated results and local comments without losing demo records', () => {
-    const saved = {
-      classes: [{ id: 'class-1', name: 'Fictional class', classCode: 'UTH-DEMO', createdAt: '2026-10-14T00:00:00Z' }],
-      assignments: [{ id: 'assignment-1', classId: 'class-1', category: 'Epistemology', question: bank.Epistemology[0], createdAt: '2026-10-14T00:00:00Z' }],
+afterEach(() => {
+  if (page) act(() => page.unmount());
+  vi.unstubAllGlobals();
+});
+describe("persistent teacher workspace", () => {
+  it("renders actual API records and functional assignment links, without generating learners or scores", async () => {
+    const calls: any[] = [];
+    const payload = {
+      classes: [
+        { id: "class-1", title: "Reasoning class", join_code: "ABCDEF123456" },
+      ],
+      selected: "class-1",
+      manage: true,
+      canTeach: true,
+      members: [],
+      assignments: [
+        { id: "assignment-1", title: "A saved reading", due_date: null },
+      ],
+      submissions: [],
       comments: [],
+      leaderboard: [],
     };
-    const storage = new Map([['uthynk-teacher-v1', JSON.stringify(saved)]]);
-    vi.stubGlobal('localStorage', { getItem: (key: string) => storage.get(key) || null, setItem: (key: string, value: string) => storage.set(key, value) });
-    const fetch = vi.fn(); vi.stubGlobal('fetch', fetch);
-    act(() => { page = create(createElement(TeacherDashboard, { questionBank: bank })); });
+    vi.stubGlobal("fetch", async (url: string, options: any) => {
+      calls.push({ url, options });
+      return Response.json(payload);
+    });
+    await act(async () => {
+      page = create(createElement(TeacherDashboard, { catalog: [] }));
+    });
     const text = JSON.stringify(page.toJSON());
-    expect(text).toContain('Fictional students and sample results');
-    expect(text).toContain('Nothing is sent to students');
-    expect(text).toContain('It cannot enroll students');
-    expect(text).toContain('Sample Student Progress');
-    expect(page.root.findByProps({ 'aria-label': 'Fictional student results' }).findAllByProps({ className: 'teacherProgressRow' })).toHaveLength(4);
-    for (const row of page.root.findAllByProps({ className: 'teacherProgressRow' })) expect(row.findByType('strong').children.join('')).toContain('(demo)');
-    act(() => page.root.findByType('textarea').props.onChange({ target: { value: 'Practice feedback only' } }));
-    act(() => button('Save Demo Comment').props.onClick());
-    const persisted = JSON.parse(storage.get('uthynk-teacher-v1')!);
-    expect(persisted.classes).toEqual(saved.classes);
-    expect(persisted.assignments).toEqual(saved.assignments);
-    expect(persisted.comments[0].comment).toBe('Practice feedback only');
-    expect(fetch).not.toHaveBeenCalled();
-    act(() => page.unmount());
-    act(() => { page = create(createElement(TeacherDashboard, { questionBank: bank })); });
-    expect(JSON.stringify(page.toJSON())).toContain('Practice feedback only');
-    expect(page.root.findAllByProps({ 'aria-label': 'Teacher demo notice' })).toHaveLength(1);
+    expect(text).toContain("No learners have joined yet");
+    expect(text).toContain("No answers have been submitted yet");
+    expect(text).not.toMatch(/Maya Chen|Jordan Ellis|Fictional|Demo Class/);
+    expect(
+      page.root
+        .findAllByType("a")
+        .some((a) => a.props.href === "/classroom/assignments/assignment-1"),
+    ).toBe(true);
+    const input = page.root.findAllByType("input")[0];
+    act(() => input.props.onChange({ target: { value: "New class" } }));
+    const button = page.root
+      .findAllByType("button")
+      .find((b) => b.children.join("") === "Create Class")!;
+    await act(async () => {
+      await button.props.onClick();
+    });
+    expect(
+      calls.some(
+        (c) =>
+          c.url === "/api/classroom" &&
+          c.options?.method === "POST" &&
+          JSON.parse(c.options.body).action === "create_class",
+      ),
+    ).toBe(true);
   });
 });

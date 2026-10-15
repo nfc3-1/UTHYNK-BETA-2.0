@@ -20,6 +20,10 @@ function parseSession(raw: string | null) {
 /** Reads old IDs without deleting their history; explicit reset tombstones win. */
 export function readLessonSession(storage: StorageReader, input: ChallengeSessionKeyInput, question?: LessonQuestion) {
   const canonical = storage.getItem(challengeSessionKey(input));
+  if (input.assignmentId) {
+    const saved = parseSession(canonical);
+    return saved?.assignmentId === input.assignmentId && saved.questionId === input.questionId && saved.userId === input.userId ? { ...saved, language: input.language } : null;
+  }
   const legacyInput = question ? {
     ...input,
     questionId: `${question.category}-${question.legacyIndex}`,

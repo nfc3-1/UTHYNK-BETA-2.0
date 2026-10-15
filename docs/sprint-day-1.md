@@ -1,5 +1,7 @@
 # Day 1: trustworthy beta feedback
 
+**Historical checkpoint:** the temporary demo labels and opaque provisional estimates described below are superseded by [the live classroom and 20-point rubric](live-classroom-and-scoring.md).
+
 ## Pilot working brief
 
 Working audience: a small, teacher-facilitated group aged 13–17, using desktop browsers. This is a planning assumption, not a restriction on the existing child or adult experiences. Recommended Day 2 pilot: Human Nature / Character and adaptability, with ten connected readings. Category names and the current catalog have not been changed.

@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import Profile from '../app/profile/page';
-import Leaderboard from '../app/leaderboard/page';
 import BetaFeedbackNotice from '../components/BetaFeedbackNotice';
 import { betaFeedbackCopy } from '../lib/betaAssessment';
 vi.mock('next/link', () => ({ default: 'a' }));
@@ -37,13 +36,5 @@ describe('honest beta learner summaries', () => {
     expect(snapshot).not.toMatch(/91|94|Logic:|Strategy:|Evidence:/);
     expect(snapshot).toContain('https://www.uthynk.com');
     expect(stored.get('uthynk-profile')).toBe(JSON.stringify(profile));
-  });
-  it('identifies the static participation board as fictional', () => {
-    act(() => { page = create(createElement(Leaderboard)); });
-    const text = JSON.stringify(page.toJSON());
-    expect(text).toContain('Fictional profiles');
-    expect(text).toContain('not real users');
-    expect(text).not.toContain('Cognitive Rankings');
-    expect(text).not.toContain('elite long-term reasoning performance');
   });
 });
