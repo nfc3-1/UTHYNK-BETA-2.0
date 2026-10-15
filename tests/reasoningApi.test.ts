@@ -165,6 +165,14 @@ describe('qualitative feedback and language-independent participation', () => {
     expect(final.assessment.observations[0].evidence).toEqual(['Compare two classes.','Match class sizes.']);
     expect(final.secondaryQuestion).toBe(''); expect(final.score).toBeNull();
     expect(sent).toHaveLength(2);
+    const format = sent[1].response_format;
+    expect(format.type).toBe('json_schema');
+    expect(format.json_schema.strict).toBe(true);
+    expect(format.json_schema.schema.required).toContain('qualitativeFeedback');
+    const observed = format.json_schema.schema.properties.qualitativeFeedback.properties.observations;
+    expect(observed.required).toEqual(['claim','evidence','alternatives','conclusion']);
+    expect(observed.properties.claim.anyOf[0].properties.evidenceIds.items.enum).toEqual(['A1S1','A2S1']);
+    expect(observed.properties.claim.anyOf[0].properties.evidenceIds.minItems).toBe(1);
     expect(JSON.parse(sent[1].messages[1].content).learnerAnswerSentences).toEqual([{id:'A1S1',text:'Compare two classes.'},{id:'A2S1',text:'Match class sizes.'}]);
   });
 

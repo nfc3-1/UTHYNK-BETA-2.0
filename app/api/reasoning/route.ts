@@ -1,5 +1,5 @@
 import { learnerEvidence } from '@/lib/pointRubric';
-import { qualitativePrompt, qualitativeAssessment, type QualitativeAssessment } from '@/lib/qualitativeAssessment';
+import { qualitativePrompt, qualitativeAssessment, reasoningFeedbackSchema, type QualitativeAssessment } from '@/lib/qualitativeAssessment';
 import { assignmentAccess,assignmentPrompt,classroomActor,saveAssignmentTurn,ClassroomError } from '@/lib/classroom';
 import { betaAssessmentPrompt, retiredVerifier } from '@/lib/betaAssessment';
 import { resolveReadingRequest } from '@/lib/readingAccess';
@@ -734,7 +734,7 @@ async function callOpenAi({
       model: process.env.OPENAI_MODEL || "gpt-4o-mini",
       temperature: categoryPrompt.temperature,
       stream,
-      response_format: { type: "json_object" },
+      response_format: reasoningFeedbackSchema(phase === "synthesis" && synthesisContext ? [synthesisContext.firstUserAnswer, response] : [response]),
       messages: [
         {
           role: "system",
