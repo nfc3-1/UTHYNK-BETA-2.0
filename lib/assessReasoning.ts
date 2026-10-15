@@ -1,6 +1,8 @@
 import { createHash } from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import {
+  learnerEvidence,
+  pointAssessmentSchema,
   pointRubricPrompt,
   POINT_RUBRIC_VERSION,
   validatePointAssessment,
@@ -20,6 +22,7 @@ export async function assessReasoning(input: {
     .update(
       JSON.stringify([
         POINT_RUBRIC_VERSION,
+        "sentence-ids-v1",
         model,
         input.userId || "guest",
         input.question,
@@ -49,14 +52,16 @@ export async function assessReasoning(input: {
       model,
       temperature: 0,
       seed: 1701,
-      response_format: { type: "json_object" },
+      response_format: pointAssessmentSchema(
+        learnerEvidence(input.answers).map((s) => s.id),
+      ),
       messages: [
         { role: "system", content: pointRubricPrompt },
         {
           role: "user",
           content: JSON.stringify({
             question: input.question,
-            learnerAnswers: input.answers,
+            learnerAnswerSentences: learnerEvidence(input.answers),
           }),
         },
       ],
@@ -71,18 +76,16 @@ export async function assessReasoning(input: {
     fingerprint,
   );
   if (supabaseAdmin && input.userId) {
-    const saved = await supabaseAdmin
-      .from("reasoning_assessments")
-      .upsert(
-        {
-          fingerprint,
-          profile_id: input.userId,
-          rubric_version: POINT_RUBRIC_VERSION,
-          model,
-          assessment,
-        },
-        { onConflict: "fingerprint", ignoreDuplicates: true },
-      );
+    const saved = await supabaseAdmin.from("reasoning_assessments").upsert(
+      {
+        fingerprint,
+        profile_id: input.userId,
+        rubric_version: POINT_RUBRIC_VERSION,
+        model,
+        assessment,
+      },
+      { onConflict: "fingerprint", ignoreDuplicates: true },
+    );
     if (saved.error)
       throw new Error(
         "The point breakdown could not be saved. Your answer is saved; retry.",

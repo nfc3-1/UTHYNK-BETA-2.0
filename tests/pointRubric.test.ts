@@ -13,7 +13,7 @@ const judgment = (points: number) => ({
   criteria: criterionIds.map((id) => ({
     id,
     points,
-    evidence: points ? [answer] : [],
+    evidenceIds: points ? ["A1S1"] : [],
   })),
 });
 describe("explicit 20-point reasoning rubric", () => {
@@ -34,7 +34,7 @@ describe("explicit 20-point reasoning rubric", () => {
           criteria: criterionIds.map((id) => ({
             id,
             points,
-            evidence: [answer],
+            evidenceIds: ["A1S1"],
           })),
         },
         [answer],
@@ -62,12 +62,18 @@ describe("explicit 20-point reasoning rubric", () => {
     ).toThrow();
     expect(() =>
       validatePointAssessment(
-        judgment(4),
+        {
+          criteria: criterionIds.map((id) => ({
+            id,
+            points: 4,
+            evidenceIds: ["coach-1"],
+          })),
+        },
         ["Unrelated learner answer"],
         "judge",
         "hash",
       ),
-    ).toThrow("supporting answer evidence");
+    ).toThrow("unknown answer evidence");
   });
   it("uses identical evaluator instructions regardless of the coaching display language", async () => {
     const calls: any[] = [];

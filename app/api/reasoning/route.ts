@@ -1,3 +1,4 @@
+import { assessmentQuestion } from '@/lib/assessmentQuestion';
 import { assessReasoning } from '@/lib/assessReasoning';
 import type { PointAssessment } from '@/lib/pointRubric';
 import { assignmentAccess,assignmentPrompt,classroomActor,saveAssignmentTurn,ClassroomError } from '@/lib/classroom';
@@ -22,6 +23,7 @@ import { evolveTraitScore } from "@/lib/traits";
 
 type ReasoningRequest = {
   assignmentId?: string;
+  questionId?: string;
   readingModuleId?: string;
   ageBand?: "under_13" | "13_17" | "18_plus";
   challenge?: string;
@@ -1065,7 +1067,7 @@ export async function POST(request: Request) {
                 : "18_plus",
           }
         : null);
-    const assessment = await assessReasoning({question:challenge,answers:phase==='synthesis'?[synthesisValidation!.context.firstUserAnswer,response]:[response],userId,apiKey});
+    const assessment = await assessReasoning({question:classroomContext || body.readingModuleId ? challenge : assessmentQuestion(body,profile?.age_band||'18_plus'),answers:phase==='synthesis'?[synthesisValidation!.context.firstUserAnswer,response]:[response],userId,apiKey});
     const verifier = retiredVerifier();
     const modeSeed = stableModeSeed({
       category,
