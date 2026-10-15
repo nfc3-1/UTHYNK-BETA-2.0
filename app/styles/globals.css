@@ -3019,37 +3019,27 @@ a{
 .reasoningObservations .focusCard { margin-block: 12px; }
 .reasoningObservations blockquote { margin: 8px 0; padding-left: 12px; border-left: 2px solid #aab8cc; overflow-wrap: anywhere; }
 
-/* Public navigation wraps on laptops instead of pushing links under the controls. */
-.appTop .topControls { min-width: 0; flex-wrap: wrap; }
-.compactNavigation { min-width: 0; justify-content: flex-end; }
-
-/* Compact public navigation: logo is Home, related destinations share a dropdown. */
-.appTop { gap: 24px; }
-.appTop > .appBrandText { flex-shrink: 0; }
-.appTop > .compactNavigation, .appTop > .topControls { flex: 1; }
+/* Public destinations stay visible; only staff tools use a disclosure. */
+.appTop { gap: 12px; padding-inline: 16px; }
+.appTop > .appBrandText { flex-shrink: 0; gap: 8px; }
+.appTop .brandCopy small { max-width: 114px; line-height: 1.2; }
+.appTop .brandCopy em { display: block; }
+.appTop > .compactNavigation, .appTop > .topControls { flex: 1; min-width: 0; }
+.appTop .topControls { gap: 8px; }
 .topControls > .compactNavigation { flex: 1; }
-.compactNavigation { gap: 16px; flex-wrap: nowrap; }
-.primaryNavigationLinks, .accountNavigation { display: flex; align-items: center; gap: 8px; }
+.appTop .topLanguageSelect { width: 100px; flex-shrink: 0; }
+.compactNavigation { min-width: 0; justify-content: flex-end; font-size: 14px; gap: 6px; flex-wrap: nowrap; }
+.primaryNavigationLinks, .accountNavigation { display: flex; align-items: center; gap: 4px; }
 .primaryNavigationLinks { flex: 1; flex-wrap: wrap; min-width: 0; }
 .accountNavigation { margin-left: auto; flex-shrink: 0; }
-.primaryNavigationLinks > a, .accountNavigation > a { white-space: nowrap; }
-.learningNavigationSplit { display: inline-flex; align-items: stretch; }
-.compactNavigation .learningNavigationSplit > a { display: flex; align-items: center; border-radius: 999px 0 0 999px; }
-.learningNavigationSplit .iconDisclosure > summary { height: 100%; border-left: 0; border-radius: 0 999px 999px 0; padding-inline: 8px; }
+.compactNavigation .primaryNavigationLinks > a, .compactNavigation .accountNavigation > a {
+  display: inline-flex; align-items: center; box-sizing: border-box; min-height: 44px; padding: 10px 7px !important; white-space: nowrap;
+}
+.compactNavigation .navigationDisclosure > summary { min-width: 44px; justify-content: center; padding: 10px; }
 .navigationDisclosure > summary { min-height: 44px; box-sizing: border-box; white-space: nowrap; }
 .navigationDisclosure > summary:focus-visible, .secondaryNavigationLinks a:focus-visible, .appBrandText:focus-visible { outline: 2px solid #dce4ef; outline-offset: 3px; }
 .navigationDisclosure[open] > summary { border-color: #dce4ef; }
-.navigationDisclosure[open] .navigationChevron { transform: rotate(180deg); }
 .profileNavigationLink { border-color: rgba(220,228,239,.4); }
 .siteFooter { width: min(1560px, 94vw); margin: 24px auto; color: #b8c4d5; font-size: 14px; }
 .siteFooter a { padding: 8px 0; display: inline-block; }
-
 .navigationDisclosure:not([open]) > .secondaryNavigationLinks { display: none; }
-
-/* Leave room for the longer Spanish/French labels and the account/language controls. */
-.compactNavigation { font-size: 14px; gap: 10px; }
-.compactNavigation .primaryNavigationLinks > a, .compactNavigation .accountNavigation > a {
-  display: inline-flex; align-items: center; box-sizing: border-box; min-height: 44px; padding: 10px;
-}
-.compactNavigation .learningNavigationSplit > a { min-height: 44px; box-sizing: border-box; padding: 10px !important; }
-.compactNavigation .navigationDisclosure > summary { padding: 10px; }

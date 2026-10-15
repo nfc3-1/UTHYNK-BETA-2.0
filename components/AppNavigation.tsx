@@ -8,9 +8,9 @@ import { uiCopy, type Language } from '@/lib/reasoningI18n';
 import { pathCopy } from '@/lib/pathCopy';
 
 const labels = {
-  en: { nav:'Main navigation', learning:'More learning options', staff:'Staff tools', signIn:'Sign in' },
-  es: { nav:'Navegación principal', learning:'Más opciones de aprendizaje', staff:'Herramientas del personal', signIn:'Iniciar sesión' },
-  fr: { nav:'Navigation principale', learning:'Autres options d’apprentissage', staff:'Outils du personnel', signIn:'Se connecter' },
+  en: { nav:'Main navigation', staff:'Staff tools', signIn:'Sign in' },
+  es: { nav:'Navegación principal', staff:'Herramientas del personal', signIn:'Iniciar sesión' },
+  fr: { nav:'Navigation principale', staff:'Outils du personnel', signIn:'Se connecter' },
 };
 export default function AppNavigation({ language, className = 'appNav', extra }: {
   language: Language; className?: string; extra?: ReactNode;
@@ -32,16 +32,10 @@ export default function AppNavigation({ language, className = 'appNav', extra }:
   return <nav ref={nav} className={`${className} compactNavigation`} aria-label={text.nav}>
     <div className="primaryNavigationLinks">
       <Link href="/daily">{copy.dailyNav}</Link>
-      <div className="learningNavigationSplit">
-        <LessonsNavLink language={language} />
-        <NavigationDisclosure label={text.learning} iconOnly>
-          <Link href="/thinking-paths">{pathCopy[language].title}</Link>
-        </NavigationDisclosure>
-      </div>
-      <NavigationDisclosure label={copy.classroomNav}>
-        <Link href="/classroom">{copy.classroomNav}</Link>
-        <Link href="/leaderboard">{copy.participationNav}</Link>
-      </NavigationDisclosure>
+      <LessonsNavLink language={language} />
+      <Link href="/thinking-paths">{pathCopy[language].title}</Link>
+      <Link href="/classroom">{copy.classroomNav}</Link>
+      <Link href="/leaderboard">{copy.participationNav}</Link>
       <Link href="/feedback">{copy.feedbackNav}</Link>
       <Link href="/store">{copy.storeNav}</Link>
     </div>
