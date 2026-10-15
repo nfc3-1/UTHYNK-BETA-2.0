@@ -1,8 +1,10 @@
+import type { PointAssessment } from './pointRubric';
 export type Language = "en" | "es" | "fr";
 
 export type ChallengeStep = "main_question" | "secondary_question" | "final_synthesis";
 
 export type ChallengeSessionKeyInput = {
+  assignmentId?: string;
   ageBand: string;
   category: string;
   language: Language;
@@ -12,6 +14,7 @@ export type ChallengeSessionKeyInput = {
 };
 
 export type ChallengeSession = ChallengeSessionKeyInput & {
+  assessment?: PointAssessment;
   version: 2;
   activeAnswerDraft: string;
   completed: boolean;
@@ -29,6 +32,7 @@ export type ChallengeSession = ChallengeSessionKeyInput & {
 };
 
 export type ReasoningFeedbackSnapshot = {
+  assessment?: PointAssessment;
   analysis?: string;
   contrarian?: string;
   finalSynthesis?: string;
@@ -70,7 +74,7 @@ export function legacyChallengeSessionKey(input: ChallengeSessionKeyInput) {
 export function challengeSessionKey(input: ChallengeSessionKeyInput) {
   return ['uthynk-challenge', 'v3', cleanPart(input.userId || 'guest'),
     cleanPart(input.category), cleanPart(input.questionId || String(input.questionIndex)),
-    cleanPart(input.ageBand)].join(':');
+    cleanPart(input.ageBand), ...(input.assignmentId ? ['assignment', cleanPart(input.assignmentId)] : [])].join(':');
 }
 
 export function createChallengeSession(input: Omit<ChallengeSession, "activeAnswerDraft" | "completed" | "finalSynthesis" | "firstResponse" | "growthIndicators" | "perspectiveExpansion" | "secondResponse" | "secondaryQuestion" | "step" | "updatedAt" | "version">): ChallengeSession {
@@ -158,6 +162,7 @@ export function applyPerspectiveExpansion(
     activeAnswerDraft: "",
     firstResponse: cleanText(firstResponse),
     growthIndicators: mergeGrowthIndicators(feedback, session.growthIndicators),
+    assessment: feedback.assessment,
     perspectiveExpansion,
     secondaryQuestion,
     step: "secondary_question",
@@ -182,6 +187,7 @@ export function applyFinalSynthesis(
     completed: true,
     finalSynthesis,
     growthIndicators: mergeGrowthIndicators(feedback, session.growthIndicators),
+    assessment: feedback.assessment,
     secondResponse: cleanText(secondResponse),
     step: "final_synthesis",
     updatedAt: new Date().toISOString(),

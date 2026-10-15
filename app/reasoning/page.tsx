@@ -1,5 +1,6 @@
 "use client";
 
+import AssessmentBreakdown from "@/components/AssessmentBreakdown";
 import BetaFeedbackNotice from "@/components/BetaFeedbackNotice";
 import { betaFeedbackCopy } from "@/lib/betaAssessment";
 
@@ -29,6 +30,7 @@ import {
 import { slugifyCategory } from "@/lib/questionBank";
 
 const initialFeedback = {
+  assessment: undefined as import("@/lib/pointRubric").PointAssessment | undefined,
   score: 72,
   xp: 45,
   trait: "Tactical Thinking",
@@ -1573,6 +1575,7 @@ function ReasoningExperience({
             <div className="plainResponseLayer">
               <span>UThynk</span>
               <p>{plainFeedback}</p>
+              <AssessmentBreakdown assessment={feedback.assessment} language={language} />
             </div>
 
             <div className="thinkingLabelLayer">
@@ -1752,7 +1755,9 @@ export default function ReasoningPage() {
             <Link href="/daily">{pageText[language].daily}</Link>
             <LessonsNavLink language={language} />
             <ThinkingPathsNavLink language={language} />
-            <RestrictedNavLinks />
+            <Link href="/classroom">{copy.classroomNav}</Link>
+        <Link href="/leaderboard">{copy.participationNav}</Link>
+        <RestrictedNavLinks />
             <Link href="/profile">{pageText[language].profileNav}</Link>
             <Link href="/feedback">{pageText[language].feedbackNav}</Link>
             <Link href="/login?mode=login&force=1">{pageText[language].signIn}</Link>

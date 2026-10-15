@@ -73,6 +73,8 @@ export default function LocalizedNavLinks({ className = 'appNav', items = primar
           {copy[item.key]}
         </Link>
       ))}
+      <Link href="/classroom">{language === 'es' ? 'Mi clase' : language === 'fr' ? 'Ma classe' : 'My classroom'}</Link>
+      <Link href="/leaderboard">{language === 'es' ? 'Participación' : language === 'fr' ? 'Participation' : 'Participation'}</Link>
       <ThinkingPathsNavLink language={language} />
       <RestrictedNavLinks />
     </nav>

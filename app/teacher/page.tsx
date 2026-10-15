@@ -3,15 +3,13 @@ import { getAccountAccess, permits } from '@/lib/accessControl';
 import Link from 'next/link';
 import TeacherDashboard from '@/components/TeacherDashboard';
 import LocalizedNavLinks from '@/components/LocalizedNavLinks';
-import { getCategories, getQuestionsForCategory } from '@/lib/questionBank';
+import { classroomCatalog } from '@/lib/classroom';
 
 export const dynamic = 'force-dynamic';
 export default async function TeacherPage() {
   const access = await getAccountAccess();
   if (!permits(access, 'teacher')) redirect(access.userId ? '/profile' : '/login?next=/teacher');
-  const questionBank = Object.fromEntries(
-    getCategories().map((category) => [category, getQuestionsForCategory(category)])
-  );
+
 
   return (
     <main className="appShell teacherPage">
@@ -29,13 +27,13 @@ export default async function TeacherPage() {
 
       <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
-          <div className="eyebrow">Teacher workspace preview &mdash; demo data only.</div>
+          <div className="eyebrow">Your saved classroom records</div>
           <h1>Teacher Dashboard</h1>
-          <p>Explore sample classes and assignments. The students and results shown are fictional; live classroom records are not connected yet.</p>
+          <p>Create classes, assign lessons and readings, and review actual learner responses.</p>
         </div>
       </section>
 
-      <TeacherDashboard questionBank={questionBank} />
+      <TeacherDashboard catalog={classroomCatalog().filter(item=>item.kind!=='reading'||permits(access,'thinking_paths'))} />
     </main>
   );
 }

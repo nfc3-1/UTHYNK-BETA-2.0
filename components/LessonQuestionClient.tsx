@@ -1,5 +1,8 @@
 'use client';
 
+import AssessmentBreakdown from '@/components/AssessmentBreakdown';
+import type { PointAssessment } from '@/lib/pointRubric';
+
 import BetaFeedbackNotice from '@/components/BetaFeedbackNotice';
 
 import LessonAppHeader from './LessonAppHeader';
@@ -35,6 +38,8 @@ import {
 import { createTelemetryEvent, trackEvent } from '@/lib/telemetry';
 
 type Props = {
+  assignmentId?: string;
+  initialSession?: ChallengeSession | null;
   category: string;
   questions: string[];
   questionIds?: string[];
@@ -45,6 +50,7 @@ type Props = {
 };
 
 type Feedback = {
+  assessment?: PointAssessment;
   analysis?: string;
   contrarian?: string;
   finalSynthesis?: string;
@@ -141,7 +147,7 @@ function normalizeFeedback(payload: Feedback, phase: 'follow_up' | 'synthesis'):
   };
 }
 
-export default function LessonQuestionClient({ category, questions, questionIds, questionTranslations, readingModuleId, sessionUserId, onSessionChange }: Props) {
+export default function LessonQuestionClient({ category, questions, questionIds, questionTranslations, readingModuleId, sessionUserId, onSessionChange, assignmentId, initialSession }: Props) {
   const [language, setLanguage] = useState<Language>('en');
   const [answer, setAnswer] = useState('');
   const [loading, setLoading] = useState(false);
@@ -174,6 +180,7 @@ export default function LessonQuestionClient({ category, questions, questionIds,
   const profile = typeof window === 'undefined' ? null : readProfile();
   const userId = sessionUserId || profile?.id || null;
   const keyInput: ChallengeSessionKeyInput = {
+    assignmentId,
     ageBand: safeAgeBand,
     category,
     language,
@@ -227,7 +234,9 @@ export default function LessonQuestionClient({ category, questions, questionIds,
 
   useEffect(() => {
     if (!ready) return;
-    const parsed = readLessonSession(localStorage, keyInput, questionRecord);
+    const local = readLessonSession(localStorage, keyInput, questionRecord);
+    const server = initialSession ? { ...initialSession, ageBand: safeAgeBand, userId, language } : null;
+    const parsed = server && (!local || server.completed || local.sessionId !== server.sessionId || (server.firstResponse && !local.firstResponse)) ? server : local;
     setSession(parsed);
     setAnswer(parsed?.activeAnswerDraft || '');
     setRestored(Boolean(parsed));
@@ -389,6 +398,7 @@ export default function LessonQuestionClient({ category, questions, questionIds,
     const response = await fetch('/api/reasoning', {
       body: JSON.stringify({
         ageBand: safeAgeBand,
+        assignmentId,
         readingModuleId,
         category,
         challenge: active.originalQuestion,
@@ -482,9 +492,9 @@ export default function LessonQuestionClient({ category, questions, questionIds,
 
   return (
     <>
-      {!readingModuleId && <LessonAppHeader language={language} changeLanguage={changeLanguage} disabled={loading} />}
+      {!(readingModuleId || assignmentId) && <LessonAppHeader language={language} changeLanguage={changeLanguage} disabled={loading} />}
 
-      {!readingModuleId && <section className="appHero card" style={{ marginTop: 18 }}>
+      {!(readingModuleId || assignmentId) && <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
           <div className="eyebrow">{flow.category}</div>
           <h1>{visibleCategory}</h1>
@@ -492,11 +502,11 @@ export default function LessonQuestionClient({ category, questions, questionIds,
         </div>
       </section>}
 
-      {!readingModuleId && <ThinkingWalkthrough language={language} />}
+      {!(readingModuleId || assignmentId) && <ThinkingWalkthrough language={language} />}
 
-      <section className={readingModuleId ? "readingThinkingSession" : "lessonQuestionLayout"} style={{ maxWidth: '100%', minWidth: 0, width: '100%' }}>
-        {!readingModuleId && <div className="lessonQuestionList" style={{ minWidth: 0 }}>
-          {!readingModuleId && <LessonQuestionListHint language={language} />}
+      <section className={readingModuleId || assignmentId ? "readingThinkingSession" : "lessonQuestionLayout"} style={{ maxWidth: '100%', minWidth: 0, width: '100%' }}>
+        {!(readingModuleId || assignmentId) && <div className="lessonQuestionList" style={{ minWidth: 0 }}>
+          {!(readingModuleId || assignmentId) && <LessonQuestionListHint language={language} />}
           {localizedQuestions.map((question, index) => (
             <button
               className={selectedIndex === index ? 'lessonQuestion active' : 'lessonQuestion'}
@@ -562,6 +572,7 @@ export default function LessonQuestionClient({ category, questions, questionIds,
             <div className="plainResponseLayer">
               <span>{flow.synthesis}</span>
               <p>{session.finalSynthesis}</p>
+              <AssessmentBreakdown assessment={session.assessment} language={language} />
               {session.growthIndicators.length ? (
                 <div className="thinkingLabelLayer">
                   {session.growthIndicators.filter(item => !/^Score\s+\d/.test(item)).map((item) => (
@@ -618,7 +629,7 @@ export default function LessonQuestionClient({ category, questions, questionIds,
           ) : null}
 
           {session ? (
-            <button className="btn" disabled={loading} onClick={startNewChallenge} type="button">
+            <button className="btn" hidden={Boolean(assignmentId)} disabled={loading} onClick={startNewChallenge} type="button">
               {flow.clear}
             </button>
           ) : null}

@@ -1,4 +1,7 @@
-import { betaAssessmentPrompt, provisionalAssessment, retiredVerifier } from '@/lib/betaAssessment';
+import { assessReasoning } from '@/lib/assessReasoning';
+import type { PointAssessment } from '@/lib/pointRubric';
+import { assignmentAccess,assignmentPrompt,classroomActor,saveAssignmentTurn,ClassroomError } from '@/lib/classroom';
+import { betaAssessmentPrompt, retiredVerifier } from '@/lib/betaAssessment';
 import { resolveReadingRequest } from '@/lib/readingAccess';
 import { NextResponse } from "next/server";
 import { reasoningProviderError } from "@/lib/reasoningProviderError";
@@ -18,6 +21,7 @@ import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
 import { evolveTraitScore } from "@/lib/traits";
 
 type ReasoningRequest = {
+  assignmentId?: string;
   readingModuleId?: string;
   ageBand?: "under_13" | "13_17" | "18_plus";
   challenge?: string;
@@ -75,7 +79,7 @@ type BehavioralScores = {
 
 type VerifierResult = {
   status: "retired";
-  assessment?: ReturnType<typeof provisionalAssessment>["assessment"];
+  assessment?: PointAssessment;
   score: number;
   behavioral: BehavioralScores;
   signals: Record<string, boolean>;
@@ -83,7 +87,7 @@ type VerifierResult = {
 };
 
 type ReasoningFeedback = {
-  assessment: ReturnType<typeof provisionalAssessment>["assessment"];
+  assessment: PointAssessment;
   analysis: string;
   behavioral: BehavioralScores;
   contrarian: string;
@@ -373,9 +377,10 @@ function sanitizeFeedback(
   categoryPrompt: CategoryPrompt,
   language: "en" | "es" | "fr",
   phase: "follow_up" | "synthesis" = "follow_up",
-  synthesisContext?: SynthesisContext
+  synthesisContext: SynthesisContext | undefined,
+  assessment: PointAssessment
 ): ReasoningFeedback {
-  const { score, assessment } = provisionalAssessment(parsed?.score);
+  const score = assessment.percentage;
   const trait = ensureString(parsed?.trait, language === 'es' ? 'Razonamiento' : language === 'fr' ? 'Raisonnement' : categoryPrompt.traitOptions[0]);
   const fallbackAnalysis =
     language === "es"
@@ -489,7 +494,7 @@ function buildAdaptiveSystemPrompt({
       'Write the gap once in everyday language, not as "the remaining reasoning gap", "a solid starting point", "a solid foundation", or their translations. Do not grade the answer or add generic praise. Keep within the age-specific word target in the requested language. Make the final sentence itself a practical principle combining the original reasoning with the new lens, preserving any disagreement or uncertainty; do not append a generic inspirational sentence.',
       'Calibration example ONLY when the first answer balances preparation and adaptability, the coach introduces constraints driving creativity, and the second answer merely transfers the lesson to business: "You noticed that preparation cannot anticipate every surprise, so adapting remains part of being prepared. That connects planning with the ability to respond when the plan stops fitting.\n\nI added the idea that limited options can sometimes make that response more inventive. This expands your starting point: adapting may involve using a restriction to discover a solution, rather than simply coping until more resources arrive. You carried the preparation-and-adaptation lesson into business, but your reply did not yet explore whether a particular limit would encourage creative reuse or prevent useful work. That distinction matters because scarcity is not automatically helpful.\n\nPutting these ideas together gives preparation a second purpose: helping you recognize what can be changed when circumstances narrow your choices. When adapting a plan elsewhere, examine which limits could focus invention and which need to be removed." Adapt the reasoning to the actual conversation; never copy this example indiscriminately. If the person already discusses creative reuse and insufficient funding, credit both and choose a genuinely untested edge such as evidence for where the threshold lies. If they reject the lens, the principle must preserve that uncertainty rather than declare constraints beneficial.',
       'Sensitive-topic rule: for self-harm, suicide, trauma, abuse, mental health, medical issues or identity-based harm, use supportive, non-adversarial language and appropriate safety guidance.',
-      'Return only valid JSON with keys: score number, trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[].',
+      'Return only valid JSON with keys: trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[].',
     ].join(' ');
   }
 
@@ -521,7 +526,7 @@ function buildAdaptiveSystemPrompt({
     "Prefer plain phrasing such as 'Have you thought about...', 'Could someone...', 'What if...', or 'What would change if...'. Avoid abstract academic wording like 'How might the emotional appeal of...' when a simpler sentence works.",
     "Do not use generic prompts like 'explain further', 'give another example', or 'clarify your reasoning'.",
     "Sensitive-topic rule: if the prompt or answer concerns self-harm, suicide, trauma, abuse, mental health, medical issues, or identity-based harm, switch to supportive, non-adversarial exploration and appropriate safety guidance.",
-    "Return only valid JSON with keys: score number, trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[].",
+    "Return only valid JSON with keys: trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[].",
   ].join(" ");
 }
 
@@ -595,7 +600,7 @@ async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
   }
 
   const nextXp = (existing.xp || 0) + feedback.xp;
-  const hasEstimate = feedback.assessment.scoreSource === "model";
+  const hasEstimate = feedback.assessment.scoreSource === "rubric";
   const nextScore = hasEstimate
     ? calculateReasoningScore(existing.reasoning_score ?? 70, feedback.score)
     : existing.reasoning_score ?? 70;
@@ -857,6 +862,7 @@ function streamingFeedback(args: {
   thinkingLens?: string;
   userId?: string;
   verifier: VerifierResult;
+  assessment: PointAssessment;
 }) {
   const encoder = new TextEncoder();
 
@@ -920,7 +926,8 @@ function streamingFeedback(args: {
           args.categoryPrompt,
           args.language,
           args.phase || "follow_up",
-          args.synthesisContext
+          args.synthesisContext,
+          args.assessment
         );
         const progression =
           args.phase === "follow_up" ? null : await persistSession({ ...args, feedback });
@@ -963,9 +970,28 @@ function streamingFeedback(args: {
   });
 }
 
+export const maxDuration = 60;
+
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ReasoningRequest;
+    let classroomContext: Awaited<ReturnType<typeof assignmentAccess>> | null = null;
+    let classroomAccess: Awaited<ReturnType<typeof classroomActor>> | null = null;
+    if (body.assignmentId) {
+      if (request.headers.get('origin') !== new URL(request.url).origin) throw new ClassroomError('Invalid origin.',403);
+      classroomAccess=await classroomActor(); classroomContext=await assignmentAccess(classroomAccess,body.assignmentId,true);
+      const saved=classroomContext.submission;
+      body.category=classroomContext.target.category; body.challenge=assignmentPrompt(classroomContext.target); body.originalQuestion=body.challenge;
+      body.readingModuleId=undefined; body.section=`assignment:${body.assignmentId}`;
+      if(saved) {
+        if(body.sessionId!==saved.session_id) throw new ClassroomError('Resume your saved assignment from the classroom page.',409);
+        if(saved.completed_at) return NextResponse.json({finalSynthesis:saved.synthesis,analysis:saved.synthesis,perspectiveExpansion:'',secondaryQuestion:'',followUp:'',assessment:saved.assessment,score:saved.assessment?.percentage,xp:0});
+        if(body.phase==='synthesis') {body.firstUserAnswer=saved.first_answer;body.perspectiveExpansion=saved.perspective;body.secondaryQuestion=saved.secondary_question;}
+        else return NextResponse.json({perspectiveExpansion:saved.perspective,secondaryQuestion:saved.secondary_question,assessment:saved.assessment,score:saved.assessment?.percentage,xp:0});
+      } else if(body.phase==='synthesis') throw new ClassroomError('Submit the first answer before completing this assignment.',409);
+      if(!body.response||body.response.length>12000) throw new ClassroomError('Use an answer between 1 and 12,000 characters.');
+      body.stream=false;
+    }
     if (body.readingModuleId !== undefined) {
       const reading = await resolveReadingRequest(body.readingModuleId);
       if (!reading.ok) return NextResponse.json({ error: reading.error }, { status: reading.status });
@@ -1039,6 +1065,7 @@ export async function POST(request: Request) {
                 : "18_plus",
           }
         : null);
+    const assessment = await assessReasoning({question:challenge,answers:phase==='synthesis'?[synthesisValidation!.context.firstUserAnswer,response]:[response],userId,apiKey});
     const verifier = retiredVerifier();
     const modeSeed = stableModeSeed({
       category,
@@ -1067,12 +1094,13 @@ export async function POST(request: Request) {
       section: body.section,
       sessionId,
       stream: false,
+      assessment,
       synthesisContext: synthesisValidation?.context,
       thinkingLens: body.thinkingLens,
       verifier,
     };
 
-    if (wantsStream) {
+    if (wantsStream && !body.assignmentId) {
       return streamingFeedback({
         ...openAiArgs,
         challengeId: body.challengeId,
@@ -1082,9 +1110,10 @@ export async function POST(request: Request) {
     }
 
     const parsed = await nonStreamingFeedback(openAiArgs);
-    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt, language, phase, synthesisValidation?.context);
+    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt, language, phase, synthesisValidation?.context, assessment);
+    const classroomSaved = body.assignmentId && classroomAccess ? await saveAssignmentTurn(classroomAccess,body.assignmentId,sessionId,phase,body,feedback) : null;
     const progression =
-      phase === "follow_up"
+      phase === "follow_up" || classroomSaved?.already_completed
         ? null
         : await persistSession({
             categoryPrompt,
@@ -1116,7 +1145,7 @@ export async function POST(request: Request) {
             ? error.message
             : "Reasoning analysis failed. Try again with a clearer response.",
       },
-      { status: 500 }
+      { status: error instanceof ClassroomError ? error.status : 500 }
     );
   }
 }

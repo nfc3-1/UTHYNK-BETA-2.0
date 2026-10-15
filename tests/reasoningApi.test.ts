@@ -1,3 +1,4 @@
+vi.mock('../lib/assessReasoning', () => ({ assessReasoning: async () => ({ status: 'provisional', rubricVersion: 'reasoning-20-v1', scoreSource: 'rubric', earned: 16, possible: 20, percentage: 80, criteria: ['claim','evidence','alternatives','conclusion'].map(id => ({ id, points: 4, possible: 5, evidence: ['Test'] })), model: 'test-judge', fingerprint: 'test-fingerprint' }) }));
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { POST } from '../app/api/reasoning/route';
 
@@ -134,9 +135,9 @@ describe('provisional beta rubric and language-independent participation', () =>
   for (const language of ['en', 'es', 'fr'] as const) it(`does not add keyword or length adjustments in ${language}`, async () => {
     result = { score: 83, xp: 95, perspectiveExpansion: localized[language][0], secondaryQuestion: localized[language][1] };
     const body = await (await request({ language, response: equivalents[language] })).json();
-    expect(body.score).toBe(83);
+    expect(body.score).toBe(80);
     expect(body.xp).toBe(35);
-    expect(body.assessment).toEqual({ status: 'provisional', rubricVersion: 'beta-v1', scoreSource: 'model' });
+    expect(body.assessment).toEqual({ status: 'provisional', rubricVersion: 'reasoning-20-v1', scoreSource: 'rubric', earned:16, possible:20, percentage:80, criteria:expect.any(Array), model:'test-judge', fingerprint:'test-fingerprint' });
     expect(body.verifier.status).toBe('retired');
     expect(body.verifier.signals).toEqual({});
     expect(body.strengths).toEqual([]);
@@ -147,13 +148,14 @@ describe('provisional beta rubric and language-independent participation', () =>
     expect(system).toContain('specific passage detail for reading tasks');
     expect(system).not.toContain('Verifier engine result');
     expect(system).not.toContain('blending your judgment');
+    expect(body.assessment.criteria.reduce((n: number,c: any) => n+c.points,0)).toBe(16);
   });
 
   it('awards the same completion XP for short disagreement and long keyword-filled text', async () => {
     for (const [score, secondUserAnswer] of [[0, 'I disagree.'], [100, 'because evidence data example alternative cost benefit '.repeat(80)]] as const) {
       result = { score, xp: 999, finalSynthesis: 'Your answer raises a testable claim. Compare the available evidence before applying it.' };
       const body = await (await request({ ...apolloContext, secondUserAnswer, phase: 'synthesis' })).json();
-      expect(body.score).toBe(score); // A zero is a valid model estimate, not a missing value.
+      expect(body.score).toBe(80); // Coaching estimates cannot override the dedicated point rubric.
       expect(body.xp).toBe(52);
       expect(body.behavioral).toEqual(body.verifier.behavioral); // Retired compatibility values.
       expect(sent[sent.length - 1].messages[0].content).toContain('beta-v1 rubric');
@@ -163,8 +165,8 @@ describe('provisional beta rubric and language-independent participation', () =>
   for (const score of [undefined, null, '99']) it(`marks a missing or invalid score unavailable (${score}) without inventing evidence`, async () => {
     result = { score, perspectiveExpansion: localized.en[0], secondaryQuestion: localized.en[1] };
     const body = await (await request({ response: 'evidence alternative risk cost '.repeat(40) })).json();
-    expect(body.score).toBe(70);
-    expect(body.assessment.scoreSource).toBe('unavailable');
+    expect(body.score).toBe(80);
+    expect(body.assessment.scoreSource).toBe('rubric');
     expect(body.strengths).toEqual([]);
     expect(body.weaknesses).toEqual([]);
   });
@@ -180,9 +182,9 @@ describe('provisional beta rubric and language-independent participation', () =>
     const response = await request({ ...apolloContext, secondUserAnswer: 'Keep an exception.', phase: 'synthesis', stream: true });
     const { readReasoningResponse } = await import('../lib/reasoningResponse');
     const body = await readReasoningResponse(response, () => {});
-    expect(body.score).toBe(84);
+    expect(body.score).toBe(80);
     expect(body.xp).toBe(52);
-    expect(body.assessment.rubricVersion).toBe('beta-v1');
+    expect(body.assessment.rubricVersion).toBe('reasoning-20-v1');
     expect(body.verifier.status).toBe('retired');
   });
 });

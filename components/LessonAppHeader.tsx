@@ -22,6 +22,8 @@ export default function LessonAppHeader({ language, changeLanguage, disabled = f
         <Link href="/">{copy.home}</Link>
         <LessonsNavLink language={language} />
         <Link href="/thinking-paths">{pathCopy[language].title} <small>{pathCopy[language].beta}</small></Link>
+        <Link href="/classroom">{copy.classroomNav}</Link>
+        <Link href="/leaderboard">{copy.participationNav}</Link>
         <RestrictedNavLinks />
         <Link href="/profile">{copy.profileNav}</Link>
         <Link href="/feedback">{copy.feedbackNav}</Link>

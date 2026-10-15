@@ -1,83 +1,27 @@
-"use client";
-
-import RestrictedNavLinks from '@/components/RestrictedNavLinks';
-import Link from "next/link";
-
-const leaderboard = [
-  {
-    username: "StrategicMind",
-    rank: "Architect",
-    xp: 8420,
-    streak: 41,
-    trait: "Strategic Thinking",
-  },
-  {
-    username: "LogicBuilder",
-    rank: "Strategist",
-    xp: 5310,
-    streak: 23,
-    trait: "Bias Detection",
-  },
-  {
-    username: "CalmReason",
-    rank: "Analyst",
-    xp: 2140,
-    streak: 12,
-    trait: "Emotional Control",
-  },
-];
-
-export default function LeaderboardPage() {
+import { redirect } from "next/navigation";
+import LocalizedNavLinks from "@/components/LocalizedNavLinks";
+import ClassroomDashboard from "@/components/ClassroomDashboard";
+import { getAccountAccess } from "@/lib/accessControl";
+export const dynamic = "force-dynamic";
+export default async function LeaderboardPage() {
+  const access = await getAccountAccess();
+  if (!access.userId) redirect("/login?next=/leaderboard");
   return (
-    <main className="appShell">
+    <main className="appShell teacherPage">
       <header className="appTop card">
-        <Link href="/" className="appBrandText">
-          <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
-          <span className="brandCopy">
-            <strong>UThynk</strong>
-            <small>Better thinking. <em>Better decisions.</em></small>
-          </span>
-        </Link>
-
-        <nav className="appNav">
-          <Link href="/">Home</Link>
-          <RestrictedNavLinks />
-          <Link href="/profile">Profile</Link>
-        </nav>
+        <strong>UThynk</strong>
+        <LocalizedNavLinks />
       </header>
-
       <section className="appHero card" style={{ marginTop: 18 }}>
         <div className="heroCopy">
-          <div className="eyebrow">Demo preview</div>
-          <h1>Sample Participation Board</h1>
+          <h1>Class participation leaderboard</h1>
           <p>
-            These fictional profiles, XP totals, and streaks illustrate a possible participation board. They are not real users, cognitive rankings, or measured learning gains.
-          </p>
-        </div>
-
-        <div className="challengePreview">
-          <div className="panelLabel">Example rank</div>
-          <h2>Master of Thought</h2>
-          <p>
-            Ranks reflect participation XP, not validated reasoning ability.
+            Actual completed classroom assignments. Only your classes are
+            visible.
           </p>
         </div>
       </section>
-
-      <section className="card methodPanel" style={{ marginTop: 18 }}>
-        <div className="panelLabel">Fictional profiles — demo data</div>
-
-        <div className="methodSteps">
-          {leaderboard.map((user) => (
-            <div key={user.username}>
-              <span><b>{user.username} (demo)</b></span>
-              <span>
-                {user.rank} · {user.xp} XP · {user.streak} day streak · {user.trait}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+      <ClassroomDashboard boardOnly />
     </main>
   );
 }

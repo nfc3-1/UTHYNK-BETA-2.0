@@ -1,3 +1,4 @@
+vi.mock('../lib/assessReasoning', () => ({ assessReasoning: async () => ({ status: 'provisional', rubricVersion: 'reasoning-20-v1', scoreSource: 'rubric', earned: 16, possible: 20, percentage: 80, criteria: ['claim','evidence','alternatives','conclusion'].map(id => ({ id, points: 4, possible: 5, evidence: ['Test'] })), model: 'test-judge', fingerprint: 'test-fingerprint' }) }));
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { POST } from '../app/api/reasoning/route';
 const db = vi.hoisted(() => ({ calls: [] as any[], canonical: vi.fn(), progress: vi.fn(), trait: vi.fn() }));
@@ -34,14 +35,14 @@ describe('beta scoring persistence compatibility', () => {
     const response = await POST(new Request('http://localhost/api/reasoning', { method: 'POST', body: JSON.stringify(context) }));
     expect(response.status).toBe(200);
     const body = await response.json();
-    expect(body.progression).toMatchObject({ xp: 152, rank: 'Observer', streak: 4, reasoningProfile: null, reasoningScore: score === undefined ? 80 : 82 });
+    expect(body.progression).toMatchObject({ xp: 152, rank: 'Observer', streak: 4, reasoningProfile: null, reasoningScore: 80 });
     expect(db.calls.some(call => call.table === 'reasoning_profiles')).toBe(false);
     const update = db.calls.find(call => call.table === 'user_profiles' && call.update);
     expect(update.update.xp).toBe(152);
     expect(update.filters).toContainEqual(['id', 'learner-1']);
     expect(db.canonical).toHaveBeenCalledWith(expect.objectContaining({ userId: 'learner-1', claim: context.secondUserAnswer, feedback: expect.objectContaining({ xp: 52, assessment: expect.objectContaining({ status: 'provisional' }) }) }));
     expect(db.progress).toHaveBeenCalledWith(expect.objectContaining({ profileId: 'learner-1', xp: 152 }));
-    expect(db.calls.find(call => call.table === 'reasoning_verifier_scores').insert.signals).toMatchObject({ status: 'retired', assessment: { rubricVersion: 'beta-v1', scoreSource: score === undefined ? 'unavailable' : 'model' } });
-    if (score === undefined) expect(db.trait).not.toHaveBeenCalled();
+    expect(db.calls.find(call => call.table === 'reasoning_verifier_scores').insert.signals).toMatchObject({ status: 'retired', assessment: { rubricVersion: 'reasoning-20-v1', scoreSource: 'rubric' } });
+    expect(db.trait).toHaveBeenCalled();
   });
 });
