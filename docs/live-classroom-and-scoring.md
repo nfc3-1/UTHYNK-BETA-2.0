@@ -16,7 +16,7 @@ Removed learners cannot reactivate themselves using the old enrollment code. Rem
 
 ## Feedback instead of grades
 
-New learner turns use `reasoning-feedback-v1`, defined in `lib/qualitativeAssessment.ts`. They return `score: null`. The coaching call produces observations for four shared lenses: understand a claim, support it with evidence, consider another interpretation, and explain a justified conclusion. There is no separate numerical evaluator call on the learner path.
+New learner turns use `reasoning-feedback-v1`, defined in `lib/qualitativeAssessment.ts`. They return `score: null`. An independent review task produces observations for four shared lenses: understand a claim, support it with evidence, consider another interpretation, and explain a justified conclusion. The review runs alongside the coaching request, at temperature 0 with a fixed seed. It receives questions and learner sentences, without coach suggestions, prior grades or personality history. No numerical evaluator runs on the learner path. A review failure or timeout becomes unavailable feedback and does not fail an otherwise valid conversation.
 
 | Status | Meaning |
 | --- | --- |
@@ -26,7 +26,9 @@ New learner turns use `reasoning-feedback-v1`, defined in `lib/qualitativeAssess
 | Not asked in this task | The task did not elicit this move; not a weakness |
 | No supported observation available | Missing/invalid provider output; never a fabricated negative judgment |
 
-The first turn considers the first answer; the final feedback considers both answers. The coach and reading passage are context, not learner evidence. Strict structured output requires every observation and constrains evidence IDs to supplied answer sentences; applicable observations require at least one ID. The model cites sentence IDs and the server resolves them to exact, untranslated learner quotations. Unknown IDs, missing evidence for applicable observations, invalid status or missing notes yield an unavailable observation. No positive label is inferred from historical points. A missing observation does not block an otherwise valid four-step conversation.
+The first turn considers the first answer; the final feedback considers both answers. The coach and reading passage are context, not learner evidence. Strict structured output in the independent review requires every observation and constrains evidence IDs to supplied answer sentences; applicable observations require at least one ID. The model cites sentence IDs and the server resolves them to exact, untranslated learner quotations. Unknown IDs, missing evidence for applicable observations, invalid status or missing notes yield an unavailable observation. No positive label is inferred from historical points. A missing observation does not block an otherwise valid four-step conversation.
+
+Summary strengths and next-focus text come from the independent observations, rather than a second set of coach-generated judgments.
 
 The optional **Next focus** is one actionable suggestion grounded in a supported gap. Questions are excluded from that field. The model is instructed not to infer mastery, personality or improvement over time from a session. Claims about development between the two answers must cite both; this is not longitudinal learning measurement. Teacher review remains necessary: mechanically valid evidence IDs do not prove a model's interpretation is correct.
 
