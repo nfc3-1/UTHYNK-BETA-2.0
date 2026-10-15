@@ -3045,3 +3045,11 @@ a{
 .siteFooter a { padding: 8px 0; display: inline-block; }
 
 .navigationDisclosure:not([open]) > .secondaryNavigationLinks { display: none; }
+
+/* Leave room for the longer Spanish/French labels and the account/language controls. */
+.compactNavigation { font-size: 14px; gap: 10px; }
+.compactNavigation .primaryNavigationLinks > a, .compactNavigation .accountNavigation > a {
+  display: inline-flex; align-items: center; box-sizing: border-box; min-height: 44px; padding: 10px;
+}
+.compactNavigation .learningNavigationSplit > a { min-height: 44px; box-sizing: border-box; padding: 10px !important; }
+.compactNavigation .navigationDisclosure > summary { padding: 10px; }
