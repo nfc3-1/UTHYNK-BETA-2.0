@@ -30,7 +30,7 @@ The complete anchors are in `lib/pointRubric.ts`. The UI shows the selected anch
 
 The first assessment uses the first answer. The final assessment uses both answers and still has a maximum of 20; it does not add the two assessments into a 40-point score. For reading tasks, evidence must connect to the supplied passage. A proposed test is evidence reasoning, not proof that its result already exists.
 
-Each positive criterion requires a supporting quote found in the actual learner answers. Missing criteria, duplicate criteria, noninteger or out-of-range points, and unsupported evidence reject the assessment with a retry message. There is no made-up fallback grade. A failed grading request leaves the answer/draft available to retry.
+Each positive criterion requires an ID referencing a numbered sentence in the actual learner answers. The server resolves that ID into the exact answer text; the model cannot rewrite or translate the displayed evidence. Structured output restricts evidence IDs to the supplied answer sentences. Missing criteria, duplicate criteria, noninteger or out-of-range points, and unsupported evidence reject the assessment with a retry message. There is no made-up fallback grade. A failed grading request leaves the answer/draft available to retry.
 
 XP remains separate participation credit: 35 in first-turn feedback, 52 for completion. Only successful synthesis persists account progress. An assignment’s completion is idempotent in the database, preventing duplicate classroom completion/XP persistence calls on replay. Existing XP, streaks, ranks, archived readings, unrelated sessions, and identity/storage keys are retained.
 

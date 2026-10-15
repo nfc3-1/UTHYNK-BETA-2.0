@@ -43,7 +43,7 @@ describe("saved assessment identity", () => {
                   "evidence",
                   "alternatives",
                   "conclusion",
-                ].map((id) => ({ id, points: 3, evidence: [answer] })),
+                ].map((id) => ({ id, points: 3, evidenceIds: ["A1S1"] })),
               }),
             },
           },
