@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   classAccess,
+  classroomCatalog,
   classroomMutation,
   classroomSnapshot,
   assignmentAccess,
@@ -207,4 +208,13 @@ describe("classroom authorization and actual records", () => {
     expect(state.writes[0].value).toMatchObject({school_id:'school-a',teacher_id:student.userId});
   });
 
+});
+
+describe("expanded reading assignment catalog", () => {
+  it("offers each canonical reading once despite reuse across paths", () => {
+    const readings=classroomCatalog().filter(item=>item.kind==='reading');
+    expect(readings).toHaveLength(84);
+    expect(new Set(readings.map(item=>item.id)).size).toBe(readings.length);
+    expect(readings.some(item=>item.id==='reading-dewey-time-to-reflect')).toBe(true);
+  });
 });

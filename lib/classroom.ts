@@ -8,7 +8,7 @@ import { getLessonQuestionById, lessonQuestions } from "@/lib/lessonQuestions";
 import {
   getReadingModule,
   readingReasoningContext,
-  thinkingPaths,
+  getCurrentReadingModules,
 } from "@/lib/thinkingPaths";
 import { randomBytes } from "crypto";
 import { teachingSchools, teachesAtSchool } from '@/lib/schoolAccess';
@@ -81,16 +81,12 @@ export function classroomCatalog() {
       title: q.source,
       category: q.category,
     })),
-    ...thinkingPaths.flatMap((p) =>
-      p.readingPaths.flatMap((r) =>
-        r.modules.map((m) => ({
-          id: m.id,
-          kind: "reading",
-          title: `${m.title.en} — ${m.author}`,
-          category: p.title.en,
-        })),
-      ),
-    ),
+    ...getCurrentReadingModules().map((m) => ({
+      id: m.id,
+      kind: "reading",
+      title: `${m.title.en} — ${m.author}`,
+      category: m.category,
+    })),
   ];
 }
 export async function classAccess(access: AccountAccess, id: string) {

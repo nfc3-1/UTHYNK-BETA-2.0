@@ -1,8 +1,8 @@
 # Thinking Paths beta
 
-Thinking Paths are thematic categories containing Reading Paths. The seven themes were supplied by the user on 2026-10-13. Each current Reading Path contains exactly ten substantial passages. The existing daily challenge and 450-question lesson bank remain distinct.
+Thinking Paths are thematic categories containing Reading Paths. The seven themes were supplied by the user on 2026-10-13. Each current Reading Path contains exactly ten substantial passages. Day Two adds two paths per theme, for 21 paths, 210 reading positions, and 84 distinct current readings from 51 author/source labels. See [Day Two school-trial sequences](sprint-day-2.md) for the new selection and editorial review notes. Shared readings keep the same canonical question, identity, and browser progress; 210 positions do not mean 210 different passages. The existing daily challenge and 450-question lesson bank remain distinct.
 
-## Broader selections, 2026-10-14
+## Historical expansion: broader selections, 2026-10-14
 
 The user requested more authors and books within each path. Thirty-three repeat selections were replaced with full passages from thirty additional public-domain source works. There are 70 current readings across 44 distinct author/source labels (Marx and Engels are a joint label; government bodies and literary traditions are source labels rather than individual authors). Every current path has at least six distinct authors/sources and six works, with at most two passages from any author or work.
 
@@ -73,7 +73,7 @@ English text preserves the chosen source wording and spelling. Complete fables, 
 | Booker T. Washington | [Up from Slavery](https://www.gutenberg.org/ebooks/2376) | 1901 |
 | Edward Bellamy | [Looking Backward, 2000 to 1887](https://www.gutenberg.org/ebooks/624) | 1888 |
 
-## Editorial status and coverage gaps
+## Editorial status and coverage gaps (October 14 checkpoint; Day Two adds 14 readings)
 
 All 70 current readings have complete English, Spanish, and French passages, questions, titles, locations, context, and two contrasting lenses. The 33 additions include 66 new complete passage translations. The 33 previous readings also retain complete language coverage. There are **zero missing reading or required language fields**.
 
@@ -95,8 +95,8 @@ Geographic/tradition breadth can grow further, especially with verified Latin Am
 
 `data/readingSources.json` holds shared source metadata. `data/thinkingPathParts.json` holds the 59 current additional parts; eleven introductory modules remain in `lib/thinkingPaths.ts`. `data/retiredReadingParts.json` scopes previous parts by `pathSlug/readingSlug`. `data/readingPassages.json` contains 103 ID-keyed passages and optional historical notes. The catalog fails on a missing or mismatched source rather than falling back to an English synopsis.
 
-For a wording-only fix, retain the question identity. For a new source, changed question meaning, or materially different passage, create a fresh ID and preserve the previous record in its path’s archive. Do not transfer completion or responses across those identities. Keep ten current parts, at least six authors/sources and works, and at most two parts per author/work in these survey paths. Keep source-specific prompts and all three languages together.
+For a wording-only fix, retain the question identity. For a new source, changed question meaning, or materially different passage, create a fresh ID and preserve the previous record in its path’s archive. Do not transfer completion or responses across those identities. Keep ten parts per path, at least six authors/sources and works, and at most two parts per author/work in these survey paths. `data/readingSequences.json` composes new paths from canonical module IDs and supplies goals; `data/schoolTrialReadingParts.json` defines the 14 new modules. Do not duplicate IDs or assign a fresh completion identity merely because the same question appears in another path. Keep source-specific prompts and all three languages together.
 
 ## Verification
 
-Run `python scripts/checkReadingSources.py` to match all 103 English selections against their 46 cited source pages without account credentials. This checks provenance, not translation accuracy or the truth of historical claims. Tests cover diversity limits, 70 current/33 previous identities, all language fields, previous-reading privacy and path scoping, canonical context, grant revocation, language switching, both draft restores, independent old/new sessions and completion, and the finite four-step flow. Run `npm test`, `npm run test:unit`, `npm run test:translations`, `npm run typecheck`, `npm run lint`, and `npm run build`.
+Run `python scripts/checkReadingSources.py` to match all 117 current and previous English selections against their 53 cited source pages without account credentials. This checks provenance, not translation accuracy or the truth of historical claims. Tests cover diversity limits, 70 current/33 previous identities, all language fields, previous-reading privacy and path scoping, canonical context, grant revocation, language switching, both draft restores, independent old/new sessions and completion, and the finite four-step flow. Run `npm test`, `npm run test:unit`, `npm run test:translations`, `npm run typecheck`, `npm run lint`, and `npm run build`.

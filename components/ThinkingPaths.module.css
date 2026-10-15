@@ -247,3 +247,13 @@
   .footer { display:flex; flex-direction:column; gap:16px; }
   .footer a { margin-right:0; }
 }
+
+.practiceGoal, .connection {
+  padding:14px 16px;
+  border-left:2px solid #cbd5e1;
+  border-radius:8px;
+  background:rgba(220,228,239,.04);
+  color:var(--muted);
+  line-height:1.7;
+}
+.practiceGoal strong, .connection strong { color:#e5e7eb; }

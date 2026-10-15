@@ -1,26 +1,29 @@
 // Server catalog. Client components receive only authorized module content or public summaries.
 import partData from '@/data/thinkingPathParts.json';
+import schoolTrialParts from '@/data/schoolTrialReadingParts.json';
+import sequences from '@/data/readingSequences.json';
 import newSources from '@/data/readingSources.json';
 import passageData from '@/data/readingPassages.json';
 import retiredPartData from '@/data/retiredReadingParts.json';
 import type { PathText, ReadingModule, ThinkingPath, PathSummary } from '@/lib/thinkingPathTypes';
 const t = (en: string, es: string, fr: string): PathText => ({ en, es, fr });
 // A semantic change needs a new ID; wording fixes retain the current identity.
-type Passage = Pick<ReadingModule, 'sourceUrl' | 'location' | 'text' | 'contentNote'>;
+type Passage = Pick<ReadingModule, 'sourceUrl' | 'location' | 'text' | 'contentNote'> & { checkedAt?: string };
 const passages: Record<string, Passage> = passageData.passages;
 const makeModule = (value: Omit<ReadingModule, 'editorialStatus' | 'rightsEvidence' | 'text' | 'sourceKind'>): ReadingModule => {
   const passage = passages[value.id];
   if (!passage || passage.sourceUrl !== value.sourceUrl) throw new Error(`Missing or mismatched source passage: ${value.id}`);
+  const { checkedAt = '2026-10-14', ...passageContent } = passage;
   const gutenbergId = value.sourceUrl.match(/\/(?:files|(?:cache\/)?epub)\/(\d+)\//)?.[1];
   return {
     ...value,
-    ...passage,
+    ...passageContent,
     sourceKind: 'excerpt',
     editorialStatus: 'needs_review',
     rightsEvidence: {
       jurisdiction: 'US',
       statusUrl: gutenbergId ? `https://www.gutenberg.org/ebooks/${gutenbergId}` : 'https://www.copyright.gov/what-is-copyright/',
-      checkedAt: '2026-10-14',
+      checkedAt,
     },
   };
 };
@@ -140,7 +143,7 @@ const additions = Object.fromEntries(Object.entries(partData).map(([slug, entrie
 // Replaced passages keep their original identities and answers; they are not active path parts.
 const previousReadings = Object.fromEntries(Object.entries(retiredPartData).map(([key, entries]) => [key, buildParts(key.split('/')[0], entries as Part[])]));
 
-export const thinkingPaths: ThinkingPath[] = [
+const starterPaths: ThinkingPath[] = [
   { slug: 'power-leadership', title: t('Power & Leadership', 'Poder y liderazgo', 'Pouvoir et leadership'), description: t('Who should lead, how power works, and what keeps it accountable.', 'Quién debe dirigir, cómo funciona el poder y cómo exigir responsabilidad.', 'Qui doit diriger, comment fonctionne le pouvoir et comment le contrôler.'), readingPaths: [{ slug: 'rulers-responsibility', title: t('Rulers and responsibility', 'Gobernantes y responsabilidad', 'Dirigeants et responsabilité'), description: t('Ten readings on wisdom, trust, counsel, preparation, and accountable leadership.', 'Diez lecturas sobre sabiduría, confianza, consejos, preparación y liderazgo responsable.', 'Dix lectures sur sagesse, confiance, conseil, préparation et direction responsable.'), modules: [plato, prince, sun, ...additions['power-leadership']] }] },
   { slug: 'freedom-government', title: t('Freedom & Government', 'Libertad y gobierno', 'Liberté et gouvernement'), description: t('Consent, rights, institutions, and the gap between ideals and practice.', 'Consentimiento, derechos, instituciones y la distancia entre ideal y práctica.', 'Consentement, droits, institutions et écart entre idéal et pratique.'), readingPaths: [{ slug: 'promises-of-freedom', title: t('Promises of freedom', 'Promesas de libertad', 'Promesses de liberté'), description: t('Ten readings on rights, institutions, and who can actually use a promised freedom.', 'Diez lecturas sobre derechos, instituciones y quién puede ejercer una libertad prometida.', 'Dix lectures sur les droits, les institutions et l’exercice réel d’une liberté promise.'), modules: [declaration, constitution, ...additions['freedom-government']] }] },
   { slug: 'meaning-morality-suffering', title: t('Meaning, Morality & Suffering', 'Sentido, moralidad y sufrimiento', 'Sens, morale et souffrance'), description: t('What we owe others when explanations and outcomes conflict.', 'Qué debemos a otros cuando chocan explicaciones y resultados.', 'Ce que nous devons aux autres lorsque les explications et les résultats s’opposent.'), readingPaths: [{ slug: 'innocence-and-the-greater-good', title: t('Innocence and the greater good', 'Inocencia y bien mayor', 'Innocence et bien supérieur'), description: t('Ten readings comparing suffering, care, duty, and responsibility without prescribing a belief.', 'Diez lecturas que comparan sufrimiento, cuidado, deber y responsabilidad sin imponer creencias.', 'Dix lectures comparant souffrance, soin, devoir et responsabilité sans imposer de croyance.'), modules: [ivan, ...additions['meaning-morality-suffering']] }] },
@@ -150,13 +153,35 @@ export const thinkingPaths: ThinkingPath[] = [
   { slug: 'economics-society', title: t('Economics & Society', 'Economía y sociedad', 'Économie et société'), description: t('Incentives, exchange, cooperation, and who carries the costs.', 'Incentivos, intercambio, cooperación y quién soporta los costes.', 'Incitations, échanges, coopération et répartition des coûts.'), readingPaths: [{ slug: 'interests-and-exchange', title: t('Interests and exchange', 'Intereses e intercambio', 'Intérêts et échanges'), description: t('Ten readings comparing exchange, innovation, status, opportunity, and the costs of economic progress.', 'Diez lecturas que comparan intercambio, innovación, posición social, oportunidades y los costos del progreso económico.', 'Dix lectures comparant échange, innovation, statut social, possibilités et coûts du progrès économique.'), modules: [smith, ...additions['economics-society']] }] },
 ];
 
+// A reading has one canonical question and session identity even when several paths use it.
+// New contexts that change the question or passage must create a new reading ID.
+const moduleLibrary = new Map([
+  ...starterPaths.flatMap(path => path.readingPaths.flatMap(reading => reading.modules)),
+  ...Object.entries(schoolTrialParts).flatMap(([slug, entries]) => buildParts(slug, entries as Part[])),
+].map(module => [module.id, module]));
+export const thinkingPaths: ThinkingPath[] = starterPaths.map(path => ({
+  ...path,
+  readingPaths: [
+    ...path.readingPaths.map(reading => ({ ...reading, practiceGoal: sequences.starterGoals[path.slug as keyof typeof sequences.starterGoals], connections: (sequences.starterConnections as Record<string, PathText[]>)[path.slug] })),
+    ...sequences.additionalPaths[path.slug as keyof typeof sequences.additionalPaths].map(({ moduleIds, ...reading }) => ({
+      ...reading,
+      modules: moduleIds.map(id => {
+        const readingModule = moduleLibrary.get(id);
+        if (!readingModule) throw new Error(`Unknown reading in sequence ${path.slug}/${reading.slug}: ${id}`);
+        return readingModule;
+      }),
+    })),
+  ],
+}));
+export function getCurrentReadingModules(): ReadingModule[] { return [...moduleLibrary.values()]; }
+
 export function getThinkingPath(slug: string) { return thinkingPaths.find(path => path.slug === slug); }
 export function getPreviousReadingModules(pathSlug: string, readingSlug: string): ReadingModule[] {
   if (!getThinkingPath(pathSlug)?.readingPaths.some(reading => reading.slug === readingSlug)) return [];
   return previousReadings[`${pathSlug}/${readingSlug}`] || [];
 }
 export function getReadingModule(id: string) {
-  return thinkingPaths.flatMap(path => path.readingPaths).flatMap(path => path.modules).find(module => module.id === id)
+  return moduleLibrary.get(id)
     || Object.values(previousReadings).flat().find(module => module.id === id);
 }
 export function publicPathSummaries(): PathSummary[] {

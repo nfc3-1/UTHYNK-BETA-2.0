@@ -1,7 +1,7 @@
 import type { Language } from '@/lib/reasoningI18n';
 export const pathCopy = {
   en: {
-    title: 'Thinking Paths', reading: 'Reading Paths', beta: 'Beta', home: 'Home', lessons: 'All lessons', language: 'Language',
+    practice: 'What you will practice', connection: 'Connection in this path', shared: 'A reading used in another path keeps the same saved answers and progress.', each: 'readings per path', title: 'Thinking Paths', reading: 'Reading Paths', beta: 'Beta', home: 'Home', lessons: 'All lessons', language: 'Language',
     intro: 'Explore a big idea, follow a reading path, and develop your own judgment. These themed journeys sit alongside the daily challenge and existing lessons.',
     guide: 'How to follow a path', steps: ['Choose an idea', 'Read a short passage', 'Think through four steps'],
     stepDetails: ['Pick a Thinking Path below.', 'Open a Reading Path and choose a reading.', 'Answer, explore another angle, respond again, then reflect on the synthesis.'],
@@ -13,7 +13,7 @@ export const pathCopy = {
     previousReadings: 'Previous readings', previousReading: 'Previous reading', currentReadings: 'Current readings', previousReadingNote: 'This reading belongs to an earlier selection. Your saved answers and drafts remain here; the current path has ten readings from a wider range of sources.',
   },
   es: {
-    title: 'Rutas de pensamiento', reading: 'Rutas de lectura', beta: 'Beta', home: 'Inicio', lessons: 'Todas las lecciones', language: 'Idioma',
+    practice: 'Qué vas a practicar', connection: 'Conexión en esta ruta', shared: 'Una lectura usada en otra ruta conserva las mismas respuestas y el mismo progreso.', each: 'lecturas por ruta', title: 'Rutas de pensamiento', reading: 'Rutas de lectura', beta: 'Beta', home: 'Inicio', lessons: 'Todas las lecciones', language: 'Idioma',
     intro: 'Explora una gran idea, sigue una ruta de lectura y desarrolla tu propio criterio. Estas rutas temáticas acompañan al desafío diario y las lecciones existentes.',
     guide: 'Cómo seguir una ruta', steps: ['Elige una idea', 'Lee un pasaje breve', 'Reflexiona en cuatro pasos'],
     stepDetails: ['Elige una ruta de pensamiento.', 'Abre una ruta de lectura y elige una lectura.', 'Responde, explora otro ángulo, vuelve a responder y reflexiona sobre la síntesis.'],
@@ -25,7 +25,7 @@ export const pathCopy = {
     previousReadings: 'Lecturas anteriores', previousReading: 'Lectura anterior', currentReadings: 'Lecturas actuales', previousReadingNote: 'Esta lectura pertenece a una selección anterior. Tus respuestas y borradores guardados siguen aquí; la ruta actual tiene diez lecturas de fuentes más variadas.',
   },
   fr: {
-    title: 'Parcours de réflexion', reading: 'Parcours de lecture', beta: 'Bêta', home: 'Accueil', lessons: 'Toutes les leçons', language: 'Langue',
+    practice: 'Ce que tu vas pratiquer', connection: 'Lien dans ce parcours', shared: 'Une lecture utilisée dans un autre parcours conserve les mêmes réponses et la même progression.', each: 'lectures par parcours', title: 'Parcours de réflexion', reading: 'Parcours de lecture', beta: 'Bêta', home: 'Accueil', lessons: 'Toutes les leçons', language: 'Langue',
     intro: 'Explore une grande idée, suis un parcours de lecture et développe ton propre jugement. Ces parcours thématiques accompagnent le défi quotidien et les leçons existantes.',
     guide: 'Comment suivre un parcours', steps: ['Choisis une idée', 'Lis un court passage', 'Réfléchis en quatre étapes'],
     stepDetails: ['Choisis un parcours de réflexion.', 'Ouvre un parcours de lecture et choisis une lecture.', 'Réponds, explore un autre angle, réponds à nouveau, puis réfléchis à la synthèse.'],

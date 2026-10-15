@@ -1,0 +1,520 @@
+{
+  "power-leadership": [
+    {
+      "id": "reading-emerson-conviction-and-crowds",
+      "source": "emerson",
+      "title": {
+        "en": "Conviction in a crowd",
+        "es": "Convicción entre la multitud",
+        "fr": "La conviction dans la foule"
+      },
+      "location": {
+        "en": "Self-Reliance: paragraph beginning “What I must do”",
+        "es": "Confianza en uno mismo: párrafo que comienza «What I must do»",
+        "fr": "Confiance en soi : paragraphe commençant par « What I must do »"
+      },
+      "plainLanguage": {
+        "en": "Emerson defends independent judgment. Test the difference between resisting social pressure and refusing warranted criticism.",
+        "es": "Emerson defiende el juicio independiente. Distingue resistir la presión social de rechazar críticas justificadas.",
+        "fr": "Emerson défend le jugement indépendant. Distingue la résistance à la pression sociale du refus des critiques justifiées."
+      },
+      "lenses": [
+        {
+          "en": "Popularity does not establish what is right.",
+          "es": "La popularidad no demuestra qué es correcto.",
+          "fr": "La popularité ne prouve pas ce qui est juste."
+        },
+        {
+          "en": "Independence still needs reasons and accountability.",
+          "es": "La independencia sigue necesitando razones y responsabilidad.",
+          "fr": "L’indépendance exige toujours des raisons et des comptes à rendre."
+        }
+      ],
+      "question": {
+        "en": "Which phrase in Emerson supports a leader resisting the crowd, and what would distinguish that independence from ignoring good criticism?",
+        "es": "¿Qué frase de Emerson apoya que un líder resista a la multitud y qué distinguiría esa independencia de ignorar una buena crítica?",
+        "fr": "Quelle expression d’Emerson justifie qu’un dirigeant résiste à la foule, et qu’est-ce qui distinguerait cette indépendance du refus d’une critique fondée ?"
+      }
+    },
+    {
+      "id": "reading-emerson-consistency-and-revision",
+      "source": "emerson",
+      "title": {
+        "en": "Changing course without losing trust",
+        "es": "Cambiar de rumbo sin perder confianza",
+        "fr": "Changer de cap sans perdre la confiance"
+      },
+      "location": {
+        "en": "Self-Reliance: “A foolish consistency” paragraph",
+        "es": "Confianza en uno mismo: párrafo «A foolish consistency»",
+        "fr": "Confiance en soi : paragraphe « A foolish consistency »"
+      },
+      "plainLanguage": {
+        "en": "Emerson challenges consistency for its own sake. His list of admired figures does not prove that every misunderstood person is right.",
+        "es": "Emerson cuestiona la coherencia por sí misma. Su lista de figuras admiradas no demuestra que toda persona incomprendida tenga razón.",
+        "fr": "Emerson conteste la cohérence recherchée pour elle-même. Sa liste de figures admirées ne prouve pas que toute personne incomprise ait raison."
+      },
+      "lenses": [
+        {
+          "en": "New evidence may justify a changed decision.",
+          "es": "Nuevas pruebas pueden justificar cambiar una decisión.",
+          "fr": "De nouvelles preuves peuvent justifier un changement de décision."
+        },
+        {
+          "en": "Unexplained reversals can undermine trust.",
+          "es": "Los cambios sin explicación pueden debilitar la confianza.",
+          "fr": "Les revirements inexpliqués peuvent affaiblir la confiance."
+        }
+      ],
+      "question": {
+        "en": "Where does Emerson make a defensible case for revising a decision, and where does his claim about being misunderstood go beyond the evidence?",
+        "es": "¿Dónde defiende Emerson de forma razonable revisar una decisión y dónde va más allá de las pruebas su afirmación sobre ser incomprendido?",
+        "fr": "Où Emerson défend-il raisonnablement la révision d’une décision, et où son affirmation sur le fait d’être incompris dépasse-t-elle les preuves ?"
+      }
+    }
+  ],
+  "freedom-government": [
+    {
+      "id": "reading-truth-allies-and-access",
+      "source": "truth",
+      "title": {
+        "en": "Rights need practical allies",
+        "es": "Los derechos necesitan aliados concretos",
+        "fr": "Les droits ont besoin d’alliés concrets"
+      },
+      "location": {
+        "en": "Isabella’s efforts to recover her son: seeking Quaker assistance",
+        "es": "Esfuerzos de Isabella por recuperar a su hijo: ayuda cuáquera",
+        "fr": "Efforts d’Isabella pour retrouver son fils : aide des quakers"
+      },
+      "plainLanguage": {
+        "en": "Isabella is the name used for Truth at this stage of the narrative. The passage distinguishes having a claim from finding people who can help act on it.",
+        "es": "Isabella es el nombre usado para Truth en esta etapa del relato. El pasaje distingue tener un derecho de encontrar personas que ayuden a ejercerlo.",
+        "fr": "Isabella est le nom employé pour Truth à ce stade du récit. Le passage distingue une revendication du soutien permettant d’agir."
+      },
+      "lenses": [
+        {
+          "en": "Listening can make an institution accessible.",
+          "es": "Escuchar puede hacer accesible una institución.",
+          "fr": "L’écoute peut rendre une institution accessible."
+        },
+        {
+          "en": "A right should not depend on finding a sympathetic stranger.",
+          "es": "Un derecho no debería depender de encontrar a un desconocido comprensivo.",
+          "fr": "Un droit ne devrait pas dépendre de la rencontre d’un inconnu compatissant."
+        }
+      ],
+      "question": {
+        "en": "What practical help changes Isabella’s ability to pursue her claim, and what does her need for that help reveal about access to justice?",
+        "es": "¿Qué ayuda concreta cambia la capacidad de Isabella para defender su derecho y qué revela esa necesidad sobre el acceso a la justicia?",
+        "fr": "Quelle aide concrète change la capacité d’Isabella à faire valoir sa revendication, et que révèle ce besoin sur l’accès à la justice ?"
+      }
+    },
+    {
+      "id": "reading-truth-remedy-and-delay",
+      "source": "truth",
+      "title": {
+        "en": "A remedy that misses the harm",
+        "es": "Una reparación que no responde al daño",
+        "fr": "Une réparation qui manque le préjudice"
+      },
+      "location": {
+        "en": "Recovering her son: the lawyer’s proposal to wait",
+        "es": "Recuperar a su hijo: la propuesta del abogado de esperar",
+        "fr": "Retrouver son fils : l’avocat propose d’attendre"
+      },
+      "plainLanguage": {
+        "en": "The lawyer proposes a financial remedy; Isabella identifies a different harm and an urgent risk. Examine whose definition of a successful remedy matters.",
+        "es": "El abogado propone una reparación económica; Isabella señala otro daño y un riesgo urgente. Examina quién define una reparación adecuada.",
+        "fr": "L’avocat propose une réparation financière ; Isabella désigne un autre préjudice et un risque urgent. Examine qui définit une réparation adaptée."
+      },
+      "lenses": [
+        {
+          "en": "Procedures can make claims enforceable.",
+          "es": "Los procedimientos pueden hacer exigibles los derechos.",
+          "fr": "Les procédures peuvent rendre les droits applicables."
+        },
+        {
+          "en": "Delay can make a formally available remedy ineffective.",
+          "es": "La demora puede volver ineficaz una reparación formalmente disponible.",
+          "fr": "Le retard peut rendre inefficace une réparation disponible en droit."
+        }
+      ],
+      "question": {
+        "en": "Why does the lawyer’s proposed payment fail to answer Isabella’s demand, and which detail shows why waiting changes the harm?",
+        "es": "¿Por qué el pago propuesto por el abogado no responde a la exigencia de Isabella y qué detalle muestra que esperar cambia el daño?",
+        "fr": "Pourquoi le paiement proposé par l’avocat ne répond-il pas à la demande d’Isabella, et quel détail montre que l’attente modifie le préjudice ?"
+      }
+    }
+  ],
+  "meaning-morality-suffering": [
+    {
+      "id": "reading-wilde-happiness-behind-walls",
+      "source": "wilde",
+      "title": {
+        "en": "Happiness behind a wall",
+        "es": "Felicidad tras un muro",
+        "fr": "Le bonheur derrière un mur"
+      },
+      "location": {
+        "en": "The Happy Prince: the statue remembers his palace",
+        "es": "El príncipe feliz: la estatua recuerda su palacio",
+        "fr": "Le Prince heureux : la statue se souvient de son palais"
+      },
+      "plainLanguage": {
+        "en": "A fictional statue reconsiders his former happiness after seeing suffering his palace concealed. The story invites judgment rather than supplying a factual account of a city.",
+        "es": "Una estatua ficticia reconsidera su antigua felicidad al ver el sufrimiento que ocultaba el palacio. El cuento invita a juzgar; no es un informe real de una ciudad.",
+        "fr": "Une statue fictive reconsidère son ancien bonheur en voyant la souffrance cachée par le palais. Le conte invite au jugement ; ce n’est pas un compte rendu réel d’une ville."
+      },
+      "lenses": [
+        {
+          "en": "Comfort can hide consequences for other people.",
+          "es": "La comodidad puede ocultar consecuencias para otros.",
+          "fr": "Le confort peut cacher les conséquences pour autrui."
+        },
+        {
+          "en": "Awareness alone does not tell us how to act.",
+          "es": "La conciencia por sí sola no indica cómo actuar.",
+          "fr": "La prise de conscience seule ne dit pas comment agir."
+        }
+      ],
+      "question": {
+        "en": "How does the wall shape the Prince’s understanding of happiness, and what responsibility follows when he can finally see beyond it?",
+        "es": "¿Cómo moldea el muro la idea de felicidad del Príncipe y qué responsabilidad surge cuando por fin puede ver más allá?",
+        "fr": "Comment le mur façonne-t-il l’idée du bonheur du Prince, et quelle responsabilité naît lorsqu’il peut enfin voir au-delà ?"
+      }
+    },
+    {
+      "id": "reading-wilde-seamstress-and-luxury",
+      "source": "wilde",
+      "title": {
+        "en": "Whose comfort depends on whose work?",
+        "es": "¿De qué trabajo depende la comodidad?",
+        "fr": "De quel travail dépend le confort ?"
+      },
+      "location": {
+        "en": "The Happy Prince: the seamstress and her child",
+        "es": "El príncipe feliz: la costurera y su hijo",
+        "fr": "Le Prince heureux : la couturière et son enfant"
+      },
+      "plainLanguage": {
+        "en": "Wilde places luxury work beside unmet basic needs. Distinguish urgent aid from changing the arrangements that produce the need.",
+        "es": "Wilde sitúa un trabajo de lujo junto a necesidades básicas insatisfechas. Distingue la ayuda urgente de cambiar las condiciones que generan esa necesidad.",
+        "fr": "Wilde place le travail du luxe à côté de besoins essentiels insatisfaits. Distingue l’aide urgente du changement des conditions qui créent ce besoin."
+      },
+      "lenses": [
+        {
+          "en": "A concrete gift may relieve immediate suffering.",
+          "es": "Un regalo concreto puede aliviar un sufrimiento inmediato.",
+          "fr": "Un don concret peut soulager une souffrance immédiate."
+        },
+        {
+          "en": "Relief may leave unfair arrangements intact.",
+          "es": "El alivio puede dejar intactas condiciones injustas.",
+          "fr": "Le soulagement peut laisser intactes des conditions injustes."
+        }
+      ],
+      "question": {
+        "en": "Which contrast in the seamstress’s situation makes the Prince’s gift urgent, and what problem would remain after the ruby is given?",
+        "es": "¿Qué contraste en la situación de la costurera vuelve urgente el regalo del Príncipe y qué problema persistiría después de entregar el rubí?",
+        "fr": "Quel contraste dans la situation de la couturière rend le don du Prince urgent, et quel problème subsisterait après le don du rubis ?"
+      }
+    }
+  ],
+  "truth-knowledge": [
+    {
+      "id": "reading-dewey-suspending-judgment",
+      "source": "dewey",
+      "title": {
+        "en": "Holding a conclusion open",
+        "es": "Mantener abierta una conclusión",
+        "fr": "Laisser une conclusion ouverte"
+      },
+      "location": {
+        "en": "Chapter I: suspending judgment during inquiry",
+        "es": "Capítulo I: suspender el juicio durante la investigación",
+        "fr": "Chapitre I : suspendre le jugement pendant l’enquête"
+      },
+      "plainLanguage": {
+        "en": "Dewey treats doubt as a reason to investigate, not a permanent refusal to decide. Consider the cost of waiting as well as premature certainty.",
+        "es": "Dewey trata la duda como motivo para investigar, no como negativa permanente a decidir. Considera tanto el costo de esperar como la certeza prematura.",
+        "fr": "Dewey voit dans le doute une raison d’enquêter, pas un refus permanent de décider. Considère le coût de l’attente autant que la certitude prématurée."
+      },
+      "lenses": [
+        {
+          "en": "A plausible first answer may need testing.",
+          "es": "Una primera respuesta plausible puede requerir comprobación.",
+          "fr": "Une première réponse plausible peut nécessiter une vérification."
+        },
+        {
+          "en": "Some decisions must be made before uncertainty disappears.",
+          "es": "Algunas decisiones deben tomarse antes de eliminar la incertidumbre.",
+          "fr": "Certaines décisions doivent être prises avant la disparition de l’incertitude."
+        }
+      ],
+      "question": {
+        "en": "What does Dewey say we should do instead of accepting the first plausible suggestion, and how would you decide when inquiry is sufficient to act?",
+        "es": "¿Qué propone Dewey en vez de aceptar la primera sugerencia plausible y cómo decidirías cuándo se ha investigado lo suficiente para actuar?",
+        "fr": "Que propose Dewey au lieu d’accepter la première suggestion plausible, et comment déciderais-tu que l’enquête suffit pour agir ?"
+      }
+    },
+    {
+      "id": "reading-dewey-time-to-reflect",
+      "source": "dewey",
+      "title": {
+        "en": "Making room to reconsider",
+        "es": "Hacer espacio para reconsiderar",
+        "fr": "Faire place à la réflexion"
+      },
+      "location": {
+        "en": "Chapter XV: the necessity for mental leisure",
+        "es": "Capítulo XV: la necesidad de tiempo para reflexionar",
+        "fr": "Chapitre XV : la nécessité du loisir mental"
+      },
+      "plainLanguage": {
+        "en": "Dewey distinguishes gathering information from making sense of it. Quiet time is a condition for reflection, not proof of sound reasoning.",
+        "es": "Dewey distingue reunir información de comprenderla. El silencio favorece la reflexión, pero no demuestra un razonamiento sólido.",
+        "fr": "Dewey distingue la collecte d’informations de leur élaboration. Le calme favorise la réflexion, mais ne prouve pas la solidité du raisonnement."
+      },
+      "lenses": [
+        {
+          "en": "Pausing may reveal a neglected alternative.",
+          "es": "Una pausa puede revelar una alternativa olvidada.",
+          "fr": "Une pause peut révéler une autre possibilité négligée."
+        },
+        {
+          "en": "Reflection still needs contact with evidence.",
+          "es": "La reflexión sigue necesitando contacto con las pruebas.",
+          "fr": "La réflexion doit rester en contact avec les preuves."
+        }
+      ],
+      "question": {
+        "en": "Why does Dewey compare reasoning to digestion, and what would show that a pause improved a conclusion rather than merely delayed it?",
+        "es": "¿Por qué compara Dewey el razonamiento con la digestión y qué mostraría que una pausa mejoró una conclusión en vez de solo retrasarla?",
+        "fr": "Pourquoi Dewey compare-t-il le raisonnement à la digestion, et qu’est-ce qui montrerait qu’une pause a amélioré une conclusion plutôt que simplement la retarder ?"
+      }
+    }
+  ],
+  "human-nature": [
+    {
+      "id": "reading-shelley-rejection-and-responsibility",
+      "source": "shelley",
+      "title": {
+        "en": "Explanation and responsibility",
+        "es": "Explicación y responsabilidad",
+        "fr": "Explication et responsabilité"
+      },
+      "location": {
+        "en": "Chapter 10: the creature addresses Frankenstein",
+        "es": "Capítulo 10: la criatura se dirige a Frankenstein",
+        "fr": "Chapitre 10 : la créature s’adresse à Frankenstein"
+      },
+      "plainLanguage": {
+        "en": "The creature asks to be heard and assigns a duty to his creator. His account raises separate questions about the causes of harm and responsibility for choices.",
+        "es": "La criatura pide ser escuchada y atribuye un deber a su creador. Su relato plantea por separado las causas del daño y la responsabilidad por las decisiones.",
+        "fr": "La créature demande à être entendue et attribue un devoir à son créateur. Son récit distingue les causes du mal de la responsabilité des choix."
+      },
+      "lenses": [
+        {
+          "en": "Rejection can help explain a harmful response.",
+          "es": "El rechazo puede ayudar a explicar una respuesta dañina.",
+          "fr": "Le rejet peut aider à expliquer une réaction nuisible."
+        },
+        {
+          "en": "An explanation does not remove responsibility for harm.",
+          "es": "Una explicación no elimina la responsabilidad por el daño.",
+          "fr": "Une explication ne supprime pas la responsabilité du préjudice."
+        }
+      ],
+      "question": {
+        "en": "What does the creature say Frankenstein owes him, and which part of that claim could you accept without accepting his explanation as a justification for harm?",
+        "es": "¿Qué dice la criatura que Frankenstein le debe y qué parte aceptarías sin convertir su explicación en una justificación del daño?",
+        "fr": "Que dit la créature que Frankenstein lui doit, et quelle part accepterais-tu sans transformer son explication en justification du mal ?"
+      }
+    },
+    {
+      "id": "reading-shelley-observing-and-inferring",
+      "source": "shelley",
+      "title": {
+        "en": "The limits of watching others",
+        "es": "Los límites de observar a otros",
+        "fr": "Les limites de l’observation d’autrui"
+      },
+      "location": {
+        "en": "Chapter 12: observing the cottagers",
+        "es": "Capítulo 12: observación de la familia de la cabaña",
+        "fr": "Chapitre 12 : observation des habitants de la chaumière"
+      },
+      "plainLanguage": {
+        "en": "The creature learns about a family by watching from outside. Notice which details he sees and which feelings or histories he infers.",
+        "es": "La criatura conoce a una familia observándola desde fuera. Distingue los detalles que ve de los sentimientos e historias que deduce.",
+        "fr": "La créature découvre une famille en l’observant de l’extérieur. Distingue les détails observés des sentiments et des histoires déduits."
+      },
+      "lenses": [
+        {
+          "en": "Careful attention can reveal subtle differences.",
+          "es": "La atención cuidadosa puede revelar diferencias sutiles.",
+          "fr": "L’attention peut révéler des différences subtiles."
+        },
+        {
+          "en": "A sympathetic observer can still misread another person.",
+          "es": "Un observador comprensivo también puede interpretar mal a otra persona.",
+          "fr": "Même un observateur bienveillant peut mal comprendre autrui."
+        }
+      ],
+      "question": {
+        "en": "Which observation supports the creature’s belief that Felix is suffering, and what alternative explanation fits Felix’s cheerful voice?",
+        "es": "¿Qué observación apoya la idea de que Felix sufre y qué explicación alternativa encaja con su voz alegre?",
+        "fr": "Quelle observation soutient l’idée que Felix souffre, et quelle autre explication correspond à sa voix joyeuse ?"
+      }
+    }
+  ],
+  "civilizations-culture": [
+    {
+      "id": "reading-eastman-experience-and-expertise",
+      "source": "eastman",
+      "title": {
+        "en": "Expertise without a notebook",
+        "es": "Experiencia sin cuaderno",
+        "fr": "L’expertise sans carnet"
+      },
+      "location": {
+        "en": "Part I, III: My Indian Grandmother",
+        "es": "Parte I, III: Mi abuela indígena",
+        "fr": "Partie I, III : Ma grand-mère autochtone"
+      },
+      "plainLanguage": {
+        "en": "Eastman supports his judgment with practice, memory, and other people’s respect. His admiration also gives us a reason to ask what independent confirmation would help.",
+        "es": "Eastman apoya su juicio en la práctica, la memoria y el respeto de otras personas. Su admiración invita a buscar confirmación independiente.",
+        "fr": "Eastman fonde son jugement sur la pratique, la mémoire et l’estime d’autrui. Son admiration invite aussi à chercher une confirmation indépendante."
+      },
+      "lenses": [
+        {
+          "en": "Expertise need not depend on written credentials.",
+          "es": "La experiencia no tiene por qué depender de credenciales escritas.",
+          "fr": "L’expertise ne dépend pas nécessairement de titres écrits."
+        },
+        {
+          "en": "Respect and memory alone do not settle every factual claim.",
+          "es": "El respeto y la memoria no resuelven por sí solos toda afirmación factual.",
+          "fr": "Le respect et la mémoire ne suffisent pas à établir toute affirmation factuelle."
+        }
+      ],
+      "question": {
+        "en": "What evidence does Eastman give for his grandmother’s expertise, and how could you respect that expertise while checking a particular claim?",
+        "es": "¿Qué pruebas ofrece Eastman sobre la experiencia de su abuela y cómo podrías respetarla y a la vez comprobar una afirmación concreta?",
+        "fr": "Quels éléments Eastman donne-t-il pour établir l’expertise de sa grand-mère, et comment la respecter tout en vérifiant une affirmation précise ?"
+      }
+    },
+    {
+      "id": "reading-eastman-recording-shared-memory",
+      "source": "eastman",
+      "title": {
+        "en": "A record made of sticks",
+        "es": "Un registro hecho con palos",
+        "fr": "Une mémoire inscrite sur des bâtons"
+      },
+      "location": {
+        "en": "Part V, I: A Visit to Smoky Day",
+        "es": "Parte V, I: Una visita a Smoky Day",
+        "fr": "Partie V, I : Une visite à Smoky Day"
+      },
+      "plainLanguage": {
+        "en": "The record combines objects, remembered meanings, and shared reference events. Compare what this system preserves with what a written chronology preserves.",
+        "es": "El registro combina objetos, significados recordados y acontecimientos de referencia compartidos. Compara lo que conserva este sistema con una cronología escrita.",
+        "fr": "Cette archive combine objets, significations mémorisées et événements de référence partagés. Compare ce qu’elle conserve à une chronologie écrite."
+      },
+      "lenses": [
+        {
+          "en": "Objects can preserve and organize historical knowledge.",
+          "es": "Los objetos pueden conservar y organizar conocimientos históricos.",
+          "fr": "Les objets peuvent conserver et organiser le savoir historique."
+        },
+        {
+          "en": "A record may require people who know how to interpret it.",
+          "es": "Un registro puede requerir personas que sepan interpretarlo.",
+          "fr": "Une archive peut nécessiter des personnes sachant l’interpréter."
+        }
+      ],
+      "question": {
+        "en": "How do Smoky Day’s sticks organize time, and what would a later reader need to interpret this record responsibly?",
+        "es": "¿Cómo organizan el tiempo los palos de Smoky Day y qué necesitaría un lector posterior para interpretar el registro con responsabilidad?",
+        "fr": "Comment les bâtons de Smoky Day organisent-ils le temps, et de quoi un lecteur ultérieur aurait-il besoin pour interpréter cette archive avec rigueur ?"
+      }
+    }
+  ],
+  "economics-society": [
+    {
+      "id": "reading-gilman-interdependence-and-independence",
+      "source": "gilman",
+      "title": {
+        "en": "Independent and interdependent",
+        "es": "Independiente e interdependiente",
+        "fr": "Indépendance et interdépendance"
+      },
+      "location": {
+        "en": "Chapter I: defining economic independence",
+        "es": "Capítulo I: definición de la independencia económica",
+        "fr": "Chapitre I : définition de l’indépendance économique"
+      },
+      "plainLanguage": {
+        "en": "Gilman distinguishes relying on others from lacking control over one’s livelihood. Test both her exchange example and the limits of defining contribution through payment.",
+        "es": "Gilman distingue depender de otros de no controlar el propio sustento. Examina su ejemplo de intercambio y los límites de medir la contribución mediante pagos.",
+        "fr": "Gilman distingue le recours à autrui de l’absence de contrôle sur ses ressources. Examine son exemple d’échange et les limites d’une contribution mesurée par le paiement."
+      },
+      "lenses": [
+        {
+          "en": "Mutual reliance can coexist with personal agency.",
+          "es": "La dependencia mutua puede coexistir con la autonomía.",
+          "fr": "La dépendance mutuelle peut coexister avec l’autonomie."
+        },
+        {
+          "en": "Some valuable contributions are not bought and sold.",
+          "es": "Algunas contribuciones valiosas no se compran ni se venden.",
+          "fr": "Certaines contributions précieuses ne s’achètent ni ne se vendent."
+        }
+      ],
+      "question": {
+        "en": "How does Gilman distinguish interdependence from dependence, and what valuable contribution might her payment-based example fail to capture?",
+        "es": "¿Cómo distingue Gilman la interdependencia de la dependencia y qué contribución valiosa podría omitir su ejemplo basado en pagos?",
+        "fr": "Comment Gilman distingue-t-elle l’interdépendance de la dépendance, et quelle contribution précieuse son exemple fondé sur le paiement pourrait-il manquer ?"
+      }
+    },
+    {
+      "id": "reading-gilman-contribution-and-control",
+      "source": "gilman",
+      "title": {
+        "en": "Useful work without independence",
+        "es": "Trabajo útil sin independencia",
+        "fr": "Un travail utile sans indépendance"
+      },
+      "location": {
+        "en": "Chapter I: service, household labor, and control",
+        "es": "Capítulo I: servicio, trabajo doméstico y control",
+        "fr": "Chapitre I : service, travail domestique et contrôle"
+      },
+      "plainLanguage": {
+        "en": "Gilman uses a deliberately unsettling analogy to separate productive contribution from freedom and compensation. Challenge the analogy as well as the economic distinction.",
+        "es": "Gilman usa una analogía deliberadamente incómoda para separar contribución productiva, libertad y remuneración. Cuestiona tanto la analogía como la distinción económica.",
+        "fr": "Gilman utilise une analogie volontairement dérangeante pour distinguer contribution productive, liberté et rémunération. Examine l’analogie autant que la distinction économique."
+      },
+      "lenses": [
+        {
+          "en": "Useful work does not automatically bring bargaining power.",
+          "es": "El trabajo útil no otorga automáticamente poder de negociación.",
+          "fr": "Un travail utile ne donne pas automatiquement du pouvoir de négociation."
+        },
+        {
+          "en": "An analogy can expose a problem while obscuring important differences.",
+          "es": "Una analogía puede revelar un problema y ocultar diferencias importantes.",
+          "fr": "Une analogie peut révéler un problème tout en masquant des différences importantes."
+        }
+      ],
+      "question": {
+        "en": "Which distinction is Gilman trying to establish with the valet example, and where does her comparison of women and horses weaken rather than strengthen the argument?",
+        "es": "¿Qué distinción intenta establecer Gilman con el ejemplo del criado y dónde debilita su argumento la comparación entre mujeres y caballos?",
+        "fr": "Quelle distinction Gilman cherche-t-elle à établir avec l’exemple du valet, et où sa comparaison entre femmes et chevaux affaiblit-elle son argument ?"
+      }
+    }
+  ]
+}

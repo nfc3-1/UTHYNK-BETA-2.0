@@ -383,5 +383,82 @@
     "edition": "1888 · Project Gutenberg #624",
     "sourceUrl": "https://www.gutenberg.org/cache/epub/624/pg624-images.html",
     "rights": "public_domain_us"
+  },
+  "emerson": {
+    "work": {
+      "en": "Essays — First Series",
+      "es": "Ensayos — Primera serie",
+      "fr": "Essais — Première série"
+    },
+    "author": "Ralph Waldo Emerson",
+    "edition": "Self-Reliance, 1841 · Project Gutenberg #2944",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/2944/pg2944-images.html",
+    "rights": "public_domain_us"
+  },
+  "truth": {
+    "work": {
+      "en": "The Narrative of Sojourner Truth",
+      "es": "La narración de Sojourner Truth",
+      "fr": "Le récit de Sojourner Truth"
+    },
+    "author": "Sojourner Truth, narrated to Olive Gilbert",
+    "edition": "1850 narrative, recorded by Olive Gilbert · Project Gutenberg #1674",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/1674/pg1674-images.html",
+    "rights": "public_domain_us"
+  },
+  "wilde": {
+    "work": {
+      "en": "The Happy Prince",
+      "es": "El príncipe feliz",
+      "fr": "Le Prince heureux"
+    },
+    "author": "Oscar Wilde",
+    "edition": "1888 tale · Project Gutenberg #902",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/902/pg902-images.html",
+    "rights": "public_domain_us"
+  },
+  "dewey": {
+    "work": {
+      "en": "How We Think",
+      "es": "Cómo pensamos",
+      "fr": "Comment nous pensons"
+    },
+    "author": "John Dewey",
+    "edition": "1910 text · Project Gutenberg #37423",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/37423/pg37423-images.html",
+    "rights": "public_domain_us"
+  },
+  "shelley": {
+    "work": {
+      "en": "Frankenstein",
+      "es": "Frankenstein",
+      "fr": "Frankenstein"
+    },
+    "author": "Mary Shelley",
+    "edition": "Project Gutenberg #84 transcription; chapters 10 and 12",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/84/pg84-images.html",
+    "rights": "public_domain_us"
+  },
+  "eastman": {
+    "work": {
+      "en": "Indian Boyhood",
+      "es": "Infancia indígena",
+      "fr": "Enfance amérindienne"
+    },
+    "author": "Charles A. Eastman (Ohiyesa)",
+    "edition": "1902 memoir · Project Gutenberg #337",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/337/pg337-images.html",
+    "rights": "public_domain_us"
+  },
+  "gilman": {
+    "work": {
+      "en": "Women and Economics",
+      "es": "Las mujeres y la economía",
+      "fr": "Les Femmes et l’économie"
+    },
+    "author": "Charlotte Perkins Gilman",
+    "edition": "1898 work · Project Gutenberg #57913 transcription",
+    "sourceUrl": "https://www.gutenberg.org/cache/epub/57913/pg57913-images.html",
+    "rights": "public_domain_us"
   }
 }

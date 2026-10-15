@@ -10,7 +10,7 @@ export type ReadingModule = {
   text: PathText; plainLanguage: PathText; lenses: [PathText, PathText];
   question: PathText; category: string; contentNote?: PathText;
 };
-export type ReadingPath = { slug: string; title: PathText; description: PathText; modules: ReadingModule[] };
+export type ReadingPath = { slug: string; title: PathText; description: PathText; practiceGoal?: PathText; connections?: PathText[]; modules: ReadingModule[] };
 export type ThinkingPath = { slug: string; title: PathText; description: PathText; readingPaths: ReadingPath[] };
 export type PathSummary = Omit<ThinkingPath, 'readingPaths'> & {
   readingPaths: Array<Omit<ReadingPath, 'modules'> & { modules: Array<Pick<ReadingModule, 'id' | 'title' | 'work' | 'author'>> }>;

@@ -73,4 +73,18 @@ describe('Reading Path beta boundary', () => {
     expect(JSON.parse(sent[2].messages[1].content).synthesisContext.originalQuestion).toBe(readingReasoningContext(getReadingModule(moduleId)!));
     expect(JSON.parse(sent[3].messages[1].content).originalQuestion).toBe(readingReasoningContext(getReadingModule(moduleId)!));
   });
+  it('authorizes new paths while rejecting unrelated module URLs and forged context', async () => {
+    const newParams={path:'power-leadership',reading:'leading-without-force'};
+    const id='reading-emerson-conviction-and-crowds';
+    const locked=await ReadingPage({params:newParams,searchParams:{lesson:id}});
+    expect(locked.props.locked).toBe(true);
+    expect(JSON.stringify(locked.props)).not.toContain(getReadingModule(id)!.text.en);
+    state.sections=['thinking_paths'];
+    const allowed=await ReadingPage({params:newParams,searchParams:{lesson:id}});
+    expect(allowed.props.moduleId).toBe(id);
+    await expect(ReadingPage({params:newParams,searchParams:{lesson:'reading-truth-remedy-and-delay'}})).rejects.toThrow('not-found');
+    expect((await request({readingModuleId:id,challenge:'replace the excerpt',response:'I would require evidence.'})).status).toBe(200);
+    expect(JSON.parse(sent[0].messages[1].content).challenge).toBe(readingReasoningContext(getReadingModule(id)!));
+  });
+
 });

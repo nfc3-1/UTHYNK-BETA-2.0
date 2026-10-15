@@ -13,7 +13,7 @@ const path = thinkingPaths[0];
 const reading = path.readingPaths[0];
 const module = reading.modules[0];
 const previousModules = getPreviousReadingModules(path.slug, reading.slug);
-function mount(id = module.id) { act(() => { page = create(createElement(ReadingPathClient, { pathSlug: path.slug, pathTitle: path.title, reading, previousModules, moduleId: id, userId: 'verified-user' })); }); }
+function mount(id = module.id, selected = reading) { act(() => { page = create(createElement(ReadingPathClient, { pathSlug: path.slug, pathTitle: path.title, reading: selected, previousModules: selected === reading ? previousModules : [], moduleId: id, userId: 'verified-user' })); }); }
 function setup() {
   storage = new Map([['uthynk-profile', JSON.stringify({ id: 'stale-local-user', age_band: '13_17' })]]); requests = [];
   vi.stubGlobal('localStorage', { getItem: (key: string) => storage.get(key) || null, setItem: (key: string, value: string) => storage.set(key, value), removeItem: (key: string) => storage.delete(key) });
@@ -112,6 +112,29 @@ describe('Reading Path journey', () => {
     act(() => page.unmount()); mount(last.id); change('fr');
     expect(page.root.findByType('textarea').props.value).toBe('Tenth part draft');
     expect(page.root.findAllByType('a').some(link => link.props.href?.endsWith(`lesson=${last.id}`))).toBe(true);
+  });
+
+  it('restores the same canonical reading across different curated paths without creating another session', () => {
+    setup(); const curated = path.readingPaths[1];
+    const shared = reading.modules.find(item => curated.modules.some(other => other.id === item.id))!;
+    mount(shared.id); type('A shared reading draft'); const before = saved(shared.id);
+    act(() => page.unmount()); mount(shared.id, curated); change('fr');
+    expect(page.root.findByType('textarea').props.value).toBe('A shared reading draft');
+    expect(saved(shared.id)).toMatchObject({sessionId:before.sessionId,conversationId:before.conversationId,originalQuestion:shared.question.en});
+    expect(page.root.findByType('aside').findByType('ol').findAllByType('li')).toHaveLength(10);
+    expect(page.root.findAllByType('a').some(a => a.props.href?.includes(`/${curated.slug}?lesson=`))).toBe(true);
+    expect(readingProgress(localStorage,shared,'verified-user','13_17','es')).toBe('saved');
+  });
+  it('runs a newly added reading through both answers and preserves language and completion', async () => {
+    setup(); const curated = path.readingPaths[1]; const added = curated.modules[0];
+    mount(added.id, curated); type('Independent judgment needs reasons'); change('es');
+    await submit(); type('I would also listen to warranted criticism'); change('fr'); await submit();
+    expect(requests.map(request => request.readingModuleId)).toEqual([added.id,added.id]);
+    expect(page.root.findAllByType('textarea')).toHaveLength(0);
+    expect(page.root.findByProps({className:'thinkingLabelLayer'}).findAllByType('span')).toHaveLength(4);
+    expect(readingProgress(localStorage,added,'verified-user','13_17','en')).toBe('complete');
+    act(() => page.unmount()); mount(added.id,curated);
+    expect(page.root.findAllByType('textarea')).toHaveLength(0);
   });
 
 });
