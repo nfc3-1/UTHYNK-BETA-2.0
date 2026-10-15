@@ -12,7 +12,7 @@ This supersedes the temporary Day 1 demo-label approach. Teacher results and the
 6. The teacher refreshes the class to inspect both actual answers, the coach’s perspective/question, synthesis, and rubric. Save a teacher comment; it becomes available to the learner when they reopen the assignment.
 7. **Participation** opens the class leaderboard. It counts completed assignments; it does not rank intelligence or imply a validated learning gain. Other classes cannot see these names or responses.
 
-A teacher can remove a membership and restore it explicitly. A removed learner cannot reactivate themselves using the old enrollment code. Removing a learner retains their historical submissions for the teacher. The global owner/admin retains access across classes. School/district organization and school-admin delegation are separate work; this release uses class ownership and enrollment boundaries.
+A teacher can remove a membership and restore it explicitly. A removed learner cannot reactivate themselves using the old enrollment code. Removing a learner retains their historical submissions for the teacher. The global owner/admin retains access across classes. School/district organization and scoped staff administration are described in [School and district boundaries](school-and-districts.md). School and district administrators receive aggregate class participation, not learner answers, comments, grades, or enrollment codes. Global platform administrators remain a distinct role.
 
 ## Where the score comes from
 
@@ -55,3 +55,14 @@ Assignment IDs namespace browser drafts, so the same lesson in different classes
 `supabase/tests/classroom.sql` exercises the live database in a transaction that rolls back all QA data: join, both submitted answers, restore, comment, actual completion count, replay prevention, outsider rejection, removed-member rejoin rejection, and denied client table/function privileges. It has passed against the connected database.
 
 Automated tests cover API origin/session boundaries, teacher ownership, learner isolation, access revocation, actual leaderboard counts, correct assignment links, server-stage recovery on another browser, assignment-vs-ordinary draft isolation, multilingual switches, point arithmetic, evidence validation, and existing four-step/session regressions. Provider and application mocks do not replace an authenticated browser rehearsal with a teacher and learner account. That final presentation rehearsal must confirm login, enrollment, assignment completion, teacher review, and comments on the live deployment.
+
+## Night One release checkpoint — October 15, 2026
+
+- Real school/district dashboard and explicit staff roles added; existing independent classes remain independent until the platform owner places them.
+- Live transactional school-isolation tests pass for school A versus school B within one district and for another district, revocation, counts, protected details, and rejected privilege escalation. All QA records are rolled back.
+- Navigation keeps Home, Daily Challenge, All Lessons, and Thinking Paths visible, with secondary destinations in a three-line disclosure. The existing language controls and four-step/session flow are retained.
+- Platform Admin now offers **Run Language Calibration** using six fresh provider assessments of the authored EN/ES/FR fixture. Reports are saved separately from student data and XP. A failure, missing evaluation, or a differing criterion is a failed calibration, even when totals match.
+- The provider request now repeats the requested language in the task payload using Spanish/French instructions. This reinforces the language requirement; live coaching-language verification is still required.
+- **Not yet signed off:** matched semantic scoring parity and a signed-in teacher/learner presentation rehearsal. The last live fixture failed parity (EN 14/20, ES 13/20, FR 14/20). No new scoring-model or point-anchor change is being represented as calibrated.
+
+The operator calibration feature permits authorized verification from the owner's own browser; it does not grant this agent a login or replace the user-facing walkthrough. A failed cloud-browser sign-in must not be circumvented.

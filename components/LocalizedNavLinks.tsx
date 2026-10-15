@@ -1,7 +1,6 @@
 'use client';
 
-import { ThinkingPathsNavLink } from '@/components/PathShell';
-import RestrictedNavLinks from '@/components/RestrictedNavLinks';
+import AppNavigation from '@/components/AppNavigation';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getStoredLanguageValue, type Language, UTHYNK_LANGUAGE_EVENT, uiCopy } from '@/lib/reasoningI18n';
@@ -66,17 +65,5 @@ export default function LocalizedNavLinks({ className = 'appNav', items = primar
 
   const copy = uiCopy[language];
 
-  return (
-    <nav className={className}>
-      {items.filter(item => item.href !== '/teacher').map((item) => (
-        <Link href={item.href} key={`${item.href}-${item.key}`}>
-          {copy[item.key]}
-        </Link>
-      ))}
-      <Link href="/classroom">{language === 'es' ? 'Mi clase' : language === 'fr' ? 'Ma classe' : 'My classroom'}</Link>
-      <Link href="/leaderboard">{language === 'es' ? 'Participación' : language === 'fr' ? 'Participation' : 'Participation'}</Link>
-      <ThinkingPathsNavLink language={language} />
-      <RestrictedNavLinks />
-    </nav>
-  );
+  return <AppNavigation language={language} className={className} extra={items.filter(i => i.key === 'logoutNav').map(i => <Link key={i.href} href={i.href}>{copy[i.key]}</Link>)} />;
 }

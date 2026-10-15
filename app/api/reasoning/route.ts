@@ -814,6 +814,8 @@ async function callOpenAi({
         {
           role: "user",
           content: JSON.stringify({
+            outputLanguage: language,
+            outputInstruction: language === 'es' ? 'Escribe todos los campos visibles únicamente en español. Las claves JSON permanecen en inglés.' : language === 'fr' ? 'Rédige tous les champs visibles uniquement en français. Les clés JSON restent en anglais.' : 'Write all visible fields in English.',
             ageBand: profile?.age_band || "18_plus",
             challenge,
             priorSessions: memory?.recentPatterns || [],

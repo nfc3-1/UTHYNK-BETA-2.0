@@ -55,8 +55,8 @@ export default function AdminAccess() {
           const grants = { ...access.section_grants };
           if (role === 'teacher') grants.teacher ||= 'Pending save';
           edit(user, { ...access, role, section_grants: grants });
-        }}><option value="user">Standard user</option><option value="teacher">Teacher</option><option value="admin">Admin</option></select></label></p>
-        {access.role === 'admin' ? <p>Administrators can access every restricted section.</p> : sections.filter(section => section.id !== 'admin').map(section => <p key={section.id}><label>
+        }}><option value="user">Standard user</option><option value="teacher">Teacher</option><option value="admin">Platform administrator (all schools and districts)</option></select></label></p>
+        {access.role === 'admin' ? <p>Platform administrators can access every school, district, and restricted section. Use School / district administration to grant a school-only or district-only role instead.</p> : sections.filter(section => section.id !== 'admin').map(section => <p key={section.id}><label>
           <input type="checkbox" checked={Boolean(access.section_grants[section.id])} onChange={event => {
             const grants = { ...access.section_grants };
             if (event.target.checked) grants[section.id] = 'Pending save'; else delete grants[section.id];

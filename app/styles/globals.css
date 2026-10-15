@@ -2998,3 +2998,14 @@ a{
     font-size:42px;
   }
 }
+
+/* Shared primary navigation; secondary tools use the same site colors. */
+.compactNavigation{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.secondaryNavigation{position:relative;}
+.secondaryNavigation summary{list-style:none;display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);font-weight:700;}
+.secondaryNavigation summary::-webkit-details-marker{display:none;}
+.secondaryNavigation summary:focus-visible,.secondaryNavigationLinks a:focus-visible,.secondaryNavigationLinks button:focus-visible{outline:2px solid var(--teal,#23c6b8);outline-offset:3px;}
+.secondaryNavigation[open] summary{border-color:var(--teal,#23c6b8);}
+.secondaryNavigationLinks{position:absolute;right:0;top:calc(100% + 10px);z-index:100;min-width:240px;max-height:70vh;overflow:auto;display:grid;gap:6px;padding:12px;border:1px solid rgba(255,255,255,.22);border-radius:16px;background:#111e32;box-shadow:0 16px 40px rgba(0,0,0,.4);}
+.secondaryNavigationLinks a,.secondaryNavigationLinks button{display:block;text-align:left;color:inherit;font:inherit;font-weight:600;padding:10px 14px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.05);cursor:pointer;}
+.secondaryNavigationLinks a:hover,.secondaryNavigationLinks button:hover{background:rgba(35,198,184,.15);}

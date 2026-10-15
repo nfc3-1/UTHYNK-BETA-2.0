@@ -16,6 +16,7 @@ export async function assessReasoning(input: {
   answers: string[];
   userId?: string;
   apiKey: string;
+  freshCalibration?: boolean;
 }) {
   const model = process.env.OPENAI_ASSESSMENT_MODEL || "gpt-4o-mini";
   const fingerprint = createHash("sha256")
@@ -30,7 +31,7 @@ export async function assessReasoning(input: {
       ]),
     )
     .digest("hex");
-  if (supabaseAdmin && input.userId) {
+  if (supabaseAdmin && input.userId && !input.freshCalibration) {
     const cached = await supabaseAdmin
       .from("reasoning_assessments")
       .select("assessment")
@@ -44,6 +45,7 @@ export async function assessReasoning(input: {
   }
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
+    signal: AbortSignal.timeout(25000),
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${input.apiKey}`,
@@ -75,7 +77,7 @@ export async function assessReasoning(input: {
     model,
     fingerprint,
   );
-  if (supabaseAdmin && input.userId) {
+  if (supabaseAdmin && input.userId && !input.freshCalibration) {
     const saved = await supabaseAdmin.from("reasoning_assessments").upsert(
       {
         fingerprint,

@@ -23,6 +23,7 @@ export default function ClassroomDashboard({
     [due, setDue] = useState("");
   const [review, setReview] = useState(""),
     [comment, setComment] = useState("");
+  const [schoolId, setSchoolId] = useState('');
   async function load(selected = "") {
     const r = await fetch(
       "/api/classroom" + (selected ? `?classId=${selected}` : ""),
@@ -95,10 +96,17 @@ export default function ClassroomDashboard({
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </label>
+              <label className="teacherField">
+                School
+                <select value={schoolId} onChange={e => setSchoolId(e.target.value)}>
+                  <option value="">{data?.canCreateIndependent ? 'Independent class (not assigned to a school)' : 'Choose your school'}</option>
+                  {(data?.teachingSchools || []).map((s: { id: string; name: string }) => <option key={s.id} value={s.id}>{s.name}</option>)}
+                </select>
+              </label>
               <button
                 className="btn btnPrimary"
-                disabled={busy || !title.trim()}
-                onClick={() => mutate({ action: "create_class", title })}
+                disabled={busy || !title.trim() || !data || (!schoolId && data.canCreateIndependent === false)}
+                onClick={() => mutate({ action: "create_class", title, schoolId: schoolId || null })}
               >
                 Create Class
               </button>
@@ -180,6 +188,7 @@ export default function ClassroomDashboard({
               <h2>{active.title}</h2>
               {data.manage && active.join_code && !boardOnly && (
                 <p>
+                  Class ID: <code>{active.id}</code><br />
                   Enrollment code: <strong>{active.join_code}</strong> ·{" "}
                   <Link href="/classroom">Learner classroom</Link>
                 </p>

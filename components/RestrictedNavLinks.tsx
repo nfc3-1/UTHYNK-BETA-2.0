@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getStoredLanguageValue, UTHYNK_LANGUAGE_EVENT, uiCopy, type Language } from '@/lib/reasoningI18n';
 
 export default function RestrictedNavLinks() {
-  const [access, setAccess] = useState<{ role?: string; sections?: string[]; userId?: string }>({});
+  const [access, setAccess] = useState<{ role?: string; sections?: string[]; userId?: string; schoolAdmin?: boolean; schoolTeacher?: boolean }>({});
   const [language, setLanguage] = useState<Language>('en');
   useEffect(() => {
     let active = true;
@@ -24,7 +24,7 @@ export default function RestrictedNavLinks() {
     return () => { active = false; window.removeEventListener('focus', refresh); window.removeEventListener(UTHYNK_LANGUAGE_EVENT, syncLanguage); window.removeEventListener('storage', syncLanguage); };
   }, []);
   const admin = Boolean(access.userId) && access.role === 'admin';
-  const teacher = Boolean(access.userId) && (admin || access.role === 'teacher' || access.sections?.includes('teacher'));
+  const teacher = Boolean(access.userId) && (admin || access.role === 'teacher' || access.sections?.includes('teacher') || access.schoolTeacher);
   const studio = Boolean(access.userId) && (admin || access.sections?.includes('studio'));
-  return <>{teacher ? <Link href="/teacher">{uiCopy[language].teacherNav}</Link> : null}{studio ? <Link href="/studio">Studio</Link> : null}{admin ? <Link href="/admin/access">{language === 'es' ? 'Administración' : language === 'fr' ? 'Administration' : 'Admin'}</Link> : null}</>;
+  return <>{teacher ? <Link href="/teacher">{uiCopy[language].teacherNav}</Link> : null}{(admin || access.schoolAdmin) ? <Link href="/school">{language === 'es' ? 'Administración escolar' : language === 'fr' ? 'Administration scolaire' : 'School / district'}</Link> : null}{studio ? <Link href="/studio">Studio</Link> : null}{admin ? <Link href="/admin/access">{language === 'es' ? 'Administración' : language === 'fr' ? 'Administration' : 'Admin'}</Link> : null}</>;
 }
