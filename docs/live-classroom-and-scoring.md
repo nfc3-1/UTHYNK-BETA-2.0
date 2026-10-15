@@ -44,9 +44,9 @@ The numerical `reasoning-20-v1` evaluator, cache, fixtures and Platform Admin **
 
 ## Navigation
 
-The UThynk logo links home; there is no duplicate Home button. Daily, All lessons, My classroom, Feedback and Store are the primary group. All lessons opens the library directly; its adjacent arrow opens Thinking Paths. My classroom opens a dropdown containing the classroom entrance and Participation. Profile sits in a separate right-hand account group; Sign in disappears after the server verifies a signed-in identity. Public destinations are outside the staff hamburger.
+The UThynk logo links home; there is no duplicate Home button. Daily, All lessons, Thinking Paths, My classroom, Participation, Feedback and Store are direct links in the primary group, with no public dropdowns. Compact spacing, a two-line logo tagline and a narrower language selector leave room for the public links on a laptop header. Profile sits in a separate right-hand account group; Sign in disappears after the server verifies a signed-in identity. Public destinations are outside the staff hamburger.
 
-Only authorized Teacher, School / district, Studio and Admin tools appear inside the icon-only staff disclosure. It is hidden for learners and guests. The header stacks above page cards and dropdowns use opaque navy with light text. Only one dropdown stays open; Escape returns focus to its trigger, outside clicks and selected links close it. Existing page-level guides remain; their redundant header link is removed. About UThynk remains available in the footer and contains the existing short mission statement. Page headers share the same navigation and home logo. No route permissions or session/draft identities change.
+Only authorized Teacher, School / district, Studio and Admin tools appear inside the icon-only staff disclosure. It is hidden for learners and guests. The header stacks above page cards and dropdowns use opaque navy with light text. Escape returns focus to the staff trigger; outside clicks and selected links close the staff disclosure. Existing page-level guides remain; their redundant header link is removed. About UThynk remains available in the footer and contains the existing short mission statement. Page headers share the same navigation and home logo. No route permissions or session/draft identities change.
 
 ## Data and authorization
 

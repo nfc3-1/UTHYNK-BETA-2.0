@@ -18,16 +18,13 @@ async function mount(language: 'en'|'es'|'fr' = 'en') {
 const links = (node: any) => node.findAllByType('a').map((a: any) => a.props.href);
 const staffMenu = (ui: ReturnType<typeof create>) => ui.root.findAllByType('details').find(d => links(d).includes('/teacher') || links(d).includes('/school') || links(d).includes('/studio'));
 describe('compact public navigation and staff tools', () => {
-  it.each(['en','es','fr'] as const)('groups lessons and participation and keeps staff separate in %s', async language => {
+  it.each(['en','es','fr'] as const)('shows every public destination directly and keeps only staff in the hamburger in %s', async language => {
     const ui = await mount(language);
     const staff = staffMenu(ui)!;
     expect(links(staff)).toEqual(['/teacher','/school','/studio','/admin/access']);
-    const learning = ui.root.findByProps({className:'learningNavigationSplit'});
-    expect(links(learning)).toEqual(['/lessons','/thinking-paths']);
-    expect(learning.findByType('details').findByType('summary').props['aria-label']).toBeTruthy();
-    const classroom = ui.root.findAllByType('details').find(d => links(d).includes('/classroom'))!;
-    expect(links(classroom)).toEqual(['/classroom','/leaderboard']);
+    expect(ui.root.findAllByType('details')).toHaveLength(1);
     const primary = ui.root.findByProps({className:'primaryNavigationLinks'});
+    expect(primary.findAllByType('details')).toHaveLength(0);
     expect(links(primary)).toEqual(['/daily','/lessons','/thinking-paths','/classroom','/leaderboard','/feedback','/store']);
     expect(links(ui.root)).not.toContain('/');
     expect(links(ui.root)).not.toContain('/?guide=1');
@@ -38,11 +35,11 @@ describe('compact public navigation and staff tools', () => {
     expect(staff.findByType('summary').findAllByType('span')).toHaveLength(0);
     act(() => ui.unmount());
   });
-  it.each([{}, {userId:null,role:'user'}, {role:'admin'}])('keeps public dropdowns but hides staff tools without a verified staff identity %j', async access => {
+  it.each([{}, {userId:null,role:'user'}, {role:'admin'}])('keeps all public links visible and hides the hamburger without a verified staff identity %j', async access => {
     state.access = access;
     const ui = await mount();
     expect(staffMenu(ui)).toBeUndefined();
-    expect(ui.root.findAllByType('details')).toHaveLength(2);
+    expect(ui.root.findAllByType('details')).toHaveLength(0);
     expect(links(ui.root)).toContain('/classroom');
     expect(links(ui.root)).toContain('/login?mode=login&force=1');
     act(() => ui.unmount());
@@ -70,10 +67,10 @@ describe('compact public navigation and staff tools', () => {
     expect(removeAttribute).toHaveBeenCalledWith('open');expect(focus).toHaveBeenCalledOnce();
     act(()=>ui.unmount());
   });
-  it('allows only one dropdown open at a time', async () => {
-    const ui=await mount();const removeAttribute=vi.fn();
-    const current:any={open:true,closest:()=>({querySelectorAll:()=>[current,{removeAttribute}]})};
-    act(()=>ui.root.findAllByType('details')[0].props.onToggle({currentTarget:current}));
+  it('closes staff tools when a destination is selected', async () => {
+    const ui=await mount(); const removeAttribute=vi.fn();
+    const panel=staffMenu(ui)!.findByProps({className:'secondaryNavigationLinks'});
+    act(()=>panel.props.onClick({target:{closest:()=>({})},currentTarget:{closest:()=>({removeAttribute})}}));
     expect(removeAttribute).toHaveBeenCalledWith('open');
     act(()=>ui.unmount());
   });
