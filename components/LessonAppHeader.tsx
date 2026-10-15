@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import BrandHome from '@/components/BrandHome';
 import AppNavigation from './AppNavigation';
 import { languageOptions, uiCopy, type Language } from '@/lib/reasoningI18n';
 
@@ -11,10 +11,7 @@ export default function LessonAppHeader({ language, changeLanguage, disabled = f
 }) {
   const copy = uiCopy[language];
   return <header className="appTop card">
-    <Link href="/" className="appBrandText">
-      <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
-      <span className="brandCopy"><strong>UThynk</strong><small>Better thinking. <em>Better decisions.</em></small></span>
-    </Link>
+    <BrandHome language={language} />
     <div className="topControls">
       <AppNavigation language={language} />
       <label className="languageSelectLabel topLanguageSelect">

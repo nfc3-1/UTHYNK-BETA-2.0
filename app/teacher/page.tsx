@@ -1,6 +1,6 @@
+import BrandHome from '@/components/BrandHome';
 import { redirect } from 'next/navigation';
 import { getAccountAccess, permits } from '@/lib/accessControl';
-import Link from 'next/link';
 import TeacherDashboard from '@/components/TeacherDashboard';
 import LocalizedNavLinks from '@/components/LocalizedNavLinks';
 import { classroomCatalog } from '@/lib/classroom';
@@ -15,13 +15,7 @@ export default async function TeacherPage() {
   return (
     <main className="appShell teacherPage">
       <header className="appTop card">
-        <Link href="/" className="appBrandText">
-          <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
-          <span className="brandCopy">
-            <strong>UThynk</strong>
-            <small>Better thinking. <em>Better decisions.</em></small>
-          </span>
-        </Link>
+        <BrandHome />
 
         <LocalizedNavLinks />
       </header>

@@ -44,7 +44,9 @@ The numerical `reasoning-20-v1` evaluator, cache, fixtures and Platform Admin **
 
 ## Navigation
 
-Ordinary destinations, including Store, My classroom, Profile, Participation, Help, Feedback, About and Sign in, remain outside the hamburger. Only authorized Teacher, School / district, Studio and Admin tools appear inside its icon-only disclosure. It is hidden for learners and guests. The header has an explicit stacking level above page cards; the dropdown uses opaque navy with light text. Existing language controls remain visible. Escape returns focus to the icon and outside clicks close the disclosure. Route authorization is unchanged.
+The UThynk logo links home; there is no duplicate Home button. Daily, All lessons, My classroom, Feedback and Store are the primary group. All lessons opens the library directly; its adjacent arrow opens Thinking Paths. My classroom opens a dropdown containing the classroom entrance and Participation. Profile sits in a separate right-hand account group; Sign in disappears after the server verifies a signed-in identity. Public destinations are outside the staff hamburger.
+
+Only authorized Teacher, School / district, Studio and Admin tools appear inside the icon-only staff disclosure. It is hidden for learners and guests. The header stacks above page cards and dropdowns use opaque navy with light text. Only one dropdown stays open; Escape returns focus to its trigger, outside clicks and selected links close it. Existing page-level guides remain; their redundant header link is removed. About UThynk remains available in the footer and contains the existing short mission statement. Page headers share the same navigation and home logo. No route permissions or session/draft identities change.
 
 ## Data and authorization
 

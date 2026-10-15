@@ -1,7 +1,7 @@
 "use client";
 
-import RestrictedNavLinks from '@/components/RestrictedNavLinks';
-import Link from "next/link";
+import BrandHome from '@/components/BrandHome';
+import LocalizedNavLinks from '@/components/LocalizedNavLinks';
 
 const teams = [
   {
@@ -28,20 +28,9 @@ export default function EnterprisePage() {
   return (
     <main className="appShell">
       <header className="appTop card">
-        <Link href="/" className="appBrandText">
-          <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
-          <span className="brandCopy">
-            <strong>UThynk Enterprise</strong>
-            <small>Better thinking. <em>Better decisions.</em></small>
-          </span>
-        </Link>
+        <BrandHome />
 
-        <nav className="appNav">
-          <RestrictedNavLinks />
-          <Link href="/profile">Profile</Link>
-          <Link href="/leaderboard">Leaderboard</Link>
-          <Link href="/debate">Debate</Link>
-        </nav>
+        <LocalizedNavLinks />
       </header>
 
       <section className="appHero card" style={{ marginTop: 18 }}>

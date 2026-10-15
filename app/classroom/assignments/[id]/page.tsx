@@ -1,5 +1,5 @@
+import BrandHome from '@/components/BrandHome';
 import { redirect, notFound } from "next/navigation";
-import Link from "next/link";
 import AssignedLesson from "@/components/AssignedLesson";
 import LocalizedNavLinks from "@/components/LocalizedNavLinks";
 import {
@@ -57,7 +57,7 @@ export default async function AssignmentPage({
     return (
       <main className="appShell teacherPage">
         <header className="appTop card">
-          <Link href="/classroom">UThynk · Classroom</Link>
+          <BrandHome />
           <LocalizedNavLinks />
         </header>
         <section className="appHero card" style={{ marginTop: 18 }}>

@@ -1,3 +1,4 @@
+import BrandHome from '@/components/BrandHome';
 import { redirect } from "next/navigation";
 import LocalizedNavLinks from "@/components/LocalizedNavLinks";
 import ClassroomDashboard from "@/components/ClassroomDashboard";
@@ -9,7 +10,7 @@ export default async function LeaderboardPage() {
   return (
     <main className="appShell teacherPage">
       <header className="appTop card">
-        <strong>UThynk</strong>
+        <BrandHome />
         <LocalizedNavLinks />
       </header>
       <section className="appHero card" style={{ marginTop: 18 }}>
