@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import BrandHome from '@/components/BrandHome';
 import FeedbackForm from '@/components/FeedbackForm';
 import LocalizedNavLinks from '@/components/LocalizedNavLinks';
 
@@ -6,13 +6,7 @@ export default function FeedbackPage() {
   return (
     <main className="appShell">
       <header className="appTop card">
-        <Link href="/" className="appBrandText">
-          <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
-          <span className="brandCopy">
-            <strong>UThynk</strong>
-            <small>Better thinking. <em>Better decisions.</em></small>
-          </span>
-        </Link>
+        <BrandHome />
 
         <LocalizedNavLinks
           items={[

@@ -1,9 +1,9 @@
 'use client';
 
-import { ThinkingPathsNavLink } from '@/components/PathShell';
+import BrandHome from '@/components/BrandHome';
+import AppNavigation from '@/components/AppNavigation';
 
-import { LessonLibraryGuide, LessonsNavLink, lessonLibraryStats } from '@/components/LessonDiscovery';
-import RestrictedNavLinks from '@/components/RestrictedNavLinks';
+import { LessonLibraryGuide, lessonLibraryStats } from '@/components/LessonDiscovery';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import {
@@ -104,24 +104,10 @@ export default function LessonLanguageShell({ categories }: Props) {
   return (
     <main className="appShell">
       <header className="appTop card">
-        <Link href="/" className="appBrandText">
-          <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
-          <span className="brandCopy">
-            <strong>UThynk</strong>
-            <small>Better thinking. <em>Better decisions.</em></small>
-          </span>
-        </Link>
+        <BrandHome language={language} />
 
         <div className="topControls">
-          <nav className="appNav">
-            <Link href="/">{copy.home}</Link>
-            <LessonsNavLink language={language} />
-            <ThinkingPathsNavLink language={language} />
-            <RestrictedNavLinks />
-            <Link href="/profile">{copy.profileNav}</Link>
-            <Link href="/feedback">{copy.feedbackNav}</Link>
-            <Link href="/store">{copy.storeNav}</Link>
-          </nav>
+          <AppNavigation language={language} />
 
           <label className="languageSelectLabel topLanguageSelect">
             <span>{copy.adaptiveLanguage}</span>

@@ -1,5 +1,6 @@
 "use client";
 
+import BrandHome from '@/components/BrandHome';
 import AssessmentBreakdown from "@/components/AssessmentBreakdown";
 import BetaFeedbackNotice from "@/components/BetaFeedbackNotice";
 import { betaFeedbackCopy } from "@/lib/betaAssessment";
@@ -1740,16 +1741,10 @@ export default function ReasoningPage() {
   return (
     <main className="appShell reasoningShell">
       <header className="appTop card">
-        <Link href="/" className="appBrandText">
-          <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
-          <span className="brandCopy">
-            <strong>UThynk</strong>
-            <small>Better thinking. <em>Better decisions.</em></small>
-          </span>
-        </Link>
+        <BrandHome language={language} />
 
         <div className="topControls">
-          <AppNavigation language={language} onHelp={() => setShowOnboarding(true)} />
+          <AppNavigation language={language} />
 
           <label className="languageSelectLabel topLanguageSelect">
             <span>{copy.adaptiveLanguage}</span>

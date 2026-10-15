@@ -1,9 +1,10 @@
 'use client';
 
+import BrandHome from '@/components/BrandHome';
 import BetaFeedbackNotice from '@/components/BetaFeedbackNotice';
 import { betaFeedbackCopy } from '@/lib/betaAssessment';
 
-import RestrictedNavLinks from '@/components/RestrictedNavLinks';
+import AppNavigation from '@/components/AppNavigation';
 import { profileText } from '@/lib/profileI18n';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
@@ -154,24 +155,9 @@ export default function Profile() {
   return (
     <main className="appShell">
       <header className="appTop card">
-        <Link href="/" className="appBrandText">
-          <img src="/brand/uthynk-wing-mark.svg" alt="" className="appBrandLogo" />
-          <span className="brandCopy">
-            <strong>UThynk</strong>
-            <small>Better thinking. <em>Better decisions.</em></small>
-          </span>
-        </Link>
+        <BrandHome language={language} />
 
-        <nav className="appNav">
-          <Link href="/">{copy.home}</Link>
-          <Link href="/daily">{copy.dailyNav}</Link>
-          <Link href="/lessons">{copy.lessonsNav}</Link>
-          <RestrictedNavLinks />
-          <Link href="/reasoning">{copy.reasoningNav}</Link>
-          <Link href="/profile">{copy.profileNav}</Link>
-          <Link href="/feedback">{copy.feedbackNav}</Link>
-          <Link href="/store">{copy.storeNav}</Link>
-        </nav>
+        <AppNavigation language={language} />
       </header>
 
       <section className="appHero card" style={{ marginTop: 18 }}>

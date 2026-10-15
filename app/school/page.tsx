@@ -1,4 +1,4 @@
-import Link from "next/link";
+import BrandHome from '@/components/BrandHome';
 import { redirect } from "next/navigation";
 import { getAccountAccess } from "@/lib/accessControl";
 import { schoolCapabilities } from "@/lib/schoolAccess";
@@ -12,19 +12,7 @@ export default async function SchoolPage() {
   return (
     <main className="appShell teacherPage">
       <header className="appTop card">
-        <Link href="/" className="appBrandText">
-          <img
-            src="/brand/uthynk-wing-mark.svg"
-            alt=""
-            className="appBrandLogo"
-          />
-          <span className="brandCopy">
-            <strong>UThynk</strong>
-            <small>
-              Better thinking. <em>Better decisions.</em>
-            </small>
-          </span>
-        </Link>
+        <BrandHome />
         <LocalizedNavLinks />
       </header>
       <section className="appHero card" style={{ marginTop: 18 }}>

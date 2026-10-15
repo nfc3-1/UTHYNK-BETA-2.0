@@ -1,6 +1,7 @@
 import { act, create } from 'react-test-renderer';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import AppNavigation from '../components/AppNavigation';
+import BrandHome from '../components/BrandHome';
 const state = vi.hoisted(() => ({ access: {} as any }));
 vi.mock('next/link', () => ({ default: (p: any) => <a {...p} /> }));
 beforeEach(() => {
@@ -9,29 +10,41 @@ beforeEach(() => {
   vi.stubGlobal('window', { addEventListener: vi.fn(), removeEventListener: vi.fn(), localStorage: { getItem: () => 'en' } });
 });
 afterEach(() => vi.unstubAllGlobals());
-async function mount(language: 'en'|'es'|'fr' = 'en', props = {}) {
+async function mount(language: 'en'|'es'|'fr' = 'en') {
   let ui: ReturnType<typeof create>;
-  await act(async () => { ui = create(<AppNavigation language={language} {...props} />); });
+  await act(async () => { ui = create(<AppNavigation language={language} />); });
   return ui!;
 }
-describe('staff-only navigation disclosure', () => {
-  it.each(['en','es','fr'] as const)('keeps every public destination outside the staff tools in %s', async language => {
+const links = (node: any) => node.findAllByType('a').map((a: any) => a.props.href);
+const staffMenu = (ui: ReturnType<typeof create>) => ui.root.findAllByType('details').find(d => links(d).includes('/teacher') || links(d).includes('/school') || links(d).includes('/studio'));
+describe('compact public navigation and staff tools', () => {
+  it.each(['en','es','fr'] as const)('groups lessons and participation and keeps staff separate in %s', async language => {
     const ui = await mount(language);
-    const details = ui.root.findByType('details');
-    expect(details.findAllByType('a').map(a => a.props.href)).toEqual(['/teacher','/school','/studio','/admin/access']);
-    const publicLinks = ui.root.findAllByType('a').filter(a => !details.findAllByType('a').includes(a)).map(a => a.props.href);
-    expect(publicLinks).toEqual(expect.arrayContaining(['/','/daily','/lessons','/thinking-paths','/classroom','/profile','/store','/leaderboard','/feedback','/?guide=1','/about']));
-    const summary = details.findByType('summary');
-    expect(summary.props['aria-label']).toBeTruthy();
-    expect(summary.findAllByType('svg')).toHaveLength(1);
-    expect(summary.findAllByType('span')).toHaveLength(0);
+    const staff = staffMenu(ui)!;
+    expect(links(staff)).toEqual(['/teacher','/school','/studio','/admin/access']);
+    const learning = ui.root.findByProps({className:'learningNavigationSplit'});
+    expect(links(learning)).toEqual(['/lessons','/thinking-paths']);
+    expect(learning.findByType('details').findByType('summary').props['aria-label']).toBeTruthy();
+    const classroom = ui.root.findAllByType('details').find(d => links(d).includes('/classroom'))!;
+    expect(links(classroom)).toEqual(['/classroom','/leaderboard']);
+    const primary = ui.root.findByProps({className:'primaryNavigationLinks'});
+    expect(links(primary)).toEqual(['/daily','/lessons','/thinking-paths','/classroom','/leaderboard','/feedback','/store']);
+    expect(links(ui.root)).not.toContain('/');
+    expect(links(ui.root)).not.toContain('/?guide=1');
+    expect(links(ui.root)).not.toContain('/about');
+    expect(links(ui.root)).not.toContain('/login?mode=login&force=1');
+    expect(links(ui.root.findByProps({className:'accountNavigation'}))).toEqual(['/profile']);
+    expect(staff.findByType('summary').findAllByType('svg')).toHaveLength(1);
+    expect(staff.findByType('summary').findAllByType('span')).toHaveLength(0);
     act(() => ui.unmount());
   });
-  it.each([{}, {userId:'learner',role:'user'}, {role:'admin'}])('hides staff disclosure without verified staff access %j', async access => {
+  it.each([{}, {userId:null,role:'user'}, {role:'admin'}])('keeps public dropdowns but hides staff tools without a verified staff identity %j', async access => {
     state.access = access;
     const ui = await mount();
-    expect(ui.root.findAllByType('details')).toHaveLength(0);
-    expect(ui.root.findAllByType('a').filter(a => a.props.href === '/classroom')).toHaveLength(1);
+    expect(staffMenu(ui)).toBeUndefined();
+    expect(ui.root.findAllByType('details')).toHaveLength(2);
+    expect(links(ui.root)).toContain('/classroom');
+    expect(links(ui.root)).toContain('/login?mode=login&force=1');
     act(() => ui.unmount());
   });
   it.each([
@@ -41,22 +54,27 @@ describe('staff-only navigation disclosure', () => {
   ])('shows only assigned staff tools %j', async (access, expected) => {
     state.access = access;
     const ui = await mount();
-    expect(ui.root.findByType('details').findAllByType('a').map(a => a.props.href)).toEqual(expected);
+    expect(links(staffMenu(ui)!)).toEqual(expected);
     act(() => ui.unmount());
   });
-  it('reopens help without navigating or closing an active answer', async () => {
-    const help = vi.fn();
-    const ui = await mount('en', {onHelp:help});
-    act(() => ui.root.findByType('button').props.onClick());
-    expect(help).toHaveBeenCalledOnce();
-    act(() => ui.unmount());
+  it('makes the logo the home link', () => {
+    const ui=create(<BrandHome language="fr" />);
+    expect(ui.root.findByType('a').props.href).toBe('/');
+    expect(ui.root.findByType('a').props['aria-label']).toBe('Accueil UThynk');
+    expect(ui.root.findByType('img').props.alt).toBe('');
   });
-  it('closes on Escape and returns focus to the icon', async () => {
-    const removeAttribute = vi.fn(); const focus = vi.fn();
-    let ui: ReturnType<typeof create>;
-    await act(async () => { ui = create(<AppNavigation language="en" />, {createNodeMock: el => el.type === 'details' ? {removeAttribute} : el.type === 'summary' ? {focus} : null}); });
-    act(() => ui!.root.findByType('details').props.onKeyDown({key:'Escape'}));
-    expect(removeAttribute).toHaveBeenCalledWith('open'); expect(focus).toHaveBeenCalledOnce();
-    act(() => ui!.unmount());
+  it('closes a dropdown with Escape and restores focus', async () => {
+    const ui=await mount();const removeAttribute=vi.fn();const focus=vi.fn();const stopPropagation=vi.fn();
+    const details=ui.root.findAllByType('details')[0];
+    act(()=>details.props.onKeyDown({key:'Escape',currentTarget:{removeAttribute,querySelector:()=>({focus})},stopPropagation}));
+    expect(removeAttribute).toHaveBeenCalledWith('open');expect(focus).toHaveBeenCalledOnce();
+    act(()=>ui.unmount());
+  });
+  it('allows only one dropdown open at a time', async () => {
+    const ui=await mount();const removeAttribute=vi.fn();
+    const current:any={open:true,closest:()=>({querySelectorAll:()=>[current,{removeAttribute}]})};
+    act(()=>ui.root.findAllByType('details')[0].props.onToggle({currentTarget:current}));
+    expect(removeAttribute).toHaveBeenCalledWith('open');
+    act(()=>ui.unmount());
   });
 });
