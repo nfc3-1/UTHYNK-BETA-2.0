@@ -3009,3 +3009,16 @@ a{
 .secondaryNavigationLinks{position:absolute;right:0;top:calc(100% + 10px);z-index:100;min-width:240px;max-height:70vh;overflow:auto;display:grid;gap:6px;padding:12px;border:1px solid rgba(255,255,255,.22);border-radius:16px;background:#111e32;box-shadow:0 16px 40px rgba(0,0,0,.4);}
 .secondaryNavigationLinks a,.secondaryNavigationLinks button{display:block;text-align:left;color:inherit;font:inherit;font-weight:600;padding:10px 14px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.05);cursor:pointer;}
 .secondaryNavigationLinks a:hover,.secondaryNavigationLinks button:hover{background:rgba(35,198,184,.15);}
+
+/* Keep staff tools above the backdrop-filter stacking contexts of page cards. */
+.appTop { position: relative; z-index: 50; overflow: visible; }
+.secondaryNavigation[open] { z-index: 1000; }
+.secondaryNavigationLinks { z-index: 1000; background: #111e32; color: #f5f7fc; border: 1px solid #aab8cc; opacity: 1; box-shadow: 0 16px 40px rgba(0,0,0,.6); }
+.secondaryNavigationLinks a, .secondaryNavigationLinks button { color: #f5f7fc; background: #1c2c43; }
+.secondaryNavigationLinks a:hover, .secondaryNavigationLinks button:hover { background: #33455f; }
+.reasoningObservations .focusCard { margin-block: 12px; }
+.reasoningObservations blockquote { margin: 8px 0; padding-left: 12px; border-left: 2px solid #aab8cc; overflow-wrap: anywhere; }
+
+/* Public navigation wraps on laptops instead of pushing links under the controls. */
+.appTop .topControls { min-width: 0; flex-wrap: wrap; }
+.compactNavigation { min-width: 0; justify-content: flex-end; }

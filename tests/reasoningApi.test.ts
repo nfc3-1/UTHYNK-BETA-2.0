@@ -1,4 +1,3 @@
-vi.mock('../lib/assessReasoning', () => ({ assessReasoning: async () => ({ status: 'provisional', rubricVersion: 'reasoning-20-v1', scoreSource: 'rubric', earned: 16, possible: 20, percentage: 80, criteria: ['claim','evidence','alternatives','conclusion'].map(id => ({ id, points: 4, possible: 5, evidence: ['Test'] })), model: 'test-judge', fingerprint: 'test-fingerprint' }) }));
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { POST } from '../app/api/reasoning/route';
 
@@ -126,7 +125,7 @@ describe('synthesis perspective integration and diagnostic contract', () => {
   });
 });
 
-describe('provisional beta rubric and language-independent participation', () => {
+describe('qualitative feedback and language-independent participation', () => {
   const equivalents = {
     en: 'I would test the rule in one class and compare attendance with another class before extending it.',
     es: 'Probaría la regla en una clase y compararía la asistencia con otra antes de ampliarla.',
@@ -135,9 +134,9 @@ describe('provisional beta rubric and language-independent participation', () =>
   for (const language of ['en', 'es', 'fr'] as const) it(`does not add keyword or length adjustments in ${language}`, async () => {
     result = { score: 83, xp: 95, perspectiveExpansion: localized[language][0], secondaryQuestion: localized[language][1] };
     const body = await (await request({ language, response: equivalents[language] })).json();
-    expect(body.score).toBe(80);
+    expect(body.score).toBeNull();
     expect(body.xp).toBe(35);
-    expect(body.assessment).toEqual({ status: 'provisional', rubricVersion: 'reasoning-20-v1', scoreSource: 'rubric', earned:16, possible:20, percentage:80, criteria:expect.any(Array), model:'test-judge', fingerprint:'test-fingerprint' });
+    expect(body.assessment).toMatchObject({ status: 'unavailable', rubricVersion: 'reasoning-feedback-v1', scoreSource: 'qualitative', language });
     expect(body.verifier.status).toBe('retired');
     expect(body.verifier.signals).toEqual({});
     expect(body.strengths).toEqual([]);
@@ -148,14 +147,32 @@ describe('provisional beta rubric and language-independent participation', () =>
     expect(system).toContain('specific passage detail for reading tasks');
     expect(system).not.toContain('Verifier engine result');
     expect(system).not.toContain('blending your judgment');
-    expect(body.assessment.criteria.reduce((n: number,c: any) => n+c.points,0)).toBe(16);
+    expect(body.assessment.observations.every((o: any) => o.status === 'unavailable')).toBe(true);
+    expect(sent).toHaveLength(1); // No second numerical evaluator call.
+    expect(JSON.parse(sent[0].messages[1].content).learnerAnswerSentences).toEqual([{ id: 'A1S1', text: equivalents[language] }]);
+  });
+
+  it('returns grounded qualitative observations through both turns without an extra evaluator request', async () => {
+    const observations = Object.fromEntries(['claim','evidence','alternatives','conclusion'].map(id => [id, {status:'strong',note:'You proposed a comparison.',evidenceIds:['A1S1']} ]));
+    result = { perspectiveExpansion: localized.en[0], secondaryQuestion: localized.en[1], qualitativeFeedback: { observations, nextFocus: 'Specify the comparison group.' } };
+    const first = await (await request({response:'Compare two classes.',phase:'follow_up'})).json();
+    expect(first.assessment.status).toBe('provisional');
+    expect(first.assessment.observations[0].evidence).toEqual(['Compare two classes.']);
+    expect(first.score).toBeNull();
+    observations.claim.evidenceIds = ['A1S1','A2S1'];
+    result = { finalSynthesis:'You proposed comparing classes and then identified a size control.', qualitativeFeedback:{observations,nextFocus:'Check whether the groups had similar attendance.'} };
+    const final = await (await request({phase:'synthesis',originalQuestion:'Test the rule?',firstUserAnswer:'Compare two classes.',perspectiveExpansion:localized.en[0],secondaryQuestion:localized.en[1],secondUserAnswer:'Match class sizes.'})).json();
+    expect(final.assessment.observations[0].evidence).toEqual(['Compare two classes.','Match class sizes.']);
+    expect(final.secondaryQuestion).toBe(''); expect(final.score).toBeNull();
+    expect(sent).toHaveLength(2);
+    expect(JSON.parse(sent[1].messages[1].content).learnerAnswerSentences).toEqual([{id:'A1S1',text:'Compare two classes.'},{id:'A2S1',text:'Match class sizes.'}]);
   });
 
   it('awards the same completion XP for short disagreement and long keyword-filled text', async () => {
     for (const [score, secondUserAnswer] of [[0, 'I disagree.'], [100, 'because evidence data example alternative cost benefit '.repeat(80)]] as const) {
       result = { score, xp: 999, finalSynthesis: 'Your answer raises a testable claim. Compare the available evidence before applying it.' };
       const body = await (await request({ ...apolloContext, secondUserAnswer, phase: 'synthesis' })).json();
-      expect(body.score).toBe(80); // Coaching estimates cannot override the dedicated point rubric.
+      expect(body.score).toBeNull(); // Provider numeric estimates never become learner grades.
       expect(body.xp).toBe(52);
       expect(body.behavioral).toEqual(body.verifier.behavioral); // Retired compatibility values.
       expect(sent[sent.length - 1].messages[0].content).toContain('beta-v1 rubric');
@@ -165,8 +182,8 @@ describe('provisional beta rubric and language-independent participation', () =>
   for (const score of [undefined, null, '99']) it(`marks a missing or invalid score unavailable (${score}) without inventing evidence`, async () => {
     result = { score, perspectiveExpansion: localized.en[0], secondaryQuestion: localized.en[1] };
     const body = await (await request({ response: 'evidence alternative risk cost '.repeat(40) })).json();
-    expect(body.score).toBe(80);
-    expect(body.assessment.scoreSource).toBe('rubric');
+    expect(body.score).toBeNull();
+    expect(body.assessment.scoreSource).toBe('qualitative');
     expect(body.strengths).toEqual([]);
     expect(body.weaknesses).toEqual([]);
   });
@@ -182,9 +199,9 @@ describe('provisional beta rubric and language-independent participation', () =>
     const response = await request({ ...apolloContext, secondUserAnswer: 'Keep an exception.', phase: 'synthesis', stream: true });
     const { readReasoningResponse } = await import('../lib/reasoningResponse');
     const body = await readReasoningResponse(response, () => {});
-    expect(body.score).toBe(80);
+    expect(body.score).toBeNull();
     expect(body.xp).toBe(52);
-    expect(body.assessment.rubricVersion).toBe('reasoning-20-v1');
+    expect(body.assessment.rubricVersion).toBe('reasoning-feedback-v1');
     expect(body.verifier.status).toBe('retired');
   });
 });

@@ -108,7 +108,7 @@ export async function updateCanonicalUserProgress({
   primaryTrait?: string;
   profileId: string;
   rank: string;
-  reasoningScore: number;
+  reasoningScore?: number;
   streak: number;
   xp: number;
 }) {
@@ -123,7 +123,7 @@ export async function updateCanonicalUserProgress({
         xp,
         streak,
         rank,
-        reasoning_score: reasoningScore,
+        ...(reasoningScore === undefined ? {} : { reasoning_score: reasoningScore }),
         primary_trait: primaryTrait,
         updated_at: new Date().toISOString(),
       })

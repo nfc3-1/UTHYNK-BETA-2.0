@@ -29,8 +29,8 @@ import {
 import { slugifyCategory } from "@/lib/questionBank";
 
 const initialFeedback = {
-  assessment: undefined as import("@/lib/pointRubric").PointAssessment | undefined,
-  score: 72,
+  assessment: undefined as import("@/lib/qualitativeAssessment").SavedAssessment | undefined,
+  score: null as number | null,
   xp: 45,
   trait: "Tactical Thinking",
   analysis:
@@ -645,9 +645,9 @@ function ReasoningExperience({
     return () => { window.removeEventListener("blur", voice.stop); voice.dispose(); recognitionRef.current = null; };
   }, [challenge.id, workoutStage, language]);
 
-  function selectNextChallenge(currentChallenge: Challenge, score: number) {
+  function selectNextChallenge(currentChallenge: Challenge, score: number | null) {
     const preferredDifficulty =
-      score >= 88 ? "strategic" : score >= 76 ? "critical" : score >= 62 ? "practical" : "everyday";
+      score === null ? currentChallenge.difficulty : score >= 88 ? "strategic" : score >= 76 ? "critical" : score >= 62 ? "practical" : "everyday";
     const seenIds =
       typeof window === "undefined"
         ? []
@@ -675,7 +675,7 @@ function ReasoningExperience({
         : freshPool.length
           ? freshPool
           : fallbackPool;
-    const seed = Date.now() + score + currentChallenge.id.length;
+    const seed = Date.now() + (score ?? 0) + currentChallenge.id.length;
 
     return pool[seed % pool.length] || currentChallenge;
   }
@@ -742,7 +742,7 @@ function ReasoningExperience({
   }
 
   function startNextWorkout() {
-    const nextChallenge = selectNextChallenge(challenge, feedback.score || visibleFeedback.score || 70);
+    const nextChallenge = selectNextChallenge(challenge, feedback.score ?? visibleFeedback.score ?? null);
 
     setChallenge(nextChallenge);
     setDifficulty(nextChallenge.difficulty);
@@ -911,16 +911,16 @@ function ReasoningExperience({
         },
       ]);
 
-      if (data.score >= 88) {
+      if (typeof data.score === "number" && data.score >= 88) {
         setDifficulty('strategic');
         setPressure('High');
-      } else if (data.score >= 76) {
+      } else if (typeof data.score === "number" && data.score >= 76) {
         setDifficulty('critical');
         setPressure('High');
-      } else if (data.score >= 62) {
+      } else if (typeof data.score === "number" && data.score >= 62) {
         setDifficulty('practical');
         setPressure('Moderate');
-      } else {
+      } else if (typeof data.score === 'number') {
         setDifficulty('everyday');
         setPressure('Low');
       }
@@ -1090,16 +1090,16 @@ function ReasoningExperience({
         },
       ]);
 
-      if (data.score >= 88) {
+      if (typeof data.score === "number" && data.score >= 88) {
         setDifficulty('strategic');
         setPressure('High');
-      } else if (data.score >= 76) {
+      } else if (typeof data.score === "number" && data.score >= 76) {
         setDifficulty('critical');
         setPressure('High');
-      } else if (data.score >= 62) {
+      } else if (typeof data.score === "number" && data.score >= 62) {
         setDifficulty('practical');
         setPressure('Moderate');
-      } else {
+      } else if (typeof data.score === 'number') {
         setDifficulty('everyday');
         setPressure('Low');
       }

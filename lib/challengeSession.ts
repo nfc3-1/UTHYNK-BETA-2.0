@@ -1,4 +1,4 @@
-import type { PointAssessment } from './pointRubric';
+import type { SavedAssessment } from './qualitativeAssessment';
 export type Language = "en" | "es" | "fr";
 
 export type ChallengeStep = "main_question" | "secondary_question" | "final_synthesis";
@@ -14,7 +14,7 @@ export type ChallengeSessionKeyInput = {
 };
 
 export type ChallengeSession = ChallengeSessionKeyInput & {
-  assessment?: PointAssessment;
+  assessment?: SavedAssessment;
   version: 2;
   activeAnswerDraft: string;
   completed: boolean;
@@ -32,13 +32,13 @@ export type ChallengeSession = ChallengeSessionKeyInput & {
 };
 
 export type ReasoningFeedbackSnapshot = {
-  assessment?: PointAssessment;
+  assessment?: SavedAssessment;
   analysis?: string;
   contrarian?: string;
   finalSynthesis?: string;
   followUp?: string;
   perspectiveExpansion?: string;
-  score?: number;
+  score?: number | null;
   secondaryQuestion?: string;
   strengths?: string[];
   trait?: string;
