@@ -1,4 +1,3 @@
-vi.mock('../lib/assessReasoning', () => ({ assessReasoning: async () => ({ status: 'provisional', rubricVersion: 'reasoning-20-v1', scoreSource: 'rubric', earned: 16, possible: 20, percentage: 80, criteria: ['claim','evidence','alternatives','conclusion'].map(id => ({ id, points: 4, possible: 5, evidence: ['Test'] })), model: 'test-judge', fingerprint: 'test-fingerprint' }) }));
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { resolveReadingRequest } from '../lib/readingAccess';
 import { POST } from '../app/api/reasoning/route';
@@ -34,7 +33,7 @@ describe('Reading Path beta boundary', () => {
     expect(JSON.parse(sent[0].messages[1].content).challenge).toBe(readingReasoningContext(getReadingModule(oldId)!));
     state.sections = [];
     expect((await request({ readingModuleId: oldId, phase: 'synthesis', response: 'Continue.' })).status).toBe(403);
-    expect(sent).toHaveLength(1);
+    expect(sent).toHaveLength(2);
   });
   it('admits admins and explicit beta grants, never unrelated roles or grants', async () => {
     expect((await resolveReadingRequest(moduleId)).ok).toBe(false);
@@ -60,7 +59,7 @@ describe('Reading Path beta boundary', () => {
     const body = { readingModuleId: moduleId, response: 'Independent checks.', phase: 'follow_up' };
     expect((await request(body)).status).toBe(403); expect(sent).toHaveLength(0);
     state.sections = ['thinking_paths']; expect((await request(body)).status).toBe(200);
-    state.sections = []; expect((await request({ ...body, phase: 'synthesis' })).status).toBe(403); expect(sent).toHaveLength(1);
+    state.sections = []; expect((await request({ ...body, phase: 'synthesis' })).status).toBe(403); expect(sent).toHaveLength(2);
   });
   it('replaces forged client source context with canonical reading content in both phases', async () => {
     state.sections = ['thinking_paths'];
@@ -68,7 +67,10 @@ describe('Reading Path beta boundary', () => {
     expect((await request(first)).status).toBe(200);
     expect(JSON.parse(sent[0].messages[1].content).challenge).toBe(readingReasoningContext(getReadingModule(moduleId)!)); expect(JSON.stringify(sent[0])).not.toContain('forged source');
     expect(sent[0].messages[0].content).toContain('French');
+    expect(JSON.parse(sent[1].messages[1].content).originalQuestion).toBe(readingReasoningContext(getReadingModule(moduleId)!));
+    expect(JSON.stringify(sent[1])).not.toContain('forged source');
     expect((await request({ ...first, phase: 'synthesis', firstUserAnswer: 'Independent checks.', perspectiveExpansion: 'Consider the power of checks.', secondaryQuestion: 'Who chooses the checkers?', secondUserAnswer: 'People should choose them.' })).status).toBe(200);
-    expect(JSON.parse(sent[1].messages[1].content).synthesisContext.originalQuestion).toBe(readingReasoningContext(getReadingModule(moduleId)!));
+    expect(JSON.parse(sent[2].messages[1].content).synthesisContext.originalQuestion).toBe(readingReasoningContext(getReadingModule(moduleId)!));
+    expect(JSON.parse(sent[3].messages[1].content).originalQuestion).toBe(readingReasoningContext(getReadingModule(moduleId)!));
   });
 });

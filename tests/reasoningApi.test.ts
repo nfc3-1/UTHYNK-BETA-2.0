@@ -1,6 +1,10 @@
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { POST } from '../app/api/reasoning/route';
 
+vi.mock('../lib/observeReasoning', async () => {
+  const { qualitativeAssessment } = await import('../lib/qualitativeAssessment');
+  return { observeReasoning: async (args: any) => qualitativeAssessment(result?.qualitativeFeedback, args.answers, args.language) };
+});
 vi.mock('../lib/auth', () => ({ getServerSessionUser: async () => null }));
 vi.mock('../lib/memory', () => ({ getReasoningMemory: async () => null }));
 vi.mock('../lib/supabaseAdmin', () => ({ hasSupabaseAdminEnv: () => false, supabaseAdmin: null }));
@@ -117,11 +121,13 @@ describe('synthesis perspective integration and diagnostic contract', () => {
     expect(body.weaknesses).toEqual([]);
   });
 
-  it('preserves a supported user gap even when the synthesis incorporates the coach idea', async () => {
+  it('uses the independent review focus rather than a coach-invented weakness', async () => {
     const weakness = 'You did not yet explore how limited resources could change a specific business decision.';
-    result = { finalSynthesis: 'You connected preparation and adaptation. Limited resources can make adaptation creative. You transferred the lesson to business without exploring that mechanism. Examine how constraints shape choices when applying lessons elsewhere.', weaknesses: [weakness] };
+    const focus = 'Compare how a specific resource limit changes the available options.';
+    const observations = Object.fromEntries(['claim','evidence','alternatives','conclusion'].map(id => [id,{status:'developing',note:'You transferred the lesson without examining a particular resource limit.',evidenceIds:['A2S1']} ]));
+    result = { qualitativeFeedback:{observations,nextFocus:focus}, finalSynthesis: 'You connected preparation and adaptation. Limited resources can make adaptation creative. You transferred the lesson to business without exploring that mechanism. Examine how constraints shape choices when applying lessons elsewhere.', weaknesses: [weakness] };
     const body = await (await request({ ...apolloContext, secondUserAnswer: 'Yes, in business too.', phase: 'synthesis' })).json();
-    expect(body.weaknesses).toEqual([weakness]);
+    expect(body.weaknesses).toEqual([focus]);
   });
 });
 
@@ -149,10 +155,10 @@ describe('qualitative feedback and language-independent participation', () => {
     expect(system).not.toContain('blending your judgment');
     expect(body.assessment.observations.every((o: any) => o.status === 'unavailable')).toBe(true);
     expect(sent).toHaveLength(1); // No second numerical evaluator call.
-    expect(JSON.parse(sent[0].messages[1].content).learnerAnswerSentences).toEqual([{ id: 'A1S1', text: equivalents[language] }]);
+    expect(sent[0].response_format.json_schema.name).toBe('reasoning_coaching');
   });
 
-  it('returns grounded qualitative observations through both turns without an extra evaluator request', async () => {
+  it('combines independent observations with both coaching turns', async () => {
     const observations = Object.fromEntries(['claim','evidence','alternatives','conclusion'].map(id => [id, {status:'strong',note:'You proposed a comparison.',evidenceIds:['A1S1']} ]));
     result = { perspectiveExpansion: localized.en[0], secondaryQuestion: localized.en[1], qualitativeFeedback: { observations, nextFocus: 'Specify the comparison group.' } };
     const first = await (await request({response:'Compare two classes.',phase:'follow_up'})).json();
@@ -168,12 +174,7 @@ describe('qualitative feedback and language-independent participation', () => {
     const format = sent[1].response_format;
     expect(format.type).toBe('json_schema');
     expect(format.json_schema.strict).toBe(true);
-    expect(format.json_schema.schema.required).toContain('qualitativeFeedback');
-    const observed = format.json_schema.schema.properties.qualitativeFeedback.properties.observations;
-    expect(observed.required).toEqual(['claim','evidence','alternatives','conclusion']);
-    expect(observed.properties.claim.anyOf[0].properties.evidenceIds.items.enum).toEqual(['A1S1','A2S1']);
-    expect(observed.properties.claim.anyOf[0].properties.evidenceIds.minItems).toBe(1);
-    expect(JSON.parse(sent[1].messages[1].content).learnerAnswerSentences).toEqual([{id:'A1S1',text:'Compare two classes.'},{id:'A2S1',text:'Match class sizes.'}]);
+    expect(format.json_schema.schema.required).not.toContain('qualitativeFeedback');
   });
 
   it('awards the same completion XP for short disagreement and long keyword-filled text', async () => {
