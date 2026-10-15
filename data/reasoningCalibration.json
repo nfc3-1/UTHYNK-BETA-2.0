@@ -1,0 +1,18 @@
+{
+  "id": "attendance-causality-v1",
+  "question": "A school reports better attendance after restricting phones. Does that establish that the restriction caused the improvement?",
+  "answers": {
+    "en": [
+      "Attendance may have improved because of another change. I would compare similar classes over the same period before attributing the difference to the phone rule.",
+      "I would compare similar classes over the same period and check whether schedules or attendance recording changed. If both groups improved similarly, I would not credit the phone rule. Even a larger gain in the restricted group would remain tentative without checking differences between the groups."
+    ],
+    "es": [
+      "La asistencia pudo mejorar por otro cambio. Compararía clases similares durante el mismo período antes de atribuir la diferencia a la regla sobre los teléfonos.",
+      "Compararía clases similares durante el mismo período y comprobaría si cambiaron los horarios o el registro de asistencia. Si ambos grupos mejoraron de forma similar, no atribuiría el resultado a la regla sobre los teléfonos. Incluso una mejora mayor en el grupo con restricciones sería provisional hasta comprobar las diferencias entre los grupos."
+    ],
+    "fr": [
+      "La présence a pu s’améliorer à cause d’un autre changement. Je comparerais des classes similaires sur la même période avant d’attribuer la différence à la règle sur les téléphones.",
+      "Je comparerais des classes similaires sur la même période et vérifierais si les horaires ou le suivi de la présence ont changé. Si les deux groupes progressaient de manière similaire, je n’attribuerais pas le résultat à la règle sur les téléphones. Même une hausse supérieure dans le groupe soumis aux restrictions resterait provisoire sans vérifier les différences entre les groupes.\n"
+    ]
+  }
+}

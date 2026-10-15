@@ -1,10 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { LessonsNavLink } from './LessonDiscovery';
-import RestrictedNavLinks from './RestrictedNavLinks';
+import AppNavigation from './AppNavigation';
 import { languageOptions, uiCopy, type Language } from '@/lib/reasoningI18n';
-import { pathCopy } from '@/lib/pathCopy';
 
 export default function LessonAppHeader({ language, changeLanguage, disabled = false }: {
   language: Language;
@@ -18,17 +16,7 @@ export default function LessonAppHeader({ language, changeLanguage, disabled = f
       <span className="brandCopy"><strong>UThynk</strong><small>Better thinking. <em>Better decisions.</em></small></span>
     </Link>
     <div className="topControls">
-      <nav className="appNav">
-        <Link href="/">{copy.home}</Link>
-        <LessonsNavLink language={language} />
-        <Link href="/thinking-paths">{pathCopy[language].title} <small>{pathCopy[language].beta}</small></Link>
-        <Link href="/classroom">{copy.classroomNav}</Link>
-        <Link href="/leaderboard">{copy.participationNav}</Link>
-        <RestrictedNavLinks />
-        <Link href="/profile">{copy.profileNav}</Link>
-        <Link href="/feedback">{copy.feedbackNav}</Link>
-        <Link href="/store">{copy.storeNav}</Link>
-      </nav>
+      <AppNavigation language={language} />
       <label className="languageSelectLabel topLanguageSelect">
         <span>{copy.adaptiveLanguage}</span>
         <select aria-label={copy.adaptiveLanguage} className="languageSelect" value={language} disabled={disabled}

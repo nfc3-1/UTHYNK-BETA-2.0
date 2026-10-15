@@ -16,6 +16,7 @@ afterEach(() => { state.role = 'user'; state.grants = {}; state.signedIn = true;
 describe('server access enforcement', () => {
   for (const role of ['user','teacher','admin'] as const) it(`enforces page access for ${role}`, async () => {
     state.role = role;
+    state.rpc.mockResolvedValue({ data: { schoolAdmin: false, schoolTeacher: false }, error: null });
     if (role === 'user') await expect(TeacherPage()).rejects.toThrow('redirect:');
     else expect(await TeacherPage()).toBeTruthy();
     if (role !== 'admin') await expect(AccessPage()).rejects.toThrow('redirect:');

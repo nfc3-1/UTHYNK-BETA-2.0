@@ -50,7 +50,7 @@ vi.mock("../lib/supabaseAdmin", () => ({
       };
       return query;
     },
-    rpc: async () => ({ data: "joined-class", error: null }),
+    rpc: async (name: string, args: any) => ({ data: name === "teaching_schools" ? (state.rows.school_staff || []).filter(s => s.profile_id === args.actor && s.active).map(s => ({ id: s.school_id, name: "Assigned school" })) : "joined-class", error: null }),
   },
 }));
 const classId = "11111111-1111-4111-8111-111111111111",
@@ -187,4 +187,24 @@ describe("classroom authorization and actual records", () => {
       ),
     ).rejects.toMatchObject({ status: 403 });
   });
+  it("requires active membership in the class school even for a globally enabled teacher", async () => {
+    state.rows.classroom_classes[0].school_id='school-a';
+    state.rows.school_staff=[{school_id:'school-a',profile_id:teacher.userId,active:true}];
+    expect((await classAccess(teacher,classId)).manage).toBe(true);
+    state.rows.school_staff[0].active=false;
+    await expect(classAccess(teacher,classId)).rejects.toMatchObject({status:403});
+    const snapshot=await classroomSnapshot(teacher);
+    expect(snapshot.classes).toEqual([]);
+    await expect(classroomMutation(teacher,{action:'create_class',schoolId:'school-a',title:'Blocked'})).rejects.toMatchObject({status:403});
+  });
+  it("allows a scoped school teacher without granting independent class creation", async () => {
+    state.rows.classroom_classes[0].school_id='school-a';
+    state.rows.school_staff=[{school_id:'school-a',profile_id:student.userId,active:true}];
+    state.rows.classroom_classes[0].teacher_id=student.userId;
+    expect((await classAccess(student,classId)).manage).toBe(true);
+    await expect(classroomMutation(student,{action:'create_class',title:'Independent'})).rejects.toMatchObject({status:403});
+    await classroomMutation(student,{action:'create_class',schoolId:'school-a',title:'School class'});
+    expect(state.writes[0].value).toMatchObject({school_id:'school-a',teacher_id:student.userId});
+  });
+
 });

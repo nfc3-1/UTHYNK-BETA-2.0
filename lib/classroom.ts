@@ -11,6 +11,7 @@ import {
   thinkingPaths,
 } from "@/lib/thinkingPaths";
 import { randomBytes } from "crypto";
+import { teachingSchools, teachesAtSchool } from '@/lib/schoolAccess';
 
 export class ClassroomError extends Error {
   constructor(
@@ -102,7 +103,9 @@ export async function classAccess(access: AccountAccess, id: string) {
   if (!row || row.archived) throw new ClassroomError("Class not found.", 404);
   const manage =
     access.role === "admin" ||
-    (row.teacher_id === access.userId && permits(access, "teacher"));
+    (row.teacher_id === access.userId && (row.school_id
+      ? await teachesAtSchool(access, row.school_id)
+      : permits(access, "teacher")));
   const membership = requireResult(
     await db
       .from("classroom_members")
@@ -166,6 +169,8 @@ export async function classroomSnapshot(
   requested?: string | null,
 ) {
   const db = classroomDb();
+  const schools = await teachingSchools(access);
+  const canTeach = permits(access, 'teacher') || schools.length > 0;
   const memberships =
     requireResult(
       await db
@@ -187,8 +192,8 @@ export async function classroomSnapshot(
   const classes = rows
     .filter(
       (c) =>
-        c.teacher_id !== access.userId ||
-        permits(access, "teacher") ||
+        access.role === 'admin' ||
+        (c.teacher_id === access.userId && (c.school_id ? schools.some(s => s.id === c.school_id) : permits(access, 'teacher'))) ||
         memberships.some((m) => m.class_id === c.id),
     )
     .map((c) => ({
@@ -209,7 +214,7 @@ export async function classroomSnapshot(
       submissions: [],
       comments: [],
       leaderboard: [],
-      canTeach: permits(access, "teacher"),
+      canTeach, teachingSchools: schools, canCreateIndependent: permits(access, 'teacher'),
     };
   const scope = await classAccess(access, selected);
   const members =
@@ -273,14 +278,16 @@ export async function classroomSnapshot(
     submissions,
     comments,
     leaderboard,
-    canTeach: permits(access, "teacher"),
+    canTeach, teachingSchools: schools, canCreateIndependent: permits(access, 'teacher'),
   };
 }
 export async function classroomMutation(access: AccountAccess, body: any) {
   const db = classroomDb();
   const actor = access.userId!;
   if (body.action === "create_class") {
-    if (!permits(access, "teacher"))
+    const schoolId = body.schoolId || null;
+    const allowed = schoolId ? await teachesAtSchool(access, schoolId) : permits(access, 'teacher');
+    if (!allowed)
       throw new ClassroomError("Teacher access required.", 403);
     const title = String(body.title || "").trim();
     if (!title || title.length > 100)
@@ -291,6 +298,7 @@ export async function classroomMutation(access: AccountAccess, body: any) {
         .insert({
           title,
           teacher_id: actor,
+          school_id: schoolId,
           join_code: randomBytes(6).toString("hex").toUpperCase(),
         })
         .select("*")

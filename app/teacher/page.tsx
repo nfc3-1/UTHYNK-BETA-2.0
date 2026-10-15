@@ -4,11 +4,12 @@ import Link from 'next/link';
 import TeacherDashboard from '@/components/TeacherDashboard';
 import LocalizedNavLinks from '@/components/LocalizedNavLinks';
 import { classroomCatalog } from '@/lib/classroom';
+import { schoolCapabilities } from '@/lib/schoolAccess';
 
 export const dynamic = 'force-dynamic';
 export default async function TeacherPage() {
   const access = await getAccountAccess();
-  if (!permits(access, 'teacher')) redirect(access.userId ? '/profile' : '/login?next=/teacher');
+  if (!permits(access, 'teacher') && !(await schoolCapabilities(access)).schoolTeacher) redirect(access.userId ? '/profile' : '/login?next=/teacher');
 
 
   return (

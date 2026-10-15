@@ -4,11 +4,10 @@ import AssessmentBreakdown from "@/components/AssessmentBreakdown";
 import BetaFeedbackNotice from "@/components/BetaFeedbackNotice";
 import { betaFeedbackCopy } from "@/lib/betaAssessment";
 
-import { ThinkingPathsNavLink } from "@/components/PathShell";
+import AppNavigation from "@/components/AppNavigation";
 
-import { LessonDiscoveryBanner, LessonsNavLink } from "@/components/LessonDiscovery";
+import { LessonDiscoveryBanner } from "@/components/LessonDiscovery";
 import ThinkingWalkthrough, { ThinkingStepHint, VISUAL_GUIDE_DISMISSED } from "@/components/ThinkingWalkthrough";
-import RestrictedNavLinks from '@/components/RestrictedNavLinks';
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { normalizeReasoningFeedback, readReasoningResponse } from "@/lib/reasoningResponse";
@@ -1724,7 +1723,7 @@ export default function ReasoningPage() {
       setLanguage(storedLanguage);
     }
 
-    if (localStorage.getItem(VISUAL_GUIDE_DISMISSED) !== "true") {
+    if (localStorage.getItem(VISUAL_GUIDE_DISMISSED) !== "true" || new URLSearchParams(window.location.search).get("guide") === "1") {
       setShowOnboarding(true);
     }
   }, []);
@@ -1750,26 +1749,7 @@ export default function ReasoningPage() {
         </Link>
 
         <div className="topControls">
-          <nav className="appNav" aria-label="Reasoning navigation">
-            <Link href="/">{copy.home}</Link>
-            <Link href="/daily">{pageText[language].daily}</Link>
-            <LessonsNavLink language={language} />
-            <ThinkingPathsNavLink language={language} />
-            <Link href="/classroom">{copy.classroomNav}</Link>
-        <Link href="/leaderboard">{copy.participationNav}</Link>
-        <RestrictedNavLinks />
-            <Link href="/profile">{pageText[language].profileNav}</Link>
-            <Link href="/feedback">{pageText[language].feedbackNav}</Link>
-            <Link href="/login?mode=login&force=1">{pageText[language].signIn}</Link>
-          </nav>
-
-          <button
-            className="helpButton"
-            type="button"
-            onClick={() => setShowOnboarding(true)}
-          >
-            {copy.howToUseNav}
-          </button>
+          <AppNavigation language={language} onHelp={() => setShowOnboarding(true)} />
 
           <label className="languageSelectLabel topLanguageSelect">
             <span>{copy.adaptiveLanguage}</span>
