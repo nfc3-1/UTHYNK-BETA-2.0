@@ -114,7 +114,8 @@ describe("assigned lesson server recovery", () => {
       phase: "synthesis",
     });
     expect(page.root.findAllByType("textarea")).toHaveLength(0);
-    expect(JSON.stringify(page.toJSON())).toContain("16");
+    expect(JSON.stringify(page.toJSON())).not.toContain("16");
+    expect(JSON.stringify(page.toJSON())).toContain("A saved final synthesis.");
     const assigned = challengeSessionKey(server),
       ordinary = challengeSessionKey({ ...server, assignmentId: undefined });
     expect(assigned).not.toBe(ordinary);

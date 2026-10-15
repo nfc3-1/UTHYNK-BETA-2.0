@@ -1,4 +1,3 @@
-vi.mock('../lib/assessReasoning', () => ({ assessReasoning: async () => ({ status: 'provisional', rubricVersion: 'reasoning-20-v1', scoreSource: 'rubric', earned: 16, possible: 20, percentage: 80, criteria: ['claim','evidence','alternatives','conclusion'].map(id => ({ id, points: 4, possible: 5, evidence: ['Test'] })), model: 'test-judge', fingerprint: 'test-fingerprint' }) }));
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { POST } from '../app/api/reasoning/route';
 const db = vi.hoisted(() => ({ calls: [] as any[], canonical: vi.fn(), progress: vi.fn(), trait: vi.fn() }));
@@ -29,20 +28,24 @@ beforeEach(() => { db.calls.length = 0; vi.clearAllMocks(); });
 afterEach(() => vi.unstubAllGlobals());
 const context = { phase: 'synthesis', originalQuestion: 'Should we extend the rule?', firstUserAnswer: 'Test it in one class.', perspectiveExpansion: 'Consider different class sizes.', secondaryQuestion: 'How would you compare them?', secondUserAnswer: 'Compare similar classes before extending it.' };
 
-describe('beta scoring persistence compatibility', () => {
+describe('qualitative session persistence', () => {
   for (const score of [90, undefined]) it(`keeps XP, rank, history and user scoping without writing retired behavioral measurements (${score})`, async () => {
     vi.stubGlobal('fetch', async () => Response.json({ choices: [{ message: { content: JSON.stringify({ score, xp: 999, trait: 'Evidence', finalSynthesis: 'You proposed a comparison and retained it. Class size may affect attendance. Check comparable cases before extending a rule.' }) } }] }));
     const response = await POST(new Request('http://localhost/api/reasoning', { method: 'POST', body: JSON.stringify(context) }));
     expect(response.status).toBe(200);
     const body = await response.json();
-    expect(body.progression).toMatchObject({ xp: 152, rank: 'Observer', streak: 4, reasoningProfile: null, reasoningScore: 80 });
+    expect(body.progression).toMatchObject({ xp: 152, rank: 'Observer', streak: 4, reasoningProfile: null });
     expect(db.calls.some(call => call.table === 'reasoning_profiles')).toBe(false);
     const update = db.calls.find(call => call.table === 'user_profiles' && call.update);
     expect(update.update.xp).toBe(152);
     expect(update.filters).toContainEqual(['id', 'learner-1']);
-    expect(db.canonical).toHaveBeenCalledWith(expect.objectContaining({ userId: 'learner-1', claim: context.secondUserAnswer, feedback: expect.objectContaining({ xp: 52, assessment: expect.objectContaining({ status: 'provisional' }) }) }));
+    expect(db.canonical).toHaveBeenCalledWith(expect.objectContaining({ userId: 'learner-1', claim: context.secondUserAnswer, feedback: expect.objectContaining({ xp: 52, assessment: expect.objectContaining({ status: 'unavailable', scoreSource: 'qualitative' }) }) }));
     expect(db.progress).toHaveBeenCalledWith(expect.objectContaining({ profileId: 'learner-1', xp: 152 }));
-    expect(db.calls.find(call => call.table === 'reasoning_verifier_scores').insert.signals).toMatchObject({ status: 'retired', assessment: { rubricVersion: 'reasoning-20-v1', scoreSource: 'rubric' } });
-    expect(db.trait).toHaveBeenCalled();
+    expect(body.score).toBeNull();
+    expect(update.update).not.toHaveProperty('reasoning_score');
+    expect(db.progress.mock.calls[0][0]).not.toHaveProperty('reasoningScore');
+    expect(db.calls.some(call => call.table === 'reasoning_verifier_scores' || call.table === 'reasoning_traits')).toBe(false);
+    expect(db.calls.find(call => call.table === 'reasoning_sessions').insert).toMatchObject({ response: context.secondUserAnswer, reasoning_score: null, verifier_score: null, xp_awarded: 52 });
+    expect(db.trait).not.toHaveBeenCalled();
   });
 });

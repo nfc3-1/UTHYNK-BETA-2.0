@@ -1,68 +1,57 @@
-# Live classrooms and explainable reasoning scores
+# Live classrooms and evidence-based reasoning feedback
 
-This supersedes the temporary Day 1 demo-label approach. Teacher results and the class participation board come from saved classroom records. The app contains no generated student names, completion dates, or progress results. Empty classes and incomplete assignments display their actual state.
+Teacher results and the class participation board use saved classroom records. No student names, completion dates, or progress results are generated. Empty classes and incomplete assignments display their actual state.
 
 ## Presenting the working flow
 
-1. Sign in with your existing owner/admin account. Open **Teacher**. To enable another teacher, use the existing **Admin access** page to grant Teacher access; also grant Thinking Paths if they will assign readings.
-2. Create a class. Its enrollment code is stored in Supabase. Choose a lesson or reading and assign it. **Open Assignment** opens the exact saved target; teachers can preview its question/passage without submitting as a learner.
-3. A learner signs into their own UThynk account, opens **My classroom**, enters the enrollment code, and chooses a class display name. That name is visible within the class.
-4. Open the assignment, read its passage if applicable, and complete the normal four-step experience: main question, perspective expansion, secondary question, final synthesis. There are two answers, not an added grading question.
-5. The first submitted answer and generated follow-up are saved on the server. Reopening the assignment on a different browser/device restores that stage. The second answer, synthesis, point breakdown, and completion time are then saved. Unsubmitted drafts still use browser storage.
-6. The teacher refreshes the class to inspect both actual answers, the coach’s perspective/question, synthesis, and rubric. Save a teacher comment; it becomes available to the learner when they reopen the assignment.
-7. **Participation** opens the class leaderboard. It counts completed assignments; it does not rank intelligence or imply a validated learning gain. Other classes cannot see these names or responses.
+1. Sign in with your existing owner/admin account. Open the staff icon, then **Teacher**. To enable another teacher, use Platform Admin or the scoped School / district dashboard as described in [School and district boundaries](school-and-districts.md).
+2. Create a class. Its enrollment code is stored in Supabase. Choose a lesson or reading and assign it. **Open Assignment** opens the exact saved question/passage; teachers can preview without submitting as a learner.
+3. A learner signs into their own account, opens **My classroom** in the visible navigation, enters the enrollment code, and chooses a class display name. That name is visible within the class.
+4. Complete the four steps: main question, perspective expansion, secondary question, final synthesis. There are exactly two learner answers. Feedback adds no fifth question.
+5. The first submitted answer and generated follow-up are saved on the server. Another browser restores that stage. The second answer, synthesis, observations and completion time are saved on completion. Unsubmitted drafts still use browser storage.
+6. The teacher refreshes the class to inspect both actual answers, the coach's perspective/question, synthesis, and the same observations with answer excerpts. Teacher comments become available to the learner when they reopen the assignment.
+7. **Participation** opens the class board. It counts completed assignments; it does not rank reasoning ability or imply a learning gain. Other classes cannot see these names or responses.
 
-A teacher can remove a membership and restore it explicitly. A removed learner cannot reactivate themselves using the old enrollment code. Removing a learner retains their historical submissions for the teacher. The global owner/admin retains access across classes. School/district organization and scoped staff administration are described in [School and district boundaries](school-and-districts.md). School and district administrators receive aggregate class participation, not learner answers, comments, grades, or enrollment codes. Global platform administrators remain a distinct role.
+Removed learners cannot reactivate themselves using the old enrollment code. Removal retains their historical submissions for the teacher. The global owner/admin retains access across classes. School/district administrators receive aggregate class participation, never learner answers, comments or enrollment codes. Platform administration is explicitly separate from school-scoped roles.
 
-## Where the score comes from
+## Feedback instead of grades
 
-Version: `reasoning-20-v1`. Four criteria, each with six defined anchors from 0 through 5:
+New learner turns use `reasoning-feedback-v1`, defined in `lib/qualitativeAssessment.ts`. They return `score: null`. The coaching call produces observations for four shared lenses: understand a claim, support it with evidence, consider another interpretation, and explain a justified conclusion. There is no separate numerical evaluator call on the learner path.
 
-| Criterion | Maximum |
-| --- | ---: |
-| Understand the claim | 5 |
-| Support with evidence | 5 |
-| Consider another interpretation | 5 |
-| Explain a justified conclusion | 5 |
-| **Total** | **20** |
+| Status | Meaning |
+| --- | --- |
+| Strong in this response | A specific supported reasoning move in these answers |
+| Developing | An attempted move with a supported limitation |
+| Not demonstrated here yet | A relevant move not shown in the inspected answer |
+| Not asked in this task | The task did not elicit this move; not a weakness |
+| No supported observation available | Missing/invalid provider output; never a fabricated negative judgment |
 
-The complete anchors are in `lib/pointRubric.ts`. The UI shows the selected anchor, awarded points, maximum points, and a quotation from the learner’s answer. The server sums the four numbers; it never trusts a model-generated total. Percentage = earned points × 5. For example, 4 + 3 + 4 + 3 = 14/20 = 70%.
+The first turn considers the first answer; the final feedback considers both answers. The coach and reading passage are context, not learner evidence. The model cites sentence IDs and the server resolves them to exact, untranslated learner quotations. Unknown IDs, missing evidence for applicable observations, invalid status or missing notes yield an unavailable observation. No positive label is inferred from historical points. A missing observation does not block an otherwise valid four-step conversation.
 
-The first assessment uses the first answer. The final assessment uses both answers and still has a maximum of 20; it does not add the two assessments into a 40-point score. For reading tasks, evidence must connect to the supplied passage. A proposed test is evidence reasoning, not proof that its result already exists.
+The optional **Next focus** is one actionable suggestion grounded in a supported gap. Questions are excluded from that field. The model is instructed not to infer mastery, personality or improvement over time from a session. Claims about development between the two answers must cite both; this is not longitudinal learning measurement. Teacher review remains necessary: mechanically valid evidence IDs do not prove a model's interpretation is correct.
 
-Each positive criterion requires an ID referencing a numbered sentence in the actual learner answers. The server resolves that ID into the exact answer text; the model cannot rewrite or translate the displayed evidence. Structured output restricts evidence IDs to the supplied answer sentences. Missing criteria, duplicate criteria, noninteger or out-of-range points, and unsupported evidence reject the assessment with a retry message. There is no made-up fallback grade. A failed grading request leaves the answer/draft available to retry.
+XP is separate participation credit: 35 in first-turn feedback and 52 for completion. Only successful synthesis persists account progress. Database assignment replay prevents duplicate classroom completion/XP persistence calls. New qualitative sessions do not update numerical reasoning aggregates, traits, or difficulty based on feedback labels. Historical score values and saved conversations remain stored. Older sessions show their preserved answers/synthesis and a legacy-format notice instead of a point table; they are not regenerated or silently relabeled.
 
-XP remains separate participation credit: 35 in first-turn feedback, 52 for completion. Only successful synthesis persists account progress. An assignment’s completion is idempotent in the database, preventing duplicate classroom completion/XP persistence calls on replay. Existing XP, streaks, ranks, archived readings, unrelated sessions, and identity/storage keys are retained.
+## Languages and calibration
 
-## Language consistency and calibration
+The same qualitative instructions and criteria apply to English, Spanish and French. Requested output language is explicit in both provider messages. The current output language is saved with observations. Sentence IDs refer to the actual submitted answers in their original language. Language switching retains question identity, answers, drafts, assignment IDs, session IDs, saved feedback and the current step; it does not rerun the coach or alter an observation's meaning.
 
-Scoring is a separate, fixed English-language evaluator task. It understands EN/ES/FR answers; the coaching display language, coaching randomness, personality history, and previous grades are not inputs. Temperature is 0 with a fixed seed. The scorer must select the same anchors for semantically equivalent reasoning; spelling, grammar, vocabulary, length, and agreement do not earn points.
+Automated fixtures verify equivalent labels, original quotations, validation, language switching and persistence contracts. They are not evidence of universal semantic fairness or educational efficacy. Bilingual editorial review of live model output is still required before school grading or claims about reliable learning gains.
 
-Authenticated assessments are saved by a fingerprint of rubric version, model, learner, canonical question, and actual answers. Display language is excluded. A language switch changes the UI, not those answers or the saved score. Concurrent identical evaluations retain the first stored assessment. Server-side assignment history also restores the saved breakdown.
+The numerical `reasoning-20-v1` evaluator, cache, fixtures and Platform Admin **Run Language Calibration** remain isolated experiments. They do not determine learner feedback, participation XP, or class rankings. The October 15, 2026 live numerical report failed: all initial answers were 8/20; final EN/ES/FR totals were all 13/20, but French alternatives/conclusion anchors differed. Equal totals did not establish parity. This result motivated the move away from public grades; qualitative labels also require review rather than being presumed calibrated.
 
-A fixed prompt and seed do not mathematically guarantee equal model judgments for every possible translation. Release calibration must compare the per-criterion points—not just total percentages—on matched EN/ES/FR responses. Software tests prove arithmetic, validation, caching inputs, language switching, and persistence contracts; they do not prove universal semantic fairness or educational efficacy. Continue independent bilingual review before treating this as a high-stakes school grade. Scores describe the submitted reasoning, not personality or measured learning gains.
+## Navigation
+
+Ordinary destinations, including Store, My classroom, Profile, Participation, Help, Feedback, About and Sign in, remain outside the hamburger. Only authorized Teacher, School / district, Studio and Admin tools appear inside its icon-only disclosure. It is hidden for learners and guests. The header has an explicit stacking level above page cards; the dropdown uses opaque navy with light text. Existing language controls remain visible. Escape returns focus to the icon and outside clicks close the disclosure. Route authorization is unchanged.
 
 ## Data and authorization
 
-The additive migration creates class, membership, assignment, submission, comment, and assessment tables. All have RLS enabled and no browser-role grants; their default-deny posture intentionally produces the informational “RLS enabled, no policy” advisor entry. Access is through signed-session server routes that reverify the account and scope every class and assignment. Mutation routes require the same origin. SQL submission/join functions are SECURITY INVOKER and executable only by the server service role; the actor ID comes from verified server access.
+Class, membership, assignment, submission, comment and experimental assessment tables use RLS with no browser-role grants. The informational “RLS enabled, no policy” advisor entry is expected for service-only default deny. Signed-session routes reverify accounts and scope every class/assignment. Mutations require the same origin. SQL functions are SECURITY INVOKER, executable only by the service role; actor IDs come from verified server access.
 
-Learners receive their own answers/comments and their class’s alias/completion board. Teachers receive only owned-class records; the global admin may inspect all classes. Grade quotes are private, never included in the leaderboard. Submitted records live in Supabase, not localStorage. Existing browser-only demo state is not imported as real classroom data.
+Learners receive their own answers/comments and their class's alias/completion board. Teachers receive owned-class records; platform admins can inspect all classes. Answer quotations stay private and never enter the leaderboard. Assignment IDs namespace browser drafts, preventing cross-assignment/ordinary-session overwrites. Assigned-reading access does not unlock the unassigned catalog.
 
-Assignment IDs namespace browser drafts, so the same lesson in different classes cannot overwrite another assignment or an ordinary lesson session. Assigned readings are authorized through active enrollment and a teacher with reading access; they do not grant access to the full unassigned Reading Paths catalog.
+## Verification and remaining sign-off
 
-## Verification
+The classroom and school-isolation SQL tests previously passed against the connected database within rollback transactions. This change does not modify database authorization or schema. Automated tests cover genuine record scoping, completion counts, replay prevention, assignment links/recovery, feedback evidence validation, legacy history, and four-step/language/session regressions.
 
-`supabase/tests/classroom.sql` exercises the live database in a transaction that rolls back all QA data: join, both submitted answers, restore, comment, actual completion count, replay prevention, outsider rejection, removed-member rejoin rejection, and denied client table/function privileges. It has passed against the connected database.
-
-Automated tests cover API origin/session boundaries, teacher ownership, learner isolation, access revocation, actual leaderboard counts, correct assignment links, server-stage recovery on another browser, assignment-vs-ordinary draft isolation, multilingual switches, point arithmetic, evidence validation, and existing four-step/session regressions. Provider and application mocks do not replace an authenticated browser rehearsal with a teacher and learner account. That final presentation rehearsal must confirm login, enrollment, assignment completion, teacher review, and comments on the live deployment.
-
-## Night One release checkpoint — October 15, 2026
-
-- Real school/district dashboard and explicit staff roles added; existing independent classes remain independent until the platform owner places them.
-- Live transactional school-isolation tests pass for school A versus school B within one district and for another district, revocation, counts, protected details, and rejected privilege escalation. All QA records are rolled back.
-- Navigation keeps Home, Daily Challenge, All Lessons, and Thinking Paths visible, with secondary destinations in a three-line disclosure. The existing language controls and four-step/session flow are retained.
-- Platform Admin now offers **Run Language Calibration** using six fresh provider assessments of the authored EN/ES/FR fixture. Reports are saved separately from student data and XP. A failure, missing evaluation, or a differing criterion is a failed calibration, even when totals match.
-- The provider request now repeats the requested language in the task payload using Spanish/French instructions. This reinforces the language requirement; live coaching-language verification is still required.
-- **Not yet signed off:** matched semantic scoring parity and a signed-in teacher/learner presentation rehearsal. The last live fixture failed parity (EN 14/20, ES 13/20, FR 14/20). No new scoring-model or point-anchor change is being represented as calibrated.
-
-The operator calibration feature permits authorized verification from the owner's own browser; it does not grant this agent a login or replace the user-facing walkthrough. A failed cloud-browser sign-in must not be circumvented.
+A signed-in rehearsal on the live site remains required: owner sees staff tools; learner sees ordinary navigation; learner joins a class, completes an assignment; teacher reviews both answers/observations and saves a comment; learner reopens it. Check live feedback in EN/ES/FR for accurate attribution and relevant suggestions. Neither mocks nor an unauthenticated route check replace this presentation rehearsal. No claim of presentation readiness is made without it. A blocked cloud-browser sign-in must not be circumvented.

@@ -1,6 +1,5 @@
-import { assessmentQuestion } from '@/lib/assessmentQuestion';
-import { assessReasoning } from '@/lib/assessReasoning';
-import type { PointAssessment } from '@/lib/pointRubric';
+import { learnerEvidence } from '@/lib/pointRubric';
+import { qualitativePrompt, qualitativeAssessment, type QualitativeAssessment } from '@/lib/qualitativeAssessment';
 import { assignmentAccess,assignmentPrompt,classroomActor,saveAssignmentTurn,ClassroomError } from '@/lib/classroom';
 import { betaAssessmentPrompt, retiredVerifier } from '@/lib/betaAssessment';
 import { resolveReadingRequest } from '@/lib/readingAccess';
@@ -10,16 +9,13 @@ import { getServerSessionUser } from "@/lib/auth";
 import {
   persistCanonicalConversation,
   updateCanonicalUserProgress,
-  upsertCanonicalTrait,
 } from "@/lib/canonicalPersistence";
 import { getReasoningMemory } from "@/lib/memory";
 import {
   calculateNextStreak,
-  calculateReasoningScore,
   getRankFromXp,
 } from "@/lib/progression";
 import { hasSupabaseAdminEnv, supabaseAdmin } from "@/lib/supabaseAdmin";
-import { evolveTraitScore } from "@/lib/traits";
 
 type ReasoningRequest = {
   assignmentId?: string;
@@ -81,7 +77,7 @@ type BehavioralScores = {
 
 type VerifierResult = {
   status: "retired";
-  assessment?: PointAssessment;
+  assessment?: QualitativeAssessment;
   score: number;
   behavioral: BehavioralScores;
   signals: Record<string, boolean>;
@@ -89,14 +85,14 @@ type VerifierResult = {
 };
 
 type ReasoningFeedback = {
-  assessment: PointAssessment;
+  assessment: QualitativeAssessment;
   analysis: string;
   behavioral: BehavioralScores;
   contrarian: string;
   finalSynthesis: string;
   followUp: string;
   perspectiveExpansion: string;
-  score: number;
+  score: null;
   secondaryQuestion: string;
   strengths: string[];
   trait: string;
@@ -380,9 +376,10 @@ function sanitizeFeedback(
   language: "en" | "es" | "fr",
   phase: "follow_up" | "synthesis" = "follow_up",
   synthesisContext: SynthesisContext | undefined,
-  assessment: PointAssessment
+  answers: string[]
 ): ReasoningFeedback {
-  const score = assessment.percentage;
+  const assessment = qualitativeAssessment(parsed?.qualitativeFeedback, answers, language);
+  const score = null;
   const trait = ensureString(parsed?.trait, language === 'es' ? 'Razonamiento' : language === 'fr' ? 'Raisonnement' : categoryPrompt.traitOptions[0]);
   const fallbackAnalysis =
     language === "es"
@@ -475,6 +472,7 @@ function buildAdaptiveSystemPrompt({
   if (phase === 'synthesis') {
     return [
       betaAssessmentPrompt,
+      qualitativePrompt,
       'You are UThynk. Conclude a completed two-answer reasoning conversation. This is the final synthesis, not another perspective expansion or a short appraisal of the latest answer.',
       'Both answers come from the SAME person. Address that person directly as you (tú in Spanish, tu in French), in plain conversational language. Never refer to the user, first user or second user, and never describe the two answers as different people. Explain what you introduced as the coach and how their second answer actually responded to it.',
       `Write every user-facing field entirely in ${responseLanguage}, including translated trait labels and strengths/weaknesses. Paraphrase earlier turns in ${responseLanguage}; do not mix languages. Keep JSON keys in English.`,
@@ -496,12 +494,13 @@ function buildAdaptiveSystemPrompt({
       'Write the gap once in everyday language, not as "the remaining reasoning gap", "a solid starting point", "a solid foundation", or their translations. Do not grade the answer or add generic praise. Keep within the age-specific word target in the requested language. Make the final sentence itself a practical principle combining the original reasoning with the new lens, preserving any disagreement or uncertainty; do not append a generic inspirational sentence.',
       'Calibration example ONLY when the first answer balances preparation and adaptability, the coach introduces constraints driving creativity, and the second answer merely transfers the lesson to business: "You noticed that preparation cannot anticipate every surprise, so adapting remains part of being prepared. That connects planning with the ability to respond when the plan stops fitting.\n\nI added the idea that limited options can sometimes make that response more inventive. This expands your starting point: adapting may involve using a restriction to discover a solution, rather than simply coping until more resources arrive. You carried the preparation-and-adaptation lesson into business, but your reply did not yet explore whether a particular limit would encourage creative reuse or prevent useful work. That distinction matters because scarcity is not automatically helpful.\n\nPutting these ideas together gives preparation a second purpose: helping you recognize what can be changed when circumstances narrow your choices. When adapting a plan elsewhere, examine which limits could focus invention and which need to be removed." Adapt the reasoning to the actual conversation; never copy this example indiscriminately. If the person already discusses creative reuse and insufficient funding, credit both and choose a genuinely untested edge such as evidence for where the threshold lies. If they reject the lens, the principle must preserve that uncertainty rather than declare constraints beneficial.',
       'Sensitive-topic rule: for self-harm, suicide, trauma, abuse, mental health, medical issues or identity-based harm, use supportive, non-adversarial language and appropriate safety guidance.',
-      'Return only valid JSON with keys: trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[].',
+      'Return only valid JSON with keys: trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[], qualitativeFeedback object.',
     ].join(' ');
   }
 
   return [
     betaAssessmentPrompt,
+    qualitativePrompt,
     "You are UThynk, an adaptive reasoning coach. You must produce specific, non-repetitive feedback.",
     `Write every user-facing response field, including trait, strengths and weaknesses, entirely in ${responseLanguage}. Translate or paraphrase earlier turns into this language even if the user or history uses another language. Never mix languages within a generated response. Keep JSON keys in English.`,
     `Session identity: sessionId=${sessionId}, conversationId=${conversationId}.`,
@@ -528,7 +527,7 @@ function buildAdaptiveSystemPrompt({
     "Prefer plain phrasing such as 'Have you thought about...', 'Could someone...', 'What if...', or 'What would change if...'. Avoid abstract academic wording like 'How might the emotional appeal of...' when a simpler sentence works.",
     "Do not use generic prompts like 'explain further', 'give another example', or 'clarify your reasoning'.",
     "Sensitive-topic rule: if the prompt or answer concerns self-harm, suicide, trauma, abuse, mental health, medical issues, or identity-based harm, switch to supportive, non-adversarial exploration and appropriate safety guidance.",
-    "Return only valid JSON with keys: trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[].",
+    "Return only valid JSON with keys: trait string, analysis string, contrarian string, followUp string, perspectiveExpansion string, secondaryQuestion string, finalSynthesis string, strengths string[], weaknesses string[], qualitativeFeedback object.",
   ].join(" ");
 }
 
@@ -544,46 +543,6 @@ async function loadProfile(userId?: string) {
     .single();
 
   return data;
-}
-
-async function updateTrait(userId: string, traitName: string, reasoningScore: number) {
-  if (!hasSupabaseAdminEnv() || !supabaseAdmin || !traitName) {
-    return null;
-  }
-
-  const { data: existing } = await supabaseAdmin
-    .from("cognitive_traits")
-    .select("id, trait_score")
-    .eq("user_id", userId)
-    .eq("trait_name", traitName)
-    .single();
-
-  const nextScore = evolveTraitScore(existing?.trait_score || 50, reasoningScore);
-
-  if (existing?.id) {
-    await supabaseAdmin
-      .from("cognitive_traits")
-      .update({
-        trait_score: nextScore,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", existing.id);
-  } else {
-    await supabaseAdmin.from("cognitive_traits").insert({
-      user_id: userId,
-      trait_name: traitName,
-      trait_score: nextScore,
-    });
-  }
-
-  await upsertCanonicalTrait({
-    evidence: `Provisional beta-v1 response estimate ${reasoningScore}; not a validated learning measure`,
-    profileId: userId,
-    traitName,
-    traitScore: nextScore,
-  });
-
-  return { traitName, traitScore: nextScore };
 }
 
 async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
@@ -602,13 +561,9 @@ async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
   }
 
   const nextXp = (existing.xp || 0) + feedback.xp;
-  const hasEstimate = feedback.assessment.scoreSource === "rubric";
-  const nextScore = hasEstimate
-    ? calculateReasoningScore(existing.reasoning_score ?? 70, feedback.score)
-    : existing.reasoning_score ?? 70;
   const nextStreak = calculateNextStreak(existing.updated_at || null, existing.streak || 0);
   const nextRank = getRankFromXp(nextXp);
-  const evolvedTrait = hasEstimate ? await updateTrait(userId, feedback.trait, feedback.score) : null;
+  const evolvedTrait = null;
   // Retired behavioral estimates must not update a person-level profile.
   const reasoningProfile = null;
 
@@ -616,7 +571,6 @@ async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
     .from("user_profiles")
     .update({
       xp: nextXp,
-      reasoning_score: nextScore,
       streak: nextStreak,
       rank: nextRank,
       primary_trait: feedback.trait || existing.primary_trait,
@@ -628,7 +582,6 @@ async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
     primaryTrait: feedback.trait || existing.primary_trait,
     profileId: userId,
     rank: nextRank,
-    reasoningScore: nextScore,
     streak: nextStreak,
     xp: nextXp,
   });
@@ -637,7 +590,6 @@ async function updateUserProgress(userId: string, feedback: ReasoningFeedback) {
     evolvedTrait,
     reasoningProfile,
     rank: nextRank,
-    reasoningScore: nextScore,
     streak: nextStreak,
     xp: nextXp,
   };
@@ -688,7 +640,7 @@ async function persistSession({
     trait_detected: feedback.trait,
     strengths: feedback.strengths,
     weaknesses: feedback.weaknesses,
-    verifier_score: feedback.verifier.score,
+    verifier_score: null,
     orchestration_category: categoryPrompt.category,
     cadence_key: mode,
     memory_snapshot: memory || null,
@@ -702,19 +654,6 @@ async function persistSession({
     challenge_category: categoryPrompt.category,
     follow_up: feedback.followUp,
     cadence_key: mode,
-  });
-
-  await supabaseAdmin.from("reasoning_verifier_scores").insert({
-    user_id: userId,
-    session_id: sessionId,
-    conversation_id: conversationId,
-    challenge_id: challengeId || "daily",
-    challenge_category: categoryPrompt.category,
-    ai_score: feedback.score,
-    verifier_score: feedback.verifier.score,
-    blended_score: feedback.score,
-    rubric: `${feedback.assessment.rubricVersion}; provisional; ${categoryPrompt.reasoningLens.join(", ")}`,
-    signals: feedback.verifier,
   });
 
   await persistCanonicalConversation({
@@ -816,6 +755,7 @@ async function callOpenAi({
           content: JSON.stringify({
             outputLanguage: language,
             outputInstruction: language === 'es' ? 'Escribe todos los campos visibles únicamente en español. Las claves JSON permanecen en inglés.' : language === 'fr' ? 'Rédige tous les champs visibles uniquement en français. Les clés JSON restent en anglais.' : 'Write all visible fields in English.',
+            learnerAnswerSentences: learnerEvidence(phase === "synthesis" && synthesisContext ? [synthesisContext.firstUserAnswer, response] : [response]),
             ageBand: profile?.age_band || "18_plus",
             challenge,
             priorSessions: memory?.recentPatterns || [],
@@ -866,7 +806,6 @@ function streamingFeedback(args: {
   thinkingLens?: string;
   userId?: string;
   verifier: VerifierResult;
-  assessment: PointAssessment;
 }) {
   const encoder = new TextEncoder();
 
@@ -931,7 +870,7 @@ function streamingFeedback(args: {
           args.language,
           args.phase || "follow_up",
           args.synthesisContext,
-          args.assessment
+          args.phase === "synthesis" && args.synthesisContext ? [args.synthesisContext.firstUserAnswer, args.response] : [args.response]
         );
         const progression =
           args.phase === "follow_up" ? null : await persistSession({ ...args, feedback });
@@ -989,9 +928,9 @@ export async function POST(request: Request) {
       body.readingModuleId=undefined; body.section=`assignment:${body.assignmentId}`;
       if(saved) {
         if(body.sessionId!==saved.session_id) throw new ClassroomError('Resume your saved assignment from the classroom page.',409);
-        if(saved.completed_at) return NextResponse.json({finalSynthesis:saved.synthesis,analysis:saved.synthesis,perspectiveExpansion:'',secondaryQuestion:'',followUp:'',assessment:saved.assessment,score:saved.assessment?.percentage,xp:0});
+        if(saved.completed_at) return NextResponse.json({finalSynthesis:saved.synthesis,analysis:saved.synthesis,perspectiveExpansion:'',secondaryQuestion:'',followUp:'',assessment:saved.assessment,score:null,xp:0});
         if(body.phase==='synthesis') {body.firstUserAnswer=saved.first_answer;body.perspectiveExpansion=saved.perspective;body.secondaryQuestion=saved.secondary_question;}
-        else return NextResponse.json({perspectiveExpansion:saved.perspective,secondaryQuestion:saved.secondary_question,assessment:saved.assessment,score:saved.assessment?.percentage,xp:0});
+        else return NextResponse.json({perspectiveExpansion:saved.perspective,secondaryQuestion:saved.secondary_question,assessment:saved.assessment,score:null,xp:0});
       } else if(body.phase==='synthesis') throw new ClassroomError('Submit the first answer before completing this assignment.',409);
       if(!body.response||body.response.length>12000) throw new ClassroomError('Use an answer between 1 and 12,000 characters.');
       body.stream=false;
@@ -1069,7 +1008,7 @@ export async function POST(request: Request) {
                 : "18_plus",
           }
         : null);
-    const assessment = await assessReasoning({question:classroomContext || body.readingModuleId ? challenge : assessmentQuestion(body,profile?.age_band||'18_plus'),answers:phase==='synthesis'?[synthesisValidation!.context.firstUserAnswer,response]:[response],userId,apiKey});
+
     const verifier = retiredVerifier();
     const modeSeed = stableModeSeed({
       category,
@@ -1098,7 +1037,6 @@ export async function POST(request: Request) {
       section: body.section,
       sessionId,
       stream: false,
-      assessment,
       synthesisContext: synthesisValidation?.context,
       thinkingLens: body.thinkingLens,
       verifier,
@@ -1114,7 +1052,7 @@ export async function POST(request: Request) {
     }
 
     const parsed = await nonStreamingFeedback(openAiArgs);
-    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt, language, phase, synthesisValidation?.context, assessment);
+    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt, language, phase, synthesisValidation?.context, phase === "synthesis" ? [synthesisValidation!.context.firstUserAnswer, response] : [response]);
     const classroomSaved = body.assignmentId && classroomAccess ? await saveAssignmentTurn(classroomAccess,body.assignmentId,sessionId,phase,body,feedback) : null;
     const progression =
       phase === "follow_up" || classroomSaved?.already_completed

@@ -1,7 +1,7 @@
 'use client';
 
 import AssessmentBreakdown from '@/components/AssessmentBreakdown';
-import type { PointAssessment } from '@/lib/pointRubric';
+import type { SavedAssessment } from '@/lib/qualitativeAssessment';
 
 import BetaFeedbackNotice from '@/components/BetaFeedbackNotice';
 
@@ -50,13 +50,13 @@ type Props = {
 };
 
 type Feedback = {
-  assessment?: PointAssessment;
+  assessment?: SavedAssessment;
   analysis?: string;
   contrarian?: string;
   finalSynthesis?: string;
   followUp?: string;
   perspectiveExpansion?: string;
-  score?: number;
+  score?: number | null;
   secondaryQuestion?: string;
   strengths?: string[];
   trait?: string;

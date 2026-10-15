@@ -20,7 +20,7 @@ export default function AppNavigation({
   const summary = useRef<HTMLElement>(null);
   const copy = uiCopy[language];
   const menuLabel =
-    language === "fr" ? "Menu" : language === "es" ? "Menú" : "Menu";
+    language === "fr" ? "Outils du personnel" : language === "es" ? "Herramientas del personal" : "Staff tools";
   useEffect(() => {
     function outside(e: PointerEvent) {
       if (e.target instanceof Node && !menu.current?.contains(e.target))
@@ -44,41 +44,9 @@ export default function AppNavigation({
       <Link href="/daily">{copy.dailyNav}</Link>
       <LessonsNavLink language={language} />
       <Link href="/thinking-paths">{pathCopy[language].title}</Link>
-      <details
-        className="secondaryNavigation"
-        ref={menu}
-        onKeyDown={(e) => {
-          if (e.key === "Escape") {
-            menu.current?.removeAttribute("open");
-            summary.current?.focus();
-          }
-        }}
-      >
-        <summary ref={summary}>
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            aria-hidden="true"
-          >
-            <path d="M2 4h16M2 10h16M2 16h16" />
-          </svg>
-          <span>{menuLabel}</span>
-        </summary>
-        <div
-          className="secondaryNavigationLinks"
-          onClick={(e) => {
-            if ((e.target as Element).closest("a,button"))
-              menu.current?.removeAttribute("open");
-          }}
-        >
           <Link href="/classroom">{copy.classroomNav}</Link>
           <Link href="/leaderboard">{copy.participationNav}</Link>
           <Link href="/profile">{copy.profileNav}</Link>
-          <RestrictedNavLinks />
           {onHelp ? (
             <button type="button" onClick={onHelp}>
               {copy.howToUseNav}
@@ -103,8 +71,39 @@ export default function AppNavigation({
                 : "Sign in"}
           </Link>
           {extra}
+      <RestrictedNavLinks language={language} render={(links) => <details
+        className="secondaryNavigation"
+        ref={menu}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            menu.current?.removeAttribute("open");
+            summary.current?.focus();
+          }
+        }}
+      >
+        <summary ref={summary} aria-label={menuLabel} title={menuLabel}>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
+            <path d="M2 4h16M2 10h16M2 16h16" />
+          </svg>
+        </summary>
+        <div
+          className="secondaryNavigationLinks"
+          onClick={(e) => {
+            if ((e.target as Element).closest("a,button"))
+              menu.current?.removeAttribute("open");
+          }}
+        >
+          {links}
         </div>
-      </details>
+      </details>} />
     </nav>
   );
 }
