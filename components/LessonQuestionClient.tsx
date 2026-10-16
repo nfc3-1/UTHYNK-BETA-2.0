@@ -45,7 +45,7 @@ type Props = {
   questionIds?: string[];
   questionTranslations?: Record<Language, string[]>;
   readingModuleId?: string;
-  sessionUserId?: string;
+  sessionUserId?: string | null;
   onSessionChange?: (session: ChallengeSession | null) => void;
 };
 
@@ -178,7 +178,7 @@ export default function LessonQuestionClient({ category, questions, questionIds,
   const sourceQuestion = questions[selectedIndex] || questions[0] || '';
   const questionRecord = getLessonQuestion(category, sourceQuestion);
   const profile = typeof window === 'undefined' ? null : readProfile();
-  const userId = sessionUserId || profile?.id || null;
+  const userId = sessionUserId !== undefined ? sessionUserId : profile?.id || null;
   const keyInput: ChallengeSessionKeyInput = {
     assignmentId,
     ageBand: safeAgeBand,
@@ -197,7 +197,7 @@ export default function LessonQuestionClient({ category, questions, questionIds,
     const initialAge = normalizeAgeBand(initialProfile?.age_band || '18_plus');
     setAgeBand(initialAge);
     setSelectedIndex(readingModuleId ? 0 : readLessonSelection(localStorage, {
-      category, ageBand: initialAge, userId: sessionUserId || initialProfile?.id, language: getStoredLanguageValue(),
+      category, ageBand: initialAge, userId: sessionUserId !== undefined ? sessionUserId : initialProfile?.id, language: getStoredLanguageValue(),
     }, questions));
     setReady(true);
 

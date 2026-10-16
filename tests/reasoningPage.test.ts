@@ -35,16 +35,25 @@ async function submit() { await act(async () => { await submitButton().props.onC
 afterEach(() => { if (page) act(() => page.unmount()); vi.unstubAllGlobals(); });
 
 describe("reasoning page finite workout", () => {
-  it('keeps All lessons and the library shortcut visible after dismissing How to use', () => {
+  it('keeps both beta choices visible after dismissing How to use', () => {
     setup();
     act(() => button('Start thinking').props.onClick());
     type('response', 'Keep my daily challenge draft');
     const links = page.root.findAllByType('a').filter(link => link.props.href === '/lessons');
-    expect(links.some(link => link.children.join('') === 'All lessons')).toBe(true);
-    expect(links.some(link => link.children[0] === 'Explore all lessons')).toBe(true);
-    expect(JSON.stringify(page.toJSON())).toContain('There’s more than the daily challenge.');
+    expect(links.some(link => link.children.join('') === 'Thinking Challenges')).toBe(true);
+    expect(links.some(link => link.children[0] === 'Try a thinking challenge')).toBe(true);
+    expect(page.root.findByProps({'data-beta-practice':true}).findAllByType('a').map(link=>link.props.href)).toEqual(['/lessons','/thinking-paths']);
     expect(field('response').props.value).toBe('Keep my daily challenge draft');
     expect(requests).toHaveLength(0);
+  });
+  it('keeps an exhausted guest trial usable during beta without changing its draft or counter', async () => {
+    setup(); act(() => page.unmount()); storage.set('uthynk-free-pass-used','3'); mount();
+    type('response','My guest answer');
+    expect(page.root.findAllByProps({className:'freePassGate'})).toHaveLength(0);
+    await submit(); type('follow-up-response','My second answer');
+    reply=async()=>Response.json({finalSynthesis:'You used evidence and considered another explanation.'});
+    await submit();
+    expect(requests).toHaveLength(2); expect(storage.get('uthynk-free-pass-used')).toBe('3');
   });
   for (const language of ['en','es','fr']) it(`completes and restores the ${language} finite flow`, async () => {
     setup(language);

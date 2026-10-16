@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:unit": "node --test tests/*.test.mjs",
-    "test:translations": "node scripts/checkLessonTranslations.mjs"
+    "test:translations": "node scripts/checkLessonTranslations.mjs",
+    "review:spanish": "node scripts/exportSpanishReview.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.46.1",

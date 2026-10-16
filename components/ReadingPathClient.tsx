@@ -10,7 +10,7 @@ import { normalizeAgeBand } from '@/lib/ageAdaptivePrompts';
 import styles from './ThinkingPaths.module.css';
 
 const emptyPreviousModules: ReadingModule[] = [];
-export default function ReadingPathClient({ pathSlug, pathTitle, reading, previousModules = emptyPreviousModules, moduleId, userId }: { pathSlug: string; pathTitle: PathText; reading: ReadingPath; previousModules?: ReadingModule[]; moduleId: string; userId: string }) {
+export default function ReadingPathClient({ pathSlug, pathTitle, reading, previousModules = emptyPreviousModules, moduleId, userId }: { pathSlug: string; pathTitle: PathText; reading: ReadingPath; previousModules?: ReadingModule[]; moduleId: string; userId: string | null }) {
   const { language, changeLanguage } = usePathLanguage();
   const copy = pathCopy[language];
   const [progress, setProgress] = useState<Record<string, 'complete' | 'saved' | 'untouched'>>({});

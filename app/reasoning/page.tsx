@@ -7,7 +7,8 @@ import { betaFeedbackCopy } from "@/lib/betaAssessment";
 
 import AppNavigation from "@/components/AppNavigation";
 
-import { LessonDiscoveryBanner } from "@/components/LessonDiscovery";
+import BetaPracticeEntry from "@/components/BetaPracticeEntry";
+import { PUBLIC_BETA_PRACTICE } from "@/lib/betaPractice";
 import ThinkingWalkthrough, { ThinkingStepHint, VISUAL_GUIDE_DISMISSED } from "@/components/ThinkingWalkthrough";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -855,7 +856,7 @@ function ReasoningExperience({
         activeProfile = stored ? JSON.parse(stored) : null;
         const used = Number(localStorage.getItem("uthynk-free-pass-used") || "0");
 
-        if (!activeProfile?.id && used >= 3) {
+        if (!PUBLIC_BETA_PRACTICE && !activeProfile?.id && used >= 3) {
           setWorkoutStage(workoutStage);
           router.push("/login?reason=free-pass");
           return;
@@ -963,7 +964,7 @@ function ReasoningExperience({
         activeProfile = stored ? JSON.parse(stored) : null;
         const used = Number(localStorage.getItem("uthynk-free-pass-used") || "0");
 
-        if (!activeProfile?.id && used >= 3) {
+        if (!PUBLIC_BETA_PRACTICE && !activeProfile?.id && used >= 3) {
           setWorkoutStage(workoutStage);
           router.push("/login?reason=free-pass");
           return;
@@ -1031,7 +1032,7 @@ function ReasoningExperience({
         })
       );
 
-      if (!activeProfile?.id && typeof window !== "undefined") {
+      if (!PUBLIC_BETA_PRACTICE && !activeProfile?.id && typeof window !== "undefined") {
         const nextFreePassUsed = Math.min(
           3,
           Number(localStorage.getItem("uthynk-free-pass-used") || "0") + 1
@@ -1254,7 +1255,7 @@ function ReasoningExperience({
             <span>{visiblePressure}</span>
             {ageBand !== "18_plus" ? <span>{ageBandLabel(ageBand)}</span> : null}
             {isDailyWorkout ? <span>{text.dailyWorkout}</span> : null}
-            {!profile?.id ? <span>{Math.max(0, 3 - freePassUsed)} {text.freeLeft}</span> : null}
+            {!PUBLIC_BETA_PRACTICE && !profile?.id ? <span>{Math.max(0, 3 - freePassUsed)} {text.freeLeft}</span> : null}
           </div>
         </div>
 
@@ -1374,7 +1375,7 @@ function ReasoningExperience({
         <ThinkingStepHint language={language} step={workoutStage === "followUp" || workoutStage === "synthesis" ? 2 : workoutStage === "reflection" || workoutStage === "complete" ? 3 : 0} />
 
         {error ? <p className="panelNote">{error}</p> : null}
-        {!profile?.id && freePassUsed >= 3 ? (
+        {!PUBLIC_BETA_PRACTICE && !profile?.id && freePassUsed >= 3 ? (
           <div className="freePassGate">
             <strong>{text.createFreeProfile}</strong>
             <span>{text.freeGateText}</span>
@@ -1531,7 +1532,7 @@ function ReasoningExperience({
             <button
               className="btn btnPrimary"
               type="button"
-              disabled={loading || workoutStage === "challenge" || !response.trim() || (!profile?.id && freePassUsed >= 3)}
+              disabled={loading || workoutStage === "challenge" || !response.trim() || (!PUBLIC_BETA_PRACTICE && !profile?.id && freePassUsed >= 3)}
               onClick={analyzeReasoning}
             >
               {loading ? copy.sending : copy.send}
@@ -1764,7 +1765,7 @@ export default function ReasoningPage() {
         </div>
       </header>
 
-      <LessonDiscoveryBanner language={language} lessonCount={challenges.length} categoryCount={categoryLinks.length} />
+      <BetaPracticeEntry language={language} />
 
       <ThinkingWalkthrough language={language} open={showOnboarding} onOpenChange={setShowOnboarding} />
 

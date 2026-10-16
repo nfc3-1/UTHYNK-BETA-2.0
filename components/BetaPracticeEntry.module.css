@@ -1,0 +1,13 @@
+.entry{margin:16px 0;padding:20px 24px;color:#f5f7fc;background:rgba(18,25,54,.9);border-color:rgba(220,228,239,.25)}
+.eyebrow{margin:0 0 6px;color:#c8d5e5;font-size:.85rem;font-weight:700}
+.entry h2{margin:0 0 8px;font-size:clamp(1.4rem,2.1vw,1.9rem);line-height:1.2}
+.intro{margin:0;color:#d6deea;line-height:1.45}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0 12px}
+.choices article{padding:16px 18px;border:1px solid rgba(220,228,239,.3);border-radius:16px;background:rgba(255,255,255,.045);display:flex;flex-direction:column;align-items:flex-start}
+.choices h3{margin:0;font-size:1.15rem;line-height:1.3}
+.choices p{margin:8px 0 14px;color:#d6deea;line-height:1.45;flex:1}
+.choices a{color:#f5f7fc!important;background:#283b53!important;border:1px solid #9cacc0!important;white-space:normal;min-height:44px;text-align:center}
+.choices a:focus-visible{outline:3px solid #dce4ef;outline-offset:3px}
+.note{margin:6px 0 0;color:#b8c4d5;font-size:.85rem;line-height:1.4}
+@media(max-width:600px){.entry{padding:18px}.choices{gap:10px}.choices article{padding:12px}.choices a{padding:10px;font-size:.9rem}}
+@media(max-width:380px){.choices{grid-template-columns:minmax(0,1fr)}}

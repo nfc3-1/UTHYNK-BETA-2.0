@@ -1,3 +1,4 @@
+import { PUBLIC_BETA_PRACTICE } from '@/lib/betaPractice';
 import { groundReadingFollowUp } from '@/lib/readingGrounding';
 import type { ReadingModule } from '@/lib/thinkingPathTypes';
 import { observeReasoning } from '@/lib/observeReasoning';
@@ -979,7 +980,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!userId && readGuestFreePassUsed(request) >= 3) {
+    if (!PUBLIC_BETA_PRACTICE && !userId && readGuestFreePassUsed(request) >= 3) {
       return NextResponse.json(
         {
           code: "auth_required",
