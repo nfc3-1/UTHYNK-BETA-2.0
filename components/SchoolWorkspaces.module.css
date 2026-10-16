@@ -1,0 +1,12 @@
+.report { margin-block: 20px; padding-block: 8px; border-top: 1px solid var(--stroke); }
+.report h3, .report h4 { line-height: 1.35; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit,minmax(145px,1fr)); gap: 12px; margin-block: 18px; }
+.metrics > div { padding: 15px; border: 1px solid var(--stroke); border-radius: 12px; background: rgba(255,255,255,0.035); }
+.metrics dt { color: var(--muted); font-size: 0.9rem; line-height: 1.4; }
+.metrics dd { margin: 8px 0 0; font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.tableWrap { max-width: 100%; overflow-x: auto; margin-block: 16px; }
+.tableWrap table { width: 100%; border-collapse: collapse; text-align: left; }
+.tableWrap th, .tableWrap td { padding: 12px; border-bottom: 1px solid var(--stroke); vertical-align: top; }
+.tableWrap caption { text-align: left; color: var(--muted); padding-block: 8px; }
+.next { padding: 16px; margin-block: 16px; border-left: 3px solid #cbd5e1; background: rgba(255,255,255,0.035); }
+.next h4 { margin-top: 0; }

@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ClassroomProgress } from '@/components/SchoolReports';
 import AssessmentBreakdown from "@/components/AssessmentBreakdown";
 type Target = { id: string; kind: string; title: string; category: string };
 export default function ClassroomDashboard({
@@ -21,12 +22,16 @@ export default function ClassroomDashboard({
     [name, setName] = useState(""),
     [target, setTarget] = useState(""),
     [due, setDue] = useState("");
-  const [review, setReview] = useState(""),
-    [comment, setComment] = useState("");
+  const [review, setReview] = useState("");
+  const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({});
+  const commentKey = `${classId}:${review}`;
+  const comment = commentDrafts[commentKey] || "";
+  const setComment = (value: string) => setCommentDrafts(drafts => ({ ...drafts, [commentKey]: value }));
   const [schoolId, setSchoolId] = useState('');
+  const view = teacher ? "teaching" : boardOnly ? "all" : "learning";
   async function load(selected = "") {
     const r = await fetch(
-      "/api/classroom" + (selected ? `?classId=${selected}` : ""),
+      `/api/classroom?view=${view}` + (selected ? `&classId=${encodeURIComponent(selected)}` : ""),
       { cache: "no-store" },
     );
     const value = await r.json();
@@ -36,7 +41,7 @@ export default function ClassroomDashboard({
   }
   useEffect(() => {
     let active = true;
-    fetch("/api/classroom", { cache: "no-store" })
+    fetch(`/api/classroom?view=${view}`, { cache: "no-store" })
       .then(async (r) => {
         const value = await r.json();
         if (!r.ok) throw new Error(value.error);
@@ -51,7 +56,7 @@ export default function ClassroomDashboard({
     return () => {
       active = false;
     };
-  }, []);
+  }, [view]);
   async function mutate(body: any) {
     setBusy(true);
     setError("");
@@ -64,7 +69,7 @@ export default function ClassroomDashboard({
       const value = await r.json();
       if (!r.ok) throw new Error(value.error);
       await load(value.classId || classId);
-      setComment("");
+      if (body.action === "comment") setComment("");
       setTitle("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Request failed.");
@@ -84,6 +89,8 @@ export default function ClassroomDashboard({
       {error && <p role="alert">{error}</p>}
       {!data && !error && <p role="status">Loading saved classroom records…</p>}
       {!boardOnly && (
+        <details className="card teacherPanel" open={data && !data.classes.length ? true : undefined}>
+          <summary>{teacher ? 'Set up a class' : 'Join a class'}</summary>
         <div className="teacherTwoColumn">
           {teacher && (
             <section className="card teacherPanel">
@@ -112,7 +119,7 @@ export default function ClassroomDashboard({
               </button>
             </section>
           )}
-          <section className="card teacherPanel">
+          {!teacher && <section className="card teacherPanel">
             <h2>Join a class</h2>
             <p>
               Use the code supplied by your teacher. Your display name is
@@ -141,8 +148,9 @@ export default function ClassroomDashboard({
             >
               Join Class
             </button>
-          </section>
+          </section>}
         </div>
+        </details>
       )}
       {data && (
         <section className="card teacherPanel" style={{ marginTop: 18 }}>
@@ -152,7 +160,7 @@ export default function ClassroomDashboard({
               value={classId}
               disabled={busy}
               onChange={async (e) => {
-                setError("");
+                setError(""); setBusy(true); setReview("");
                 try {
                   await load(e.target.value);
                   setReview("");
@@ -162,7 +170,7 @@ export default function ClassroomDashboard({
                       ? e.message
                       : "Class could not be loaded.",
                   );
-                }
+                } finally { setBusy(false); }
               }}
             >
               <option value="" disabled>
@@ -180,12 +188,14 @@ export default function ClassroomDashboard({
               No classes yet.{" "}
               {boardOnly
                 ? "Join a class to view its participation board."
-                : "Create a class or enter your teacher’s code."}
+                : teacher ? "Create a class to begin assigning work." : "Enter your teacher’s code to join a class."}
             </p>
           )}
           {active && (
             <>
               <h2>{active.title}</h2>
+              <button className="btn" disabled={busy} onClick={async () => { setBusy(true); setError(""); try { await load(classId); } catch (e) { setError(e instanceof Error ? e.message : "Refresh failed."); } finally { setBusy(false); } }}>Refresh records</button>
+              {!boardOnly && <ClassroomProgress key={classId} data={data} classId={classId} />}
               {data.manage && active.join_code && !boardOnly && (
                 <p>
                   Class ID: <code>{active.id}</code><br />

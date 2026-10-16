@@ -217,4 +217,27 @@ describe("expanded reading assignment catalog", () => {
     expect(new Set(readings.map(item=>item.id)).size).toBe(readings.length);
     expect(readings.some(item=>item.id.startsWith('reading-connected-'))).toBe(true);
   });
+  it('separates teaching and learning views for a person with both roles', async () => {
+    state.rows.classroom_members.push({ class_id: otherId, profile_id: 'teacher-a', display_name: 'Teacher learning', active: true });
+    state.rows.classroom_members.push({ class_id: classId, profile_id: 'teacher-a', display_name: 'Own learner membership', active: true });
+    state.rows.classroom_submissions.push({ assignment_id: assignmentId, learner_id: 'teacher-a', first_answer: 'Own work', completed_at: null });
+    const teaching = await classroomSnapshot(teacher, null, 'teaching');
+    expect(teaching.classes.map(c => c.id)).toEqual([classId]); expect(teaching.manage).toBe(true);
+    await expect(classroomSnapshot(teacher, otherId, 'teaching')).rejects.toMatchObject({ status: 403 });
+    const learning = await classroomSnapshot(teacher, classId, 'learning');
+    expect(learning.manage).toBe(false); expect(learning.members).toEqual([]); expect(learning.viewerId).toBe('teacher-a');
+    expect(learning.submissions.map(s => s.first_answer)).toEqual(['Own work']);
+    const learner = await classroomSnapshot(student, null, 'learning');
+    expect(learner.classes.map(c => c.id)).toEqual([classId]); expect(learner.submissions.map(s => s.first_answer)).toEqual(['Actual answer']);
+  });
+
+  it('does not retain a teaching view or enrollment code after school teaching access is removed', async () => {
+    state.rows.classroom_classes[0].school_id = 'revoked-school';
+    state.rows.classroom_members.push({ class_id: classId, profile_id: 'teacher-a', display_name: 'Learner membership', active: true });
+    expect((await classroomSnapshot(teacher, null, 'teaching')).classes).toEqual([]);
+    const personal = await classroomSnapshot(teacher, classId, 'learning');
+    expect(personal.manage).toBe(false); expect(personal.classes[0].join_code).toBeUndefined();
+    await expect(classroomSnapshot(teacher, classId, 'teaching')).rejects.toMatchObject({ status: 403 });
+  });
+
 });

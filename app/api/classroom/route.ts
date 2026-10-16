@@ -15,16 +15,19 @@ function failure(error: unknown) {
           ? error.message
           : "Classroom request failed. Please retry.",
     },
-    { status: error instanceof ClassroomError ? error.status : 500 },
+    { status: error instanceof ClassroomError ? error.status : 500, headers: { "Cache-Control": "private, no-store" } },
   );
 }
 export async function GET(request: Request) {
   try {
     const access = await classroomActor();
+    const view = new URL(request.url).searchParams.get("view") || "all";
+    if (view !== "all" && view !== "teaching" && view !== "learning") throw new ClassroomError("Choose a valid classroom view.");
     return NextResponse.json(
       await classroomSnapshot(
         access,
         new URL(request.url).searchParams.get("classId"),
+        view,
       ),
       { headers: { "Cache-Control": "private, no-store" } },
     );

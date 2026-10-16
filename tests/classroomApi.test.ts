@@ -57,6 +57,7 @@ describe("classroom API boundary", () => {
     expect(state.snapshot).toHaveBeenCalledWith(
       expect.objectContaining({ userId: "server-user" }),
       "selected",
+      "all",
     );
     expect(
       (

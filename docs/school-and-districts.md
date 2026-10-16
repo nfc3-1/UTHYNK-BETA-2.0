@@ -14,6 +14,8 @@ School administrators cannot appoint, remove, or demote other school administrat
 
 School and district dashboards contain selected-school staff names and actual counts of classes, active class enrollments, assignments, and completed submissions from current rosters. A learner enrolled in two classes counts as two enrollments. Individual answers, synthesis, comments, grades, and class enrollment codes are not returned by the school-dashboard RPC. There is no invented data, no inferred learning gain, and no ranking of schools by reasoning scores.
 
+See [Day Three workspaces and reports](sprint-day-3.md) for role-specific views, scoped CSV downloads, current-roster denominators, and the separate assessment design.
+
 ## Setup and use
 
 1. As the existing platform owner, open **Menu → School / district**, also linked from **Admin**. Create the actual district and school, or choose an independent school.

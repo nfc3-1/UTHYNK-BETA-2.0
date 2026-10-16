@@ -163,6 +163,7 @@ async function allRows(query: any): Promise<any[]> {
 export async function classroomSnapshot(
   access: AccountAccess,
   requested?: string | null,
+  view: "all" | "teaching" | "learning" = "all",
 ) {
   const db = classroomDb();
   const schools = await teachingSchools(access);
@@ -185,24 +186,19 @@ export async function classroomSnapshot(
       `teacher_id.eq.${access.userId},id.in.(${memberships.map((m) => m.class_id).join(",") || "00000000-0000-0000-0000-000000000000"})`,
     );
   const rows = requireResult(await query).data || [];
+  const canManage = (c: any) => access.role === 'admin' ||
+    (c.teacher_id === access.userId && (c.school_id ? schools.some(s => s.id === c.school_id) : permits(access, 'teacher')));
+  const isEnrolled = (c: any) => memberships.some(m => m.class_id === c.id);
   const classes = rows
-    .filter(
-      (c) =>
-        access.role === 'admin' ||
-        (c.teacher_id === access.userId && (c.school_id ? schools.some(s => s.id === c.school_id) : permits(access, 'teacher'))) ||
-        memberships.some((m) => m.class_id === c.id),
-    )
-    .map((c) => ({
-      ...c,
-      join_code:
-        c.teacher_id === access.userId || access.role === "admin"
-          ? c.join_code
-          : undefined,
-    }));
+    .filter(c => canManage(c) || isEnrolled(c))
+    .filter(c => view === 'all' || (view === 'learning' ? isEnrolled(c) : canManage(c)))
+    .map(c => ({ ...c, join_code: canManage(c) ? c.join_code : undefined }));
+  if (requested && !classes.some(c => c.id === requested)) throw new ClassroomError("Class access denied.", 403);
   const selected = requested || classes[0]?.id;
   if (!selected)
     return {
       classes,
+      viewerId: access.userId,
       selected: null,
       manage: false,
       members: [],
@@ -238,7 +234,8 @@ export async function classroomSnapshot(
         : ["00000000-0000-0000-0000-000000000000"],
     );
   const all = await allRows(submissionsQuery);
-  const submissions = scope.manage
+  const manage = scope.manage && view !== "learning";
+  const submissions = manage
     ? all
     : all.filter((s) => s.learner_id === access.userId);
   let commentsQuery = db
@@ -250,7 +247,7 @@ export async function classroomSnapshot(
         ? assignments.map((a) => a.id)
         : ["00000000-0000-0000-0000-000000000000"],
     );
-  if (!scope.manage)
+  if (!manage)
     commentsQuery = commentsQuery.eq("learner_id", access.userId!);
   const comments =
     requireResult(await commentsQuery.order("created_at", { ascending: false }))
@@ -267,9 +264,10 @@ export async function classroomSnapshot(
     .sort((a, b) => b.completed - a.completed || a.name.localeCompare(b.name));
   return {
     classes,
+    viewerId: access.userId,
     selected,
-    manage: scope.manage,
-    members: scope.manage ? members : [],
+    manage,
+    members: manage ? members : [],
     assignments,
     submissions,
     comments,
