@@ -213,8 +213,8 @@ describe("classroom authorization and actual records", () => {
 describe("expanded reading assignment catalog", () => {
   it("offers each canonical reading once despite reuse across paths", () => {
     const readings=classroomCatalog().filter(item=>item.kind==='reading');
-    expect(readings).toHaveLength(84);
+    expect(readings).toHaveLength(210);
     expect(new Set(readings.map(item=>item.id)).size).toBe(readings.length);
-    expect(readings.some(item=>item.id==='reading-dewey-time-to-reflect')).toBe(true);
+    expect(readings.some(item=>item.id.startsWith('reading-connected-'))).toBe(true);
   });
 });

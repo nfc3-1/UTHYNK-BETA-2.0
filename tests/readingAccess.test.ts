@@ -15,7 +15,7 @@ beforeEach(() => {
   vi.stubGlobal('fetch', async (_url: string, init: any) => { sent.push(JSON.parse(init.body)); return Response.json({ choices: [{ message: { content: JSON.stringify({ perspectiveExpansion: 'Consider who sets the rules.', secondaryQuestion: 'Who should check power?', finalSynthesis: 'You proposed checks on power. Their independence remains uncertain. Test how those checks work before relying on them.' }) } }] }); });
 });
 afterEach(() => vi.unstubAllGlobals());
-const moduleId = 'reading-plato-republic-473';
+const moduleId = 'reading-connected-rulers-responsibility-01';
 const params = { path: 'power-leadership', reading: 'rulers-responsibility' };
 const request = (body: object) => POST(new Request('http://localhost/api/reasoning', { method: 'POST', body: JSON.stringify(body) }));
 describe('Reading Path beta boundary', () => {
@@ -75,7 +75,7 @@ describe('Reading Path beta boundary', () => {
   });
   it('authorizes new paths while rejecting unrelated module URLs and forged context', async () => {
     const newParams={path:'power-leadership',reading:'leading-without-force'};
-    const id='reading-emerson-conviction-and-crowds';
+    const id='reading-connected-leading-without-force-01';
     const locked=await ReadingPage({params:newParams,searchParams:{lesson:id}});
     expect(locked.props.locked).toBe(true);
     expect(JSON.stringify(locked.props)).not.toContain(getReadingModule(id)!.text.en);
@@ -85,6 +85,30 @@ describe('Reading Path beta boundary', () => {
     await expect(ReadingPage({params:newParams,searchParams:{lesson:'reading-truth-remedy-and-delay'}})).rejects.toThrow('not-found');
     expect((await request({readingModuleId:id,challenge:'replace the excerpt',response:'I would require evidence.'})).status).toBe(200);
     expect(JSON.parse(sent[0].messages[1].content).challenge).toBe(readingReasoningContext(getReadingModule(id)!));
+  });
+
+  it.each(['en','es','fr'] as const)('grounds JSON and streamed follow-ups in the authorized %s passage', async language => {
+    state.sections = ['thinking_paths'];
+    const reading = getReadingModule(moduleId)!;
+    const jsonResponse = await request({ readingModuleId: moduleId, response: 'The explanation needs evidence.', language, phase: 'follow_up' });
+    const json = await jsonResponse.json();
+    const quote = json.secondaryQuestion.match(/[“«](.*)[”»]/)![1];
+    expect(reading.text[language]).toContain(quote);
+    expect(json.followUp).toBe(json.secondaryQuestion);
+    vi.stubGlobal('fetch', async (_url: string, init: any) => {
+      const body = JSON.parse(init.body);
+      const content = JSON.stringify({ perspectiveExpansion: 'Consider who sets the rules.', secondaryQuestion: 'Who should check power?' });
+      if (!body.stream) return Response.json({ choices: [{ message: { content } }] });
+      return new Response(new ReadableStream({ start(controller) {
+        controller.enqueue(new TextEncoder().encode(`data: ${JSON.stringify({ choices: [{ delta: { content } }] })}\n\ndata: [DONE]\n\n`));
+        controller.close();
+      } }), { headers: { 'content-type': 'text/event-stream' } });
+    });
+    const { readReasoningResponse } = await import('../lib/reasoningResponse');
+    const streamed = await readReasoningResponse(await request({ readingModuleId: moduleId, response: 'The explanation needs evidence.', language, phase: 'follow_up', stream: true }), () => {});
+    expect(streamed.secondaryQuestion).toBe(json.secondaryQuestion);
+    expect(streamed.followUp).toBe(json.secondaryQuestion);
+    expect(streamed.finalSynthesis).toBe('');
   });
 
 });

@@ -34,7 +34,7 @@ describe('Reading Path journey', () => {
   it('restores an earlier reading’s two drafts across languages without transferring answers or completion to its replacement', async () => {
     setup();
     const old = previousModules.find(item => item.id === 'reading-power-ship-and-expertise')!;
-    const replacement = reading.modules.find(item => item.id === 'reading-xenophon-cyrus-supplies')!;
+    const replacement = reading.modules[4];
     mount(old.id); type('Original first answer'); await submit(); type('Original second draft');
     const original = saved(old.id); change('es');
     act(() => page.unmount()); mount(old.id);
@@ -74,6 +74,8 @@ describe('Reading Path journey', () => {
     setup(); mount(); type('First draft'); change('es');
     const first = saved();
     expect(page.root.findByProps({ 'data-reading-passage': module.id }).findAllByType('p').map(paragraph => paragraph.children.join('')).join('\n\n')).toBe(module.text.es);
+    expect(JSON.stringify(page.toJSON())).toContain(reading.inquiry!.es);
+    expect(JSON.stringify(page.toJSON())).toContain(reading.connections![0].es);
     expect(page.root.findByType('textarea').props.value).toBe('First draft');
     expect(first.userId).toBe('verified-user'); expect(first.questionId).toBe(module.id);
     expect(first.originalQuestion).toBe(module.question.en);
@@ -114,16 +116,13 @@ describe('Reading Path journey', () => {
     expect(page.root.findAllByType('a').some(link => link.props.href?.endsWith(`lesson=${last.id}`))).toBe(true);
   });
 
-  it('restores the same canonical reading across different curated paths without creating another session', () => {
-    setup(); const curated = path.readingPaths[1];
-    const shared = reading.modules.find(item => curated.modules.some(other => other.id === item.id))!;
-    mount(shared.id); type('A shared reading draft'); const before = saved(shared.id);
-    act(() => page.unmount()); mount(shared.id, curated); change('fr');
-    expect(page.root.findByType('textarea').props.value).toBe('A shared reading draft');
-    expect(saved(shared.id)).toMatchObject({sessionId:before.sessionId,conversationId:before.conversationId,originalQuestion:shared.question.en});
-    expect(page.root.findByType('aside').findByType('ol').findAllByType('li')).toHaveLength(10);
-    expect(page.root.findAllByType('a').some(a => a.props.href?.includes(`/${curated.slug}?lesson=`))).toBe(true);
-    expect(readingProgress(localStorage,shared,'verified-user','13_17','es')).toBe('saved');
+  it('keeps new path drafts separate even when their readings address similar ideas', () => {
+    setup(); const curated=path.readingPaths[1]; const other=curated.modules[0];
+    mount(); type('An original path draft'); const before=saved();
+    act(()=>page.unmount()); mount(other.id,curated); change('fr');
+    expect(page.root.findByType('textarea').props.value).toBe(''); type('A distinct path draft');
+    expect(saved(other.id).sessionId).not.toBe(before.sessionId);
+    act(()=>page.unmount()); mount(); expect(page.root.findByType('textarea').props.value).toBe('An original path draft');
   });
   it('runs a newly added reading through both answers and preserves language and completion', async () => {
     setup(); const curated = path.readingPaths[1]; const added = curated.modules[0];

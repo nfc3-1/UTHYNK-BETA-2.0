@@ -14,6 +14,10 @@ Teacher results and the class participation board use saved classroom records. N
 
 Removed learners cannot reactivate themselves using the old enrollment code. Removal retains their historical submissions for the teacher. The global owner/admin retains access across classes. School/district administrators receive aggregate class participation, never learner answers, comments or enrollment codes. Platform administration is explicitly separate from school-scoped roles.
 
+## Reading-specific evidence
+
+The October 16 Day Two correction provides 210 globally distinct active excerpts in 21 connected ten-part paths. Reading questions require actual quoted wording plus a second detail. Server-resolved source context and localized quotation guidance keep follow-ups tied to that reading in JSON, streaming, and classroom assignment flows, without adding another learner turn. All 117 previous reading identities remain available for saved-work recovery. See [Day Two correction](sprint-day-2.md) for sources and outstanding bilingual editorial review.
+
 ## Feedback instead of grades
 
 New learner turns use `reasoning-feedback-v1`, defined in `lib/qualitativeAssessment.ts`. They return `score: null`. An independent review task produces observations for four shared lenses: understand a claim, support it with evidence, consider another interpretation, and explain a justified conclusion. The review runs alongside the coaching request, at temperature 0 with a fixed seed. It receives questions and learner sentences, without coach suggestions, prior grades or personality history. No numerical evaluator runs on the learner path. A review failure or timeout becomes unavailable feedback and does not fail an otherwise valid conversation.

@@ -25,7 +25,7 @@ describe('school-trial reading path discovery',()=>{
    act(()=>ui.unmount());
   }
  });
- it('counts paths on category cards without implying all reading positions are unique passages',()=>{
+ it('counts three ten-part paths on each category card',()=>{
   state.language='en';const ui=create(<ThinkingPathsClient paths={publicPathSummaries()}/>);
   expect(ui.root.findAllByType('article')).toHaveLength(7);
   expect(JSON.stringify(ui.toJSON())).toContain(`3 ${pathCopy.en.reading.toLowerCase()} · 10 ${pathCopy.en.each}`);

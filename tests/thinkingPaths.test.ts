@@ -3,17 +3,18 @@ import { thinkingPaths, getReadingModule, getThinkingPath, getPreviousReadingMod
 import { createHash } from 'node:crypto';
 import originalIdentities from './fixtures/readingIdentities.v1.json';
 import expandedIdentities from './fixtures/readingIdentities.v2.json';
+import previousReleaseIdentities from './fixtures/readingIdentities.v3.json';
 import { getCategories } from '../lib/questionBank';
 import { pathCopy } from '../lib/pathCopy';
 import passageData from '../data/readingPassages.json';
 const placements = thinkingPaths.flatMap(path => path.readingPaths).flatMap(path => path.modules);
 const modules = [...new Map(placements.map(module => [module.id, module])).values()];
-const previous = thinkingPaths.flatMap(path => path.readingPaths.flatMap(reading => getPreviousReadingModules(path.slug, reading.slug)));
+const previous = [...new Map(thinkingPaths.flatMap(path => path.readingPaths.flatMap(reading => getPreviousReadingModules(path.slug, reading.slug))).map(module => [module.id,module])).values()];
 const catalog = [...modules, ...previous];
 describe('Thinking Paths catalog contract', () => {
   it('keeps thematic identities separate from existing challenge categories', () => {
     expect(thinkingPaths.map(path => path.title.en)).toEqual(['Power & Leadership','Freedom & Government','Meaning, Morality & Suffering','Truth & Knowledge','Human Nature','Civilizations & Culture','Economics & Society']);
-    expect(thinkingPaths).toHaveLength(7); expect(placements).toHaveLength(210); expect(modules).toHaveLength(84);
+    expect(thinkingPaths).toHaveLength(7); expect(placements).toHaveLength(210); expect(modules).toHaveLength(210);
     expect(new Set(modules.map(module => module.id)).size).toBe(modules.length);
     expect(new Set(thinkingPaths.map(path => path.slug)).size).toBe(thinkingPaths.length);
     thinkingPaths.forEach(path => {
@@ -22,7 +23,11 @@ describe('Thinking Paths catalog contract', () => {
       path.readingPaths.forEach(reading => {
         expect(reading.modules).toHaveLength(10);
         expect(new Set(reading.modules.map(module => module.id)).size).toBe(10);
-        for (const language of ['en','es','fr'] as const) expect(reading.practiceGoal?.[language]).toBeTruthy();
+        expect(reading.connections).toHaveLength(10);
+        for (const language of ['en','es','fr'] as const) {
+          expect(reading.practiceGoal?.[language]).toBeTruthy(); expect(reading.inquiry?.[language]).toBeTruthy();
+          reading.connections!.forEach(note => expect(note[language]).toBeTruthy());
+        }
       });
       const starterIds = new Set(path.readingPaths[0].modules.map(module => module.id));
       path.readingPaths.slice(1).forEach(reading => expect(reading.modules.filter(module => !starterIds.has(module.id)).length).toBeGreaterThanOrEqual(4));
@@ -42,14 +47,14 @@ describe('Thinking Paths catalog contract', () => {
       }
     }
     expect(new Set(thinkingPaths[6].readingPaths[0].modules.map(module => module.author)).size).toBe(9);
-    expect(modules.filter(module => module.author === 'Adam Smith')).toHaveLength(2);
+    expect(modules.filter(module => module.author === 'Adam Smith').length).toBeGreaterThanOrEqual(2);
   });
   it('preserves every original reading and question under its old ID while giving replacements fresh identities', () => {
-    expect(previous).toHaveLength(33);
-    expect(catalog).toHaveLength(117);
-    expect(new Set(catalog.map(module => module.id)).size).toBe(117);
+    expect(previous).toHaveLength(117);
+    expect(catalog).toHaveLength(327);
+    expect(new Set(catalog.map(module => module.id)).size).toBe(327);
     previous.forEach(module => expect(modules.some(active => active.id === module.id)).toBe(false));
-    for (const [id, hash] of Object.entries({...originalIdentities,...expandedIdentities})) {
+    for (const [id, hash] of Object.entries({...originalIdentities,...expandedIdentities,...previousReleaseIdentities})) {
       const module = getReadingModule(id)!;
       expect(module, id).toBeTruthy();
       const content = JSON.stringify({ question: module.question, text: module.text, category: module.category });
@@ -57,6 +62,7 @@ describe('Thinking Paths catalog contract', () => {
     }
     expect(Object.keys(originalIdentities)).toHaveLength(70);
     expect(Object.keys(expandedIdentities)).toHaveLength(103);
+    expect(Object.keys(previousReleaseIdentities)).toHaveLength(117);
     expect(getPreviousReadingModules('missing', 'rulers-responsibility')).toEqual([]);
     expect(getPreviousReadingModules('power-leadership', 'the-examined-life')).toEqual([]);
   });
@@ -74,9 +80,9 @@ describe('Thinking Paths catalog contract', () => {
       expect(Object.keys(pathCopy[language]).sort()).toEqual(Object.keys(pathCopy.en).sort());
     }
     for (const language of ['en','es','fr'] as const) {
-      expect(new Set(modules.map(module => module.question[language])).size).toBe(84);
-      expect(new Set(modules.map(module => module.text[language])).size).toBe(84);
-      expect(new Set(modules.map(module => module.title[language])).size).toBe(84);
+      expect(new Set(modules.map(module => module.question[language])).size).toBe(210);
+      expect(new Set(modules.map(module => module.text[language])).size).toBe(210);
+      expect(new Set(modules.map(module => module.title[language])).size).toBe(210);
     }
     expect(new Set(modules.map(module => module.question.es)).size).toBe(modules.length);
     expect(new Set(modules.map(module => module.question.fr)).size).toBe(modules.length);
@@ -90,7 +96,7 @@ describe('Thinking Paths catalog contract', () => {
   it('includes substantial source passages and verifiable attribution', () => {
     catalog.forEach(module => {
       expect(module.sourceUrl).toMatch(/^https:\/\//); expect(module.edition).toBeTruthy();
-      expect(module.rightsEvidence.jurisdiction).toBe('US'); expect(module.rightsEvidence.statusUrl).toMatch(/^https:\/\//); expect(['2026-10-14','2026-10-15']).toContain(module.rightsEvidence.checkedAt);
+      expect(module.rightsEvidence.jurisdiction).toBe('US'); expect(module.rightsEvidence.statusUrl).toMatch(/^https:\/\//); expect(['2026-10-14','2026-10-15','2026-10-16']).toContain(module.rightsEvidence.checkedAt);
       expect(module.sourceKind).toBe('excerpt');
       for (const language of ['en','es','fr'] as const) {
         expect(module.text[language].split(/\s+/).length).toBeGreaterThanOrEqual(90);
@@ -104,4 +110,29 @@ describe('Thinking Paths catalog contract', () => {
     expect(getReadingModule('reading-achebe-culture-guide')).toBeUndefined();
     modules.forEach(module => expect(['public_domain_us', 'government_text']).toContain(module.rights));
   });
+  it('does not repeat even a twelve-word source stretch across active paths', () => {
+    const owners=new Map<string,string>();
+    for(const module of modules){
+      const words=module.text.en.toLowerCase().match(/[a-z]+/g)!;
+      for(let i=0;i<=words.length-12;i++){
+        const stretch=words.slice(i,i+12).join(' ');const owner=owners.get(stretch);
+        expect(!owner || owner===module.id,`${module.id} repeats source wording from ${owner}`).toBe(true);
+        owners.set(stretch,module.id);
+      }
+    }
+  });
+  it('requires actual passage wording plus a second detail, and gives the coach the path inquiry', () => {
+    for(const module of modules){
+      for(const language of ['en','es','fr'] as const){
+        const anchor=module.evidenceAnchor?.[language]; expect(anchor).toBeTruthy();
+        expect(module.text[language]).toContain(anchor!); expect(module.question[language]).toContain(anchor!);
+      }
+      expect(module.question.en).toContain('second, different detail from this passage');
+      expect(module.text.fr).not.toContain('▁');
+      expect(module.text.fr).not.toMatch(/&\s*apos;/);
+      expect(readingReasoningContext(module)).toContain(module.pathContext!);
+      expect(readingReasoningContext(module)).toContain('secondary question must');
+    }
+  });
+
 });
