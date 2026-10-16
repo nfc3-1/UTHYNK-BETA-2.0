@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { SchoolParticipationReport, DistrictParticipationReport } from "@/components/SchoolReports";
 type District = { id: string; name: string; canManage: boolean };
 type School = { id: string; name: string; district_id: string | null };
 type Staff = {
@@ -93,14 +94,6 @@ export default function SchoolDashboard() {
       data?.districts.find((d) => d.id === school?.district_id)?.canManage,
   );
   const allowedDistricts = data?.districts.filter((d) => d.canManage) || [];
-  const totals = data?.classes.reduce(
-    (a, c) => ({
-      learners: a.learners + c.learners,
-      assignments: a.assignments + c.assignments,
-      completed: a.completed + c.completed,
-    }),
-    { learners: 0, assignments: 0, completed: 0 },
-  );
   return (
     <section className="teacherShell">
       {error && <p role="alert">{error}</p>}
@@ -123,7 +116,7 @@ export default function SchoolDashboard() {
                 value={data.selected || ""}
                 disabled={busy}
                 onChange={async (e) => {
-                  setError("");
+                  setError(""); setEmail(""); setRole("teacher"); setClassId("");
                   setData(null);
                   try {
                     await load(e.target.value);
@@ -152,8 +145,11 @@ export default function SchoolDashboard() {
               </p>
             )}
           </section>
+          {(data.platformAdmin || allowedDistricts.length > 0) && data.districts.length > 0 && <DistrictParticipationReport key={data.districts.filter(d => data.platformAdmin || d.canManage).map(d => d.id).join(':')} districts={data.districts.filter(d => data.platformAdmin || d.canManage)} />}
           {(data.platformAdmin || allowedDistricts.length > 0) && (
-            <section className="teacherTwoColumn" style={{ marginTop: 18 }}>
+            <details className="card teacherPanel" style={{ marginTop: 18 }}>
+            <summary>Organization setup</summary>
+            <section className="teacherTwoColumn">
               {data.platformAdmin && (
                 <form
                   className="card teacherPanel"
@@ -232,21 +228,13 @@ export default function SchoolDashboard() {
                 </button>
               </form>
             </section>
+            </details>
           )}
           {school && (
             <section className="card teacherPanel" style={{ marginTop: 18 }}>
               <h2>{school.name}</h2>
-              <p>
-                {data.classes.length} classes · {totals?.learners} class
-                enrollments · {totals?.assignments} assignments ·{" "}
-                {totals?.completed} completed submissions
-              </p>
-              <p>
-                Enrollments count class memberships, so a learner in two classes
-                counts twice. Completion counts use active rosters. Individual
-                answers, comments, grades, and enrollment codes remain in the
-                teacher’s classroom.
-              </p>
+              <SchoolParticipationReport school={school} classes={data.classes} />
+              <p className="teacherMuted">Individual answers, comments, and enrollment codes remain in the teacher’s classroom.</p>
               {!data.classes.length ? (
                 <p>No classes have been assigned to this school.</p>
               ) : (
@@ -273,6 +261,7 @@ export default function SchoolDashboard() {
                   </tbody>
                 </table>
               )}
+              <details><summary>School staff and access</summary>
               <h3>School staff</h3>
               {!data.staff.length && <p>No staff have been added.</p>}
               {data.staff.map((s) => (
@@ -375,6 +364,7 @@ export default function SchoolDashboard() {
                   </button>
                 </form>
               )}
+              </details>
             </section>
           )}
           {data.platformAdmin && (

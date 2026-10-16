@@ -59,4 +59,21 @@ describe("persistent teacher workspace", () => {
       ),
     ).toBe(true);
   });
+  it('keeps teacher comment drafts with the selected learner and assignment', async () => {
+    const payload = { classes: [{ id: 'class', title: 'Class' }], selected: 'class', viewerId: 'teacher', manage: true, canTeach: true,
+      members: [{ profile_id: 'one', display_name: 'Learner One', active: true }, { profile_id: 'two', display_name: 'Learner Two', active: true }],
+      assignments: [{ id: 'reading', title: 'Saved reading' }], submissions: [{ assignment_id: 'reading', learner_id: 'one', first_answer: 'One' }, { assignment_id: 'reading', learner_id: 'two', first_answer: 'Two' }], comments: [], leaderboard: [] };
+    const posts: any[] = [];
+    vi.stubGlobal('fetch', async (url: string, options: any) => { if (options?.method === 'POST') posts.push(JSON.parse(options.body)); return Response.json(payload); });
+    await act(async () => { page = create(createElement(TeacherDashboard, { catalog: [] })); });
+    const select = (name: string) => act(() => page.root.findAllByType('button').find(b => b.children.some(c => c === name))!.props.onClick());
+    select('Learner One'); act(() => page.root.findByType('textarea').props.onChange({ target: { value: 'Comment for One' } }));
+    select('Learner Two'); expect(page.root.findByType('textarea').props.value).toBe('');
+    act(() => page.root.findByType('textarea').props.onChange({ target: { value: 'Comment for Two' } }));
+    select('Learner One'); expect(page.root.findByType('textarea').props.value).toBe('Comment for One');
+    await act(async () => { await page.root.findAllByType('button').find(b => b.children.join('') === 'Save Comment')!.props.onClick(); });
+    expect(posts).toContainEqual(expect.objectContaining({ action: 'comment', learnerId: 'one', assignmentId: 'reading', comment: 'Comment for One' }));
+    select('Learner Two'); expect(page.root.findByType('textarea').props.value).toBe('Comment for Two');
+  });
+
 });

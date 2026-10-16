@@ -18,6 +18,10 @@ Removed learners cannot reactivate themselves using the old enrollment code. Rem
 
 The October 16 Day Two correction provides 210 globally distinct active excerpts in 21 connected ten-part paths. Reading questions require actual quoted wording plus a second detail. Server-resolved source context and localized quotation guidance keep follow-ups tied to that reading in JSON, streaming, and classroom assignment flows, without adding another learner turn. All 117 previous reading identities remain available for saved-work recovery. See [Day Two correction](sprint-day-2.md) for sources and outstanding bilingual editorial review.
 
+## Operational reports
+
+Day Three adds student/teacher progress, assignment filters, and school/district participation exports using existing records and fresh authorization. Counts are current-roster participation, not ability scores or learning gains. Teacher comment drafts stay separate by class and selected learner/assignment while the page is open. See [Day Three](sprint-day-3.md) and the proposed [baseline/reassessment design](school-assessment-design.md); no baseline test is deployed yet.
+
 ## Feedback instead of grades
 
 New learner turns use `reasoning-feedback-v1`, defined in `lib/qualitativeAssessment.ts`. They return `score: null`. An independent review task produces observations for four shared lenses: understand a claim, support it with evidence, consider another interpretation, and explain a justified conclusion. The review runs alongside the coaching request, at temperature 0 with a fixed seed. It receives questions and learner sentences, without coach suggestions, prior grades or personality history. No numerical evaluator runs on the learner path. A review failure or timeout becomes unavailable feedback and does not fail an otherwise valid conversation.
