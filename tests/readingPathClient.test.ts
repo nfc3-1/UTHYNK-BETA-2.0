@@ -55,6 +55,22 @@ describe('Reading Path journey', () => {
     expect(page.root.findByProps({ className: 'thinkingLabelLayer' }).findAllByType('span')).toHaveLength(4);
     expect(page.root.findAllByType('a').some(link => link.props.href?.endsWith(`lesson=${reading.modules[0].id}`))).toBe(true);
   });
+  it('keeps guest drafts separate from a stale local profile across languages and refreshes', async () => {
+    setup();
+    function guestMount() { act(() => { page=create(createElement(ReadingPathClient,{pathSlug:path.slug,pathTitle:path.title,reading,moduleId:module.id,userId:null})); }); }
+    guestMount(); type('Guest first draft'); change('es');
+    const original=saved(); expect(original.userId).toBeNull();
+    expect(readingProgress(localStorage,module,null,'13_17','en')).toBe('saved');
+    expect(readingProgress(localStorage,module,'stale-local-user','13_17','en')).toBe('untouched');
+    act(() => page.unmount()); guestMount();
+    expect(page.root.findByType('textarea').props.value).toBe('Guest first draft');
+    await submit(); type('Guest second answer'); change('fr');
+    act(() => page.unmount()); guestMount();
+    expect(page.root.findByType('textarea').props.value).toBe('Guest second answer');
+    expect(saved().sessionId).toBe(original.sessionId);
+    await submit(); expect(readingProgress(localStorage,module,null,'13_17','en')).toBe('complete');
+    expect(page.root.findByProps({className:'thinkingLabelLayer'}).findAllByType('span')).toHaveLength(4);
+  });
   it('keeps one shared header and places the four-step session beside the same reading progress list', () => {
     setup(); mount();
     expect(page.root.findAllByType('header')).toHaveLength(1);

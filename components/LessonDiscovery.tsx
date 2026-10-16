@@ -5,7 +5,7 @@ import styles from './LessonDiscovery.module.css';
 
 const copy = {
   en: {
-    nav: 'All lessons', title: 'There’s more than the daily challenge.',
+    nav: 'Thinking Challenges', title: 'There’s more than the daily challenge.',
     description: 'Choose a topic you care about and pick a question from the full lesson library.',
     explore: 'Explore all lessons', stats: (lessons: number, categories: number) => `${lessons} thinking lessons · ${categories} categories`,
     guideTitle: 'How to choose a lesson', guideIntro: 'You can choose your own lesson here, even after finishing the daily challenge.',
@@ -17,7 +17,7 @@ const copy = {
     try: 'Try a category', questions: 'Choose a question from this category',
   },
   es: {
-    nav: 'Todas las lecciones', title: 'Hay más que el desafío diario.',
+    nav: 'Desafíos de pensamiento', title: 'Hay más que el desafío diario.',
     description: 'Elige un tema que te interese y una pregunta de la biblioteca completa de lecciones.',
     explore: 'Explorar todas las lecciones', stats: (lessons: number, categories: number) => `${lessons} lecciones de pensamiento · ${categories} categorías`,
     guideTitle: 'Cómo elegir una lección', guideIntro: 'Aquí puedes elegir tu propia lección, incluso después de terminar el desafío diario.',
@@ -29,7 +29,7 @@ const copy = {
     try: 'Probar una categoría', questions: 'Elige una pregunta de esta categoría',
   },
   fr: {
-    nav: 'Toutes les leçons', title: 'Il y a plus que le défi du jour.',
+    nav: 'Défis de réflexion', title: 'Il y a plus que le défi du jour.',
     description: 'Choisis un sujet qui t’intéresse et une question dans la bibliothèque complète de leçons.',
     explore: 'Explorer toutes les leçons', stats: (lessons: number, categories: number) => `${lessons} leçons de réflexion · ${categories} catégories`,
     guideTitle: 'Comment choisir une leçon', guideIntro: 'Ici, tu peux choisir ta propre leçon, même après avoir terminé le défi du jour.',
