@@ -8,7 +8,7 @@ export const pathCopy = {
     open: 'Explore this path', start: 'Open Reading Path', module: 'Readings', source: 'Read the source', publicDomain: 'Public-domain source (U.S.)', context: 'In plain language', lenses: 'Two angles to consider',
     excerpt: 'Reading passage', thinkAfterReading: 'Finished reading? Start thinking', guided: 'Guided reading — UThynk adaptation', original: 'UThynk companion guide — read alongside your own copy', review: 'Selected public-domain passages; paragraph breaks may separate selections and footnote markers are omitted. Context and UThynk’s Spanish/French working translations await editorial review.',
     locked: 'This Reading Path is in beta.', access: 'An administrator can grant Thinking Paths access from the in-app Access panel. Your existing lessons remain available.', signin: 'Sign in to use beta access', back: 'Back to Thinking Path',
-    progress: 'Your reading progress', saved: 'Saved', complete: 'Complete', untouched: 'Not started', local: 'Progress and drafts are saved in this browser for your signed-in account and age group.',
+    progress: 'Your reading progress', saved: 'Saved', complete: 'Complete', untouched: 'Not started', local: 'Progress and drafts are saved in this browser for this learner and age group. Guests can return using this same browser.',
     next: 'Next reading', end: 'You have reached the end of this path. Revisit a reading or explore another idea.', continue: 'Continue reading',
     previousReadings: 'Previous readings', previousReading: 'Previous reading', currentReadings: 'Current readings', previousReadingNote: 'This reading belongs to an earlier selection. Your saved answers and drafts remain here; the current path has ten distinct passages with text-dependent questions.',
   },
