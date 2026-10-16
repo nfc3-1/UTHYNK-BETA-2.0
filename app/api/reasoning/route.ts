@@ -1,3 +1,5 @@
+import { groundReadingFollowUp } from '@/lib/readingGrounding';
+import type { ReadingModule } from '@/lib/thinkingPathTypes';
 import { observeReasoning } from '@/lib/observeReasoning';
 import { reasoningFeedbackSchema, type QualitativeAssessment } from '@/lib/qualitativeAssessment';
 import { assignmentAccess,assignmentPrompt,classroomActor,saveAssignmentTurn,ClassroomError } from '@/lib/classroom';
@@ -802,6 +804,7 @@ function streamingFeedback(args: {
   thinkingLens?: string;
   userId?: string;
   verifier: VerifierResult;
+  readingModule?: ReadingModule;
 }) {
   const encoder = new TextEncoder();
 
@@ -860,7 +863,7 @@ function streamingFeedback(args: {
         }
 
         const parsed = JSON.parse(content);
-        const feedback = sanitizeFeedback(
+        const feedback = groundReadingFollowUp(sanitizeFeedback(
           parsed,
           args.verifier,
           args.categoryPrompt,
@@ -868,7 +871,7 @@ function streamingFeedback(args: {
           args.phase || "follow_up",
           args.synthesisContext,
           await assessmentPromise
-        );
+        ), args.readingModule, args.language, args.phase || "follow_up");
         const progression =
           args.phase === "follow_up" ? null : await persistSession({ ...args, feedback });
 
@@ -915,11 +918,13 @@ export const maxDuration = 60;
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ReasoningRequest;
+    let groundingModule: ReadingModule | undefined;
     let classroomContext: Awaited<ReturnType<typeof assignmentAccess>> | null = null;
     let classroomAccess: Awaited<ReturnType<typeof classroomActor>> | null = null;
     if (body.assignmentId) {
       if (request.headers.get('origin') !== new URL(request.url).origin) throw new ClassroomError('Invalid origin.',403);
       classroomAccess=await classroomActor(); classroomContext=await assignmentAccess(classroomAccess,body.assignmentId,true);
+      groundingModule=classroomContext.target.reading || undefined;
       const saved=classroomContext.submission;
       body.category=classroomContext.target.category; body.challenge=assignmentPrompt(classroomContext.target); body.originalQuestion=body.challenge;
       body.readingModuleId=undefined; body.section=`assignment:${body.assignmentId}`;
@@ -935,6 +940,7 @@ export async function POST(request: Request) {
     if (body.readingModuleId !== undefined) {
       const reading = await resolveReadingRequest(body.readingModuleId);
       if (!reading.ok) return NextResponse.json({ error: reading.error }, { status: reading.status });
+      groundingModule = reading.module;
       body.category = reading.module.category;
       body.challenge = reading.context;
       body.originalQuestion = reading.context;
@@ -1043,6 +1049,7 @@ export async function POST(request: Request) {
       return streamingFeedback({
         ...openAiArgs,
         challengeId: body.challengeId,
+        readingModule: groundingModule,
         thinkingLens: body.thinkingLens,
         userId,
       });
@@ -1052,7 +1059,7 @@ export async function POST(request: Request) {
       nonStreamingFeedback(openAiArgs),
       observeReasoning({ answers: phase === 'synthesis' ? [synthesisValidation!.context.firstUserAnswer, response] : [response], question: challenge, secondaryQuestion: synthesisValidation?.context.secondaryQuestion, language, apiKey }),
     ]);
-    const feedback = sanitizeFeedback(parsed, verifier, categoryPrompt, language, phase, synthesisValidation?.context, assessment);
+    const feedback = groundReadingFollowUp(sanitizeFeedback(parsed, verifier, categoryPrompt, language, phase, synthesisValidation?.context, assessment), groundingModule, language, phase);
     const classroomSaved = body.assignmentId && classroomAccess ? await saveAssignmentTurn(classroomAccess,body.assignmentId,sessionId,phase,body,feedback) : null;
     const progression =
       phase === "follow_up" || classroomSaved?.already_completed

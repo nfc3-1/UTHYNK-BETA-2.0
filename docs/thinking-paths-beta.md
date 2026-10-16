@@ -1,6 +1,8 @@
 # Thinking Paths beta
 
-Thinking Paths are thematic categories containing Reading Paths. The seven themes were supplied by the user on 2026-10-13. Each current Reading Path contains exactly ten substantial passages. Day Two adds two paths per theme, for 21 paths, 210 reading positions, and 84 distinct current readings from 51 author/source labels. See [Day Two school-trial sequences](sprint-day-2.md) for the new selection and editorial review notes. Shared readings keep the same canonical question, identity, and browser progress; 210 positions do not mean 210 different passages. The existing daily challenge and 450-question lesson bank remain distinct.
+Thinking Paths are seven thematic categories containing Reading Paths. Each category has three ten-part paths: **21 paths and 210 distinct active passages**, with no passage reused across active paths. Every path has a connecting inquiry and ten specific transitions; every question requires quoted passage wording and a second distinct detail. See [Day Two correction](sprint-day-2.md) for the current catalog, evidence rules, provenance, and review gaps. Daily challenges and the 450-question lesson bank remain separate.
+
+All 117 previous canonical readings remain recoverable with their original content, URLs, and saved-session identities. Current questions use fresh IDs because their required evidence has changed. English/Spanish/French fields are complete; editorial approval is still outstanding. The sections below document the earlier October 14 checkpoint and must not be read as current counts.
 
 ## Historical expansion: broader selections, 2026-10-14
 
@@ -18,7 +20,7 @@ The user requested more authors and books within each path. Thirty-three repeat 
 
 The Declaration of Independence, Constitution, Bill of Rights, and required original introductory works remain. Economics compares Smith with Bastiat, Marx/Engels, Veblen, Ruskin, George, Addams, Washington, and Bellamy. Questions and paired lenses invite comparison, evidence, and tradeoffs; the selections do not prescribe adherence to an author’s position. Future author-specific deep dives can deliberately revisit one work, but these introductory paths are broad surveys.
 
-## Identities, saved work, and the four steps
+## October 14 identities, saved work, and the four steps
 
 The flow remains Main Question → Perspective Expansion → Secondary Question → Final Synthesis, with no fifth turn. Full source context is resolved on the server for both submissions; client text cannot substitute for it. The existing coach, age-aware prompts, voice input, and conversation saving are reused.
 
@@ -91,12 +93,12 @@ All 103 available modules remain `needs_review`. All 140 current passage transla
 
 Geographic/tradition breadth can grow further, especially with verified Latin American, Middle Eastern, and additional African editions. The current set is a broadened starter library, not an exhaustive global anthology. Rights in other jurisdictions, independent translation review, live-model literary interpretation, and cross-device completion remain unverified or out of scope.
 
-## Maintaining the catalog
+## Maintaining the current catalog
 
-`data/readingSources.json` holds shared source metadata. `data/thinkingPathParts.json` holds the 59 current additional parts; eleven introductory modules remain in `lib/thinkingPaths.ts`. `data/retiredReadingParts.json` scopes previous parts by `pathSlug/readingSlug`. `data/readingPassages.json` contains 103 ID-keyed passages and optional historical notes. The catalog fails on a missing or mismatched source rather than falling back to an English synopsis.
+`data/connectedReadingPaths.json` supplies the 21 ordered ten-part sequences, inquiries, goals, and connections. `data/connectedReadingModules.json` supplies 210 active metadata/question records. `data/readingPassages.json` holds 327 ID-keyed passages: 210 active and 117 previous. `lib/legacyReadingCatalog.ts` is a frozen compatibility catalog backed by the earlier data files; do not rewrite its questions to match current work.
 
-For a wording-only fix, retain the question identity. For a new source, changed question meaning, or materially different passage, create a fresh ID and preserve the previous record in its path’s archive. Do not transfer completion or responses across those identities. Keep ten parts per path, at least six authors/sources and works, and at most two parts per author/work in these survey paths. `data/readingSequences.json` composes new paths from canonical module IDs and supplies goals; `data/schoolTrialReadingParts.json` defines the 14 new modules. Do not duplicate IDs or assign a fresh completion identity merely because the same question appears in another path. Keep source-specific prompts and all three languages together.
+A changed passage or substantive question requires a fresh ID and a preserved previous record. Do not transfer answers or completion to a replacement. Keep ten distinct excerpts per path, at least six author/source labels and works, and at most two parts per author/work. Do not reuse an active excerpt in another path, including overlapping selections. Add a text-specific question, localized quotation anchors, an explicit transition, actual source/edition evidence, and all three languages together. An unknown ID, missing passage, or mismatched source fails catalog construction.
 
 ## Verification
 
-Run `python scripts/checkReadingSources.py` to match all 117 current and previous English selections against their 53 cited source pages without account credentials. This checks provenance, not translation accuracy or the truth of historical claims. Tests cover diversity limits, 70 current/33 previous identities, all language fields, previous-reading privacy and path scoping, canonical context, grant revocation, language switching, both draft restores, independent old/new sessions and completion, and the finite four-step flow. Run `npm test`, `npm run test:unit`, `npm run test:translations`, `npm run typecheck`, `npm run lint`, and `npm run build`.
+Run `python scripts/checkReadingSources.py` to match all 327 current and previous English selections against their 53 cited pages without account credentials. This verifies provenance, not translation accuracy or historical claims. Tests cover sequence/diversity contracts, global uniqueness, previous identities/privacy, source-bound questions and JSON/SSE follow-ups, grants, language switching, draft restoration, completion, and the four-step flow. Run `npm test`, `npm run test:unit`, `npm run test:translations`, `npm run typecheck`, `npm run lint`, and `npm run build`.

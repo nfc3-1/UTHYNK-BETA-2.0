@@ -1,0 +1,1934 @@
+[
+  {
+    "slug": "power-leadership",
+    "title": {
+      "en": "Power & Leadership",
+      "es": "Poder y liderazgo",
+      "fr": "Pouvoir et leadership"
+    },
+    "description": {
+      "en": "Who should lead, how power works, and what keeps it accountable.",
+      "es": "Quién debe dirigir, cómo funciona el poder y cómo exigir responsabilidad.",
+      "fr": "Qui doit diriger, comment fonctionne le pouvoir et comment le contrôler."
+    },
+    "readingPaths": [
+      {
+        "slug": "rulers-responsibility",
+        "title": {
+          "en": "Rulers and responsibility",
+          "es": "Gobernantes y responsabilidad",
+          "fr": "Dirigeants et responsabilité"
+        },
+        "description": {
+          "en": "Ten readings on wisdom, trust, counsel, preparation, and accountable leadership.",
+          "es": "Diez lecturas sobre sabiduría, confianza, consejos, preparación y liderazgo responsable.",
+          "fr": "Dix lectures sur sagesse, confiance, conseil, préparation et direction responsable."
+        },
+        "practiceGoal": {
+          "en": "Compare wisdom, influence, advice, and accountability using specific details from more than one author.",
+          "es": "Compara sabiduría, influencia, consejo y responsabilidad con detalles concretos de más de un autor.",
+          "fr": "Compare sagesse, influence, conseil et responsabilité à partir de détails précis de plusieurs auteurs."
+        },
+        "moduleIds": [
+          "reading-connected-rulers-responsibility-01",
+          "reading-connected-rulers-responsibility-02",
+          "reading-connected-rulers-responsibility-03",
+          "reading-connected-rulers-responsibility-04",
+          "reading-connected-rulers-responsibility-05",
+          "reading-connected-rulers-responsibility-06",
+          "reading-connected-rulers-responsibility-07",
+          "reading-connected-rulers-responsibility-08",
+          "reading-connected-rulers-responsibility-09",
+          "reading-connected-rulers-responsibility-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with expertise as a claim to authority; ask what could make expertise accountable.",
+            "es": "Comenzar con experiencia como una reclamación a la autoridad; preguntar qué podría hacer que los conocimientos especializados rindan cuentas.",
+            "fr": " Commencer par l'expertise en tant que revendication d'autorité;  demander ce qui pourrait rendre l'expertise responsable."
+          },
+          {
+            "en": "Fear shifts attention from a leader’s knowledge to the responses their rule produces.",
+            "es": "El miedo cambia la atención de los conocimientos de un líder a las respuestas que su regla produce.",
+            "fr": "La peur déplace l'attention d'un leader vers les réponses que leur règle produit."
+          },
+          {
+            "en": "Strategic restraint complicates the assumption that visible force demonstrates effective leadership.",
+            "es": "La moderación estratégica complica la hipótesis de que la fuerza visible demuestra un liderazgo eficaz.",
+            "fr": "La retenue stratégique complique l'hypothèse selon laquelle la force visible fait preuve d'un leadership efficace."
+          },
+          {
+            "en": "The question of whom leadership serves tests whether effectiveness alone makes authority legitimate.",
+            "es": "La cuestión de quién es el liderazgo pone a prueba si la eficacia por sí sola hace legítima la autoridad.",
+            "fr": "La question de savoir à qui sert le leadership consiste à déterminer si l'efficacité seule rend l'autorité légitime."
+          },
+          {
+            "en": "A promise about supplies turns service into a concrete obligation rather than a generous image.",
+            "es": "Una promesa sobre los suministros convierte el servicio en una obligación concreta en lugar de una imagen generosa.",
+            "fr": " Une promesse sur les fournitures transforme le service en une obligation concrète plutôt qu'une image généreuse."
+          },
+          {
+            "en": "Providing supplies leads to a harder question: who decides how each person can contribute?",
+            "es": "Proporcionar suministros conduce a una pregunta más difícil: ¿quién decide cómo puede contribuir cada persona?",
+            "fr": "La fourniture de fournitures soulève une question plus difficile : qui décide comment chaque personne peut contribuer?"
+          },
+          {
+            "en": "Choosing advisers brings other people’s judgment into a leader’s decisions.",
+            "es": "Elegir asesores trae el juicio de otras personas a las decisiones de un líder.",
+            "fr": " Choisir des conseillers amène le jugement d'autres personnes dans les décisions d'un leader."
+          },
+          {
+            "en": "Confidential advice raises a new tension between necessary trust and accountability for hidden interests.",
+            "es": "El asesoramiento confidencial plantea una nueva tensión entre la confianza necesaria y la rendición de cuentas por los intereses ocultos.",
+            "fr": "Les conseils confidentiels créent une nouvelle tension entre la confiance nécessaire et la responsabilité pour les intérêts cachés."
+          },
+          {
+            "en": "Minority resistance tests whether listening extends beyond the advisers a leader has chosen.",
+            "es": "La resistencia a las minorías prueba si la escucha se extiende más allá de los asesores que un líder ha elegido.",
+            "fr": "La résistance des minorités teste si l'écoute va au-delà des conseillers qu'un leader a choisis."
+          },
+          {
+            "en": "Finish by separating responsibility for planning, communication, and execution rather than assigning blame by rank.",
+            "es": "Terminar separando la responsabilidad de planificación, comunicación y ejecución en lugar de asignar la culpa por rango.",
+            "fr": " Terminer en séparant la responsabilité de la planification, de la communication et de l'exécution plutôt que d'attribuer la responsabilité par rang."
+          }
+        ],
+        "inquiry": {
+          "en": "What makes a ruler worthy of authority, and how can that authority be held accountable?",
+          "es": "¿Qué hace que un gobernante sea digno de autoridad, y cómo puede que esa autoridad sea considerada responsable?",
+          "fr": "Qu'est - ce qui rend un souverain digne d'autorité, et comment cette autorité peut - elle être tenue responsable?"
+        }
+      },
+      {
+        "slug": "leading-without-force",
+        "title": {
+          "en": "Leading without force",
+          "es": "Liderar sin imponer",
+          "fr": "Diriger sans imposer"
+        },
+        "description": {
+          "en": "Move from personal conviction to persuasion, cooperation, and responsibility for others.",
+          "es": "De la convicción personal a la persuasión, la cooperación y la responsabilidad por otros.",
+          "fr": "De la conviction personnelle à la persuasion, à la coopération et à la responsabilité envers autrui."
+        },
+        "practiceGoal": {
+          "en": "Use contrasting passages to explain when influence is legitimate and what limits it needs.",
+          "es": "Usa pasajes contrastantes para explicar cuándo es legítima la influencia y qué límites necesita.",
+          "fr": "Appuie-toi sur des passages contrastés pour expliquer quand l’influence est légitime et quelles limites elle exige."
+        },
+        "moduleIds": [
+          "reading-connected-leading-without-force-01",
+          "reading-connected-leading-without-force-02",
+          "reading-connected-leading-without-force-03",
+          "reading-connected-leading-without-force-04",
+          "reading-connected-leading-without-force-05",
+          "reading-connected-leading-without-force-06",
+          "reading-connected-leading-without-force-07",
+          "reading-connected-leading-without-force-08",
+          "reading-connected-leading-without-force-09",
+          "reading-connected-leading-without-force-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with independent conviction as a possible resource for leadership, while keeping criticism available.",
+            "es": "Comience con convicción independiente como un posible recurso para el liderazgo, manteniendo al mismo tiempo las críticas disponibles.",
+            "fr": " Commencez par une conviction indépendante en tant que ressource possible pour le leadership, tout en maintenant les critiques disponibles."
+          },
+          {
+            "en": "The Lion’s agreement tests whether apparent consent remains meaningful after someone loses protection.",
+            "es": "El acuerdo del León prueba si el consentimiento aparente sigue siendo significativo después de que alguien pierda protección.",
+            "fr": "L'accord du Lion teste si le consentement apparent reste significatif après que quelqu'un perde sa protection."
+          },
+          {
+            "en": "Political participation offers a different basis for cooperation: people’s knowledge of their everyday needs.",
+            "es": "La participación política ofrece una base diferente para la cooperación: el conocimiento de las personas de sus necesidades cotidianas.",
+            "fr": "La participation politique offre une base différente pour la coopération: Les gens connaissent leurs besoins quotidiens."
+          },
+          {
+            "en": "Group membership extends participation into a claim about why people should obey.",
+            "es": "La afiliación al grupo extiende la participación en una reclamación sobre por qué la gente debe obedecer.",
+            "fr": "L'appartenance à un groupe élargit la participation à une revendication sur la raison pour laquelle les gens devraient obéir."
+          },
+          {
+            "en": "Cyrus turns persuasive speech into a test of action and material commitment.",
+            "es": "Cyrus convierte el discurso persuasivo en una prueba de acción y compromiso material.",
+            "fr": "Cyrus transforme la parole persuasive en un test d'action et d'engagement matériel."
+          },
+          {
+            "en": "His paternal care then exposes how meeting needs can also preserve dependence and control.",
+            "es": "Su cuidado paterno expone entonces cómo las necesidades de la reunión también pueden preservar la dependencia y el control.",
+            "fr": " Ses soins paternels exposent ensuite comment répondre aux besoins peut également préserver la dépendance et le contrôle."
+          },
+          {
+            "en": "The distinction between approving advice and acting on it challenges confidence in outward agreement.",
+            "es": "La distinción entre aprobar el asesoramiento y actuar en él pone en tela de juicio la confianza en el acuerdo exterior.",
+            "fr": "La distinction entre l'approbation des conseils et l'application de ceux-ci remet en question la confiance dans l'accord extérieur."
+          },
+          {
+            "en": "Fear learned from adults offers another explanation for conduct that looks like willing obedience.",
+            "es": "El miedo aprendido de los adultos ofrece otra explicación para la conducta que parece una obediencia dispuesta.",
+            "fr": "La peur apprise par les adultes fournit une autre explication à la conduite qui ressemble à une obéissance volontaire."
+          },
+          {
+            "en": "Military organization makes the relationship between dependence, discipline, and obedience explicit.",
+            "es": "La organización militar hace explícita la relación entre dependencia, disciplina y obediencia.",
+            "fr": "L'organisation militaire rend explicite la relation entre la dépendance, la discipline et l'obéissance."
+          },
+          {
+            "en": "End with kinship language: decide what conduct would distinguish shared care from obedience taught through labels.",
+            "es": "Terminar con el lenguaje de parentesco: decidir qué conducta distinguiría el cuidado compartido de la obediencia enseñada a través de etiquetas.",
+            "fr": " Terminer par la langue de parenté:  décider quelle conduite distinguerait le partage des soins de l'obéissance enseignée par des étiquettes."
+          }
+        ],
+        "inquiry": {
+          "en": "When does willing cooperation become a better basis for authority than force, and when does apparent care conceal control?",
+          "es": "¿Cuándo la cooperación voluntaria se convierte en una base mejor para la autoridad que la fuerza, y cuando el cuidado aparente oculta el control?",
+          "fr": " Quand la coopération volontaire devient-elle une meilleure base pour l'autorité que la force, et quand l'attention apparente cache-t-elle le contrôle?"
+        }
+      },
+      {
+        "slug": "advice-dissent-and-revision",
+        "title": {
+          "en": "Advice, dissent, and changing course",
+          "es": "Consejos, disenso y cambio de rumbo",
+          "fr": "Conseil, désaccord et changement de cap"
+        },
+        "description": {
+          "en": "Test advisers, disagreement, majority opinion, and the reasons a leader should revise a decision.",
+          "es": "Examina consejeros, desacuerdos, mayorías y razones para que un líder revise una decisión.",
+          "fr": "Examine les conseillers, le désaccord, la majorité et les raisons de réviser une décision."
+        },
+        "practiceGoal": {
+          "en": "Distinguish justified revision from inconsistency by tracing whose evidence and interests a decision includes.",
+          "es": "Distingue una revisión justificada de la incoherencia siguiendo las pruebas e intereses incluidos en una decisión.",
+          "fr": "Distingue une révision justifiée de l’inconstance en examinant les preuves et les intérêts pris en compte."
+        },
+        "moduleIds": [
+          "reading-connected-advice-dissent-and-revision-01",
+          "reading-connected-advice-dissent-and-revision-02",
+          "reading-connected-advice-dissent-and-revision-03",
+          "reading-connected-advice-dissent-and-revision-04",
+          "reading-connected-advice-dissent-and-revision-05",
+          "reading-connected-advice-dissent-and-revision-06",
+          "reading-connected-advice-dissent-and-revision-07",
+          "reading-connected-advice-dissent-and-revision-08",
+          "reading-connected-advice-dissent-and-revision-09",
+          "reading-connected-advice-dissent-and-revision-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with the possibility that changing a decision can express integrity rather than inconsistency.",
+            "es": "Comience con la posibilidad de que cambiar una decisión pueda expresar integridad en lugar de incoherencia.",
+            "fr": " Commencez par la possibilité que le changement d'une décision puisse exprimer l'intégrité plutôt que l'incohérence."
+          },
+          {
+            "en": "The successful ruler who cannot adapt shows how a useful habit can obstruct revision.",
+            "es": "El gobernante exitoso que no puede adaptarse muestra cómo un hábito útil puede obstruir la revisión.",
+            "fr": "La règle réussie qui ne peut s'adapter montre comment une habitude utile peut entraver la révision."
+          },
+          {
+            "en": "Taking advice introduces trust in another person as one response to limited individual judgment.",
+            "es": "El asesoramiento introduce la confianza en otra persona como una respuesta a un juicio individual limitado.",
+            "fr": " Prendre des conseils introduit la confiance envers une autre personne comme réponse à un jugement individuel limité."
+          },
+          {
+            "en": "Bacon’s reversal of antiquity challenges the age-based authority an adviser might claim.",
+            "es": "La inversión de Bacon en la antigüedad desafía a la autoridad basada en la edad que un asesor podría reclamar.",
+            "fr": "L'inversion de l'antiquité par Bacon conteste l'autorité fondée sur l'âge qu'un conseiller pourrait revendiquer."
+          },
+          {
+            "en": "Descartes shifts attention from possessing reason to how a person applies it.",
+            "es": "Descartes cambia la atención de poseer razón a cómo una persona lo aplica.",
+            "fr": "Descartes déplace l'attention de la raison à la façon dont une personne l'applique."
+          },
+          {
+            "en": "Mill tests the difference between holding a correct belief and understanding its defense.",
+            "es": "Mill prueba la diferencia entre mantener una creencia correcta y entender su defensa.",
+            "fr": "Mill teste la différence entre tenir une croyance correcte et comprendre sa défense."
+          },
+          {
+            "en": "Thoreau moves from defending a belief to accepting the costs of acting on it.",
+            "es": "Thoreau se mueve de defender una creencia a aceptar los costos de actuar en ella.",
+            "fr": "Thoreau passe de la défense d'une croyance à l'acceptation des coûts d'agir sur elle."
+          },
+          {
+            "en": "Rousseau’s appeal to an example asks whether publications or conduct better support moral advice.",
+            "es": "El llamamiento de Rousseau a un ejemplo pregunta si las publicaciones o la conducta apoyan mejor el asesoramiento moral.",
+            "fr": "Rousseau s'enquiert d'un exemple qui demande si les publications ou la conduite de mieux soutenir les conseils moraux."
+          },
+          {
+            "en": "Dewey adds a method for delaying judgment without abandoning the need to act.",
+            "es": "Dewey añade un método para retrasar el juicio sin abandonar la necesidad de actuar.",
+            "fr": "Dewey ajoute une méthode pour retarder le jugement sans abandonner la nécessité d'agir."
+          },
+          {
+            "en": "Conclude with reasons in family authority: examine whether responsible conduct can be produced by commands alone.",
+            "es": "Conclude with reasons in family authority: examine whether responsible conduct can be produced by commands alone.",
+            "fr": " Conclure avec les raisons de l'autorité familiale: examiner si une conduite responsable peut être produite uniquement par les commandements."
+          }
+        ],
+        "inquiry": {
+          "en": "How can a leader listen, test advice, and change course without replacing judgment with popularity?",
+          "es": "¿Cómo puede un líder escuchar, probar consejos y cambiar el curso sin reemplazar el juicio por popularidad?",
+          "fr": "Comment un leader peut-il écouter, tester des conseils et changer de cap sans remplacer le jugement par la popularité?"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "freedom-government",
+    "title": {
+      "en": "Freedom & Government",
+      "es": "Libertad y gobierno",
+      "fr": "Liberté et gouvernement"
+    },
+    "description": {
+      "en": "Consent, rights, institutions, and the gap between ideals and practice.",
+      "es": "Consentimiento, derechos, instituciones y la distancia entre ideal y práctica.",
+      "fr": "Consentement, droits, institutions et écart entre idéal et pratique."
+    },
+    "readingPaths": [
+      {
+        "slug": "promises-of-freedom",
+        "title": {
+          "en": "Promises of freedom",
+          "es": "Promesas de libertad",
+          "fr": "Promesses de liberté"
+        },
+        "description": {
+          "en": "Ten readings on rights, institutions, and who can actually use a promised freedom.",
+          "es": "Diez lecturas sobre derechos, instituciones y quién puede ejercer una libertad prometida.",
+          "fr": "Dix lectures sur les droits, les institutions et l’exercice réel d’une liberté promise."
+        },
+        "practiceGoal": {
+          "en": "Distinguish a stated right from the institutions and opportunities needed to exercise it.",
+          "es": "Distingue un derecho declarado de las instituciones y oportunidades necesarias para ejercerlo.",
+          "fr": "Distingue un droit proclamé des institutions et possibilités nécessaires pour l’exercer."
+        },
+        "moduleIds": [
+          "reading-connected-promises-of-freedom-01",
+          "reading-connected-promises-of-freedom-02",
+          "reading-connected-promises-of-freedom-03",
+          "reading-connected-promises-of-freedom-04",
+          "reading-connected-promises-of-freedom-05",
+          "reading-connected-promises-of-freedom-06",
+          "reading-connected-promises-of-freedom-07",
+          "reading-connected-promises-of-freedom-08",
+          "reading-connected-promises-of-freedom-09",
+          "reading-connected-promises-of-freedom-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with consent as a justification for authority, including the problem of people excluded from consenting.",
+            "es": "Comenzar con consentimiento como justificación de la autoridad, incluido el problema de las personas excluidas del consentimiento.",
+            "fr": " Commencer par le consentement comme justification de l'autorité, y compris le problème des personnes exclues du consentement."
+          },
+          {
+            "en": "Constitutional purposes move the inquiry from declared rights to institutions intended to secure them.",
+            "es": "Los propósitos constitucionales trasladan la investigación de los derechos declarados a las instituciones destinadas a asegurarlos.",
+            "fr": "Les fins constitutionnelles font passer l'enquête des droits déclarés aux institutions destinées à les garantir."
+          },
+          {
+            "en": "Wollstonecraft tests whether forced household obedience can produce the moral responsibility institutions demand.",
+            "es": "Wollstonecraft prueba si la obediencia forzada del hogar puede producir las instituciones de responsabilidad moral demandan.",
+            "fr": "Wollstonecraft teste si l'obéissance forcée à la maison peut produire la responsabilité morale des institutions exigent."
+          },
+          {
+            "en": "Locke makes consent collective, raising the problem of dissent after a majority decides.",
+            "es": "Locke hace el consentimiento colectivo, planteando el problema del disentimiento después de que la mayoría decida.",
+            "fr": "Locke fait le consentement collectif, soulevant le problème de la dissidence après qu'une majorité décide."
+          },
+          {
+            "en": "Rousseau distinguishes the common interest from the preferences a majority happens to express.",
+            "es": "Rousseau distingue el interés común de las preferencias que la mayoría expresa.",
+            "fr": "Rousseau distingue l'intérêt commun des préférences qu'une majorité exprime."
+          },
+          {
+            "en": "Education introduces a practical condition for participation without settling who deserves rights.",
+            "es": "La educación introduce una condición práctica para la participación sin resolver quién merece derechos.",
+            "fr": "L'éducation introduit une condition pratique pour la participation sans établir qui mérite des droits."
+          },
+          {
+            "en": "Mill tests freedom’s boundary by distinguishing harm to others from dislike of their choices.",
+            "es": "Mill prueba el límite de la libertad distinguiendo el daño a otros de no gustar sus opciones.",
+            "fr": "L'usine teste la limite de la liberté en distinguant les dommages aux autres de ceux qui n'aiment pas leurs choix."
+          },
+          {
+            "en": "Amendment procedures make repair possible while setting a threshold that can itself need criticism.",
+            "es": "Los procedimientos de enmienda hacen posible la reparación a la vez que se establece un umbral que puede necesitar críticas.",
+            "fr": "Les procédures d'amendement permettent de réparer tout en fixant un seuil qui peut lui-même nécessiter des critiques."
+          },
+          {
+            "en": "Protection for disagreement tests whether institutions can tolerate challenges to their own rules.",
+            "es": "Protección para pruebas de desacuerdos si las instituciones pueden tolerar desafíos a sus propias reglas.",
+            "fr": "La protection contre les désaccords permet de déterminer si les institutions peuvent tolérer des contestations à leurs propres règles."
+          },
+          {
+            "en": "Finish with access to literacy: a freedom’s practical use can depend on what power prevents people from learning.",
+            "es": "Terminar con el acceso a la alfabetización: un uso práctico de la libertad puede depender de qué poder impide que la gente aprenda.",
+            "fr": " Terminer avec l'accès à l'alphabétisation : une utilisation pratique de la liberté peut dépendre de quel pouvoir empêche les gens d'apprendre."
+          }
+        ],
+        "inquiry": {
+          "en": "What must change for a stated freedom to become a freedom people can actually exercise?",
+          "es": "¿Qué debe cambiar para que una libertad declarada se convierta en una libertad que la gente pueda realmente ejercer?",
+          "fr": "Qu'est - ce qui doit changer pour qu'une liberté déclarée devienne une liberté que les gens peuvent réellement exercer?"
+        }
+      },
+      {
+        "slug": "voice-and-access",
+        "title": {
+          "en": "Who gets a voice?",
+          "es": "¿Quién tiene voz?",
+          "fr": "Qui peut se faire entendre ?"
+        },
+        "description": {
+          "en": "Follow the gap between a promised right and the education, allies, and institutions needed to use it.",
+          "es": "Explora la distancia entre un derecho prometido y la educación, los aliados e instituciones para ejercerlo.",
+          "fr": "Explore l’écart entre un droit promis et l’éducation, les alliés et les institutions nécessaires à son exercice."
+        },
+        "practiceGoal": {
+          "en": "Support a judgment about participation with evidence about both formal rights and practical access.",
+          "es": "Sostén un juicio sobre participación con pruebas sobre derechos formales y acceso real.",
+          "fr": "Étaye un jugement sur la participation par des éléments sur les droits formels et l’accès réel."
+        },
+        "moduleIds": [
+          "reading-connected-voice-and-access-01",
+          "reading-connected-voice-and-access-02",
+          "reading-connected-voice-and-access-03",
+          "reading-connected-voice-and-access-04",
+          "reading-connected-voice-and-access-05",
+          "reading-connected-voice-and-access-06",
+          "reading-connected-voice-and-access-07",
+          "reading-connected-voice-and-access-08",
+          "reading-connected-voice-and-access-09",
+          "reading-connected-voice-and-access-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with Isabella’s search for allies: having a claim and being able to pursue it differ.",
+            "es": "Comience con la búsqueda de aliados de Isabella: tener una reclamación y ser capaz de seguirla difieren.",
+            "fr": " Commencez par la recherche d'alliés par Isabella.  avoir une réclamation et être en mesure de la poursuivre diffèrent."
+          },
+          {
+            "en": "The use of thought shifts the inquiry from legal assistance to opportunities to develop judgment.",
+            "es": "El uso del pensamiento cambia la investigación de la asistencia jurídica a las oportunidades para desarrollar el juicio.",
+            "fr": "L'utilisation de la pensée déplace l'enquête de l'assistance juridique vers les occasions de développer le jugement."
+          },
+          {
+            "en": "Douglass’s trade shows why gaining a skill does not necessarily give control over one’s future.",
+            "es": "El comercio de Douglass muestra por qué ganar una habilidad no necesariamente da control sobre el futuro de uno.",
+            "fr": "Douglass montre pourquoi l'acquisition d'une compétence ne donne pas nécessairement le contrôle sur l'avenir."
+          },
+          {
+            "en": "Procedural protections move from individual dependence to barriers against institutional abuse.",
+            "es": "Las protecciones de procedimiento pasan de la dependencia individual a las barreras contra el abuso institucional.",
+            "fr": "Les protections procédurales passent de la dépendance individuelle à des barrières contre les abus institutionnels."
+          },
+          {
+            "en": "Locke’s public-good argument tests whether those barriers should ever permit discretion beyond a rule.",
+            "es": "El argumento público-bueno de Locke prueba si esas barreras deben permitir alguna vez la discreción más allá de una regla.",
+            "fr": "L'argument du bien public de Locke teste si ces barrières devraient jamais permettre un pouvoir discrétionnaire au-delà d'une règle."
+          },
+          {
+            "en": "Follett makes freedom an ongoing activity rather than something completed by receiving a vote.",
+            "es": "Follett hace de la libertad una actividad continua en lugar de algo completado por recibir un voto.",
+            "fr": "Follett fait de la liberté une activité permanente plutôt que quelque chose d'achevé en recevant un vote."
+          },
+          {
+            "en": "The quoted guardianship account tests what participation means when the supposed protected person cannot reach a court.",
+            "es": "La cuenta de tutela citada prueba lo que significa la participación cuando la supuesta persona protegida no puede llegar a un tribunal.",
+            "fr": "Le compte de tutelle cité vérifie ce que signifie la participation lorsque la personne soi-disant protégée ne peut pas se rendre devant un tribunal."
+          },
+          {
+            "en": "Du Bois broadens access from institutions to the forms of education that sustain public judgment.",
+            "es": "Du Bois amplía el acceso de las instituciones a las formas de educación que sustentan el juicio público.",
+            "fr": "Du Bois élargit l'accès des établissements aux formes d'éducation qui soutiennent le jugement public."
+          },
+          {
+            "en": "Addams supplies usage evidence against officials’ assumptions about what a neighborhood needs.",
+            "es": "Addams suministra evidencia de uso contra las suposiciones de funcionarios sobre lo que un barrio necesita.",
+            "fr": "Addams fournit des preuves de l'utilisation contre les responsables d'hypothèses sur ce dont un quartier a besoin."
+          },
+          {
+            "en": "Conclude with Mill’s boundary: extending one person’s freedom must leave room for other people’s freedom.",
+            "es": "Conclusión con el límite de Mill: extender la libertad de una persona debe dejar espacio para la libertad de otras personas.",
+            "fr": " Terminer avec la limite de Mills : l'extension d'une personne à la liberté doit laisser place à d'autres personnes à la liberté."
+          }
+        ],
+        "inquiry": {
+          "en": "Who can participate when a formal right exists but knowledge, resources, or institutional access are unequal?",
+          "es": "¿Quién puede participar cuando existe un derecho formal pero el conocimiento, los recursos o el acceso institucional son desiguales?",
+          "fr": "Qui peut participer lorsqu'un droit formel existe, mais les connaissances, les ressources ou l'accès institutionnel sont inégal?"
+        }
+      },
+      {
+        "slug": "law-conscience-and-repair",
+        "title": {
+          "en": "Law, conscience, and repair",
+          "es": "Ley, conciencia y reparación",
+          "fr": "Loi, conscience et réparation"
+        },
+        "description": {
+          "en": "Compare institutional rules with urgent harms, personal conscience, and ways to repair a system.",
+          "es": "Compara reglas institucionales con daños urgentes, conciencia personal y formas de reparar un sistema.",
+          "fr": "Compare les règles institutionnelles aux préjudices urgents, à la conscience et aux possibilités de réforme."
+        },
+        "practiceGoal": {
+          "en": "Explain when a remedy answers the actual harm and when rules need revision or principled challenge.",
+          "es": "Explica cuándo una reparación responde al daño real y cuándo las reglas requieren revisión o impugnación fundada.",
+          "fr": "Explique quand une réparation répond au préjudice réel et quand les règles exigent révision ou contestation argumentée."
+        },
+        "moduleIds": [
+          "reading-connected-law-conscience-and-repair-01",
+          "reading-connected-law-conscience-and-repair-02",
+          "reading-connected-law-conscience-and-repair-03",
+          "reading-connected-law-conscience-and-repair-04",
+          "reading-connected-law-conscience-and-repair-05",
+          "reading-connected-law-conscience-and-repair-06",
+          "reading-connected-law-conscience-and-repair-07",
+          "reading-connected-law-conscience-and-repair-08",
+          "reading-connected-law-conscience-and-repair-09",
+          "reading-connected-law-conscience-and-repair-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with a proposed remedy that fails to restore the person whose return Isabella demands.",
+            "es": "Comience con un remedio propuesto que no puede restaurar a la persona cuyo retorno Isabella demanda.",
+            "fr": " Commencez par un remède proposé qui ne restaure pas la personne dont Isabella demande le retour."
+          },
+          {
+            "en": "Locke explains why possessing a right may still leave a person unable to enforce it.",
+            "es": "Locke explica por qué poseer un derecho puede todavía dejar a una persona incapaz de ejecutarlo.",
+            "fr": "Locke explique pourquoi la possession d'un droit peut encore laisser une personne incapable de l'appliquer."
+          },
+          {
+            "en": "Divided appointment powers offer an institutional response to the danger of unchecked authority.",
+            "es": "Los poderes divisados de nombramiento ofrecen una respuesta institucional al peligro de una autoridad no verificada.",
+            "fr": "Les pouvoirs de nomination divisés offrent une réponse institutionnelle au danger d'une autorité non contrôlée."
+          },
+          {
+            "en": "The Declaration shifts from sharing existing authority to claiming independence and accepting its costs.",
+            "es": "La Declaración pasa de compartir la autoridad existente para reclamar la independencia y aceptar sus costos.",
+            "fr": "La Déclaration passe du partage des pouvoirs existants à la revendication de l'indépendance et à l'acceptation de ses coûts."
+          },
+          {
+            "en": "Locke’s equal enforcement rights raise the problem of judging and punishing without a shared institution.",
+            "es": "Los derechos de ejecución de Locke plantean el problema de juzgar y sancionar sin una institución compartida.",
+            "fr": "L'égalité des droits en matière d'exécution soulève le problème de juger et de punir sans institution partagée."
+          },
+          {
+            "en": "Rousseau tests whether a common civic identity can protect members while excluding others.",
+            "es": "Rousseau prueba si una identidad cívica común puede proteger a los miembros mientras excluye a otros.",
+            "fr": "Rousseau vérifie si une identité civique commune peut protéger les membres tout en excluant les autres."
+          },
+          {
+            "en": "The stronger party’s definition of justice challenges the assumption that law and fairness coincide.",
+            "es": "La definición de justicia de la parte más fuerte cuestiona la suposición de que la ley y la equidad coinciden.",
+            "fr": "La définition plus forte de la justice conteste l'hypothèse selon laquelle le droit et l'équité coïncident."
+          },
+          {
+            "en": "Marcus’s combination of monarchy and freedom complicates a simple judgment based on an institution’s name.",
+            "es": "La combinación de monarquía y libertad de Marcus complica un simple juicio basado en el nombre de una institución.",
+            "fr": "La combinaison de la monarchie et de la liberté de Marcus complique un jugement simple basé sur un nom d'institution."
+          },
+          {
+            "en": "Mary Prince’s family reveals the limits of private help when a legal remedy is unavailable.",
+            "es": "La familia de María Prince revela los límites de la ayuda privada cuando un recurso legal no está disponible.",
+            "fr": "La famille Mary Princes révèle les limites de l'aide privée lorsqu'un recours juridique n'est pas disponible."
+          },
+          {
+            "en": "End with Mill’s warning that examples guide judgment without exhausting the conflicts a principle must address.",
+            "es": "Termina con la advertencia de Mill de que los ejemplos guían el juicio sin agotar los conflictos debe abordar un principio.",
+            "fr": " Terminez par l'avertissement de Mills que les exemples guident le jugement sans épuiser les conflits qu'un principe doit aborder."
+          }
+        ],
+        "inquiry": {
+          "en": "When should a rule be obeyed, repaired, or challenged to address the harm it permits?",
+          "es": "¿Cuándo se debe obedecer, reparar o desafiar una regla para hacer frente al daño que permite?",
+          "fr": " Quand faut-il obéir à une règle, la réparer ou la contester pour remédier au préjudice qu'elle permet?"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "meaning-morality-suffering",
+    "title": {
+      "en": "Meaning, Morality & Suffering",
+      "es": "Sentido, moralidad y sufrimiento",
+      "fr": "Sens, morale et souffrance"
+    },
+    "description": {
+      "en": "What we owe others when explanations and outcomes conflict.",
+      "es": "Qué debemos a otros cuando chocan explicaciones y resultados.",
+      "fr": "Ce que nous devons aux autres lorsque les explications et les résultats s’opposent."
+    },
+    "readingPaths": [
+      {
+        "slug": "innocence-and-the-greater-good",
+        "title": {
+          "en": "Innocence and the greater good",
+          "es": "Inocencia y bien mayor",
+          "fr": "Innocence et bien supérieur"
+        },
+        "description": {
+          "en": "Ten readings comparing suffering, care, duty, and responsibility without prescribing a belief.",
+          "es": "Diez lecturas que comparan sufrimiento, cuidado, deber y responsabilidad sin imponer creencias.",
+          "fr": "Dix lectures comparant souffrance, soin, devoir et responsabilité sans imposer de croyance."
+        },
+        "practiceGoal": {
+          "en": "Compare duties and consequences without treating suffering as an abstract price others must pay.",
+          "es": "Compara deberes y consecuencias sin tratar el sufrimiento como un precio abstracto que otros deben pagar.",
+          "fr": "Compare devoirs et conséquences sans traiter la souffrance comme un prix abstrait à payer par autrui."
+        },
+        "moduleIds": [
+          "reading-connected-innocence-and-the-greater-good-01",
+          "reading-connected-innocence-and-the-greater-good-02",
+          "reading-connected-innocence-and-the-greater-good-03",
+          "reading-connected-innocence-and-the-greater-good-04",
+          "reading-connected-innocence-and-the-greater-good-05",
+          "reading-connected-innocence-and-the-greater-good-06",
+          "reading-connected-innocence-and-the-greater-good-07",
+          "reading-connected-innocence-and-the-greater-good-08",
+          "reading-connected-innocence-and-the-greater-good-09",
+          "reading-connected-innocence-and-the-greater-good-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with a limit case: whether promised collective happiness can justify harm to an innocent person.",
+            "es": "Comenzar con un caso límite: si la felicidad colectiva prometida puede justificar el daño a una persona inocente.",
+            "fr": " Commencez par un cas limite : si le bonheur collectif promis peut justifier un préjudice à une personne innocente."
+          },
+          {
+            "en": "Practical care shifts attention from a future benefit to the demands of helping someone now.",
+            "es": "La atención práctica cambia la atención de un beneficio futuro a las demandas de ayudar a alguien ahora.",
+            "fr": "Les soins pratiques déplacent l'attention d'un avantage futur vers les exigences d'aider quelqu'un maintenant."
+          },
+          {
+            "en": "Epictetus introduces the boundary between responsible action and what a person cannot control.",
+            "es": "Epictetus introduce el límite entre la acción responsable y lo que una persona no puede controlar.",
+            "fr": "Epictetus introduit la frontière entre l'action responsable et ce qu'une personne ne peut pas contrôler."
+          },
+          {
+            "en": "Care outside the family tests whether that boundary should narrow obligations to unfamiliar people.",
+            "es": "Care outside the family tests whether that boundary should narrow obligations to unfamiliar people.",
+            "fr": "Les soins en dehors de la famille testent si cette limite devrait restreindre les obligations envers des personnes inconnues."
+          },
+          {
+            "en": "Marcus turns responsibility inward, distinguishing necessary rest from avoiding one’s work.",
+            "es": "Marcus convierte la responsabilidad hacia adentro, distinguiendo el descanso necesario de evitar el trabajo de uno.",
+            "fr": "Marcus tourne la responsabilité vers l'intérieur, en distinguant le repos nécessaire d'éviter un seul travail."
+          },
+          {
+            "en": "The response to hatred asks how to resist harm without reproducing its motive.",
+            "es": "La respuesta al odio pregunta cómo resistir el daño sin reproducir su motivo.",
+            "fr": "La réponse à la haine demande comment résister au mal sans reproduire son mobile."
+          },
+          {
+            "en": "Truthfulness adds an obligation to others that can conflict with a wish to protect them.",
+            "es": "La verdad añade una obligación a otros que pueden entrar en conflicto con un deseo de protegerlos.",
+            "fr": "La véracité ajoute une obligation aux autres qui peuvent entrer en conflit avec le désir de les protéger."
+          },
+          {
+            "en": "Reciprocity complicates that obligation when another person’s needs differ from one’s own.",
+            "es": "La reciprocidad complica esa obligación cuando las necesidades de otra persona difieren de las propias.",
+            "fr": "La réciprocité complique cette obligation lorsque les besoins d'une autre personne diffèrent de ceux d'une autre personne."
+          },
+          {
+            "en": "The disputed promise tests whether a general rule can require an exception rather than literal obedience.",
+            "es": "La promesa en disputa prueba si una regla general puede requerir una excepción en lugar de una obediencia literal.",
+            "fr": "La promesse contestée teste si une règle générale peut exiger une exception plutôt qu'une obéissance littérale."
+          },
+          {
+            "en": "Conclude with early intervention: consider how attention to small beginnings might prevent a later conflict of harms.",
+            "es": "Concluir con la intervención temprana: considerar cómo la atención a los pequeños comienzos podría prevenir un conflicto posterior de daños.",
+            "fr": " Conclure avec une intervention précoce: examiner comment l'attention accordée aux petits débuts pourrait prévenir un conflit ultérieur de dommages."
+          }
+        ],
+        "inquiry": {
+          "en": "What limits should protect a person when a larger benefit is offered to justify harm?",
+          "es": "¿Qué límites deben proteger a una persona cuando se ofrece un beneficio mayor para justificar el daño?",
+          "fr": " Quelles limites devraient protéger une personne lorsqu'un avantage plus important est offert pour justifier un préjudice?"
+        }
+      },
+      {
+        "slug": "care-and-blind-spots",
+        "title": {
+          "en": "Care and moral blind spots",
+          "es": "Cuidado y puntos ciegos morales",
+          "fr": "L’attention et les angles morts moraux"
+        },
+        "description": {
+          "en": "Begin with hidden suffering, then examine attention, obligation, judgment, and the limits of compassion.",
+          "es": "Parte del sufrimiento oculto y examina atención, obligación, juicio y límites de la compasión.",
+          "fr": "Pars de la souffrance cachée pour examiner l’attention, l’obligation, le jugement et les limites de la compassion."
+        },
+        "practiceGoal": {
+          "en": "Use a detail from a text to explain whose needs a judgment overlooks, without assuming sympathy settles every choice.",
+          "es": "Usa un detalle del texto para explicar qué necesidades omite un juicio, sin suponer que la simpatía resuelve toda decisión.",
+          "fr": "Appuie-toi sur un détail du texte pour expliquer les besoins négligés sans supposer que la sympathie résout tout."
+        },
+        "moduleIds": [
+          "reading-connected-care-and-blind-spots-01",
+          "reading-connected-care-and-blind-spots-02",
+          "reading-connected-care-and-blind-spots-03",
+          "reading-connected-care-and-blind-spots-04",
+          "reading-connected-care-and-blind-spots-05",
+          "reading-connected-care-and-blind-spots-06",
+          "reading-connected-care-and-blind-spots-07",
+          "reading-connected-care-and-blind-spots-08",
+          "reading-connected-care-and-blind-spots-09",
+          "reading-connected-care-and-blind-spots-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with the Prince’s wall: limited knowledge can make another person’s suffering invisible.",
+            "es": "Comience con la pared del Príncipe: el conocimiento limitado puede hacer invisible el sufrimiento de otra persona.",
+            "fr": " Commencez par le mur de Princes : une connaissance limitée peut rendre invisible la souffrance d'une autre personne."
+          },
+          {
+            "en": "Godfrey’s claim of duty tests whether seeing a need guarantees an unselfish response.",
+            "es": "La afirmación de Godfrey de las pruebas de deber si ver una necesidad garantiza una respuesta desinteresada.",
+            "fr": "La revendication de Godfrey de tests de devoir si voir un besoin garantit une réponse désintéressée."
+          },
+          {
+            "en": "The temple comparison locates moral attention in mutual help rather than outward religious difference.",
+            "es": "La comparación del templo localiza la atención moral en ayuda mutua en lugar de diferencia religiosa externa.",
+            "fr": "La comparaison de temple localise l'attention morale dans l'aide mutuelle plutôt que la différence religieuse extérieure."
+          },
+          {
+            "en": "Ivan’s account of heroism complicates the idea that a burdensome act necessarily has a generous motive.",
+            "es": "El relato del heroísmo de Ivan complica la idea de que un acto oneroso tiene necesariamente un motivo generoso.",
+            "fr": "Le récit d'Ivan de l'héroïsme complique l'idée qu'un acte pesant a nécessairement un motif généreux."
+          },
+          {
+            "en": "Confucius tests how a valued intention can become harmful without learning.",
+            "es": "Confucio prueba cómo una intención valorada puede llegar a ser dañina sin aprender.",
+            "fr": "Confucius teste comment une intention valorisée peut devenir nuisible sans apprendre."
+          },
+          {
+            "en": "An obstructed action shifts the inquiry from motives to the choices still available under constraint.",
+            "es": "Una acción obstruida cambia la investigación de los motivos a las opciones todavía disponibles bajo limitación.",
+            "fr": " Une action obstruée déplace l'enquête des motifs vers les choix encore disponibles sous contrainte."
+          },
+          {
+            "en": "Laozi connects understanding with forbearance, while extending that claim into a larger promise to examine.",
+            "es": "Laozi conecta el entendimiento con la paciencia, al tiempo que extiende esa reclamación a una promesa más grande para examinar.",
+            "fr": "Laozi établit un lien entre la compréhension et l'abstention, tout en étendant cette revendication à une plus grande promesse d'examiner."
+          },
+          {
+            "en": "The response to anger tests whether forbearance can oppose harm without becoming passivity.",
+            "es": "La respuesta a la ira prueba si la paciencia puede oponerse al daño sin convertirse en pasividad.",
+            "fr": "La réponse à la colère teste si l'abstention peut s'opposer au mal sans devenir passivité."
+          },
+          {
+            "en": "Gilman distinguishes useful service from independence and supplies an analogy whose assumptions require criticism.",
+            "es": "Gilman distingue el servicio útil de la independencia y proporciona una analogía cuyas suposiciones requieren críticas.",
+            "fr": "Gilman distingue le service utile de l'indépendance et fournit une analogie dont les hypothèses exigent des critiques."
+          },
+          {
+            "en": "Finish with the creature’s claim: recognizing suffering need not settle responsibility or justify harmful conduct.",
+            "es": "Terminar con la afirmación de la criatura: reconocer el sufrimiento no necesita resolver la responsabilidad ni justificar la conducta dañina.",
+            "fr": "Finissez avec la créature, prétendez:  reconnaître que la souffrance n'a pas besoin de régler la responsabilité ou de justifier un comportement préjudiciable."
+          }
+        ],
+        "inquiry": {
+          "en": "How can care reveal another person’s needs while still missing their wishes or one’s own motives?",
+          "es": "¿Cómo puede el cuidado revelar las necesidades de otra persona mientras todavía faltan sus deseos o sus propios motivos?",
+          "fr": "Comment les soins peuvent révéler les besoins d'une autre personne tout en manquant encore leurs souhaits ou leurs propres motivations?"
+        }
+      },
+      {
+        "slug": "help-now-change-later",
+        "title": {
+          "en": "Help now, change the conditions",
+          "es": "Ayudar ahora, cambiar las condiciones",
+          "fr": "Aider maintenant, changer les conditions"
+        },
+        "description": {
+          "en": "Compare immediate help with duties, incentives, and institutions that shape recurring suffering.",
+          "es": "Compara ayuda inmediata con deberes, incentivos e instituciones que generan sufrimiento recurrente.",
+          "fr": "Compare l’aide immédiate aux devoirs, aux incitations et aux institutions liés à la souffrance récurrente."
+        },
+        "practiceGoal": {
+          "en": "Defend a response to harm that considers both immediate needs and the consequences of the proposed solution.",
+          "es": "Defiende una respuesta al daño que considere necesidades inmediatas y consecuencias de la solución propuesta.",
+          "fr": "Défends une réponse au préjudice qui tienne compte des besoins immédiats et des conséquences de la solution."
+        },
+        "moduleIds": [
+          "reading-connected-help-now-change-later-01",
+          "reading-connected-help-now-change-later-02",
+          "reading-connected-help-now-change-later-03",
+          "reading-connected-help-now-change-later-04",
+          "reading-connected-help-now-change-later-05",
+          "reading-connected-help-now-change-later-06",
+          "reading-connected-help-now-change-later-07",
+          "reading-connected-help-now-change-later-08",
+          "reading-connected-help-now-change-later-09",
+          "reading-connected-help-now-change-later-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with urgent relief: the ruby can meet a need while leaving its causes intact.",
+            "es": "Comience con el alivio urgente: el rubí puede satisfacer una necesidad mientras deja intactas sus causas.",
+            "fr": " Commencez par des secours urgents : le rubis peut répondre à un besoin tout en laissant ses causes intactes."
+          },
+          {
+            "en": "Simon’s household makes the helper’s limited resources and unpaid work part of the moral problem.",
+            "es": "El hogar de Simon hace que los recursos limitados del ayudante y el trabajo no remunerado formen parte del problema moral.",
+            "fr": "Le ménage de Simon fait de l'aide des ressources limitées et du travail non rémunéré une partie du problème moral."
+          },
+          {
+            "en": "Preparing tools shifts the question from wishing to help toward developing the ability to act well.",
+            "es": "La preparación de herramientas cambia la cuestión de desear ayudar a desarrollar la capacidad de actuar bien.",
+            "fr": "La préparation d'outils déplace la question de vouloir aider à développer la capacité d'agir bien."
+          },
+          {
+            "en": "Neighbors’ mutual aid challenges a fixed division between capable helpers and dependent recipients.",
+            "es": "La ayuda mutua de los vecinos desafía una división fija entre ayudantes capaces y receptores dependientes.",
+            "fr": "Les voisins de l'aide mutuelle contestent une division fixe entre les aidants compétents et les bénéficiaires dépendants."
+          },
+          {
+            "en": "Toolmaking introduces a cost paid now for a possible future improvement.",
+            "es": "La elaboración de herramientas introduce un costo pagado ahora para una posible mejora futura.",
+            "fr": "La fabrication d'outils introduit un coût payé maintenant pour une éventuelle amélioration future."
+          },
+          {
+            "en": "Ruskin’s list tests whether a person’s wealth can reliably reveal either their contribution or character.",
+            "es": "La lista de Ruskin prueba si la riqueza de una persona puede revelar con confianza su contribución o carácter.",
+            "fr": "La liste de Ruskin's teste si la richesse d'une personne peut révéler de façon fiable sa contribution ou son caractère."
+          },
+          {
+            "en": "The defense of justice asks how uncertainty should affect the duty to respond.",
+            "es": "La defensa de la justicia pregunta cómo debe afectar la incertidumbre al deber de responder.",
+            "fr": "La défense de la justice demande comment l'incertitude devrait affecter le devoir de réagir."
+          },
+          {
+            "en": "Epictetus’s self-scrutiny tests whether personal responsibility can obscure harm caused by others.",
+            "es": "Pruebas de autoescrutinio de Epictetus si la responsabilidad personal puede oscurecer los daños causados por otros.",
+            "fr": "Epictetus teste l'auto-examen si la responsabilité personnelle peut obscurcir les dommages causés par les autres."
+          },
+          {
+            "en": "Simon’s anger brings those questions back to a helper whose unmet needs distort his own explanation.",
+            "es": "La ira de Simon trae esas preguntas de vuelta a un ayudante cuyo desatendido necesita distorsionar su propia explicación.",
+            "fr": "La colère de Simon ramène ces questions à un assistant dont les besoins non satisfaits déforment sa propre explication."
+          },
+          {
+            "en": "End with ordinary joy: small acts of attention can matter alongside urgent rescue and structural change.",
+            "es": "Terminar con alegría ordinaria: pequeños actos de atención pueden importar junto con el rescate urgente y el cambio estructural.",
+            "fr": "Finissez avec la joie ordinaire: de petits actes d'attention peuvent être importants en même temps que des secours urgents et des changements structurels."
+          }
+        ],
+        "inquiry": {
+          "en": "How should we balance helping someone now with changing the conditions that keep producing the need?",
+          "es": "¿Cómo debemos equilibrar ayudando a alguien ahora con cambiar las condiciones que siguen produciendo la necesidad?",
+          "fr": "Comment devons - nous trouver un juste équilibre pour aider quelqu'un à changer les conditions qui continuent de produire le besoin?"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "truth-knowledge",
+    "title": {
+      "en": "Truth & Knowledge",
+      "es": "Verdad y conocimiento",
+      "fr": "Vérité et connaissance"
+    },
+    "description": {
+      "en": "Examine certainty, evidence, and what could change your mind.",
+      "es": "Examina certeza, pruebas y qué podría cambiar tu opinión.",
+      "fr": "Examine certitude, preuves et ce qui pourrait changer ton avis."
+    },
+    "readingPaths": [
+      {
+        "slug": "the-examined-life",
+        "title": {
+          "en": "The examined life",
+          "es": "La vida examinada",
+          "fr": "La vie examinée"
+        },
+        "description": {
+          "en": "Ten readings testing certainty, assumptions, appearances, and testimony.",
+          "es": "Diez lecturas para examinar certeza, supuestos, apariencias y testimonios.",
+          "fr": "Dix lectures pour examiner certitude, hypothèses, apparences et témoignages."
+        },
+        "practiceGoal": {
+          "en": "Support a belief with reasons, examine an alternative, and identify what could change your conclusion.",
+          "es": "Apoya una creencia con razones, examina una alternativa e identifica qué podría cambiar tu conclusión.",
+          "fr": "Soutiens une croyance par des raisons, examine une autre possibilité et identifie ce qui pourrait changer ta conclusion."
+        },
+        "moduleIds": [
+          "reading-connected-the-examined-life-01",
+          "reading-connected-the-examined-life-02",
+          "reading-connected-the-examined-life-03",
+          "reading-connected-the-examined-life-04",
+          "reading-connected-the-examined-life-05",
+          "reading-connected-the-examined-life-06",
+          "reading-connected-the-examined-life-07",
+          "reading-connected-the-examined-life-08",
+          "reading-connected-the-examined-life-09",
+          "reading-connected-the-examined-life-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin by asking what examining a belief demands beyond simply repeating it.",
+            "es": "Comience por preguntar lo que el examen de una creencia exige más allá de repetirla simplemente.",
+            "fr": " Commencez par demander ce que l'examen d'une croyance exige au-delà de la simple répétition."
+          },
+          {
+            "en": "Acknowledged ignorance tests how confidence can coexist with limits on knowledge.",
+            "es": "La ignorancia reconocida prueba cómo la confianza puede coexistir con límites en el conocimiento.",
+            "fr": "L'ignorance reconnue teste comment la confiance peut coexister avec les limites de la connaissance."
+          },
+          {
+            "en": "Descartes offers a method for dividing difficulties and checking conclusions.",
+            "es": "Descartes ofrece un método para dividir las dificultades y comprobar las conclusiones.",
+            "fr": "Descartes offre une méthode pour diviser les difficultés et vérifier les conclusions."
+          },
+          {
+            "en": "Bacon complicates method by locating distortions in the particular person doing the inquiry.",
+            "es": "Bacon complica el método localizando distorsiones en la persona en particular haciendo la investigación.",
+            "fr": "Bacon complique la méthode en trouvant des distorsions dans la personne qui fait l'enquête."
+          },
+          {
+            "en": "Disputes over words show how reasoning can fail before evidence is even compared.",
+            "es": "Las disputas sobre las palabras muestran cómo el razonamiento puede fallar antes de que la evidencia sea comparada.",
+            "fr": "Les différends sur les mots montrent comment le raisonnement peut échouer avant même que la preuve ne soit comparée."
+          },
+          {
+            "en": "Hume tests a concept by tracing the experience that gives it content.",
+            "es": "Hume prueba un concepto mediante el rastreo de la experiencia que le da contenido.",
+            "fr": "Hume teste un concept en traçant l'expérience qui lui donne du contenu."
+          },
+          {
+            "en": "Descartes’s personal example asks what can be learned without turning one method into a command.",
+            "es": "El ejemplo personal de Descartes pregunta qué se puede aprender sin convertir un método en un comando.",
+            "fr": "L'exemple personnel de Descartes demande ce qui peut être appris sans transformer une méthode en commande."
+          },
+          {
+            "en": "Expectations about repeated patterns introduce the uncertainty involved in moving beyond past experience.",
+            "es": "Las expectativas sobre los patrones repetidos introducen la incertidumbre que implica moverse más allá de la experiencia pasada.",
+            "fr": "Les attentes à l'égard des modèles répétés introduisent l'incertitude liée à l'évolution au-delà de l'expérience passée."
+          },
+          {
+            "en": "James asks what practical difference could distinguish explanations that appear verbally opposed.",
+            "es": "James pregunta qué diferencia práctica podría distinguir explicaciones que parecen verbalmente opuestas.",
+            "fr": "James demande quelle différence pratique pourrait distinguer les explications qui semblent verbalement opposées."
+          },
+          {
+            "en": "Conclude with Mill: defending a belief requires understanding the objections rather than merely possessing a conclusion.",
+            "es": "Conclude with Mill: defending a belief requires understanding the objections rather than merely possessing a conclusion.",
+            "fr": " Conclure avec l'usine:  défendre une croyance exige de comprendre les objections plutôt que de se contenter d'en tirer une conclusion."
+          }
+        ],
+        "inquiry": {
+          "en": "What turns an accepted belief into a belief we can responsibly defend or revise?",
+          "es": "¿Qué convierte una creencia aceptada en una creencia que podemos defender o revisar responsablemente?",
+          "fr": "Qu'est-ce qui transforme une croyance acceptée en une croyance que nous pouvons défendre ou réviser de façon responsable?"
+        }
+      },
+      {
+        "slug": "evidence-before-certainty",
+        "title": {
+          "en": "Evidence before certainty",
+          "es": "Pruebas antes de la certeza",
+          "fr": "Des preuves avant la certitude"
+        },
+        "description": {
+          "en": "Build an inquiry from a plausible first answer through observation, language, patterns, and revision.",
+          "es": "Construye una investigación desde una primera respuesta plausible mediante observación, lenguaje, patrones y revisión.",
+          "fr": "Construis une enquête depuis une première réponse plausible par l’observation, le langage, les régularités et la révision."
+        },
+        "practiceGoal": {
+          "en": "Separate observation from inference and name evidence that could overturn a plausible conclusion.",
+          "es": "Separa observación e inferencia e identifica pruebas que podrían refutar una conclusión plausible.",
+          "fr": "Distingue observation et inférence et indique les éléments qui pourraient renverser une conclusion plausible."
+        },
+        "moduleIds": [
+          "reading-connected-evidence-before-certainty-01",
+          "reading-connected-evidence-before-certainty-02",
+          "reading-connected-evidence-before-certainty-03",
+          "reading-connected-evidence-before-certainty-04",
+          "reading-connected-evidence-before-certainty-05",
+          "reading-connected-evidence-before-certainty-06",
+          "reading-connected-evidence-before-certainty-07",
+          "reading-connected-evidence-before-certainty-08",
+          "reading-connected-evidence-before-certainty-09",
+          "reading-connected-evidence-before-certainty-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin by separating what is observed from an explanation added to that observation.",
+            "es": "Comience separando lo que se observa de una explicación agregada a esa observación.",
+            "fr": " Commencez par séparer ce qui est observé d'une explication ajoutée à cette observation."
+          },
+          {
+            "en": "Observation’s two roles show why an inference needs both a starting problem and a later check.",
+            "es": "Los dos roles de observación muestran por qué una inferencia necesita tanto un problema de inicio como un cheque posterior.",
+            "fr": "Observation: deux rôles montrent pourquoi une inférence a besoin à la fois d'un problème de départ et d'un contrôle ultérieur."
+          },
+          {
+            "en": "Bacon’s lighted road contrasts unguided experience with a search directed toward testable claims.",
+            "es": "La carretera iluminada de Bacon contrasta con la experiencia sin guía con una búsqueda dirigida hacia afirmaciones probables.",
+            "fr": "Bacon's route éclairée contraste avec une expérience non guidée avec une recherche dirigée vers des revendications testables."
+          },
+          {
+            "en": "The creature’s account of Felix tests how an observation can support more than one explanation of suffering.",
+            "es": "El relato de la criatura de Félix prueba cómo una observación puede apoyar más de una explicación del sufrimiento.",
+            "fr": "Le récit de la créature de Felix teste comment une observation peut soutenir plus d'une explication de la souffrance."
+          },
+          {
+            "en": "Hume’s failed weather prediction asks how contrary observations should change confidence without discrediting experience altogether.",
+            "es": "La fallida predicción meteorológica de Hume pregunta cómo las observaciones contrarias deben cambiar la confianza sin desacreditar la experiencia por completo.",
+            "fr": "La prédiction météorologique ratée de Hume-S demande comment les observations contraires devraient changer la confiance sans discréditer complètement l'expérience."
+          },
+          {
+            "en": "Descartes’s palace image tests whether praise of virtue rests on a defensible account of what virtue is.",
+            "es": "La imagen del palacio de Descartes prueba si la alabanza de la virtud descansa en un relato defensible de lo que es la virtud.",
+            "fr": "L'image du palais Descartes teste si la louange de la vertu repose sur un récit défendable de ce qu'est la vertu."
+          },
+          {
+            "en": "Eastman’s grandmother supplies a case of expertise that cannot be judged simply by the presence of written records.",
+            "es": "La abuela de Eastman suministra un caso de experiencia que no puede ser juzgado simplemente por la presencia de registros escritos.",
+            "fr": "La grand-mère d'Eastman fournit un cas d'expertise qui ne peut pas être jugé simplement par la présence de documents écrits."
+          },
+          {
+            "en": "Water and fire return the inquiry to appearances: causal consequences require experience rather than inspection alone.",
+            "es": "El agua y el fuego devuelven la investigación a las apariencias: las consecuencias causales requieren experiencia en lugar de inspección sola.",
+            "fr": "L'eau et l'incendie rendent l'enquête aux apparences : les conséquences causales exigent de l'expérience plutôt que de l'inspection seule."
+          },
+          {
+            "en": "Admiration that misses its object tests how prior commitments can shape apparently careful observation.",
+            "es": "La admiración que pierde su objeto prueba cómo los compromisos anteriores pueden dar forma a una observación aparentemente cuidadosa.",
+            "fr": "L'admiration qui manque à son objet teste comment des engagements antérieurs peuvent façonner une observation apparemment prudente."
+          },
+          {
+            "en": "End by examining the claimed authority of inward experience without assuming it settles a public question.",
+            "es": "Terminar examinando la autoridad reclamada de la experiencia interna sin asumir que resuelve una cuestión pública.",
+            "fr": "En fin de compte, il s'agit d'examiner l'autorité revendiquée de l'expérience intérieure sans supposer qu'elle règle une question publique."
+          }
+        ],
+        "inquiry": {
+          "en": "How can evidence justify a conclusion while leaving room to discover that it is wrong?",
+          "es": "¿Cómo puede la evidencia justificar una conclusión mientras deja espacio para descubrir que está mal?",
+          "fr": "Comment la preuve peut - elle justifier une conclusion tout en laissant de la place pour découvrir qu'elle est erronée?"
+        }
+      },
+      {
+        "slug": "disagreement-and-understanding",
+        "title": {
+          "en": "Disagreeing to understand",
+          "es": "Discrepar para comprender",
+          "fr": "Le désaccord pour comprendre"
+        },
+        "description": {
+          "en": "Slow down, clarify words, examine another perspective, and distinguish an argument from an authority.",
+          "es": "Haz una pausa, aclara palabras, examina otra perspectiva y distingue argumentos de autoridad.",
+          "fr": "Prends le temps de clarifier les mots, d’examiner une autre perspective et de distinguer argument et autorité."
+        },
+        "practiceGoal": {
+          "en": "Represent an alternative fairly, compare its support with your own, and explain what remains uncertain.",
+          "es": "Representa con justicia una alternativa, compara su apoyo con el de tu posición y explica qué sigue incierto.",
+          "fr": "Présente équitablement une autre interprétation, compare ses appuis aux tiens et explique ce qui reste incertain."
+        },
+        "moduleIds": [
+          "reading-connected-disagreement-and-understanding-01",
+          "reading-connected-disagreement-and-understanding-02",
+          "reading-connected-disagreement-and-understanding-03",
+          "reading-connected-disagreement-and-understanding-04",
+          "reading-connected-disagreement-and-understanding-05",
+          "reading-connected-disagreement-and-understanding-06",
+          "reading-connected-disagreement-and-understanding-07",
+          "reading-connected-disagreement-and-understanding-08",
+          "reading-connected-disagreement-and-understanding-09",
+          "reading-connected-disagreement-and-understanding-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with the space needed to reconsider a conclusion instead of merely defending it.",
+            "es": "Comience con el espacio necesario para reconsiderar una conclusión en lugar de simplemente defenderla.",
+            "fr": " Commencez par l'espace nécessaire pour reconsidérer une conclusion au lieu de simplement la défendre."
+          },
+          {
+            "en": "The Queen’s change of judgment tests whether disagreement tracks reasons or a threatened interest.",
+            "es": "El cambio de juicio de la Reina pone a prueba si las razones de desacuerdo o un interés amenazado.",
+            "fr": "Le changement de jugement de la Reine teste si le désaccord suit les raisons ou un intérêt menacé."
+          },
+          {
+            "en": "Mill asks how truth can remain understood when disagreement disappears.",
+            "es": "Mill pregunta cómo la verdad puede ser entendida cuando el desacuerdo desaparece.",
+            "fr": "Mill demande comment la vérité peut rester comprise quand le désaccord disparaît."
+          },
+          {
+            "en": "Descartes separates persuasive reasoning from formal rhetorical technique, without making persuasion proof of truth.",
+            "es": "Descartes separa el razonamiento persuasivo de la técnica retórica formal, sin hacer prueba de persuasión de la verdad.",
+            "fr": "Descartes sépare le raisonnement persuasif de la technique rhétorique formelle, sans faire preuve de persuasion de la vérité."
+          },
+          {
+            "en": "Darcy’s defense of honesty tests whether a sincere explanation can also express prejudice.",
+            "es": "La defensa de la honestidad de Darcy prueba si una explicación sincera también puede expresar prejuicios.",
+            "fr": "Darcy's défense de l'honnêteté teste si une explication sincère peut également exprimer des préjugés."
+          },
+          {
+            "en": "Histiaios’s political interest complicates the evidential value of the agreement he secures.",
+            "es": "El interés político de Histiaios complica el valor probatorio del acuerdo que asegura.",
+            "fr": "L'intérêt politique d'Histiaios complique la valeur évidente de l'accord qu'il obtient."
+          },
+          {
+            "en": "Montaigne turns that scrutiny inward by testing whether apparent modesty can conceal vanity.",
+            "es": "Montaigne gira ese escrutinio hacia adentro probando si la modestia aparente puede ocultar la vanidad.",
+            "fr": "Montaigne retourne cet examen vers l'intérieur en testant si la modestie apparente peut dissimuler la vanité."
+          },
+          {
+            "en": "Emerson makes the comfort of an accepted creed another obstacle to reconsideration.",
+            "es": "Emerson hace la comodidad de un credo aceptado otro obstáculo para la reconsideración.",
+            "fr": "Emerson fait le confort d'une croyance acceptée un autre obstacle à la révision."
+          },
+          {
+            "en": "Hume exposes a conflict between ordinary instinct and philosophical reasoning rather than resolving it by popularity.",
+            "es": "Hume expone un conflicto entre el instinto ordinario y el razonamiento filosófico en lugar de resolverlo por la popularidad.",
+            "fr": "Hume expose un conflit entre l'instinct ordinaire et le raisonnement philosophique plutôt que de le résoudre par popularité."
+          },
+          {
+            "en": "Conclude with changing rules: judge how new cases can revise an abstraction without making decisions arbitrary.",
+            "es": "Conclude with changing rules: judge how new cases can revise an abstraction without making decisions arbitrary.",
+            "fr": " Conclure avec l'évolution des règles:  juger comment de nouveaux cas peuvent réviser une abstraction sans rendre les décisions arbitraires."
+          }
+        ],
+        "inquiry": {
+          "en": "What can disagreement reveal about words, interests, and the reasons behind an apparently settled belief?",
+          "es": "¿Qué puede revelar el desacuerdo sobre palabras, intereses y las razones detrás de una creencia aparentemente resuelta?",
+          "fr": "Que peut révéler le désaccord sur les mots, les intérêts et les raisons d'une croyance apparemment bien établie?"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "human-nature",
+    "title": {
+      "en": "Human Nature",
+      "es": "Naturaleza humana",
+      "fr": "Nature humaine"
+    },
+    "description": {
+      "en": "Character, motives, habits, and strength beyond appearances.",
+      "es": "Carácter, motivos, hábitos y fuerza más allá de las apariencias.",
+      "fr": "Caractère, motivations, habitudes et force au-delà des apparences."
+    },
+    "readingPaths": [
+      {
+        "slug": "character-and-adaptability",
+        "title": {
+          "en": "Character and adaptability",
+          "es": "Carácter y adaptación",
+          "fr": "Caractère et adaptation"
+        },
+        "description": {
+          "en": "Ten readings on character, habits, flexibility, and the distance between image and conduct.",
+          "es": "Diez lecturas sobre carácter, hábitos, flexibilidad y distancia entre imagen y conducta.",
+          "fr": "Dix lectures sur caractère, habitudes, souplesse et écart entre image et actes."
+        },
+        "practiceGoal": {
+          "en": "Use a specific detail to interpret character, consider another explanation, and distinguish adaptability from surrender.",
+          "es": "Usa un detalle concreto para interpretar el carácter, considera otra explicación y distingue adaptación de rendición.",
+          "fr": "Interprète le caractère à partir d’un détail précis, considère une autre explication et distingue adaptation et abandon."
+        },
+        "connections": [
+          {
+            "en": "Begin with the difference between acting from principle and seeking personal gain.",
+            "es": "Comience con la diferencia entre actuar de principio y buscar ganancia personal.",
+            "fr": " Commencez par la différence entre agir par principe et chercher un gain personnel."
+          },
+          {
+            "en": "Laozi’s flexibility tests whether strength always means resisting a change.",
+            "es": "La flexibilidad de Laozi prueba si la fuerza siempre significa resistir un cambio.",
+            "fr": "Laozis teste si la force signifie toujours résister à un changement."
+          },
+          {
+            "en": "Montaigne asks whether what feels natural is instead a habit acquired without examination.",
+            "es": "Montaigne pregunta si lo que se siente natural es en cambio un hábito adquirido sin examen.",
+            "fr": "Montaigne demande si ce qui semble naturel est plutôt une habitude acquise sans examen."
+          },
+          {
+            "en": "Confucius turns that concern into concrete questions for reviewing one’s own conduct.",
+            "es": "Confucio convierte esa preocupación en preguntas concretas para revisar su propia conducta.",
+            "fr": "Confucius transforme cette préoccupation en questions concrètes pour examiner sa propre conduite."
+          },
+          {
+            "en": "Austen tests self-review when praise and rejection have already shaped a first judgment.",
+            "es": "Austen prueba auto-revisión cuando el elogio y el rechazo ya han moldeado un primer juicio.",
+            "fr": "Austen teste l'auto-examen quand l'éloge et le rejet ont déjà façonné un premier jugement."
+          },
+          {
+            "en": "Godfrey’s treatment of Snuff tests what a repeated habit reveals about care and dependence.",
+            "es": "El tratamiento de Godfrey de Snuff prueba lo que un hábito repetido revela sobre el cuidado y la dependencia.",
+            "fr": "Godfrey's traitement de Snuff teste ce qu'une habitude répétée révèle sur le soin et la dépendance."
+          },
+          {
+            "en": "The fable contrasts force with persuasion, adding the ethical question of how change is induced.",
+            "es": "La fábula contrasta con la persuasión, añadiendo la cuestión ética de cómo se induce el cambio.",
+            "fr": "La fable contraste la force avec la persuasion, ajoutant la question éthique de la façon dont le changement est induit."
+          },
+          {
+            "en": "Silas’s attention to Eppie shows how care itself can alter habits of perception.",
+            "es": "La atención de Silas a Eppie muestra cómo la propia atención puede alterar los hábitos de percepción.",
+            "fr": "L'attention de Silas à Eppie montre comment le soin lui-même peut modifier les habitudes de perception."
+          },
+          {
+            "en": "Marcus prepares for difficult encounters while leaving responsibility for one’s own response intact.",
+            "es": "Marcus se prepara para encuentros difíciles, dejando intacta la responsabilidad por su propia respuesta.",
+            "fr": "Marcus se prépare à des rencontres difficiles tout en laissant la responsabilité de sa propre réponse intacte."
+          },
+          {
+            "en": "End with public appearance: compare the image of virtue with the conduct needed to support it.",
+            "es": "Terminar con la apariencia pública: comparar la imagen de la virtud con la conducta necesaria para apoyarla.",
+            "fr": "Fin de l'audience publique :  comparer l'image de la vertu avec la conduite nécessaire pour la soutenir."
+          }
+        ],
+        "moduleIds": [
+          "reading-connected-character-and-adaptability-01",
+          "reading-connected-character-and-adaptability-02",
+          "reading-connected-character-and-adaptability-03",
+          "reading-connected-character-and-adaptability-04",
+          "reading-connected-character-and-adaptability-05",
+          "reading-connected-character-and-adaptability-06",
+          "reading-connected-character-and-adaptability-07",
+          "reading-connected-character-and-adaptability-08",
+          "reading-connected-character-and-adaptability-09",
+          "reading-connected-character-and-adaptability-10"
+        ],
+        "inquiry": {
+          "en": "How can we judge character from conduct while distinguishing wise adaptation from abandoning a principle?",
+          "es": "¿Cómo podemos juzgar el carácter de la conducta mientras distinguimos la adaptación sabia de abandonar un principio?",
+          "fr": "Comment juger le caractère de la conduite tout en distinguant l'adaptation sage de l'abandon d'un principe?"
+        }
+      },
+      {
+        "slug": "belonging-and-responsibility",
+        "title": {
+          "en": "Belonging and responsibility",
+          "es": "Pertenencia y responsabilidad",
+          "fr": "Appartenance et responsabilité"
+        },
+        "description": {
+          "en": "Examine rejection, self-image, social pressure, and the boundary between explaining and excusing conduct.",
+          "es": "Examina rechazo, imagen propia, presión social y el límite entre explicar y excusar una conducta.",
+          "fr": "Examine rejet, image de soi, pression sociale et frontière entre expliquer et excuser une conduite."
+        },
+        "practiceGoal": {
+          "en": "Explain how circumstances shape a choice while preserving responsibility and considering another interpretation.",
+          "es": "Explica cómo las circunstancias moldean una decisión sin eliminar la responsabilidad y considera otra interpretación.",
+          "fr": "Explique comment les circonstances façonnent un choix sans supprimer la responsabilité, et considère une autre interprétation."
+        },
+        "moduleIds": [
+          "reading-connected-belonging-and-responsibility-01",
+          "reading-connected-belonging-and-responsibility-02",
+          "reading-connected-belonging-and-responsibility-03",
+          "reading-connected-belonging-and-responsibility-04",
+          "reading-connected-belonging-and-responsibility-05",
+          "reading-connected-belonging-and-responsibility-06",
+          "reading-connected-belonging-and-responsibility-07",
+          "reading-connected-belonging-and-responsibility-08",
+          "reading-connected-belonging-and-responsibility-09",
+          "reading-connected-belonging-and-responsibility-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with a moment of historical belonging that briefly changes the narrator’s relation to his fears.",
+            "es": "Comience con un momento de pertenencia histórica que cambia brevemente la relación del narrador con sus miedos.",
+            "fr": " Commencez par un moment d'appartenance historique qui change brièvement la relation du narrateur avec ses peurs."
+          },
+          {
+            "en": "Du Bois tests whether judgments of character mistake limited opportunity for a personal choice.",
+            "es": "Du Bois prueba si los juicios de error de carácter tienen una oportunidad limitada para una elección personal.",
+            "fr": "Du Bois vérifie si les jugements d'erreur de caractère limitent les possibilités d'un choix personnel."
+          },
+          {
+            "en": "A speaker’s career story makes an explanation of conduct dependent on claims a reader cannot fully verify.",
+            "es": "La historia de la carrera de un orador hace que una explicación de la conducta dependa de afirmaciones que un lector no puede verificar por completo.",
+            "fr": "L'histoire de carrière d'un conférencier rend une explication de conduite dépendante des revendications qu'un lecteur ne peut pas vérifier pleinement."
+          },
+          {
+            "en": "Montaigne asks how accurate self-description differs from either boasting or false modesty.",
+            "es": "Montaigne pregunta cómo la autodescripción exacta difiere de la presunción o falsa modestia.",
+            "fr": "Montaigne demande à quel point l'auto-description exacte diffère de la modestie vantée ou fausse."
+          },
+          {
+            "en": "Emerson extends a private bond outward into a larger claim about sympathy and society.",
+            "es": "Emerson extiende un vínculo privado hacia fuera en una reclamación mayor sobre la simpatía y la sociedad.",
+            "fr": "Emerson étend un lien privé vers l'extérieur dans une revendication plus large sur la sympathie et la société."
+          },
+          {
+            "en": "Marcus connects repeated thought with character and adds an explicitly social reason for self-discipline.",
+            "es": "Marcus conecta el pensamiento repetido con el carácter y añade una razón social explícita para la autodisciplina.",
+            "fr": "Marcus relie la pensée répétée au caractère et ajoute une raison explicitement sociale de l'autodiscipline."
+          },
+          {
+            "en": "Mr. Bennet’s courtesy tests how socially acceptable conduct can conceal a different motive.",
+            "es": "Mr. La cortesía de Bennet prueba cómo la conducta socialmente aceptable puede ocultar un motivo diferente.",
+            "fr": "- Oui. Bennet's teste avec courtoisie comment une conduite socialement acceptable peut cacher un motif différent."
+          },
+          {
+            "en": "Hui’s observable conduct revises an impression formed from outward agreement.",
+            "es": "La conducta observable de Hui revisa una impresión formada desde el acuerdo exterior.",
+            "fr": "La conduite observable de Huiê revoit une impression formée d'un accord extérieur."
+          },
+          {
+            "en": "The village’s response to Silas shows care creating belonging while leaving assumptions about him intact.",
+            "es": "La respuesta de la aldea a Silas muestra el cuidado creando pertenencia al dejar intactas sus suposiciones sobre él.",
+            "fr": "La réponse du village à Silas montre des soins créant l'appartenance tout en laissant des hypothèses sur lui intacts."
+          },
+          {
+            "en": "Conclude by separating help from understanding: a gift can express kindness while also assigning blame.",
+            "es": "Conclusión separando la ayuda de la comprensión: un regalo puede expresar bondad al mismo tiempo que asigna la culpa.",
+            "fr": " Conclure en séparant l'aide de la compréhension : un don peut exprimer la bonté tout en attribuant la faute."
+          }
+        ],
+        "inquiry": {
+          "en": "How do belonging and rejection shape conduct without removing responsibility for choices?",
+          "es": "¿Cómo se comportan las formas de pertenencia y rechazo sin eliminar la responsabilidad de las elecciones?",
+          "fr": "Comment l'appartenance et le rejet façonnent-ils la conduite sans supprimer la responsabilité des choix?"
+        }
+      },
+      {
+        "slug": "appearance-motive-and-habit",
+        "title": {
+          "en": "Appearances, motives, and habits",
+          "es": "Apariencias, motivos y hábitos",
+          "fr": "Apparences, motivations et habitudes"
+        },
+        "description": {
+          "en": "Start with an observer’s guesses, then test first impressions against conduct, habits, and care.",
+          "es": "Parte de las conjeturas de un observador y contrasta primeras impresiones con conducta, hábitos y cuidado.",
+          "fr": "Pars des suppositions d’un observateur, puis confronte les premières impressions aux actes, aux habitudes et à l’attention."
+        },
+        "practiceGoal": {
+          "en": "Support an interpretation of someone’s conduct with a specific detail and a plausible competing explanation.",
+          "es": "Sostén una interpretación de la conducta con un detalle concreto y una explicación alternativa plausible.",
+          "fr": "Étaye une interprétation de la conduite par un détail précis et une autre explication plausible."
+        },
+        "moduleIds": [
+          "reading-connected-appearance-motive-and-habit-01",
+          "reading-connected-appearance-motive-and-habit-02",
+          "reading-connected-appearance-motive-and-habit-03",
+          "reading-connected-appearance-motive-and-habit-04",
+          "reading-connected-appearance-motive-and-habit-05",
+          "reading-connected-appearance-motive-and-habit-06",
+          "reading-connected-appearance-motive-and-habit-07",
+          "reading-connected-appearance-motive-and-habit-08",
+          "reading-connected-appearance-motive-and-habit-09",
+          "reading-connected-appearance-motive-and-habit-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with a decision presented as clearer sight while alternative conclusions are excluded.",
+            "es": "Comience con una decisión presentada como una visión más clara mientras que se excluyen las conclusiones alternativas.",
+            "fr": " Commencer par une décision présentée comme plus claire tandis que d'autres conclusions sont exclues."
+          },
+          {
+            "en": "Austen distinguishes pride from vanity and invites scrutiny of the person making the distinction.",
+            "es": "Austen distingue el orgullo de la vanidad e invita el escrutinio de la persona que hace la distinción.",
+            "fr": "Austen distingue fierté de vanité et invite à l'examen de la personne faisant la distinction."
+          },
+          {
+            "en": "Machiavelli asks how many observers can preserve a reputation that few people know closely.",
+            "es": "Machiavelli pregunta cuántos observadores pueden preservar una reputación que pocas personas conocen de cerca.",
+            "fr": "Machiavel demande combien d'observateurs peuvent préserver une réputation que peu de gens connaissent de près."
+          },
+          {
+            "en": "The Owl’s flattery makes the gap between pleasing words and an intended action explicit.",
+            "es": "La adulación del Owl hace explícita la brecha entre palabras agradables y una acción destinada.",
+            "fr": "La flatterie de la Chouette rend explicite l'écart entre des mots agréables et une action prévue."
+          },
+          {
+            "en": "Eastman’s protector shows how helpful intentions can change the way a group treats their recipient.",
+            "es": "El protector de Eastman muestra cómo las intenciones útiles pueden cambiar la forma en que un grupo trata a su receptor.",
+            "fr": "Le protecteur d'Eastman's montre comment les intentions utiles peuvent changer la façon dont un groupe traite son destinataire."
+          },
+          {
+            "en": "An explanation of Darcy’s motives tests whether confident insight exceeds the evidence actually available.",
+            "es": "Una explicación de los motivos de Darcy prueba si el conocimiento seguro supera las pruebas disponibles.",
+            "fr": " Une explication des motifs de Darcy teste si la perspicacité de confiance dépasse les preuves réellement disponibles."
+          },
+          {
+            "en": "Emerson shifts admiration from the praised person to an imagined version of the admirer.",
+            "es": "Emerson cambia la admiración de la persona alabada a una versión imaginada del admirador.",
+            "fr": "Emerson déplace l'admiration de la personne louée à une version imaginée de l'admirateur."
+          },
+          {
+            "en": "Marner’s belief asks how inherited assumptions can make an error difficult to recognize.",
+            "es": "La creencia de Marner pregunta cómo las suposiciones heredadas pueden hacer un error difícil de reconocer.",
+            "fr": "Marner's croyance demande comment les hypothèses héritées peuvent rendre une erreur difficile à reconnaître."
+          },
+          {
+            "en": "Marcus turns criticism of status back onto pride in one’s own lack of pride.",
+            "es": "Marcus vuelve la crítica de estatus hacia el orgullo de su propia falta de orgullo.",
+            "fr": "Marcus fait retomber la critique du statut sur la fierté de son propre manque de fierté."
+          },
+          {
+            "en": "End with Dewey’s test of engagement: observe inquiry rather than relying on the appearance of a clever question.",
+            "es": "Finalizar con la prueba de compromiso de Dewey: observar la investigación en lugar de confiar en la apariencia de una pregunta inteligente.",
+            "fr": "Fin du test de fiançailles de Dewey: observer l'enquête plutôt que de se fier à l'apparence d'une question intelligente."
+          }
+        ],
+        "inquiry": {
+          "en": "How can we distinguish a plausible first impression from an interpretation supported by conduct?",
+          "es": "¿Cómo podemos distinguir una primera impresión plausible de una interpretación apoyada por la conducta?",
+          "fr": "Comment distinguer une première impression plausible d'une interprétation appuyée par la conduite?"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "civilizations-culture",
+    "title": {
+      "en": "Civilizations & Culture",
+      "es": "Civilizaciones y cultura",
+      "fr": "Civilisations et culture"
+    },
+    "description": {
+      "en": "Different perspectives on belonging, change, and shared memory.",
+      "es": "Perspectivas distintas sobre pertenencia, cambio y memoria compartida.",
+      "fr": "Différentes perspectives sur l’appartenance, le changement et la mémoire commune."
+    },
+    "readingPaths": [
+      {
+        "slug": "inside-outside-stories",
+        "title": {
+          "en": "Inside and outside stories",
+          "es": "Historias internas y externas",
+          "fr": "Récits internes et externes"
+        },
+        "description": {
+          "en": "Ten readings comparing historical accounts, identity, cultural memory, and measures of progress.",
+          "es": "Diez lecturas que comparan relatos históricos, identidad, memoria cultural y medidas del progreso.",
+          "fr": "Dix lectures comparant récits historiques, identité, mémoire culturelle et mesures du progrès."
+        },
+        "practiceGoal": {
+          "en": "Compare historical voices while distinguishing testimony, interpretation, and missing perspectives.",
+          "es": "Compara voces históricas distinguiendo testimonio, interpretación y perspectivas ausentes.",
+          "fr": "Compare les voix historiques en distinguant témoignage, interprétation et perspectives absentes."
+        },
+        "moduleIds": [
+          "reading-connected-inside-outside-stories-01",
+          "reading-connected-inside-outside-stories-02",
+          "reading-connected-inside-outside-stories-03",
+          "reading-connected-inside-outside-stories-04",
+          "reading-connected-inside-outside-stories-05",
+          "reading-connected-inside-outside-stories-06",
+          "reading-connected-inside-outside-stories-07",
+          "reading-connected-inside-outside-stories-08",
+          "reading-connected-inside-outside-stories-09",
+          "reading-connected-inside-outside-stories-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin by separating attachment to a familiar custom from evidence that it is universally best.",
+            "es": "Comience separando el apego a una costumbre familiar de evidencia que es universalmente mejor.",
+            "fr": " Commencez par séparer l'attachement à une coutume familière de la preuve qu'il est universellement le meilleur."
+          },
+          {
+            "en": "Equiano’s memory introduces the difference between a situated account of home and a complete social history.",
+            "es": "La memoria de Equiano introduce la diferencia entre un relato situado del hogar y una historia social completa.",
+            "fr": "La mémoire d'Equiano introduit la différence entre un récit situé de la maison et une histoire sociale complète."
+          },
+          {
+            "en": "Tagore asks whether a shared society can accommodate difference without fixing people into unequal roles.",
+            "es": "Tagore pregunta si una sociedad compartida puede acomodar la diferencia sin fijar a la gente en roles desiguales.",
+            "fr": "Tagore demande si une société partagée peut accueillir la différence sans fixer les gens à des rôles inégaux."
+          },
+          {
+            "en": "Storytelling practices shift attention from preserved words to the setting in which their meaning is shared.",
+            "es": "Las prácticas narrativas cambian la atención de las palabras conservadas al escenario en el que se comparte su significado.",
+            "fr": "Les pratiques de contes font passer l'attention des mots préservés au cadre dans lequel leur signification est partagée."
+          },
+          {
+            "en": "Herodotus’s political debate tests how different fears produce different accounts of a good institution.",
+            "es": "El debate político de Herodotus prueba cómo diferentes temores producen diferentes relatos de una buena institución.",
+            "fr": "Le débat politique d'Hérodote teste comment différentes peurs produisent différents récits d'une bonne institution."
+          },
+          {
+            "en": "Douglass makes control over personal information part of the power to tell a life story.",
+            "es": "Douglass hace que el control sobre la información personal sea parte del poder para contar una historia de vida.",
+            "fr": "Douglass fait du contrôle des renseignements personnels une partie du pouvoir de raconter une histoire de vie."
+          },
+          {
+            "en": "A safety-based omission complicates the demand that a credible narrator disclose every detail.",
+            "es": "Una omisión basada en la seguridad complica la demanda de que un narrador creíble divulgue cada detalle.",
+            "fr": " Une omission fondée sur la sécurité complique l'exigence qu'un narrateur crédible divulgue tous les détails."
+          },
+          {
+            "en": "Du Bois brings the outside observer’s judgment into a person’s experience of their own identity.",
+            "es": "Du Bois trae el juicio del observador externo a la experiencia de una persona de su propia identidad.",
+            "fr": "Du Bois apporte le jugement de l'observateur extérieur dans une personne de l'expérience de leur propre identité."
+          },
+          {
+            "en": "Prince’s earnings expose a limit in describing freedom through opportunity to make money.",
+            "es": "Las ganancias de Prince exponen un límite en describir la libertad a través de la oportunidad de hacer dinero.",
+            "fr": "Les gains de Prince exposent une limite dans la description de la liberté par la possibilité de faire de l'argent."
+          },
+          {
+            "en": "Conclude with cultural memory: songs can preserve experience while leaving factual claims open to checking.",
+            "es": "Concluir con la memoria cultural: las canciones pueden preservar la experiencia al dejar las afirmaciones fácticas abiertas a la comprobación.",
+            "fr": " Conclure avec la mémoire culturelle:  chansons peuvent préserver l'expérience tout en laissant les revendications factuelles ouvertes à la vérification."
+          }
+        ],
+        "inquiry": {
+          "en": "Whose account shapes a community’s story, and how can we recognize what an account leaves out?",
+          "es": "¿De quién forma la historia de una comunidad, y cómo podemos reconocer lo que deja una cuenta?",
+          "fr": "De qui le récit façonne une histoire de communauté, et comment pouvons-nous reconnaître ce qu'un récit laisse de côté?"
+        }
+      },
+      {
+        "slug": "who-preserves-the-story",
+        "title": {
+          "en": "Who preserves the story?",
+          "es": "¿Quién conserva la historia?",
+          "fr": "Qui conserve le récit ?"
+        },
+        "description": {
+          "en": "Compare memory, objects, songs, testimony, and omissions as ways communities preserve experience.",
+          "es": "Compara memoria, objetos, canciones, testimonios y omisiones como formas de conservar experiencias.",
+          "fr": "Compare mémoire, objets, chants, témoignages et omissions comme moyens de conserver l’expérience."
+        },
+        "practiceGoal": {
+          "en": "Evaluate what a historical source preserves, what it leaves out, and whose knowledge helps interpret it.",
+          "es": "Evalúa qué conserva una fuente histórica, qué omite y qué saberes ayudan a interpretarla.",
+          "fr": "Évalue ce qu’une source historique conserve, ce qu’elle omet et les savoirs nécessaires à son interprétation."
+        },
+        "moduleIds": [
+          "reading-connected-who-preserves-the-story-01",
+          "reading-connected-who-preserves-the-story-02",
+          "reading-connected-who-preserves-the-story-03",
+          "reading-connected-who-preserves-the-story-04",
+          "reading-connected-who-preserves-the-story-05",
+          "reading-connected-who-preserves-the-story-06",
+          "reading-connected-who-preserves-the-story-07",
+          "reading-connected-who-preserves-the-story-08",
+          "reading-connected-who-preserves-the-story-09",
+          "reading-connected-who-preserves-the-story-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with a record whose meaning depends on knowledge of how its marks organize time.",
+            "es": "Comience con un registro cuyo significado depende del conocimiento de cómo sus marcas organizan el tiempo.",
+            "fr": " Commencez par un disque dont la signification dépend de la connaissance de la façon dont ses marques organisent le temps."
+          },
+          {
+            "en": "Missing audits introduce the institutional power to keep a public story from being examined.",
+            "es": "Las auditorías perdidas introducen el poder institucional para evitar que se examine una historia pública.",
+            "fr": "Les audits manquants présentent le pouvoir institutionnel d'empêcher l'examen d'une histoire publique."
+          },
+          {
+            "en": "Du Bois connects songs with particular historical experiences rather than treating them as decoration.",
+            "es": "Du Bois conecta canciones con experiencias históricas particulares en lugar de tratarlas como decoración.",
+            "fr": "Du Bois relie des chansons à des expériences historiques particulières plutôt que de les traiter comme de la décoration."
+          },
+          {
+            "en": "Equiano’s conversation tests a hopeful identification first suggested by appearance.",
+            "es": "La conversación de Equiano prueba una identificación esperanzadora primeramente sugerida por apariencia.",
+            "fr": "Equiano's conversation teste une identification pleine d'espoir d'abord suggéré par l'apparence."
+          },
+          {
+            "en": "Dewey’s connected history asks what makes separate details intelligible as one account.",
+            "es": "La historia conectada de Dewey pregunta qué hace los detalles separados inteligibles como una cuenta.",
+            "fr": "L'historique connecté de Dewey se demande ce qui rend les détails distincts intelligible comme un seul compte."
+          },
+          {
+            "en": "Douglass tests a justificatory story against facts that undermine its claimed application.",
+            "es": "Douglass prueba una historia justificativa contra hechos que socavan su solicitud reclamada.",
+            "fr": "Douglass teste une histoire justificative contre des faits qui sapent sa demande revendiquée."
+          },
+          {
+            "en": "Herodotus compares witnesses while marking limits on what his inquiry can establish.",
+            "es": "Herodotus compara a los testigos mientras marca los límites de lo que su investigación puede establecer.",
+            "fr": "Herodotus compare les témoins tout en fixant des limites sur ce que son enquête peut établir."
+          },
+          {
+            "en": "Getty’s repeated correction shows why repairing a false account requires reaching its later audience.",
+            "es": "La corrección repetida de Getty muestra por qué reparar una cuenta falsa requiere llegar a su audiencia posterior.",
+            "fr": "La correction répétée de Getty montre pourquoi la réparation d'un faux compte nécessite d'atteindre son public ultérieur."
+          },
+          {
+            "en": "Tagore’s metaphor identifies a choice about which forms of history deserve attention.",
+            "es": "La metáfora de Tagore identifica una opción sobre qué formas de historia merecen atención.",
+            "fr": "La métaphore du tagore identifie un choix sur quelles formes de l'histoire méritent l'attention."
+          },
+          {
+            "en": "End with retelling as an active practice: memory is trained, checked, and potentially changed within a household.",
+            "es": "Terminar con el retelling como una práctica activa: la memoria es entrenada, verificada y potencialmente cambiada dentro de un hogar.",
+            "fr": " Terminez par la réaffirmation comme pratique active: la mémoire est entraînée, vérifiée et potentiellement changée au sein d'un ménage."
+          }
+        ],
+        "inquiry": {
+          "en": "How do records, songs, testimony, and retelling preserve history and shape what later people can know?",
+          "es": "¿Cómo conservan la historia y la forma lo que más tarde la gente puede saber?",
+          "fr": "Comment les disques, les chansons, les témoignages et les récits préservent - ils l'histoire et façonnent - ils ce que les gens peuvent savoir plus tard?"
+        }
+      },
+      {
+        "slug": "learning-across-difference",
+        "title": {
+          "en": "Learning across difference",
+          "es": "Aprender entre diferencias",
+          "fr": "Apprendre à travers les différences"
+        },
+        "description": {
+          "en": "Move from local expertise to cultural judgments, education, recognition, and belonging.",
+          "es": "Del saber local a los juicios culturales, la educación, el reconocimiento y la pertenencia.",
+          "fr": "Du savoir situé aux jugements culturels, à l’éducation, à la reconnaissance et à l’appartenance."
+        },
+        "practiceGoal": {
+          "en": "Compare perspectives without treating one narrator as the voice of an entire people or familiarity as proof.",
+          "es": "Compara perspectivas sin tomar a un narrador como voz de todo un pueblo ni lo familiar como prueba.",
+          "fr": "Compare les perspectives sans faire d’un narrateur la voix de tout un peuple ni prendre la familiarité pour une preuve."
+        },
+        "moduleIds": [
+          "reading-connected-learning-across-difference-01",
+          "reading-connected-learning-across-difference-02",
+          "reading-connected-learning-across-difference-03",
+          "reading-connected-learning-across-difference-04",
+          "reading-connected-learning-across-difference-05",
+          "reading-connected-learning-across-difference-06",
+          "reading-connected-learning-across-difference-07",
+          "reading-connected-learning-across-difference-08",
+          "reading-connected-learning-across-difference-09",
+          "reading-connected-learning-across-difference-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin by placing a learned habit within the environment that gives it a practical purpose.",
+            "es": "Comience colocando un hábito aprendido dentro del ambiente que le da un propósito práctico.",
+            "fr": " Commencez par placer une habitude apprise dans l'environnement qui lui donne un but pratique."
+          },
+          {
+            "en": "Herodotus distinguishes inquiry from probability when explaining similarities between cultures.",
+            "es": "Herodotus distingue la investigación de la probabilidad al explicar similitudes entre culturas.",
+            "fr": "Hérodote distingue l'enquête de la probabilité lorsqu'il explique les similitudes entre les cultures."
+          },
+          {
+            "en": "Montaigne challenges the move from inherited custom to a supposedly universal standard of nature.",
+            "es": "Montaigne desafía el paso de la costumbre heredada a un supuesto estándar universal de la naturaleza.",
+            "fr": "Montaigne défie le passage de la coutume héritée à un standard supposément universel de la nature."
+          },
+          {
+            "en": "Tagore’s lotus connects adaptation with inherited roots while leaving broad cultural generalizations open to testing.",
+            "es": "El loto de Tagore conecta la adaptación con las raíces heredadas y deja amplias generalizaciones culturales abiertas a las pruebas.",
+            "fr": "Le lotus de Tagore associe l'adaptation aux racines héritées tout en laissant de larges généralisations culturelles ouvertes aux essais."
+          },
+          {
+            "en": "Du Bois’s tree image gives institutions a history that cannot be judged from visible results alone.",
+            "es": "La imagen arbórea de Du Bois da a las instituciones una historia que no puede ser juzgada sólo por los resultados visibles.",
+            "fr": "L'image de l'arbre du Bois donne aux institutions une histoire qui ne peut être jugée à partir des seuls résultats visibles."
+          },
+          {
+            "en": "A public accusation shows how vivid images can turn unfamiliarity or vulnerability into a judgment of weakness.",
+            "es": "Una acusación pública muestra cómo imágenes vívidas pueden convertir la familiaridad o la vulnerabilidad en un juicio de debilidad.",
+            "fr": " Une accusation publique montre à quel point des images vives peuvent transformer l'inconnu ou la vulnérabilité en un jugement de faiblesse."
+          },
+          {
+            "en": "Wollstonecraft contrasts repeating authoritative claims with learning through the difficulty of understanding them.",
+            "es": "Wollstonecraft contrasta repitiendo afirmaciones autoritativas con el aprendizaje a través de la dificultad de entenderlas.",
+            "fr": "Wollstonecraft contraste avec la répétition d'allégations faisant autorité avec l'apprentissage par la difficulté de les comprendre."
+          },
+          {
+            "en": "Washington separates the desire for education from claims about what education will guarantee.",
+            "es": "Washington separa el deseo de educación de los reclamos sobre lo que la educación garantizará.",
+            "fr": "Washington sépare le désir d'éducation des revendications sur ce que l'éducation va garantir."
+          },
+          {
+            "en": "Addams tests assumptions that an address or income reveals a person’s education and capacities.",
+            "es": "Addams prueba supuestos que una dirección o un ingreso revela la educación y las capacidades de una persona.",
+            "fr": "Addams teste les hypothèses qu'une adresse ou un revenu révèle une personne de l'éducation et des capacités."
+          },
+          {
+            "en": "Finish with negotiated rescue: the terms of cooperation complicate a simple story of generosity or exploitation.",
+            "es": "Terminar con el rescate negociado: los términos de cooperación complican una simple historia de generosidad o explotación.",
+            "fr": " Terminer avec le sauvetage négocié: les termes de la coopération compliquent une simple histoire de générosité ou d'exploitation."
+          }
+        ],
+        "inquiry": {
+          "en": "How can we learn from unfamiliar experience without confusing our own customs with universal standards?",
+          "es": "¿Cómo podemos aprender de la experiencia desconocida sin confundir nuestras propias costumbres con estándares universales?",
+          "fr": "Comment pouvons-nous tirer des leçons d'expériences inconnues sans confondre nos propres coutumes avec des normes universelles?"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "economics-society",
+    "title": {
+      "en": "Economics & Society",
+      "es": "Economía y sociedad",
+      "fr": "Économie et société"
+    },
+    "description": {
+      "en": "Incentives, exchange, cooperation, and who carries the costs.",
+      "es": "Incentivos, intercambio, cooperación y quién soporta los costes.",
+      "fr": "Incitations, échanges, coopération et répartition des coûts."
+    },
+    "readingPaths": [
+      {
+        "slug": "interests-and-exchange",
+        "title": {
+          "en": "Interests and exchange",
+          "es": "Intereses e intercambio",
+          "fr": "Intérêts et échanges"
+        },
+        "description": {
+          "en": "Ten readings comparing exchange, innovation, status, opportunity, and the costs of economic progress.",
+          "es": "Diez lecturas que comparan intercambio, innovación, posición social, oportunidades y los costos del progreso económico.",
+          "fr": "Dix lectures comparant échange, innovation, statut social, possibilités et coûts du progrès économique."
+        },
+        "practiceGoal": {
+          "en": "Compare economic arguments by tracing incentives, benefits, and costs rather than accepting a slogan.",
+          "es": "Compara argumentos económicos siguiendo incentivos, beneficios y costos en lugar de aceptar un eslogan.",
+          "fr": "Compare les arguments économiques en examinant incitations, bénéfices et coûts plutôt qu’un slogan."
+        },
+        "moduleIds": [
+          "reading-connected-interests-and-exchange-01",
+          "reading-connected-interests-and-exchange-02",
+          "reading-connected-interests-and-exchange-03",
+          "reading-connected-interests-and-exchange-04",
+          "reading-connected-interests-and-exchange-05",
+          "reading-connected-interests-and-exchange-06",
+          "reading-connected-interests-and-exchange-07",
+          "reading-connected-interests-and-exchange-08",
+          "reading-connected-interests-and-exchange-09",
+          "reading-connected-interests-and-exchange-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with the claim that attending to another person’s interest can make cooperation possible.",
+            "es": "Comience con la afirmación de que asistir al interés de otra persona puede hacer posible la cooperación.",
+            "fr": " Commencez par affirmer que s'occuper d'une autre personne peut rendre possible la coopération."
+          },
+          {
+            "en": "Divided labor tests how cooperation increases output while narrowing an individual’s tasks.",
+            "es": "Pruebas de trabajo divididas cómo la cooperación aumenta la producción al estrechar las tareas de un individuo.",
+            "fr": "Le travail divisé teste comment la coopération augmente la production tout en réduisant les tâches d'un individu."
+          },
+          {
+            "en": "Bastiat adds costs that a visible gain can conceal from the observer.",
+            "es": "Bastiat añade costos que una ganancia visible puede ocultar del observador.",
+            "fr": "Bastiat ajoute des coûts qu'un gain visible peut cacher à l'observateur."
+          },
+          {
+            "en": "Marx and Engels place productive change within wider disruption to livelihoods and relationships.",
+            "es": "Marx y Engels colocan el cambio productivo dentro de una mayor perturbación a los medios de vida y las relaciones.",
+            "fr": "Marx et Engels placent le changement productif dans une perturbation plus large des moyens de subsistance et des relations."
+          },
+          {
+            "en": "Veblen asks whether demand expresses comfort, security, or comparison with other people.",
+            "es": "Veblen pregunta si la demanda expresa comodidad, seguridad o comparación con otras personas.",
+            "fr": "Veblen demande si la demande exprime le confort, la sécurité ou la comparaison avec d'autres personnes."
+          },
+          {
+            "en": "Ruskin tests a model that separates economic behavior from care and loyalty.",
+            "es": "Ruskin prueba un modelo que separa el comportamiento económico del cuidado y la lealtad.",
+            "fr": "Ruskin teste un modèle qui sépare le comportement économique du soin et de la loyauté."
+          },
+          {
+            "en": "George asks who receives the gains when wealth and productive capacity increase.",
+            "es": "George pregunta quién recibe los beneficios cuando aumenta la riqueza y la capacidad productiva.",
+            "fr": "George demande qui reçoit les gains lorsque la richesse et la capacité de production augmentent."
+          },
+          {
+            "en": "Addams introduces opportunities whose access may not track the ability to pay.",
+            "es": "Addams presenta oportunidades cuyo acceso puede no rastrear la capacidad de pago.",
+            "fr": "Addams introduit des possibilités dont l'accès peut ne pas suivre la capacité de payer."
+          },
+          {
+            "en": "Washington connects education with useful work while raising questions about who controls its purposes.",
+            "es": "Washington conecta la educación con un trabajo útil al plantear preguntas sobre quién controla sus propósitos.",
+            "fr": "Washington relie l'éducation à un travail utile tout en soulevant des questions sur qui contrôle ses objectifs."
+          },
+          {
+            "en": "Conclude with Bellamy’s ranking: examine incentives alongside unequal opportunity and the treatment of the lowest-ranked workers.",
+            "es": "Conclusión con la clasificación de Bellamy: examinar incentivos junto con oportunidades desiguales y el tratamiento de los trabajadores más bajos.",
+            "fr": " Conclure avec le classement de Bellamy : examiner les mesures d'incitation, parallèlement aux inégalités de chances et au traitement des travailleurs les moins qualifiés."
+          }
+        ],
+        "inquiry": {
+          "en": "When do incentives and exchange benefit both sides, and who bears costs that the bargain leaves out?",
+          "es": "¿Cuándo los incentivos y el intercambio benefician a ambas partes, y quién soporta los costos que el acuerdo deja fuera?",
+          "fr": " Quand les incitatifs et les échanges profitent-ils aux deux parties, et qui supporte les coûts que le marché laisse de côté?"
+        }
+      },
+      {
+        "slug": "work-value-and-recognition",
+        "title": {
+          "en": "Work, value, and recognition",
+          "es": "Trabajo, valor y reconocimiento",
+          "fr": "Travail, valeur et reconnaissance"
+        },
+        "description": {
+          "en": "Follow useful work through exchange, specialization, unpaid contribution, status, and unequal rewards.",
+          "es": "Sigue el trabajo útil mediante intercambio, especialización, contribuciones no pagadas, prestigio y recompensas desiguales.",
+          "fr": "Suis le travail utile à travers échange, spécialisation, contributions non rémunérées, statut et récompenses inégales."
+        },
+        "practiceGoal": {
+          "en": "Distinguish productive contribution, payment, and power using evidence from contrasting economic arguments.",
+          "es": "Distingue contribución productiva, pago y poder usando pruebas de argumentos económicos contrastantes.",
+          "fr": "Distingue contribution productive, paiement et pouvoir à partir d’arguments économiques contrastés."
+        },
+        "moduleIds": [
+          "reading-connected-work-value-and-recognition-01",
+          "reading-connected-work-value-and-recognition-02",
+          "reading-connected-work-value-and-recognition-03",
+          "reading-connected-work-value-and-recognition-04",
+          "reading-connected-work-value-and-recognition-05",
+          "reading-connected-work-value-and-recognition-06",
+          "reading-connected-work-value-and-recognition-07",
+          "reading-connected-work-value-and-recognition-08",
+          "reading-connected-work-value-and-recognition-09",
+          "reading-connected-work-value-and-recognition-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin with George’s claim about the value produced before a wage is paid.",
+            "es": "Comience con la afirmación de George sobre el valor producido antes de que se pague un salario.",
+            "fr": " Commencer par la revendication de George sur la valeur produite avant qu'un salaire soit payé."
+          },
+          {
+            "en": "Smith identifies different claims on added value, making distribution part of the inquiry.",
+            "es": "Smith identifica diferentes reclamaciones sobre valor añadido, haciendo parte de la distribución de la investigación.",
+            "fr": "Smith identifie différentes allégations sur la valeur ajoutée, ce qui fait de la distribution une partie de l'enquête."
+          },
+          {
+            "en": "George’s unfinished-product example tests whether value exists only when an item is ready to sell.",
+            "es": "El ejemplo de producto inacabado de George prueba si el valor existe sólo cuando un artículo está listo para vender.",
+            "fr": "Georges inachevé-product exemple teste si la valeur n'existe que lorsqu'un article est prêt à vendre."
+          },
+          {
+            "en": "Washington connects useful construction with learning rather than treating work only as output.",
+            "es": "Washington conecta la construcción útil con el aprendizaje en lugar de tratar el trabajo sólo como salida.",
+            "fr": "Washington relie la construction utile à l'apprentissage plutôt que de ne traiter le travail que comme une production."
+          },
+          {
+            "en": "Mechanization in Marx and Engels introduces the worker’s experience as a cost that productivity may conceal.",
+            "es": "La mecanización en Marx y Engels introduce la experiencia del trabajador como un costo que la productividad puede ocultar.",
+            "fr": "La mécanisation dans Marx et Engels introduit l'expérience des ouvriers comme un coût que la productivité peut cacher."
+          },
+          {
+            "en": "Veblen separates producing goods from displaying an employer’s ability to support nonproductive service.",
+            "es": "Veblen separa la producción de bienes de mostrar la capacidad de un empleador para apoyar el servicio no productivo.",
+            "fr": "Veblen sépare la production de biens de la capacité d'un employeur à soutenir un service non productif."
+          },
+          {
+            "en": "Prince’s account tests whether needing relief reveals anything simple about willingness to work.",
+            "es": "La cuenta de Prince prueba si necesita alivio revela algo simple acerca de la voluntad de trabajar.",
+            "fr": "Princes teste si le besoin de soulagement révèle quelque chose de simple sur la volonté de travailler."
+          },
+          {
+            "en": "Douglass makes lost agency and the desire to read part of labor’s effects.",
+            "es": "Douglass hace agencia perdida y el deseo de leer parte de los efectos del trabajo.",
+            "fr": "Douglass fait l'agence perdue et le désir de lire une partie des effets du travail."
+          },
+          {
+            "en": "Veblen traces how a status signal becomes a moral expectation about who should work.",
+            "es": "Veblen traza cómo una señal de estado se convierte en una expectativa moral sobre quién debe trabajar.",
+            "fr": "Veblen retrace comment un signal d'état devient une attente morale au sujet de qui devrait travailler."
+          },
+          {
+            "en": "End with Bellamy’s proposed right to support: judge whether citizenship should depend on a person’s productive capacity.",
+            "es": "Terminar con el derecho propuesto por Bellamy a apoyar: juzgar si la ciudadanía debe depender de la capacidad productiva de una persona.",
+            "fr": "Fin de la proposition de Bellamy, le droit de soutenir :  juger si la citoyenneté doit dépendre de la capacité productive d'une personne."
+          }
+        ],
+        "inquiry": {
+          "en": "How are the value of work, its payment, and the recognition of the worker connected or separated?",
+          "es": "¿Cómo es el valor del trabajo, su pago y el reconocimiento del trabajador conectado o separado?",
+          "fr": " Quelle est la valeur du travail, son paiement et la reconnaissance du travailleur connecté ou séparé?"
+        }
+      },
+      {
+        "slug": "progress-and-its-costs",
+        "title": {
+          "en": "Progress and its costs",
+          "es": "El progreso y sus costos",
+          "fr": "Le progrès et ses coûts"
+        },
+        "description": {
+          "en": "Compare mutual dependence, visible benefits, hidden costs, institutions, and who gets a share of progress.",
+          "es": "Compara dependencia mutua, beneficios visibles, costos ocultos, instituciones y quién participa del progreso.",
+          "fr": "Compare dépendance mutuelle, bénéfices visibles, coûts cachés, institutions et partage du progrès."
+        },
+        "practiceGoal": {
+          "en": "Trace who benefits and who bears a cost, then defend a conclusion that acknowledges a real tradeoff.",
+          "es": "Identifica quién se beneficia y quién asume un costo, y defiende una conclusión que reconozca una disyuntiva real.",
+          "fr": "Identifie les bénéficiaires et les personnes supportant un coût, puis défends une conclusion reconnaissant un véritable compromis."
+        },
+        "moduleIds": [
+          "reading-connected-progress-and-its-costs-01",
+          "reading-connected-progress-and-its-costs-02",
+          "reading-connected-progress-and-its-costs-03",
+          "reading-connected-progress-and-its-costs-04",
+          "reading-connected-progress-and-its-costs-05",
+          "reading-connected-progress-and-its-costs-06",
+          "reading-connected-progress-and-its-costs-07",
+          "reading-connected-progress-and-its-costs-08",
+          "reading-connected-progress-and-its-costs-09",
+          "reading-connected-progress-and-its-costs-10"
+        ],
+        "connections": [
+          {
+            "en": "Begin by distinguishing dependence from interdependence and asking what payment does or does not reveal.",
+            "es": "Comience distinguiendo la dependencia de la interdependencia y preguntando qué pago hace o no revela.",
+            "fr": " Commencez par distinguer la dépendance de l'interdépendance et demander ce que le paiement fait ou ne révèle pas."
+          },
+          {
+            "en": "Smith’s condition on savings tests whether an apparent efficiency gain preserves the capacity it is meant to improve.",
+            "es": "La condición de Smith en las pruebas de ahorros si un aumento de eficiencia aparente preserva la capacidad que está destinado a mejorar.",
+            "fr": "Smith's condition sur les tests d'économie si un gain d'efficacité apparent préserve la capacité qu'il est destiné à améliorer."
+          },
+          {
+            "en": "George offers a mechanism through which rising production can coincide with rising burdens.",
+            "es": "George ofrece un mecanismo mediante el cual el aumento de la producción puede coincidir con el aumento de las cargas.",
+            "fr": "George offre un mécanisme par lequel l'augmentation de la production peut coïncider avec l'augmentation des charges."
+          },
+          {
+            "en": "Marx and Engels turn economic effects into a claim about political fitness to rule.",
+            "es": "Marx y Engels convierten los efectos económicos en un reclamo sobre la aptitud política para gobernar.",
+            "fr": "Marx et Engels transforment les effets économiques en une revendication sur l'aptitude politique à gouverner."
+          },
+          {
+            "en": "George’s promise of shared gains tests how far an account of progress can justify its general conclusion.",
+            "es": "La promesa de George de ganancias compartidas prueba hasta qué punto un relato de progreso puede justificar su conclusión general.",
+            "fr": "George's promesse de gains partagés teste jusqu'où un compte de progrès peut justifier sa conclusion générale."
+          },
+          {
+            "en": "Douglass’s New Bedford observations confront an inherited explanation of where prosperity comes from.",
+            "es": "Las observaciones de Douglass New Bedford confrontan una explicación heredada de dónde proviene la prosperidad.",
+            "fr": "Les observations de New Bedford font face à une explication héritée de l'origine de la prospérité."
+          },
+          {
+            "en": "Follett shifts progress from finding existing similarity to achieving a shared purpose through difference.",
+            "es": "Follett cambia el progreso de encontrar la similitud existente para lograr un propósito compartido a través de la diferencia.",
+            "fr": "Follett déplace les progrès, passant de la recherche de similitudes existantes à l'atteinte d'un but commun en passant par la différence."
+          },
+          {
+            "en": "Addams tests whether judgments about an association substitute for examination of a person’s actual conduct.",
+            "es": "Addams prueba si los juicios sobre una asociación sustituyen al examen de la conducta real de una persona.",
+            "fr": "Addams teste si les jugements sur une association se substituent à l'examen de la conduite réelle d'une personne."
+          },
+          {
+            "en": "Prince’s failed purchase shows a legal barrier that money and goodwill alone cannot remove.",
+            "es": "La compra fallida de Prince muestra una barrera legal que el dinero y la buena voluntad por sí solo no pueden eliminar.",
+            "fr": "L'échec de l'achat de Princes montre un obstacle juridique que l'argent et la bonne volonté ne peuvent éliminer à eux seuls."
+          },
+          {
+            "en": "End with a family letter: uncertainty, separation, and danger complicate any account of progress measured only by earnings.",
+            "es": "Terminar con una carta familiar: la incertidumbre, la separación y el peligro complican cualquier cuenta de progreso medido sólo por los ingresos.",
+            "fr": " Terminez par une lettre de famille : l'incertitude, la séparation et le danger compliquent tout compte rendu des progrès mesurés uniquement par les gains."
+          }
+        ],
+        "inquiry": {
+          "en": "How should progress be judged when gains in wealth or production coexist with unequal burdens?",
+          "es": "¿Cómo se debe juzgar el progreso cuando las ganancias en la riqueza o la producción coexisten con cargas desiguales?",
+          "fr": "Comment juger les progrès lorsque les gains de richesse ou de production coexistent avec des charges inégales?"
+        }
+      }
+    ]
+  }
+]

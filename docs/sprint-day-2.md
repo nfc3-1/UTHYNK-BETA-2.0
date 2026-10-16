@@ -1,8 +1,8 @@
-# Day Two: connected reading paths for school trials
+# Day Two: distinct, connected reading paths
 
-October 15, 2026. Preserve the seven existing categories and all prior reading identities. Each category now contains its original ten-reading path plus two additional ten-reading paths. There are 21 paths and 210 reading positions, using 84 distinct current readings from 51 author/source labels. Thirty-three previous selections remain accessible at their original URLs. The 14 additions are new passages, not sentence summaries; the remaining positions deliberately reuse the existing library with unchanged questions and session identities.
+October 16, 2026 correction to the October 15 expansion. The seven categories contain three Reading Paths each, with ten readings per path: **21 paths and 210 distinct active passages**. There is no active passage shared between paths. The correction supplies 128 new source selections, keeps 82 already-distinct selections, and replaces all 210 active questions with source-dependent activities. The earlier release's 210 positions over 84 passages did not meet this requirement.
 
-| Category | Added path | Added path |
+| Category | Second path | Third path |
 | --- | --- | --- |
 | Power & Leadership | Leading without force | Advice, dissent, and changing course |
 | Freedom & Government | Who gets a voice? | Law, conscience, and repair |
@@ -12,52 +12,45 @@ October 15, 2026. Preserve the seven existing categories and all prior reading i
 | Civilizations & Culture | Who preserves the story? | Learning across difference |
 | Economics & Society | Work, value, and recognition | Progress and its costs |
 
-Each survey path retains at least six authors and six works, no more than two selections per author/work, and no duplicate module within a sequence. Each additional sequence includes at least four readings outside its category's introductory sequence. These are themed comparisons, not claims of a validated curriculum or reading level.
+Each path has a unifying inquiry, a practice goal, and ten individually written connections describing how its argument develops. For example, Leading without force moves from independent conviction through coerced consent, participation, enacted persuasion, paternal dependence, learned fear, military obedience, and kinship language. Readers evaluate tensions rather than receiving one approved conclusion. Connections orient the reading without assuming that earlier answers have been completed.
 
-## School-trial sequence
+Every path includes at least six author/source labels and six works, with at most two passages from one author or source work. Authors may recur across paths, but their excerpts do not. Automated checks reject identical active passages and even a shared twelve-word English source stretch between active readings. These are thematic surveys, not a validated curriculum or established reading-level assignment.
 
-The initial pilot remains **Human Nature → Character and adaptability**. Its ten existing passages/questions are unchanged. Every path now states a translated practice goal. Ten authored connection notes in the pilot sequence link character and gain, flexibility, custom, self-review, first impressions, restraint, persuasion, care, expectations, and outward appearances. The final connection invites comparison of two authors within ordinary thinking; there is no additional required answer or fifth step.
+## Evidence in the existing four steps
 
-Teachers can assign any canonical reading through the existing classroom workflow. Shared readings appear once in that assignment picker. A learner completes two answers within Main Question → Perspective Expansion → Secondary Question → Final Synthesis. No evaluation score, rank rule, XP rule, navigation rename, permission, auth setting, or database schema changes here.
+Every primary question requires interpretation of actual quoted wording **and a second, different detail from the same passage**. Questions address particular events, comparisons, claims, or institutions. Examples include Cyrus rejecting a rhetorical display while promising supplies, and Addams comparing neighborhood bath facilities with officials' prediction and actual bathhouse use.
 
-## Identity and persistence
+The server supplies the complete authorized passage, question, path inquiry, and current connection to the coach. Instructions require a text-specific secondary question. A deterministic guard adds an actual localized quotation and a request for another passage detail to the generated follow-up in both JSON and streaming responses. It grounds the task; it does not establish that the provider's interpretation or a learner's answer is correct. Synthesis receives no extra question. Reading assignments use the same grounding, resolved from their saved target rather than client-supplied content.
 
-`data/readingSequences.json` supplies explicit ordered module IDs, path titles, descriptions, and practice goals in EN/ES/FR. `data/schoolTrialReadingParts.json` supplies the new reading metadata; `data/readingSources.json` shares source editions and `data/readingPassages.json` contains ID-keyed full passages and content notes. An unknown referenced ID fails catalog construction.
+The experience remains **Main Question → Perspective Expansion → Secondary Question → Final Synthesis**, with two learner answers. No fifth step, numeric grade, navigation rename, participation rule, permission, auth configuration, or database schema changes are included.
 
-A shared reading means exactly the same passage, question, category, and session identity. Answers, completion, and drafts therefore follow it across curated paths, as explained beside reading progress. Completing the same reading in another path does not create a second canonical reading. This release does not introduce a new reward ledger or claim a path-completion badge. Existing browser/account/age storage, assignment-specific state, and historical URLs remain intact; standalone cross-device path completion remains outside this change.
+## Stable identities and saved work
 
-`readingIdentities.v2.json` locks all 103 pre-expansion current and previous identities, supplementing the original v1 fixture. Never refresh those fixtures to silence a semantic regression. A changed passage or question meaning requires a new module ID.
+`data/connectedReadingPaths.json` defines ordered IDs, inquiries, and connections. `data/connectedReadingModules.json` holds active question/source metadata; `data/readingPassages.json` stores full passages by ID. Catalog construction rejects missing sources, duplicate IDs, unassigned modules, and repeated active passages.
 
-## New sources and rights evidence
+All revised questions receive fresh `reading-connected-*` identities, including readings whose passage is retained. Old completion is not silently awarded to a changed activity. **All 117 prior canonical readings** retain their exact questions, passages, categories, original URLs, and session identities through the frozen `lib/legacyReadingCatalog.ts`. They are available under Previous readings in their former paths. Historical repetition is retained only to recover saved work, not reused as an active new sequence.
 
-The seven selected Gutenberg records explicitly stated **Public domain in the USA**, checked October 15, 2026. That status is jurisdiction-specific, not worldwide clearance. English is preserved from the selected source, with linked numeric footnote and page markers omitted. Spanish and French are new UThynk working translations, not borrowed modern translations.
+The v1/v2 identity fixtures remain unchanged; v3 locks all 117 pre-correction records. Language is absent from the existing session key: switching EN/ES/FR preserves drafts, both answers, stage, and completion. Distinct activities do not share drafts. Browser-local progress remains local; saved classroom submissions retain their existing server recovery behavior. The user confirmed the live classroom walkthrough on October 15; this correction does not repeat or replace that verification.
 
-| Author/source | Work and rights record | Two selections |
-| --- | --- | --- |
-| Ralph Waldo Emerson | [Essays — First Series](https://www.gutenberg.org/ebooks/2944) | Self-Reliance: conviction among a crowd; foolish consistency |
-| Sojourner Truth, narrated to Olive Gilbert | [The Narrative of Sojourner Truth](https://www.gutenberg.org/ebooks/1674) | Seeking Quaker allies; rejecting payment instead of her son's return |
-| Oscar Wilde | [The Happy Prince](https://www.gutenberg.org/ebooks/902) | Happiness behind the palace wall; seamstress and child |
-| John Dewey | [How We Think](https://www.gutenberg.org/ebooks/37423) | Chapter I: suspended judgment; Chapter XV: mental leisure |
-| Mary Shelley | [Frankenstein](https://www.gutenberg.org/ebooks/84) | Chapter 10: creature's claim on his creator; Chapter 12: observing the cottagers |
-| Charles A. Eastman (Ohiyesa) | [Indian Boyhood](https://www.gutenberg.org/ebooks/337) | Part I, III: grandmother's expertise; Part V, I: Smoky Day's records |
-| Charlotte Perkins Gilman | [Women and Economics](https://www.gutenberg.org/ebooks/57913) | Chapter I: economic independence; useful service without independence |
+## Sources, translations, and editorial review
 
-## Editorial review and remaining gaps
+All 327 English records (210 active plus 117 previous) match their 53 cited source pages. New selections use the already-documented editions and source pool, not modern copyrighted translations. Source location fields identify the English opening words when a chapter locator is unavailable. Existing rights-evidence dates are preserved; passage matching on October 16 is not represented as a fresh rights determination. U.S. public-domain metadata is jurisdiction-specific and does not establish worldwide clearance.
 
-All 117 available modules have English, Spanish and French passage, title, location, context, question, and lenses; no required language field is missing. All remain `needs_review`. The 28 new passage translations, 14 new contexts/questions/lens pairs, path metadata, and pilot connection notes need bilingual editorial approval. Existing translations remain unapproved too. Source matching establishes attribution, not translation quality, age suitability, model interpretation, or learning gains.
+English selections retain the cited wording. Spanish and French are UThynk working translations of that English edition. The 128 new selections introduce **256 passage translations** prepared using locally run Argos Translate models (English–Spanish 1.0 and English–French 1.9), with targeted wording corrections. Long clauses were split to avoid truncation; translation packages are not application dependencies. All 420 revised active question translations and the 420 translated connection notes also require bilingual editorial approval. Complete fields and source matching do not prove translation fidelity. No reading is marked editorially approved: all 210 active and all 117 previous records remain `needs_review`.
 
-Priority review:
+Priority review includes:
 
-- Emerson: explain “foolish consistency” without teaching that criticism or misunderstanding proves a person is correct; retain the difference between independent conviction and accountability.
-- Truth/Gilbert: preserve attribution to the mediated third-person narrative; distinguish Truth's quoted demands from Gilbert's framing. The passages concern enslavement, family separation, and unequal access to justice, without graphic violence. Teacher contextual review is needed.
-- Wilde: fictional suffering, illness, luxury, and charity. Do not turn the story into proof that a particular economic intervention necessarily works.
-- Dewey: doubt is a method of investigation, not a permanent refusal to act. The selected paragraphs omit his historically inaccurate flat-earth/Columbus example elsewhere in Chapter I.
-- Shelley: the creature's suffering can explain conduct without justifying harm; the narrator's inferences about the cottagers are not established facts. Review biblical allusions and vocabulary in translations.
-- Eastman: a situated Santee Dakota memoir, not a generic account of all Indigenous peoples; preserve names, expertise, recordkeeping practices, and historical perspective.
-- Gilman: explicitly historical gender generalizations and the deliberately troubling horse/valet analogy must be scrutinized, not endorsed. Contribution, compensation, control, and interdependence must remain distinct in translation.
+- Philosophical vocabulary and long arguments: Bacon, Descartes, Hume, Marcus, Rousseau, James, Confucius, Laozi, and Dhammapada. Check logical scope, conditional claims, and culturally specific terms.
+- Constitutional excerpts: distinguish the original proposed amendment numbering from current numbering; preserve institutional exceptions and limits.
+- Narrated and quoted voices: distinguish Gilbert's framing, Truth's words, and her son's letter; Plato's speakers; fictional narrators; documents quoted by Zitkala-Sa. Character claims are not author endorsements.
+- Enslavement, unequal legal power, bereavement, and historical gender/racial categories: review framing and suitability with teachers. Eastman's situated Santee Dakota memoir must not become a claim about all Indigenous nations.
+- Economic arguments: preserve distinctions among useful work, wages, contribution, independence, status, and productivity; do not present an author's contested mechanism as established fact.
+- Coherent difficulty and reading level across the ten parts, translated navigation/context, and live-model interpretations. Some historical vocabulary remains demanding even when every paragraph is present.
 
-Remaining breadth gaps: independently verified Latin American, Middle Eastern, and more African editions; a broader contemporary voice would require appropriate rights. The 14 new paths share some existing selections rather than claiming 140 entirely new excerpts. School-trial evidence and a bilingual review of live reasoning observations remain outstanding. The owner confirmed the previous live classroom walkthrough was completed on October 15; this content release does not repeat or replace it.
+**Coverage gaps:** none in required EN/ES/FR content fields or the ten-part sequences. Independent bilingual approval, school-trial learning evidence, broader verified Latin American/Middle Eastern/African sources, and jurisdictional rights review remain outstanding. The guard prevents a wholly text-free task but cannot guarantee deep reading or a factually correct provider response.
 
 ## Verification
 
-`python scripts/checkReadingSources.py` matched all 117 English selections against 53 cited source pages. Automated checks cover 21 paths × 10 parts, source diversity, baseline identity hashes, all translated fields, unique teacher assignment options, public-summary privacy, new-route authorization, forged-context replacement, shared-reading recovery, new-reading language switches, two answers/four stages, and persisted completion. Run the standard test, translations, typecheck, lint, and build checks before merge. Live public catalog checks establish discovery; protected reading behavior is covered by regression checks and still needs school-trial editorial review.
+Run `python scripts/checkReadingSources.py`, `npm test`, `npm run test:unit`, `npm run test:translations`, `npm run typecheck`, `npm run lint`, and `npm run build`. Regression checks cover all 21×10 sequences, global passage uniqueness, source diversity, all 117 historical identities, language coverage, actual quotation anchors, public metadata privacy, authorization/revocation, forged context, JSON/SSE grounding, independent drafts, language switching, restored answers, completion, and the finite four-step flow.
+
+Public production inspection checks catalog discovery and translated titles. It does not establish a new authenticated walkthrough or provider-quality sign-off.
