@@ -7,7 +7,7 @@ import styles from './ThinkingWalkthrough.module.css';
 export const VISUAL_GUIDE_DISMISSED = 'uthynk-visual-guide-dismissed-v1';
 const guideCopy = {
   en: {
-    title: 'How to use UThynk', intro: 'See it in action. Two answers. One new angle. Better thinking.',
+    title: 'How UThynk works', intro: 'Two answers. A new perspective. Your ideas connected.',
     watch: 'Watch an example', close: 'Start thinking', skip: 'Skip to home', pause: 'Pause', play: 'Play', replay: 'Replay',
     next: 'Next step', previous: 'Previous step', example: 'Example only — these are not your answers',
     you: 'You', question: 'Should phones be allowed during class?',
@@ -19,7 +19,7 @@ const guideCopy = {
     ],
   },
   es: {
-    title: 'Cómo usar UThynk', intro: 'Mira cómo funciona. Dos respuestas. Un nuevo ángulo. Piensa mejor.',
+    title: 'Cómo funciona UThynk', intro: 'Dos respuestas. Una nueva perspectiva. Tus ideas conectadas.',
     watch: 'Ver un ejemplo', close: 'Empezar a pensar', skip: 'Saltar e ir al inicio', pause: 'Pausar', play: 'Reproducir', replay: 'Repetir',
     next: 'Paso siguiente', previous: 'Paso anterior', example: 'Solo un ejemplo: estas no son tus respuestas',
     you: 'Tú', question: '¿Se deberían permitir los teléfonos durante la clase?',
@@ -31,7 +31,7 @@ const guideCopy = {
     ],
   },
   fr: {
-    title: 'Comment utiliser UThynk', intro: 'Regarde un exemple. Deux réponses. Un nouvel angle. Pense mieux.',
+    title: 'Comment fonctionne UThynk', intro: 'Deux réponses. Une nouvelle perspective. Tes idées reliées.',
     watch: 'Voir un exemple', close: 'Commencer à réfléchir', skip: 'Passer à l’accueil', pause: 'Pause', play: 'Lecture', replay: 'Revoir',
     next: 'Étape suivante', previous: 'Étape précédente', example: 'Un exemple seulement : ce ne sont pas tes réponses',
     you: 'Toi', question: 'Devrait-on autoriser les téléphones pendant les cours ?',
@@ -111,10 +111,6 @@ export default function ThinkingWalkthrough({ language, open, onOpenChange }: {
   return <section className={styles.guide} aria-labelledby={`${id}-title`}>
     <div className={styles.header}>
       <div><strong id={`${id}-title`}>{copy.title}</strong><p>{copy.intro}</p></div>
-      <div className={styles.headerActions}>
-        <button type="button" className="btn" aria-expanded={expanded} aria-controls={`${id}-demo`} onClick={() => changeOpen(!expanded)}>{expanded ? copy.close : copy.watch}</button>
-        {expanded ? <a className="btn" href="/" onClick={() => changeOpen(false)}>{copy.skip}</a> : null}
-      </div>
     </div>
     {expanded ? <div id={`${id}-demo`} onFocusCapture={event => {
       if (!(event.target as HTMLElement).closest('[data-playback-control]')) setPlaying(false);
@@ -136,5 +132,9 @@ export default function ThinkingWalkthrough({ language, open, onOpenChange }: {
         <button type="button" className="btn" disabled={step === 3} onClick={() => selectStep(step + 1)}>{copy.next}</button>
       </div>
     </div> : null}
+      <div className={styles.headerActions}>
+        <button type="button" className="btn" aria-expanded={expanded} aria-controls={`${id}-demo`} onClick={() => changeOpen(!expanded)}>{expanded ? copy.close : copy.watch}</button>
+        {expanded ? <a className="btn" href="/" onClick={() => changeOpen(false)}>{copy.skip}</a> : null}
+      </div>
   </section>;
 }

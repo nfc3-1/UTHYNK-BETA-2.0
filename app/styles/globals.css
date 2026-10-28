@@ -3030,8 +3030,8 @@ a{
 .appTop .topLanguageSelect { width: 100px; flex-shrink: 0; }
 .compactNavigation { min-width: 0; justify-content: flex-end; font-size: 14px; gap: 6px; flex-wrap: nowrap; }
 .primaryNavigationLinks, .accountNavigation { display: flex; align-items: center; gap: 4px; }
-.primaryNavigationLinks { flex: 1; flex-wrap: wrap; min-width: 0; }
-.accountNavigation { margin-left: auto; flex-shrink: 0; }
+.primaryNavigationLinks { flex: 0 1 auto; justify-content: flex-end; flex-wrap: wrap; min-width: 0; }
+.accountNavigation { flex-shrink: 0; }
 .compactNavigation .primaryNavigationLinks > a, .compactNavigation .accountNavigation > a {
   display: inline-flex; align-items: center; box-sizing: border-box; min-height: 44px; padding: 10px 7px !important; white-space: nowrap;
 }
@@ -3043,3 +3043,22 @@ a{
 .siteFooter { width: min(1560px, 94vw); margin: 24px auto; color: #b8c4d5; font-size: 14px; }
 .siteFooter a { padding: 8px 0; display: inline-block; }
 .navigationDisclosure:not([open]) > .secondaryNavigationLinks { display: none; }
+
+/* Fill the existing desktop header with the brand; keep destinations together on the right. */
+.appTop { padding-block: 10px; }
+.appTop > .appBrandText { opacity: 1; gap: 10px; }
+.appTop .appBrandLogo { width: 52px; height: 52px; }
+.appTop .brandCopy strong { font-size: 20px; color: #e4e9f0; }
+.appTop .brandCopy small { font-size: 12px; color: #c7d0dd; }
+.appTop .brandCopy em { color: #e4e9f0; }
+.betaBrowserNotice { padding-block: 4px; margin-block: 6px; line-height: 1.3; }
+@media (max-width: 1000px) {
+  .appTop { flex-wrap: wrap; }
+  .appTop > .topControls { flex-basis: 100%; justify-content: flex-end; }
+  .compactNavigation { flex-wrap: wrap; }
+}
+@media (max-width: 700px) {
+  .appTop { align-items: flex-start; }
+  .appTop > .topControls { width: 100%; }
+  .appTop .compactNavigation { justify-content: flex-end; }
+}
