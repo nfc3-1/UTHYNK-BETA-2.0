@@ -1765,7 +1765,7 @@ export default function ReasoningPage() {
         </div>
       </header>
 
-      <BetaPracticeEntry language={language} />
+      {!showOnboarding && <BetaPracticeEntry language={language} />}
 
       <ThinkingWalkthrough language={language} open={showOnboarding} onOpenChange={setShowOnboarding} />
 
